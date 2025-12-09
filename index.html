@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>展示型冰箱 (Chiller) - Siong Cheong Trading</title>
+    <title>Siong Cheong Trading 产品系列</title>
 
     <style>
         body {
@@ -23,13 +23,13 @@
             position: relative; 
         }
 
-        /* Logo 定位样式 - 尺寸已加大 */
+        /* Logo 定位样式 - 尺寸已增大至 110px */
         .header-logo {
             position: absolute; 
             top: 50%; 
             right: 20px; 
             transform: translateY(-50%);
-            width: 90px; /* 加大尺寸 */
+            width: 110px; /* 增大 Logo 尺寸 */
             height: auto;
         }
 
@@ -69,9 +69,10 @@
             overflow: hidden;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             
-            flex: 1 1 calc(33.333% - 14px); 
+            /* 调整 flex basis，确保 3 列布局在桌面端，并在内容多时保持良好间距 */
+            flex: 1 1 calc(25% - 20px); 
             min-width: 250px;
-            max-width: 380px; 
+            max-width: 280px; 
             display: flex;
             flex-direction: column;
             
@@ -85,7 +86,7 @@
 
         .product-card img {
             width: 100%;
-            height: 250px; 
+            height: 200px; /* 略微调整图片高度以适应更多卡片 */
             object-fit: cover; 
             background: #ddd;
             border-bottom: 1px solid #eee; 
@@ -135,9 +136,14 @@
         }
 
         /* 媒体查询：在小屏幕上显示两列 */
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
+             .product-card {
+                flex: 1 1 calc(50% - 10px); /* 在 900px 以下显示两列 */
+            }
+        }
+        @media (max-width: 600px) {
             .product-card {
-                flex: 1 1 calc(50% - 10px); 
+                flex: 1 1 100%; /* 在 600px 以下显示单列 */
             }
         }
     </style>
@@ -156,29 +162,74 @@
     <div class="product-grid">
 
         <div class="product-card">
-            <img src="chiller_category_cover.jpg" alt="展示型冷柜与家用冰箱">
+            <img src="refrigerator_category_cover.jpg" alt="家用冰箱">
             <div class="product-info">
-                <h3>冷柜与冰箱</h3>
-                <p>各式展示型冷柜 · 商用冰柜 · 家用冰箱</p>
+                <h3>Refrigerator (冰箱)</h3>
+                <p>家用双门、单门冰箱和冷冻箱。</p>
+                <a class="btn-chiller" href="refrigerator.html">查看详情</a>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="chiller_category_cover.jpg" alt="商用展示型冷柜">
+            <div class="product-info">
+                <h3>Chiller (冷柜)</h3>
+                <p>直立式饮料展示柜、商用冷藏柜。</p>
                 <a class="btn-chiller" href="chiller.html">查看详情</a>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="ac_category_cover.jpg" alt="空调">
+            <div class="product-info">
+                <h3>Air Conditioner (空调)</h3>
+                <p>分体式、窗式空调及移动式空调。</p>
+                <a class="btn-chiller" href="ac.html">查看详情</a>
             </div>
         </div>
 
         <div class="product-card">
             <img src="tv_category_cover.jpg" alt="电视机">
             <div class="product-info">
-                <h3>电视机</h3>
-                <p>高清智能电视 · 各种尺寸和型号</p>
+                <h3>TV (电视)</h3>
+                <p>高清智能电视 · 各式尺寸和型号。</p>
                 <a class="btn-chiller" href="tv.html">查看详情</a>
+            </div>
+        </div>
+        
+        <div class="product-card">
+            <img src="washer_category_cover.jpg" alt="洗衣机">
+            <div class="product-info">
+                <h3>Washer (洗衣机)</h3>
+                <p>全自动、半自动、波轮/滚筒洗衣机。</p>
+                <a class="btn-chiller" href="washer.html">查看详情</a>
             </div>
         </div>
 
         <div class="product-card">
-            <img src="other_category_cover.jpg" alt="其他电器">
+            <img src="dryer_category_cover.jpg" alt="烘干机">
             <div class="product-info">
-                <h3>其他电器</h3>
-                <p>小家电 · 厨房设备 · 其它家用电器</p>
-                <a class="btn-chiller" href="other.html">查看详情</a>
+                <h3>Dryer (烘干机)</h3>
+                <p>热泵式、冷凝式、排风式烘干机。</p>
+                <a class="btn-chiller" href="dryer.html">查看详情</a>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="kitchen_category_cover.jpg" alt="厨房家电">
+            <div class="product-info">
+                <h3>Kitchen Appliances</h3>
+                <p>烤箱、炉灶、抽油烟机等烹饪设备。</p>
+                <a class="btn-chiller" href="kitchen.html">查看详情</a>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="small_category_cover.jpg" alt="小家电">
+            <div class="product-info">
+                <h3>Small Appliances</h3>
+                <p>吸尘机、热水器、风扇等小型电器。</p>
+                <a class="btn-chiller" href="small.html">查看详情</a>
             </div>
         </div>
 
