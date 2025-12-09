@@ -1,178 +1,177 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siong Cheong Trading</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siong Cheong Trading - 新山家电批发零售</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-        }
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #ecf0f1;
+        }
 
-        header {
-            background: #2c3e50;
-            padding: 20px;
-            color: white;
-            text-align: center;
-            font-size: 26px;
-            font-weight: bold;
-        }
+        header {
+            background: #3498db;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
 
-        .banner {
-            background: url('https://images.unsplash.com/photo-1586201375754-1425ad4a3283?auto=format&fit=crop&w=1600&q=80') center/cover;
-            height: 280px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 32px;
-            text-shadow: 2px 2px 6px black;
-        }
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
 
-        .container {
-            padding: 20px;
-        }
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
 
-        h2 {
-            text-align: center;
-        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
 
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 20px;
-            padding: 10px;
-        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
 
-        .product-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
 
-        .product-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
 
-        .product-info {
-            padding: 15px;
-        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 3px solid #3498db;
+        }
 
-        .product-info h3 {
-            margin: 0 0 10px;
-            font-size: 20px;
-        }
+        .product-info {
+            padding: 15px;
+            text-align: center;
+        }
 
-        .product-info p {
-            color: #555;
-            font-size: 14px;
-            margin-bottom: 12px;
-        }
+        .product-info h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
 
-        .btn-whatsapp {
-            display: block;
-            background: #25D366;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 8px;
-        }
+        .product-info p {
+            color: #7f8c8d;
+            font-size: 14px;
+            min-height: 40px;
+        }
 
-        footer {
-            background: #2c3e50;
-            text-align: center;
-            color: white;
-            padding: 15px;
-            margin-top: 30px;
-        }
-    </style>
+        .btn-whatsapp {
+            display: block;
+            background: #25D366; /* WhatsApp Green */
+            padding: 12px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-whatsapp:hover {
+            background: #1EBE55;
+        }
+
+        .contact-bar {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+        }
+
+        .contact-bar a {
+            color: #f39c12;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
-    Siong Cheong Trading
+    <h1>Siong Cheong Trading</h1>
+    <p>新山家电批发零售 - 优质服务，优惠价格</p>
 </header>
 
-<div class="banner">
-    您值得信赖的电器专家
-</div>
-
 <div class="container">
-    <h2>产品目录</h2>
+    <h2>精选产品类别</h2>
 
-    <div class="product-grid">
+    <div class="grid">
 
-                <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80">
-            <div class="product-info">
-                <h3>风扇</h3>
-                <p>高风量 · 静音 · 耐用</p>
-                <a class="btn-whatsapp" href="https://wa.me/60123456789?text=我要询问风扇">
-                    WhatsApp 下单
-                </a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1606813907291-646cb063a6b7?auto=format&fit=crop&w=800&q=80" alt="Commercial Display Chiller">
+            <div class="product-info">
+                <h3>**冷柜与冰箱**</h3>
+                <p>各式展示型冷柜 · 家用冰箱。库存充足，价格优惠！</p>
+                <a class="btn-whatsapp" href="**/chiller.html**">
+                    **查看详情**
+                </a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=800&q=80">
-            <div class="product-info">
-                <h3>电视机</h3>
-                <p>高清画质 · 多尺寸型号</p>
-                <a class="btn-whatsapp" href="https://wa.me/60123456789?text=我要询问电视机">
-                    WhatsApp 下单
-                </a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1542385108643-d86cc845d4a7?auto=format&fit=crop&w=800&q=80" alt="Kitchen Appliances">
+            <div class="product-info">
+                <h3>**厨房电器**</h3>
+                <p>电饭煲 · 煤气炉 · 抽油烟机 · 烤箱等</p>
+                <a class="btn-whatsapp" href="https://wa.me/601110948581?text=我想询问厨房电器">
+                    WhatsApp 询问
+                </a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1581579188871-45ea61f2a0c8?auto=format&fit=crop&w=800&q=80">
-            <div class="product-info">
-                <h3>洗衣机</h3>
-                <p>节能省电 · 强劲洗涤</p>
-                <a class="btn-whatsapp" href="https://wa.me/60123456789?text=我要询问洗衣机">
-                    WhatsApp 下单
-                </a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1594246820017-d20502e7751d?auto=format&fit=crop&w=800&q=80" alt="Air Conditioner and Fans">
+            <div class="product-info">
+                <h3>**空调与风扇**</h3>
+                <p>壁挂式空调 · 落地扇 · 吊扇 · 工业扇</p>
+                <a class="btn-whatsapp" href="https://wa.me/601110948581?text=我想询问空调与风扇">
+                    WhatsApp 询问
+                </a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1606813907291-646cb063a6b7?auto=format&fit=crop&w=800&q=80">
-            <div class="product-info">
-                <h3>**冷柜与冰箱**</h3>
-                <p>各式展示型冷柜 · 家用冰箱</p>
-                                <a class="btn-whatsapp" href="**chiller.html**">
-                    **查看详情**
-                </a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1556910629-688949826d9c?auto=format&fit=crop&w=800&q=80" alt="Miscellaneous Appliances">
+            <div class="product-info">
+                <h3>**其他电器**</h3>
+                <p>洗衣机 · 电视机 · 热水器 · 吸尘机</p>
+                <a class="btn-whatsapp" href="https://wa.me/601110948581?text=我想询问其他电器">
+                    WhatsApp 询问
+                </a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1598300056391-ddb6fc974c94?auto=format&fit=crop&w=800&q=80">
-            <div class="product-info">
-                <h3>空调</h3>
-                <p>快速制冷 · 省电 · 多马力选择</p>
-                <a class="btn-whatsapp" href="https://wa.me/60123456789?text=我要询问空调">
-                    WhatsApp 下单
-                </a>
-            </div>
-        </div>
-
-    </div>
+    </div>
 </div>
 
-<footer>
-    © 2025 Siong Cheong Trading | WhatsApp: 012-345 6789
-</footer>
+<div class="contact-bar">
+    如有任何疑问，请通过 WhatsApp 联系我们: <a href="https://wa.me/601110948581">601110948581</a>
+</div>
 
 </body>
 </html>
