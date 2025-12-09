@@ -76,11 +76,19 @@
 
         .product-card img {
             width: 100%;
-            height: 300px; /* <--- ***图片显示高度已更新为 300px*** */
-            object-fit: cover;
+            height: 300px; 
+            object-fit: cover; /* 默认：裁剪并覆盖，适用于大多数正方形图片 */
             background: #ddd;
             border-bottom: 1px solid #eee; /* 图片下方增加浅色分割线 */
         }
+
+        /* ***新增：针对 SC-170 图片的特定修正*** */
+        .product-card-sc170 img {
+            object-fit: contain; /* 更改为：完整显示图片，不裁剪 */
+            background-color: white; /* 填充因 contain 模式产生的白边 */
+        }
+        /* ***新增代码结束*** */
+
 
         .info {
             padding: 15px;
@@ -328,7 +336,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card product-card-sc170">
             <img src="SC-170.jpg" alt="SC-170 Chiller">
             <div class="info">
                 <h3>SC-170 (170L)</h3>
