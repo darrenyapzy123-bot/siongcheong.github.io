@@ -1,293 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Commercial Chillers & Display Fridges - Siong Cheong Trading</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commercial Chillers & Display Fridges - Siong Cheong Trading</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-            background: #f5f5f5;
-        }
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
 
-        header {
-            background: #2c3e50;
-            padding: 20px;
-            color: white;
-            text-align: center;
-            font-size: 22px;
-        }
+        header {
+            background: #2c3e50;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-        .container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: auto;
-        }
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
 
-        h2 {
-            text-align: center;
-            margin-top: 0;
-        }
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        
+        /* 增加标题下方的装饰线 (强调色) */
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px; /* 线的长度 */
+            height: 3px;
+            background: #3498db; /* 亮蓝色强调色 */
+            margin: 8px auto 0; /* 居中显示 */
+            border-radius: 2px;
+        }
 
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
+        .product-grid {
+            /* 更改为 Flexbox 布局以统一高度 */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
 
-        .product-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            
+            /* 确保卡片平均分配宽度并能等高 */
+            flex: 1 1 calc(33.333% - 14px); /* 默认三列布局 */
+            min-width: 250px;
+            display: flex;
+            flex-direction: column; /* 内容垂直堆叠 */
+            
+            /* 增加悬停过渡效果 */
+            transition: all 0.3s ease; 
+        }
+        
+        /* 添加悬停效果：卡片抬起 */
+        .product-card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+            transform: translateY(-5px); 
+        }
 
-        .product-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            background: #ddd;
-        }
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: #ddd;
+            border-bottom: 1px solid #eee; /* 图片下方增加浅色分割线 */
+        }
 
-        .info {
-            padding: 15px;
-        }
+        .info {
+            padding: 15px;
+            text-align: center;
+            flex-grow: 1; /* 占据卡片剩余空间 */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* 按钮和内容分隔 */
+        }
 
-        /* 移除了 .price 样式 */
+        .info h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
 
-        .btn {
-            display: block;
-            background: #25D366;
-            padding: 10px;
-            text-align: center;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 12px;
-        }
+        .info p {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            line-height: 1.4;
+            flex-grow: 1; /* 确保文字区域占据空间，帮助按钮对齐 */
+            display: block; /* 解决文本区域高度不齐 */
+            padding-bottom: 10px;
+        }
+        
+        /* WhatsApp 按钮样式 */
+        .btn {
+            display: block;
+            background: #25D366;
+            padding: 12px; /* 按钮略大 */
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 12px;
+            align-self: stretch; /* 确保按钮拉伸至卡片宽度 */
+            transition: background 0.2s;
+        }
 
-        .btn:hover {
-            background: #1EBE55;
-        }
+        .btn:hover {
+            background: #1EBE55;
+        }
 
-        .back {
-            margin-top: 30px;
-            text-align: center;
-        }
+        .back {
+            margin-top: 40px; /* 增加底部间距 */
+            text-align: center;
+        }
 
-        .back a {
-            text-decoration: none;
-            color: #2c3e50;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px 15px;
-            border: 2px solid #2c3e50;
-            border-radius: 5px;
-            transition: background 0.3s, color 0.3s;
-        }
+        .back a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 15px;
+            border: 2px solid #2c3e50;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
 
-        .back a:hover {
-            background: #2c3e50;
-            color: white;
-        }
-    </style>
+        .back a:hover {
+            background: #2c3e50;
+            color: white;
+        }
+        
+        /* 媒体查询：在小屏幕上显示两列 */
+        @media (max-width: 768px) {
+            .product-card {
+                flex: 1 1 calc(50% - 10px); 
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
-    Commercial Chiller and Display Fridge Models
+    Commercial Chiller and Display Fridge Models
 </header>
 
 <div class="container">
-    <h2>Our Range of Display Chillers</h2>
+    <h2>Our Range of Display Chillers</h2>
 
-    <div class="product-grid">
+    <div class="product-grid">
 
-                <div class="product-card">
-            <img src="Khind_KDS193.jpg" alt="Khind KDS193 Chiller">
-            <div class="info">
-                <h3>Khind KDS193 (193L)</h3>
-                <p>Power: 0.9 kWh/24h · Gross Weight: 55kgs · Box: 550×610×1770mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDS193">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="Khind_KDS193.jpg" alt="Khind KDS193 Chiller">
+            <div class="info">
+                <h3>Khind KDS193 (193L)</h3>
+                <p>Power: 0.9 kWh/24h · Gross Weight: 55kgs · Box: 550×610×1770mm</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDS193">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="Khind_DC228.jpg" alt="Khind DC228 Chiller">
-            <div class="info">
-                <h3>Khind DC228 (228L)</h3>
-                <p>R134a · Mechanical Temp Control · Key/Lock & LED Light · 530×590×1730mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind DC228">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="Khind_DC228.jpg" alt="Khind DC228 Chiller">
+            <div class="info">
+                <h3>Khind DC228 (228L)</h3>
+                <p>R134a · Mechanical Temp Control · Key/Lock & LED Light · 530×590×1730mm</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind DC228">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="Khind_KDS250.jpg" alt="Khind KDS250 Chiller">
-            <div class="info">
-                <h3>Khind KDS250 (250L)</h3>
-                <p>5 Years Compressor Warranty · 585×630×1756mm · 64.85kg</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDS250">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="Khind_KDS250.jpg" alt="Khind KDS250 Chiller">
+            <div class="info">
+                <h3>Khind KDS250 (250L)</h3>
+                <p><strong>5 Years Compressor Warranty</strong> · 585×630×1756mm · 64.85kg</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDS250">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="Khind_KDMC280.jpg" alt="Khind KDMC280 Chiller">
-            <div class="info">
-                <h3>Khind KDMC280 (270L)</h3>
-                <p>5 Years Compressor Warranty · 585×630×1756mm · Black Color</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDMC280">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="Khind_KDMC280.jpg" alt="Khind KDMC280 Chiller">
+            <div class="info">
+                <h3>Khind KDMC280 (270L)</h3>
+                <p><strong>5 Years Compressor Warranty</strong> · 585×630×1756mm · Black Color</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDMC280">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="Khind_KDS350.jpg" alt="Khind KDS350 Chiller">
-            <div class="info">
-                <h3>Khind KDS350 (350L)</h3>
-                <p>5 Years Compressor Warranty · 645×675×1916mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDS350">WhatsApp Inquiry</a>
-            </div>
-        </div
+        <div class="product-card">
+            <img src="Khind_KDS350.jpg" alt="Khind KDS350 Chiller">
+            <div class="info">
+                <h3>Khind KDS350 (350L)</h3>
+                <p><strong>5 Years Compressor Warranty</strong> · 645×675×1916mm</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDS350">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="Khind_KDS600.jpg" alt="Khind KDS600 Chiller">
-            <div class="info">
-                <h3>Khind KDS600 (600L)</h3>
-                <p>**Frost Free** (Fan cooling) Showcase Chiller</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDS600">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="Khind_KDS600.jpg" alt="Khind KDS600 Chiller">
+            <div class="info">
+                <h3>Khind KDS600 (600L)</h3>
+                <p><strong>Frost Free</strong> (Fan cooling) Showcase Chiller</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDS600">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="HSC-192FLB.jpg" alt="HSC-192FLB Chiller">
-            <div class="info">
-                <h3>HSC-192FLB (192L)</h3>
-                <p>1 Year General / 5 Years Compressor Warranty · 540×575×1440mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-192FLB">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="HSC-192FLB.jpg" alt="HSC-192FLB Chiller">
+            <div class="info">
+                <h3>HSC-192FLB (192L)</h3>
+                <p>1 Year General / <strong>5 Years Compressor Warranty</strong> · 540×575×1440mm</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-192FLB">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="HSC-191FLB.jpg" alt="HSC-191FLB Chiller">
-            <div class="info">
-                <h3>HSC-191FLB (192L)</h3>
-                <p>Display Showcase Model · Dimensions 540×545×1414mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-191FLB">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="HSC-191FLB.jpg" alt="HSC-191FLB Chiller">
+            <div class="info">
+                <h3>HSC-191FLB (192L)</h3>
+                <p>Display Showcase Model · Dimensions 540×545×1414mm</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-191FLB">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="HSC-271FLB.jpg" alt="HSC-271FLB Chiller">
-            <div class="info">
-                <h3>HSC-271FLB (251L)</h3>
-                <p>Display Chiller · Dimensions 540×545×1714mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-271FLB">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="HSC-271FLB.jpg" alt="HSC-271FLB Chiller">
+            <div class="info">
+                <h3>HSC-271FLB (251L)</h3>
+                <p>Display Chiller · Dimensions 540×545×1714mm</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-271FLB">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="HSC-242FLH.jpg" alt="HSC-242FLH Chiller">
-            <div class="info">
-                <h3>HSC-242FLH (242L)</h3>
-                <p>Includes 4 Shelves · 5 Years Compressor Warranty · Box: 581×657×1888mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-242FLH">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="HSC-242FLH.jpg" alt="HSC-242FLH Chiller">
+            <div class="info">
+                <h3>HSC-242FLH (242L)</h3>
+                <p>Includes 4 Shelves · <strong>5 Years Compressor Warranty</strong> · Box: 581×657×1888mm</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-242FLH">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="HSC-320FL.jpg" alt="HSC-320FL Chiller">
-            <div class="info">
-                <h3>HSC-320FL (320L)</h3>
-                <p>**FROST FREE** · Air Cooled System · 5 Years Compressor Warranty</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-320FL">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="HSC-320FL.jpg" alt="HSC-320FL Chiller">
+            <div class="info">
+                <h3>HSC-320FL (320L)</h3>
+                <p><strong>FROST FREE</strong> · Air Cooled System · <strong>5 Years Compressor Warranty</strong></p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-320FL">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="HSC-382FLH.jpg" alt="HSC-382FLH Chiller">
-            <div class="info">
-                <h3>HSC-382FLH (382L)</h3>
-                <p>Includes 5 Shelves · 5 Years Compressor Warranty · Box: 661×704×2195mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-382FLH">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="HSC-382FLH.jpg" alt="HSC-382FLH Chiller">
+            <div class="info">
+                <h3>HSC-382FLH (382L)</h3>
+                <p>Includes 5 Shelves · <strong>5 Years Compressor Warranty</strong> · Box: 661×704×2195mm</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-382FLH">WhatsApp Inquiry</a>
+            </div>
+        </div>
         
-                <div class="product-card">
-            <img src="Warehouse_583L.jpg" alt="Warehouse 583L Showcase Chiller">
-            <div class="info">
-                <h3>Warehouse Showcase (583L)</h3>
-                <p>Fan Cooling (**Frost Free**) · **Hot Air System** · W:100cm x D:59cm x H:197cm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Warehouse Showcase 583L">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="Warehouse_583L.jpg" alt="Warehouse 583L Showcase Chiller">
+            <div class="info">
+                <h3>Warehouse Showcase (583L)</h3>
+                <p>Fan Cooling (<strong>Frost Free</strong>) · <strong>Hot Air System</strong> · W:100cm x D:59cm x H:197cm</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Warehouse Showcase 583L">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="SC-1000.jpg" alt="SC-1000 Chiller">
-            <div class="info">
-                <h3>SC-1000 (1000L)</h3>
-                <p>Large Warehouse Display Showcase</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SC-1000">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="SC-1000.jpg" alt="SC-1000 Chiller">
+            <div class="info">
+                <h3>SC-1000 (1000L)</h3>
+                <p>Large Warehouse Display Showcase</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SC-1000">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="Nakama_1400L.jpg" alt="Nakama 3 Door Chiller">
-            <div class="info">
-                <h3>Nakama (3 Doors) (1400L)</h3>
-                <p>Extra-Large 3 Doors Chiller. (Dimensions 550×487×1527mm - Please Verify)</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Nakama 1400L 3-door chiller">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="Nakama_1400L.jpg" alt="Nakama 3 Door Chiller">
+            <div class="info">
+                <h3>Nakama (3 Doors) (1400L)</h3>
+                <p>Extra-Large 3 Doors Chiller. (Dimensions 550×487×1527mm - Please Verify)</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Nakama 1400L 3-door chiller">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="NSC198XY.jpg" alt="NSC198XY Chiller">
-            <div class="info">
-                <h3>NSC198XY (190L)</h3>
-                <p>Includes 3 Shelves · Suitable for small convenience stores</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about NSC198XY">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="NSC198XY.jpg" alt="NSC198XY Chiller">
+            <div class="info">
+                <h3>NSC198XY (190L)</h3>
+                <p>Includes 3 Shelves · Suitable for small convenience stores</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about NSC198XY">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="NSC228XY.jpg" alt="NSC228XY Chiller">
-            <div class="info">
-                <h3>NSC228XY (220L)</h3>
-                <p>Includes 3 Shelves · Approx. 5ft 8in Height</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about NSC228XY">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="NSC228XY.jpg" alt="NSC228XY Chiller">
+            <div class="info">
+                <h3>NSC228XY (220L)</h3>
+                <p>Includes 3 Shelves · Approx. 5ft 8in Height</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about NSC228XY">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="NSC258XY.jpg" alt="NSC258XY Chiller">
-            <div class="info">
-                <h3>NSC258XY (250L)</h3>
-                <p>**Frost Free** · 3 Shelves · Approx. 6ft 7in Height</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about NSC258XY">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="NSC258XY.jpg" alt="NSC258XY Chiller">
+            <div class="info">
+                <h3>NSC258XY (250L)</h3>
+                <p><strong>Frost Free</strong> · 3 Shelves · Approx. 6ft 7in Height</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about NSC258XY">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-                <div class="product-card">
-            <img src="SC-170.jpg" alt="SC-170 Chiller">
-            <div class="info">
-                <h3>SC-170 (170L)</h3>
-                <p>Compact Display Chiller · Includes 3 Shelves</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SC-170">WhatsApp Inquiry</a>
-            </div>
-        </div>
+        <div class="product-card">
+            <img src="SC-170.jpg" alt="SC-170 Chiller">
+            <div class="info">
+                <h3>SC-170 (170L)</h3>
+                <p>Compact Display Chiller · Includes 3 Shelves</p>
+                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SC-170">WhatsApp Inquiry</a>
+            </div>
+        </div>
 
-    </div>
+    </div>
 
-    <div class="back">
-        <a href="index.html">← Back to Home</a>
-    </div>
+    <div class="back">
+        <a href="index.html">← Back to Home</a>
+    </div>
 
 </div>
 
 </body>
 </html>
-
-
-
