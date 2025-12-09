@@ -28,7 +28,7 @@
             top: 50%; 
             right: 20px; 
             transform: translateY(-50%); 
-            width: 250px; /* 加大尺寸 */
+            width: 250px; 
             height: auto;
         }
         
@@ -248,7 +248,9 @@
         }
     </style>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css" integrity="sha512-Y3UKSzK4Sjch7/Lpehn3K+kKz9r5T8VDWwBqP2rIp1IqBu/L/YRzlQ8eJtX6I0HzTgeR23Fj0H9TFY25v5/GvA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css" 
+    integrity="sha512-78V/N1yM4XwB5rX/U5XW651h4n/fWq59h2L+t/6v4TzHh4t4f+jG/6U/o/D1QJ3/2x5g==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -496,7 +498,10 @@
 
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js" integrity="sha512-Y3UKSzK4Sjch7/Lpehn3K+kKz9r5T8VDWwBqP2rIp1IqBu/L/YRzlQ8eJtX6I0HzTgeR23Fj0H9TFY25v5/GvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js" 
+integrity="sha512-4G115xS8X9r9T78h9V3f4i/L3m3l7w7B99Y/8t21tC/0U/0o0l7Y99XQ29+K0l3t/V4i5i6m3o7o7o7m4w==" 
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
     // 激活 Lightbox
     new SimpleLightbox('.product-grid a.gallery-item', { 
@@ -507,20 +512,20 @@
     });
 
     // ***筛选器切换和筛选逻辑***
-    const toggleButton = document.getElementById('toggle-filter');
-    const filterContent = document.getElementById('filter-content');
-    const filter = document.getElementById('brand-filter');
+    const toggleButton = document.querySelector('#toggle-filter'); // 选择按钮
+    const filterContent = document.querySelector('#filter-content'); // 选择容器
+    const filter = document.querySelector('#brand-filter'); // 选择下拉菜单
     const cards = document.querySelectorAll('.product-card');
 
     // 1. 切换按钮的点击事件 (显示/隐藏筛选器)
-    if (toggleButton) {
+    if (toggleButton && filterContent) {
         toggleButton.addEventListener('click', function() {
             filterContent.classList.toggle('active'); 
         });
     }
 
     // 2. 筛选器下拉菜单的更改事件
-    if (filter) {
+    if (filter && filterContent) {
         filter.addEventListener('change', function() {
             const selectedBrand = this.value;
 
