@@ -23,13 +23,13 @@
             position: relative; 
         }
 
-        /* Logo 定位样式 */
+        /* Logo 定位样式 - 尺寸已加大 */
         .header-logo {
             position: absolute; 
             top: 50%; 
             right: 20px; 
             transform: translateY(-50%);
-            width: 60px; /* 设置 Logo 宽度 */
+            width: 90px; /* 加大尺寸 */
             height: auto;
         }
 
@@ -60,7 +60,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            justify-content: center; /* 确保卡片居中 */
+            justify-content: center;
         }
 
         .product-card {
@@ -71,7 +71,7 @@
             
             flex: 1 1 calc(33.333% - 14px); 
             min-width: 250px;
-            max-width: 380px; /* 限制卡片最大宽度 */
+            max-width: 380px; 
             display: flex;
             flex-direction: column;
             
@@ -85,7 +85,7 @@
 
         .product-card img {
             width: 100%;
-            height: 250px; /* 首页图片高度略小 */
+            height: 250px; 
             object-fit: cover; 
             background: #ddd;
             border-bottom: 1px solid #eee; 
@@ -156,34 +156,33 @@
     <div class="product-grid">
 
         <div class="product-card">
-            <img src="chiller_category_cover.jpg" alt="Commercial Chillers">
+            <img src="chiller_category_cover.jpg" alt="展示型冷柜与家用冰箱">
             <div class="product-info">
-                <h3>商用展示型冷柜</h3>
-                <p>各种尺寸的直立式冷藏展示柜、饮料冷柜和商业冰柜，满足您的零售需求。</p>
+                <h3>冷柜与冰箱</h3>
+                <p>各式展示型冷柜 · 商用冰柜 · 家用冰箱</p>
                 <a class="btn-chiller" href="chiller.html">查看详情</a>
             </div>
         </div>
 
         <div class="product-card">
-            <img src="freezer_category_cover.jpg" alt="Commercial Freezers">
+            <img src="tv_category_cover.jpg" alt="电视机">
             <div class="product-info">
-                <h3>商用冰柜和冷冻柜</h3>
-                <p>卧式冷冻柜、岛式展示冷柜及其他深度冷冻解决方案，适用于批量储存。</p>
-                <a class="btn-chiller" href="freezer.html">查看详情</a>
+                <h3>电视机</h3>
+                <p>高清智能电视 · 各种尺寸和型号</p>
+                <a class="btn-chiller" href="tv.html">查看详情</a>
             </div>
         </div>
 
         <div class="product-card">
-            <img src="other_category_cover.jpg" alt="Other Kitchen Equipment">
+            <img src="other_category_cover.jpg" alt="其他电器">
             <div class="product-info">
-                <h3>其他厨房设备</h3>
-                <p>烘焙设备、食品加工机和餐饮业所需的其他专业设备。</p>
+                <h3>其他电器</h3>
+                <p>小家电 · 厨房设备 · 其它家用电器</p>
                 <a class="btn-chiller" href="other.html">查看详情</a>
             </div>
         </div>
 
     </div>
-
 </div>
 
 </body>
