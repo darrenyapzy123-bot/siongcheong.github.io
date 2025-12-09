@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siong Cheong Trading - Home Appliances</title>
+    <title>展示型冰箱 (Chiller) - Siong Cheong Trading</title>
 
     <style>
         body {
@@ -14,71 +14,129 @@
 
         header {
             background: #2c3e50;
-            padding: 25px;
+            padding: 20px;
             color: white;
             text-align: center;
-            font-size: 28px;
+            font-size: 22px;
             font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* 关键：为 Logo 提供定位上下文 */
+            position: relative; 
+        }
+
+        /* Logo 定位样式 */
+        .header-logo {
+            position: absolute; 
+            top: 50%; 
+            right: 20px; 
+            transform: translateY(-50%);
+            width: 60px; /* 设置 Logo 宽度 */
+            height: auto;
         }
 
         .container {
-            padding: 40px 20px;
+            padding: 20px;
             max-width: 1200px;
             margin: auto;
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 40px;
+            margin-top: 0;
+            margin-bottom: 25px;
             color: #333;
-            font-size: 24px;
         }
 
-        /* 强调标题 */
-        h2 strong {
-            color: #3498db; /* 亮蓝色 */
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #3498db;
+            margin: 8px auto 0;
+            border-radius: 2px;
         }
-        
-        /* 网格布局 */
-        .category-grid {
+
+        .product-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            justify-content: center;
+            justify-content: center; /* 确保卡片居中 */
         }
 
-        /* 类别卡片样式 */
-        .category-card {
+        .product-card {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            padding: 30px 20px;
-            flex: 1 1 calc(25% - 20px); /* 默认四列布局 */
-            min-width: 200px; /* 最小宽度 */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-decoration: none; /* 移除链接下划线 */
-            color: #2c3e50;
-            position: relative;
+            border-radius: 10px;
             overflow: hidden;
-        }
-        
-        /* 悬停效果 */
-        .category-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            
+            flex: 1 1 calc(33.333% - 14px); 
+            min-width: 250px;
+            max-width: 380px; /* 限制卡片最大宽度 */
+            display: flex;
+            flex-direction: column;
+            
+            transition: all 0.3s ease; 
         }
 
-        /* 类别名称 */
-        .category-card h3 {
-            margin: 10px 0 0;
-            font-size: 1.2em;
+        .product-card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+            transform: translateY(-5px); 
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 250px; /* 首页图片高度略小 */
+            object-fit: cover; 
+            background: #ddd;
+            border-bottom: 1px solid #eee; 
+        }
+
+        .product-info {
+            padding: 15px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-info h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        .product-info p {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            line-height: 1.4;
+            flex-grow: 1;
+            display: block;
+            padding-bottom: 10px;
+        }
+
+        /* 详情按钮样式 */
+        .btn-chiller {
+            display: block;
+            background: #3498db;
+            padding: 12px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 12px;
+            align-self: stretch; 
+            transition: background 0.2s;
+        }
+
+        .btn-chiller:hover {
+            background: #2980b9;
         }
 
         /* 媒体查询：在小屏幕上显示两列 */
         @media (max-width: 768px) {
-            .category-card {
+            .product-card {
                 flex: 1 1 calc(50% - 10px); 
             }
         }
@@ -89,47 +147,43 @@
 
 <header>
     Siong Cheong Trading
+    <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
 </header>
 
 <div class="container">
-    <h2>Explore Our **Product Categories**</h2>
+    <h2>我们的产品系列</h2>
 
-    <div class="category-grid">
-        
-        <a href="#" class="category-card">
-            <h3>Refrigerator</h3>
-        </a>
-        
-        <a href="chiller.html" class="category-card">
-            <h3>Chiller</h3>
-        </a>
+    <div class="product-grid">
 
-        <a href="#" class="category-card">
-            <h3>Air Conditioner</h3>
-        </a>
+        <div class="product-card">
+            <img src="chiller_category_cover.jpg" alt="Commercial Chillers">
+            <div class="product-info">
+                <h3>商用展示型冷柜</h3>
+                <p>各种尺寸的直立式冷藏展示柜、饮料冷柜和商业冰柜，满足您的零售需求。</p>
+                <a class="btn-chiller" href="chiller.html">查看详情</a>
+            </div>
+        </div>
 
-        <a href="#" class="category-card">
-            <h3>TV</h3>
-        </a>
+        <div class="product-card">
+            <img src="freezer_category_cover.jpg" alt="Commercial Freezers">
+            <div class="product-info">
+                <h3>商用冰柜和冷冻柜</h3>
+                <p>卧式冷冻柜、岛式展示冷柜及其他深度冷冻解决方案，适用于批量储存。</p>
+                <a class="btn-chiller" href="freezer.html">查看详情</a>
+            </div>
+        </div>
 
-        <a href="#" class="category-card">
-            <h3>Washer</h3>
-        </a>
-
-        <a href="#" class="category-card">
-            <h3>Dryer</h3>
-        </a>
-
-        <a href="#" class="category-card">
-            <h3>Kitchen Appliances</h3>
-        </a>
-
-        <a href="#" class="category-card">
-            <h3>Small Appliances</h3>
-            <p style="font-size:0.8em; color: #7f8c8d; margin-top: 5px;">(e.g., Vacuum, Water Heater)</p>
-        </a>
+        <div class="product-card">
+            <img src="other_category_cover.jpg" alt="Other Kitchen Equipment">
+            <div class="product-info">
+                <h3>其他厨房设备</h3>
+                <p>烘焙设备、食品加工机和餐饮业所需的其他专业设备。</p>
+                <a class="btn-chiller" href="other.html">查看详情</a>
+            </div>
+        </div>
 
     </div>
+
 </div>
 
 </body>
