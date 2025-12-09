@@ -19,17 +19,16 @@
             text-align: center;
             font-size: 24px;
             font-weight: bold;
-            /* 关键：为 Logo 提供定位上下文 */
             position: relative; 
         }
 
-        /* Logo 定位样式 - 尺寸已增大至 250px */
+        /* Logo 尺寸 - 110px */
         .header-logo {
             position: absolute; 
             top: 50%; 
             right: 20px; 
             transform: translateY(-50%); 
-            width: 250px; /* 增大 Logo 尺寸 */
+            width: 110px; /* 加大尺寸 */
             height: auto;
         }
         
@@ -55,6 +54,61 @@
             margin: 8px auto 0; 
             border-radius: 2px;
         }
+        
+        /* --- 筛选器按钮和容器样式 --- */
+        .filter-toggle-button {
+            display: block;
+            width: 150px;
+            padding: 10px;
+            margin: 10px 0 20px 0;
+            background: #5a7d9a; 
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .filter-toggle-button:hover {
+            background: #47657a;
+        }
+
+        .filter-controls {
+            /* 默认隐藏筛选器内容 */
+            display: none; 
+            padding: 15px;
+            margin-bottom: 25px;
+            background: #eef4f7; 
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* 筛选器被打开时，显示内容 */
+        .filter-controls.active {
+            display: block;
+        }
+
+        .filter-controls label {
+            display: block; 
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .filter-controls select {
+            padding: 10px 12px;
+            width: 100%; 
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: white;
+        }
+        /* --- 筛选器样式结束 --- */
 
         .product-grid {
             display: flex;
@@ -80,6 +134,11 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
             transform: translateY(-5px); 
         }
+        
+        /* 筛选隐藏的卡片 */
+        .product-card.hidden {
+            display: none;
+        }
 
         .product-card img {
             width: 100%;
@@ -96,13 +155,13 @@
             background-color: white; 
         }
         
-        /* 强制 Lightbox 关闭按钮可见并定位 (修复“X”不显示的问题) */
+        /* 强制 Lightbox 关闭按钮可见并定位 */
         .sl-close {
             display: block !important;
             position: fixed !important;
             top: 20px !important;
             right: 20px !important;
-            z-index: 999999 !important; /* 确保它在最上层 */
+            z-index: 999999 !important; 
             color: #fff !important; 
             font-size: 40px !important; 
             opacity: 1 !important;
@@ -203,9 +262,24 @@
 
     <h2>Our Range of Display Chillers</h2>
 
+    <button id="toggle-filter" class="filter-toggle-button">
+        筛选品牌 (Filter)
+    </button>
+    <div class="filter-controls" id="filter-content">
+        <label for="brand-filter">选择品牌:</label>
+        <select id="brand-filter">
+            <option value="all">所有品牌</option>
+            <option value="khind">Khind</option>
+            <option value="hsc">HSC</option>
+            <option value="warehouse">Warehouse</option>
+            <option value="nakama">Nakama</option>
+            <option value="nsc">NSC</option>
+            <option value="other">其他 / SC</option>
+        </select>
+    </div>
     <div class="product-grid">
 
-        <div class="product-card">
+        <div class="product-card" data-brand="khind">
             <a class="gallery-item" href="Khind_KDS193.jpg">
                 <img src="Khind_KDS193.jpg" alt="Khind KDS193 Chiller">
             </a>
@@ -216,7 +290,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="khind">
             <a class="gallery-item" href="Khind_DC228.jpg">
                 <img src="Khind_DC228.jpg" alt="Khind DC228 Chiller">
             </a>
@@ -227,7 +301,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="khind">
             <a class="gallery-item" href="Khind_KDS250.jpg">
                 <img src="Khind_KDS250.jpg" alt="Khind KDS250 Chiller">
             </a>
@@ -238,7 +312,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="khind">
             <a class="gallery-item" href="Khind_KDMC280.jpg">
                 <img src="Khind_KDMC280.jpg" alt="Khind KDMC280 Chiller">
             </a>
@@ -249,7 +323,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="khind">
             <a class="gallery-item" href="Khind_KDS350.jpg">
                 <img src="Khind_KDS350.jpg" alt="Khind KDS350 Chiller">
             </a>
@@ -260,7 +334,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="khind">
             <a class="gallery-item" href="Khind_KDS600.jpg">
                 <img src="Khind_KDS600.jpg" alt="Khind KDS600 Chiller">
             </a>
@@ -271,7 +345,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="hsc">
             <a class="gallery-item" href="HSC-192FLB.jpg">
                 <img src="HSC-192FLB.jpg" alt="HSC-192FLB Chiller">
             </a>
@@ -282,7 +356,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="hsc">
             <a class="gallery-item" href="HSC-191FLB.jpg">
                 <img src="HSC-191FLB.jpg" alt="HSC-191FLB Chiller">
             </a>
@@ -293,7 +367,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="hsc">
             <a class="gallery-item" href="HSC-271FLB.jpg">
                 <img src="HSC-271FLB.jpg" alt="HSC-271FLB Chiller">
             </a>
@@ -304,7 +378,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="hsc">
             <a class="gallery-item" href="HSC-242FLH.jpg">
                 <img src="HSC-242FLH.jpg" alt="HSC-242FLH Chiller">
             </a>
@@ -315,7 +389,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="hsc">
             <a class="gallery-item" href="HSC-320FL.jpg">
                 <img src="HSC-320FL.jpg" alt="HSC-320FL Chiller">
             </a>
@@ -326,7 +400,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="hsc">
             <a class="gallery-item" href="HSC-382FLH.jpg">
                 <img src="HSC-382FLH.jpg" alt="HSC-382FLH Chiller">
             </a>
@@ -336,8 +410,8 @@
                 <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-382FLH">WhatsApp Inquiry</a>
             </div>
         </div>
-        
-        <div class="product-card">
+
+        <div class="product-card" data-brand="warehouse">
             <a class="gallery-item" href="Warehouse_583L.jpg">
                 <img src="Warehouse_583L.jpg" alt="Warehouse 583L Showcase Chiller">
             </a>
@@ -348,7 +422,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="other">
             <a class="gallery-item" href="SC-1000.jpg">
                 <img src="SC-1000.jpg" alt="SC-1000 Chiller">
             </a>
@@ -359,7 +433,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="nakama">
             <a class="gallery-item" href="Nakama_1400L.jpg">
                 <img src="Nakama_1400L.jpg" alt="Nakama 3 Door Chiller">
             </a>
@@ -370,7 +444,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="nsc">
             <a class="gallery-item" href="NSC198XY.jpg">
                 <img src="NSC198XY.jpg" alt="NSC198XY Chiller">
             </a>
@@ -381,7 +455,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="nsc">
             <a class="gallery-item" href="NSC228XY.jpg">
                 <img src="NSC228XY.jpg" alt="NSC228XY Chiller">
             </a>
@@ -392,7 +466,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="nsc">
             <a class="gallery-item" href="NSC258XY.jpg">
                 <img src="NSC258XY.jpg" alt="NSC258XY Chiller">
             </a>
@@ -403,7 +477,7 @@
             </div>
         </div>
 
-        <div class="product-card product-card-sc170">
+        <div class="product-card product-card-sc170" data-brand="other">
             <a class="gallery-item" href="SC-170.jpg">
                 <img src="SC-170.jpg" alt="SC-170 Chiller">
             </a>
@@ -424,16 +498,44 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js" integrity="sha512-Y3UKSzK4Sjch7/Lpehn3K+kKz9r5T8VDWwBqP2rIp1IqBu/L/YRzlQ8eJtX6I0HzTgeR23Fj0H9TFY25v5/GvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    // 激活 Lightbox，选择所有 class="gallery-item" 的链接
+    // 激活 Lightbox
     new SimpleLightbox('.product-grid a.gallery-item', { 
         captions: true, 
         captionDelay: 100,
         closeText: 'X',
         navText: ['←','→'] 
     });
+
+    // ***筛选器切换和筛选逻辑***
+    const toggleButton = document.getElementById('toggle-filter');
+    const filterContent = document.getElementById('filter-content');
+    const filter = document.getElementById('brand-filter');
+    const cards = document.querySelectorAll('.product-card');
+
+    // 1. 切换按钮的点击事件 (显示/隐藏筛选器)
+    toggleButton.addEventListener('click', function() {
+        filterContent.classList.toggle('active'); 
+    });
+
+    // 2. 筛选器下拉菜单的更改事件
+    filter.addEventListener('change', function() {
+        const selectedBrand = this.value;
+
+        // 筛选后关闭筛选器内容，保持页面简洁
+        filterContent.classList.remove('active'); 
+
+        cards.forEach(card => {
+            const cardBrand = card.getAttribute('data-brand');
+            
+            if (selectedBrand === 'all' || selectedBrand === cardBrand) {
+                card.classList.remove('hidden'); // 显示匹配的卡片
+            } else {
+                card.classList.add('hidden'); // 隐藏不匹配的卡片
+            }
+        });
+    });
+    // ***筛选器逻辑结束***
 </script>
 
 </body>
 </html>
-
-
