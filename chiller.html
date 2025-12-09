@@ -19,21 +19,20 @@
             text-align: center;
             font-size: 24px;
             font-weight: bold;
-            /* ***新增：为 Logo 提供定位上下文*** */
+            /* 关键：为 Logo 提供定位上下文 */
             position: relative; 
         }
 
-        /* ***新增：Logo 定位样式*** */
+        /* Logo 定位样式 - 尺寸已加大 */
         .header-logo {
-            position: absolute; /* 相对于父元素 header 定位 */
-            top: 50%; /* 垂直居中于 header */
-            right: 20px; /* 距离右侧 20px */
-            transform: translateY(-50%); /* 向上移动自身高度的一半，实现垂直精确居中 */
-            width: 60px; /* 设置 Logo 宽度 */
-            height: auto; /* 保持图片比例 */
+            position: absolute; 
+            top: 50%; 
+            right: 20px; 
+            transform: translateY(-50%); 
+            width: 90px; /* 加大尺寸 */
+            height: auto;
         }
-        /* ***Logo 定位样式结束*** */
-
+        
         .container {
             padding: 20px;
             max-width: 1200px;
@@ -47,19 +46,17 @@
             color: #333;
         }
         
-        /* 增加标题下方的装饰线 (强调色) */
         h2::after {
             content: '';
             display: block;
-            width: 60px; /* 线的长度 */
+            width: 60px; 
             height: 3px;
-            background: #3498db; /* 亮蓝色强调色 */
-            margin: 8px auto 0; /* 居中显示 */
+            background: #3498db; 
+            margin: 8px auto 0; 
             border-radius: 2px;
         }
 
         .product-grid {
-            /* 更改为 Flexbox 布局以统一高度 */
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
@@ -71,17 +68,14 @@
             overflow: hidden;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             
-            /* 确保卡片平均分配宽度并能等高 */
-            flex: 1 1 calc(33.333% - 14px); /* 默认三列布局 */
+            flex: 1 1 calc(33.333% - 14px); 
             min-width: 250px;
             display: flex;
-            flex-direction: column; /* 内容垂直堆叠 */
+            flex-direction: column; 
             
-            /* 增加悬停过渡效果 */
             transition: all 0.3s ease; 
         }
         
-        /* 添加悬停效果：卡片抬起 */
         .product-card:hover {
             box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
             transform: translateY(-5px); 
@@ -90,46 +84,46 @@
         .product-card img {
             width: 100%;
             height: 300px; 
-            object-fit: cover; /* 默认：裁剪并覆盖，适用于大多数正方形图片 */
+            object-fit: cover; 
             background: #ddd;
-            border-bottom: 1px solid #eee; /* 图片下方增加浅色分割线 */
-            cursor: pointer; /* 鼠标指针变为手型，提示可点击 */
+            border-bottom: 1px solid #eee; 
+            cursor: pointer; 
         }
 
         /* 针对 SC-170 图片的特定修正 */
         .product-card-sc170 img {
-            object-fit: contain; /* 更改为：完整显示图片，不裁剪 */
-            background-color: white; /* 填充因 contain 模式产生的白边 */
+            object-fit: contain; 
+            background-color: white; 
         }
         
-        /* ***强制 Lightbox 关闭按钮可见并定位 (防止样式冲突)*** */
+        /* 强制 Lightbox 关闭按钮可见并定位 (修复“X”不显示的问题) */
         .sl-close {
             display: block !important;
             position: fixed !important;
             top: 20px !important;
             right: 20px !important;
-            z-index: 99999 !important; /* 确保它在最上层 */
-            color: white !important;
-            font-size: 30px !important;
+            z-index: 999999 !important; /* 确保它在最上层 */
+            color: #fff !important; 
+            font-size: 40px !important; /* 加大字体 */
             opacity: 1 !important;
-            background: rgba(0, 0, 0, 0.5) !important; /* 增加背景，使其更明显 */
+            background: rgba(0, 0, 0, 0.6) !important; /* 略微加深背景 */
             border-radius: 50% !important;
-            width: 40px !important;
-            height: 40px !important;
-            line-height: 40px !important;
+            width: 50px !important; /* 加大按钮点击区 */
+            height: 50px !important;
+            line-height: 50px !important;
             text-align: center !important;
             cursor: pointer;
+            text-shadow: 0 0 5px #000; /* 增加文字阴影，保证可见性 */
         }
-        /* ***Lightbox 样式结束*** */
 
 
         .info {
             padding: 15px;
             text-align: center;
-            flex-grow: 1; /* 占据卡片剩余空间 */
+            flex-grow: 1; 
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* 按钮和内容分隔 */
+            justify-content: space-between; 
         }
 
         .info h3 {
@@ -142,8 +136,8 @@
             font-size: 0.9em;
             color: #7f8c8d;
             line-height: 1.4;
-            flex-grow: 1; /* 确保文字区域占据空间，帮助按钮对齐 */
-            display: block; /* 解决文本区域高度不齐 */
+            flex-grow: 1; 
+            display: block; 
             padding-bottom: 10px;
         }
         
@@ -151,14 +145,14 @@
         .btn {
             display: block;
             background: #25D366;
-            padding: 12px; /* 按钮略大 */
+            padding: 12px; 
             text-align: center;
             color: white;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
             margin-top: 12px;
-            align-self: stretch; /* 确保按钮拉伸至卡片宽度 */
+            align-self: stretch; 
             transition: background 0.2s;
         }
 
@@ -167,7 +161,7 @@
         }
 
         .back {
-            margin-top: 40px; /* 增加底部间距 */
+            margin-top: 40px; 
             text-align: center;
         }
 
@@ -206,7 +200,8 @@
 </header>
 
 <div class="container">
-<h2>Our Range of Display Chillers</h2>
+
+    <h2>Our Range of Display Chillers</h2>
 
     <div class="product-grid">
 
@@ -427,7 +422,7 @@
 
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js" integrity="sha512-Xh4FhA4j/Xg+n+X8P5Z2Hh+i8c0r0vJ2yJ7g+tI4O8v6gYg5q6z0e/I7f+d6W0X1j+s/3R/q1s/g2w/j2o/w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js" integrity="sha512-Y3UKSzK4Sjch7/Lpehn3K+kKz9r5T8VDWwBqP2rIp1IqBu/L/YRzlQ8eJtX6I0HzTgeR23Fj0H9TFY25v5/GvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     // 激活 Lightbox，选择所有 class="gallery-item" 的链接
     new SimpleLightbox('.product-grid a.gallery-item', { 
