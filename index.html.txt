@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siong Cheong Trading</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        header {
+            background: #2c3e50;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .banner {
+            background: url('https://images.unsplash.com/photo-1586201375754-1425ad4a3283?auto=format&fit=crop&w=1600&q=80') center/cover;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            text-shadow: 2px 2px 6px black;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-info h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        .product-info p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .btn-whatsapp {
+            display: block;
+            background: #25D366;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        footer {
+            background: #2c3e50;
+            text-align: center;
+            color: white;
+            padding: 15px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    Siong Cheong Trading
+</header>
+
+<div class="banner">
+    您值得信赖的电器专家
+</div>
+
+<div class="container">
+    <h2>产品目录</h2>
+
+    <div class="product-grid">
+
+        <!-- 风扇 -->
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80">
+            <div class="product-info">
+                <h3>风扇</h3>
+                <p>高风量 · 静音 · 耐用</p>
+                <a class="btn-whatsapp" href="https://wa.me/601110948581?text=我要询问风扇">
+                    WhatsApp 下单
+                </a>
+            </div>
+        </div>
+
+        <!-- 电视机 -->
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=800&q=80">
+            <div class="product-info">
+                <h3>电视机</h3>
+                <p>高清画质 · 多尺寸型号</p>
+                <a class="btn-whatsapp" href="https://wa.me/601110948581?text=我要询问电视机">
+                    WhatsApp 下单
+                </a>
+            </div>
+        </div>
+
+        <!-- 洗衣机 -->
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1581579188871-45ea61f2a0c8?auto=format&fit=crop&w=800&q=80">
+            <div class="product-info">
+                <h3>洗衣机</h3>
+                <p>节能省电 · 强劲洗涤</p>
+                <a class="btn-whatsapp" href="https://wa.me/601110948581?text=我要询问洗衣机">
+                    WhatsApp 下单
+                </a>
+            </div>
+        </div>
+
+        <!-- 冰箱 -->
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1606813907291-646cb063a6b7?auto=format&fit=crop&w=800&q=80">
+            <div class="product-info">
+                <h3>冰箱</h3>
+                <p>大容量 · 省电设计</p>
+                <a class="btn-whatsapp" href="https://wa.me/601110948581?text=我要询问冰箱">
+                    WhatsApp 下单
+                </a>
+            </div>
+        </div>
+
+        <!-- 空调 -->
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1598300056391-ddb6fc974c94?auto=format&fit=crop&w=800&q=80">
+            <div class="product-info">
+                <h3>空调</h3>
+                <p>快速制冷 · 省电 · 多马力选择</p>
+                <a class="btn-whatsapp" href="https://wa.me/601110948581?text=我要询问空调">
+                    WhatsApp 下单
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    © 2025 Siong Cheong Trading | WhatsApp: 012-345 6789
+</footer>
+
+</body>
+</html>
