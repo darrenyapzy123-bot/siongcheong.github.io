@@ -272,11 +272,9 @@
         <select id="brand-filter">
             <option value="all">所有品牌</option>
             <option value="khind">Khind</option>
-            <option value="hsc">HSC</option>
-            <option value="warehouse">Warehouse</option>
+            <option value="hsc">Hisense</option> <option value="warehouse">Warehouse</option>
             <option value="nakama">Nakama</option>
-            <option value="nsc">NSC</option>
-            <option value="other">其他 / SC</option>
+            <option value="nsc">Narutron</option> <option value="other">其他 / SC</option>
         </select>
     </div>
     <div class="product-grid">
@@ -534,6 +532,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             cards.forEach(card => {
                 const cardBrand = card.getAttribute('data-brand');
                 
+                // 注意：筛选器使用 value 属性 ("hsc", "nsc")，因此不需要修改 JS 逻辑
                 if (selectedBrand === 'all' || selectedBrand === cardBrand) {
                     card.classList.remove('hidden'); // 显示匹配的卡片
                 } else {
