@@ -88,6 +88,27 @@
             object-fit: contain; /* 更改为：完整显示图片，不裁剪 */
             background-color: white; /* 填充因 contain 模式产生的白边 */
         }
+        
+        /* ***新增：强制 Lightbox 关闭按钮可见并定位*** */
+        .sl-close {
+            display: block !important;
+            position: fixed !important;
+            top: 20px !important;
+            right: 20px !important;
+            z-index: 99999 !important; /* 确保它在最上层 */
+            color: white !important;
+            font-size: 30px !important;
+            opacity: 1 !important;
+            background: rgba(0, 0, 0, 0.5) !important; /* 增加背景，使其更明显 */
+            border-radius: 50% !important;
+            width: 40px !important;
+            height: 40px !important;
+            line-height: 40px !important;
+            text-align: center !important;
+            cursor: pointer;
+        }
+        /* ***新增代码结束*** */
+
 
         .info {
             padding: 15px;
@@ -162,7 +183,7 @@
     </style>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css" integrity="sha512-Y3UKSzK4Sjch7/Lpehn3K+kKz9r5T8VDWwBqP2rIp1IqBu/L/YRzlQ8eJtX6I0HzTgeR23Fj0H9TFY25v5/GvA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    </head>
+</head>
 
 <body>
 
@@ -402,5 +423,6 @@
         navText: ['←','→'] 
     });
 </script>
+
 </body>
 </html>
