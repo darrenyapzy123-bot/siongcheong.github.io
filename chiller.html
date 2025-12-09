@@ -19,7 +19,20 @@
             text-align: center;
             font-size: 24px;
             font-weight: bold;
+            /* ***新增：为 Logo 提供定位上下文*** */
+            position: relative; 
         }
+
+        /* ***新增：Logo 定位样式*** */
+        .header-logo {
+            position: absolute; /* 相对于父元素 header 定位 */
+            top: 50%; /* 垂直居中于 header */
+            right: 20px; /* 距离右侧 20px */
+            transform: translateY(-50%); /* 向上移动自身高度的一半，实现垂直精确居中 */
+            width: 60px; /* 设置 Logo 宽度 */
+            height: auto; /* 保持图片比例 */
+        }
+        /* ***Logo 定位样式结束*** */
 
         .container {
             padding: 20px;
@@ -89,7 +102,7 @@
             background-color: white; /* 填充因 contain 模式产生的白边 */
         }
         
-        /* ***新增：强制 Lightbox 关闭按钮可见并定位*** */
+        /* ***强制 Lightbox 关闭按钮可见并定位 (防止样式冲突)*** */
         .sl-close {
             display: block !important;
             position: fixed !important;
@@ -107,7 +120,7 @@
             text-align: center !important;
             cursor: pointer;
         }
-        /* ***新增代码结束*** */
+        /* ***Lightbox 样式结束*** */
 
 
         .info {
@@ -189,10 +202,11 @@
 
 <header>
     Commercial Chiller and Display Fridge Models
+    <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
 </header>
 
 <div class="container">
-    <h2>Our Range of Display Chillers</h2>
+<h2>Our Range of Display Chillers</h2>
 
     <div class="product-grid">
 
