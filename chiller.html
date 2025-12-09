@@ -80,15 +80,14 @@
             object-fit: cover; /* 默认：裁剪并覆盖，适用于大多数正方形图片 */
             background: #ddd;
             border-bottom: 1px solid #eee; /* 图片下方增加浅色分割线 */
+            cursor: pointer; /* 鼠标指针变为手型，提示可点击 */
         }
 
-        /* ***新增：针对 SC-170 图片的特定修正*** */
+        /* 针对 SC-170 图片的特定修正 */
         .product-card-sc170 img {
             object-fit: contain; /* 更改为：完整显示图片，不裁剪 */
             background-color: white; /* 填充因 contain 模式产生的白边 */
         }
-        /* ***新增代码结束*** */
-
 
         .info {
             padding: 15px;
@@ -161,7 +160,9 @@
             }
         }
     </style>
-</head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css" integrity="sha512-Y3UKSzK4Sjch7/Lpehn3K+kKz9r5T8VDWwBqP2rIp1IqBu/L/YRzlQ8eJtX6I0HzTgeR23Fj0H9TFY25v5/GvA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
 
 <body>
 
@@ -175,7 +176,9 @@
     <div class="product-grid">
 
         <div class="product-card">
-            <img src="Khind_KDS193.jpg" alt="Khind KDS193 Chiller">
+            <a class="gallery-item" href="Khind_KDS193.jpg">
+                <img src="Khind_KDS193.jpg" alt="Khind KDS193 Chiller">
+            </a>
             <div class="info">
                 <h3>Khind KDS193 (193L)</h3>
                 <p>Power: 0.9 kWh/24h · Gross Weight: 55kgs · Box: 550×610×1770mm</p>
@@ -184,7 +187,9 @@
         </div>
 
         <div class="product-card">
-            <img src="Khind_DC228.jpg" alt="Khind DC228 Chiller">
+            <a class="gallery-item" href="Khind_DC228.jpg">
+                <img src="Khind_DC228.jpg" alt="Khind DC228 Chiller">
+            </a>
             <div class="info">
                 <h3>Khind DC228 (228L)</h3>
                 <p>R134a · Mechanical Temp Control · Key/Lock & LED Light · 530×590×1730mm</p>
@@ -193,7 +198,9 @@
         </div>
 
         <div class="product-card">
-            <img src="Khind_KDS250.jpg" alt="Khind KDS250 Chiller">
+            <a class="gallery-item" href="Khind_KDS250.jpg">
+                <img src="Khind_KDS250.jpg" alt="Khind KDS250 Chiller">
+            </a>
             <div class="info">
                 <h3>Khind KDS250 (250L)</h3>
                 <p><strong>5 Years Compressor Warranty</strong> · 585×630×1756mm · 64.85kg</p>
@@ -202,7 +209,9 @@
         </div>
 
         <div class="product-card">
-            <img src="Khind_KDMC280.jpg" alt="Khind KDMC280 Chiller">
+            <a class="gallery-item" href="Khind_KDMC280.jpg">
+                <img src="Khind_KDMC280.jpg" alt="Khind KDMC280 Chiller">
+            </a>
             <div class="info">
                 <h3>Khind KDMC280 (270L)</h3>
                 <p><strong>5 Years Compressor Warranty</strong> · 585×630×1756mm · Black Color</p>
@@ -211,7 +220,9 @@
         </div>
 
         <div class="product-card">
-            <img src="Khind_KDS350.jpg" alt="Khind KDS350 Chiller">
+            <a class="gallery-item" href="Khind_KDS350.jpg">
+                <img src="Khind_KDS350.jpg" alt="Khind KDS350 Chiller">
+            </a>
             <div class="info">
                 <h3>Khind KDS350 (350L)</h3>
                 <p><strong>5 Years Compressor Warranty</strong> · 645×675×1916mm</p>
@@ -220,7 +231,9 @@
         </div>
 
         <div class="product-card">
-            <img src="Khind_KDS600.jpg" alt="Khind KDS600 Chiller">
+            <a class="gallery-item" href="Khind_KDS600.jpg">
+                <img src="Khind_KDS600.jpg" alt="Khind KDS600 Chiller">
+            </a>
             <div class="info">
                 <h3>Khind KDS600 (600L)</h3>
                 <p><strong>Frost Free</strong> (Fan cooling) Showcase Chiller</p>
@@ -229,7 +242,9 @@
         </div>
 
         <div class="product-card">
-            <img src="HSC-192FLB.jpg" alt="HSC-192FLB Chiller">
+            <a class="gallery-item" href="HSC-192FLB.jpg">
+                <img src="HSC-192FLB.jpg" alt="HSC-192FLB Chiller">
+            </a>
             <div class="info">
                 <h3>HSC-192FLB (192L)</h3>
                 <p>1 Year General / <strong>5 Years Compressor Warranty</strong> · 540×575×1440mm</p>
@@ -238,7 +253,9 @@
         </div>
 
         <div class="product-card">
-            <img src="HSC-191FLB.jpg" alt="HSC-191FLB Chiller">
+            <a class="gallery-item" href="HSC-191FLB.jpg">
+                <img src="HSC-191FLB.jpg" alt="HSC-191FLB Chiller">
+            </a>
             <div class="info">
                 <h3>HSC-191FLB (192L)</h3>
                 <p>Display Showcase Model · Dimensions 540×545×1414mm</p>
@@ -247,7 +264,9 @@
         </div>
 
         <div class="product-card">
-            <img src="HSC-271FLB.jpg" alt="HSC-271FLB Chiller">
+            <a class="gallery-item" href="HSC-271FLB.jpg">
+                <img src="HSC-271FLB.jpg" alt="HSC-271FLB Chiller">
+            </a>
             <div class="info">
                 <h3>HSC-271FLB (251L)</h3>
                 <p>Display Chiller · Dimensions 540×545×1714mm</p>
@@ -256,7 +275,9 @@
         </div>
 
         <div class="product-card">
-            <img src="HSC-242FLH.jpg" alt="HSC-242FLH Chiller">
+            <a class="gallery-item" href="HSC-242FLH.jpg">
+                <img src="HSC-242FLH.jpg" alt="HSC-242FLH Chiller">
+            </a>
             <div class="info">
                 <h3>HSC-242FLH (242L)</h3>
                 <p>Includes 4 Shelves · <strong>5 Years Compressor Warranty</strong> · Box: 581×657×1888mm</p>
@@ -265,7 +286,9 @@
         </div>
 
         <div class="product-card">
-            <img src="HSC-320FL.jpg" alt="HSC-320FL Chiller">
+            <a class="gallery-item" href="HSC-320FL.jpg">
+                <img src="HSC-320FL.jpg" alt="HSC-320FL Chiller">
+            </a>
             <div class="info">
                 <h3>HSC-320FL (320L)</h3>
                 <p><strong>FROST FREE</strong> · Air Cooled System · <strong>5 Years Compressor Warranty</strong></p>
@@ -274,7 +297,9 @@
         </div>
 
         <div class="product-card">
-            <img src="HSC-382FLH.jpg" alt="HSC-382FLH Chiller">
+            <a class="gallery-item" href="HSC-382FLH.jpg">
+                <img src="HSC-382FLH.jpg" alt="HSC-382FLH Chiller">
+            </a>
             <div class="info">
                 <h3>HSC-382FLH (382L)</h3>
                 <p>Includes 5 Shelves · <strong>5 Years Compressor Warranty</strong> · Box: 661×704×2195mm</p>
@@ -283,7 +308,9 @@
         </div>
         
         <div class="product-card">
-            <img src="Warehouse_583L.jpg" alt="Warehouse 583L Showcase Chiller">
+            <a class="gallery-item" href="Warehouse_583L.jpg">
+                <img src="Warehouse_583L.jpg" alt="Warehouse 583L Showcase Chiller">
+            </a>
             <div class="info">
                 <h3>Warehouse Showcase (583L)</h3>
                 <p>Fan Cooling (<strong>Frost Free</strong>) · <strong>Hot Air System</strong> · W:100cm x D:59cm x H:197cm</p>
@@ -292,7 +319,9 @@
         </div>
 
         <div class="product-card">
-            <img src="SC-1000.jpg" alt="SC-1000 Chiller">
+            <a class="gallery-item" href="SC-1000.jpg">
+                <img src="SC-1000.jpg" alt="SC-1000 Chiller">
+            </a>
             <div class="info">
                 <h3>SC-1000 (1000L)</h3>
                 <p>Large Warehouse Display Showcase</p>
@@ -301,7 +330,9 @@
         </div>
 
         <div class="product-card">
-            <img src="Nakama_1400L.jpg" alt="Nakama 3 Door Chiller">
+            <a class="gallery-item" href="Nakama_1400L.jpg">
+                <img src="Nakama_1400L.jpg" alt="Nakama 3 Door Chiller">
+            </a>
             <div class="info">
                 <h3>Nakama (3 Doors) (1400L)</h3>
                 <p>Extra-Large 3 Doors Chiller. (Dimensions 550×487×1527mm - Please Verify)</p>
@@ -310,7 +341,9 @@
         </div>
 
         <div class="product-card">
-            <img src="NSC198XY.jpg" alt="NSC198XY Chiller">
+            <a class="gallery-item" href="NSC198XY.jpg">
+                <img src="NSC198XY.jpg" alt="NSC198XY Chiller">
+            </a>
             <div class="info">
                 <h3>NSC198XY (190L)</h3>
                 <p>Includes 3 Shelves · Suitable for small convenience stores</p>
@@ -319,7 +352,9 @@
         </div>
 
         <div class="product-card">
-            <img src="NSC228XY.jpg" alt="NSC228XY Chiller">
+            <a class="gallery-item" href="NSC228XY.jpg">
+                <img src="NSC228XY.jpg" alt="NSC228XY Chiller">
+            </a>
             <div class="info">
                 <h3>NSC228XY (220L)</h3>
                 <p>Includes 3 Shelves · Approx. 5ft 8in Height</p>
@@ -328,7 +363,9 @@
         </div>
 
         <div class="product-card">
-            <img src="NSC258XY.jpg" alt="NSC258XY Chiller">
+            <a class="gallery-item" href="NSC258XY.jpg">
+                <img src="NSC258XY.jpg" alt="NSC258XY Chiller">
+            </a>
             <div class="info">
                 <h3>NSC258XY (250L)</h3>
                 <p><strong>Frost Free</strong> · 3 Shelves · Approx. 6ft 7in Height</p>
@@ -337,7 +374,9 @@
         </div>
 
         <div class="product-card product-card-sc170">
-            <img src="SC-170.jpg" alt="SC-170 Chiller">
+            <a class="gallery-item" href="SC-170.jpg">
+                <img src="SC-170.jpg" alt="SC-170 Chiller">
+            </a>
             <div class="info">
                 <h3>SC-170 (170L)</h3>
                 <p>Compact Display Chiller · Includes 3 Shelves</p>
@@ -353,5 +392,15 @@
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js" integrity="sha512-Xh4FhA4j/Xg+n+X8P5Z2Hh+i8c0r0vJ2yJ7g+tI4O8v6gYg5q6z0e/I7f+d6W0X1j+s/3R/q1s/g2w/j2o/w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    // 激活 Lightbox，选择所有 class="gallery-item" 的链接
+    new SimpleLightbox('.product-grid a.gallery-item', { 
+        captions: true, 
+        captionDelay: 100,
+        closeText: 'X',
+        navText: ['←','→'] 
+    });
+</script>
 </body>
 </html>
