@@ -1,318 +1,178 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>展示型冷柜 (Chiller) - Siong Cheong Trading</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siong Cheong Trading</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-            background: #f5f5f5;
-        }
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
 
-        header {
-            background: #2c3e50;
-            padding: 20px;
-            color: white;
-            text-align: center;
-            font-size: 22px;
-        }
+        header {
+            background: #2c3e50;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+        }
 
-        .container {
-            padding: 20px;
-        }
+        .banner {
+            background: url('https://images.unsplash.com/photo-1586201375754-1425ad4a3283?auto=format&fit=crop&w=1600&q=80') center/cover;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            text-shadow: 2px 2px 6px black;
+        }
 
-        h2 {
-            text-align: center;
-            margin-top: 0;
-        }
+        .container {
+            padding: 20px;
+        }
 
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
+        h2 {
+            text-align: center;
+        }
 
-        .product-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
 
-        .product-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            background: #ddd;
-        }
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-        .info {
-            padding: 15px;
-        }
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
 
-        .price {
-            font-size: 18px;
-            color: #e74c3c;
-            margin: 10px 0;
-        }
+        .product-info {
+            padding: 15px;
+        }
 
-        .btn {
-            display: block;
-            background: #25D366;
-            padding: 10px;
-            text-align: center;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-        }
+        .product-info h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
 
-        .back {
-            margin-top: 20px;
-            text-align: center;
-        }
+        .product-info p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
 
-        .back a {
-            text-decoration: none;
-            color: #2c3e50;
-            font-size: 18px;
-            font-weight: bold;
-        }
-    </style>
+        .btn-whatsapp {
+            display: block;
+            background: #25D366;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        footer {
+            background: #2c3e50;
+            text-align: center;
+            color: white;
+            padding: 15px;
+            margin-top: 30px;
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
-    展示型冷柜 (Chiller) 型号列表
+    Siong Cheong Trading
 </header>
 
-<div class="container">
-    <h2>所有展示型冷柜（Chiller）型号</h2>
-
-    <div class="product-grid">
-
-        <!-- ====== 以下每个产品都已经整理自你的 PPT 并附 WhatsApp 链接 ====== -->
-
-        <!-- Khind KDS193 -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>Khind KDS193 (193L)</h3>
-                <p>功率 0.9 kWh/24h · 毛重 55kg · 尺寸 550×610×1770mm</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 Khind KDS193 (193L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- Khind DC228 -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>Khind DC228 (228L)</h3>
-                <p>R134a · 机械控温 · 带锁 · 尺寸 530×590×1730mm</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 Khind DC228 (228L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- Khind KDS250 -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>Khind KDS250 (250L)</h3>
-                <p>5 年压缩机保修 · 尺寸 585×630×1756mm</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 Khind KDS250 (250L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- Khind KDMC280 -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>Khind KDMC280 (270L)</h3>
-                <p>230V~50Hz · 5 年压缩机保修 · 尺寸 585×630×1756mm</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 Khind KDMC280 (270L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- Khind KDS350 -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>Khind KDS350 (350L)</h3>
-                <p>5 年压缩机保修 · 尺寸 645×675×1916mm</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 Khind KDS350 (350L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- Khind KDS600 -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>Khind KDS600 (600L)</h3>
-                <p>Frost Free（风冷）展示柜</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 Khind KDS600 (600L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- HSC-192FLB -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>HSC-192FLB (192L)</h3>
-                <p>1 年保修 · 5 年压缩机保修 · 540×575×1440mm</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 HSC-192FLB (192L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- HSC-191FLB -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>HSC-191FLB (192L)</h3>
-                <p>540×545×1414mm · 展示柜款</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 HSC-191FLB (192L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- HSC-271FLB -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>HSC-271FLB (251L)</h3>
-                <p>540×545×1714mm · 展示冷柜</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 HSC-271FLB (251L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- HSC-242FLH -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>HSC-242FLH (242L)</h3>
-                <p>附 4 层架 · 581×657×1888mm（外箱尺寸）</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 HSC-242FLH (242L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- HSC-320FL -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>HSC-320FL (320L)</h3>
-                <p>空气冷却系统 · Frost Free 风冷</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 HSC-320FL (320L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- HSC-382FLH -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>HSC-382FLH (382L)</h3>
-                <p>5 层架 · Frost Free 风冷 · 高度 2106mm</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 HSC-382FLH (382L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- Warehouse 583L -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>Warehouse Showcase (583L)</h3>
-                <p>风冷 frost free · 宽 100cm · 高 197cm</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 Warehouse Showcase 583L">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- SC-1000 -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>SC-1000 (1000L)</h3>
-                <p>大容量展示柜</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 SC-1000 (1000L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- Nakama 1400L -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>Nakama 1400L（三门）</h3>
-                <p>大容量三门展示型冷柜</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 Nakama 1400L 3 Door Chiller">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- NSC198XY -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>NSC198XY (190L)</h3>
-                <p>带 3 层架 · 适合饮料店/便利店</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 NSC198XY (190L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- NSC228XY -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>NSC228XY (220L)</h3>
-                <p>带 3 层架 · 高度 5 ft 8 inch</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 NSC228XY (220L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- NSC258XY -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>NSC258XY (250L)</h3>
-                <p>Frost Free · 3 层架 · 高 6ft 7 inch</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 NSC258XY (250L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-        <!-- SC-170 -->
-        <div class="product-card">
-            <img src="">
-            <div class="info">
-                <h3>SC-170 (170L)</h3>
-                <p>展示型冷柜 · 适合小空间使用</p>
-                <div class="price">RM XXXX</div>
-                <a class="btn" href="https://wa.me/601110948581?text=我想询问 SC-170 (170L)">WhatsApp 询问</a>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="back">
-        <a href="index.html">← 返回首页</a>
-    </div>
-
+<div class="banner">
+    您值得信赖的电器专家
 </div>
+
+<div class="container">
+    <h2>产品目录</h2>
+
+    <div class="product-grid">
+
+                <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80">
+            <div class="product-info">
+                <h3>风扇</h3>
+                <p>高风量 · 静音 · 耐用</p>
+                <a class="btn-whatsapp" href="https://wa.me/60123456789?text=我要询问风扇">
+                    WhatsApp 下单
+                </a>
+            </div>
+        </div>
+
+                <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=800&q=80">
+            <div class="product-info">
+                <h3>电视机</h3>
+                <p>高清画质 · 多尺寸型号</p>
+                <a class="btn-whatsapp" href="https://wa.me/60123456789?text=我要询问电视机">
+                    WhatsApp 下单
+                </a>
+            </div>
+        </div>
+
+                <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1581579188871-45ea61f2a0c8?auto=format&fit=crop&w=800&q=80">
+            <div class="product-info">
+                <h3>洗衣机</h3>
+                <p>节能省电 · 强劲洗涤</p>
+                <a class="btn-whatsapp" href="https://wa.me/60123456789?text=我要询问洗衣机">
+                    WhatsApp 下单
+                </a>
+            </div>
+        </div>
+
+                <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1606813907291-646cb063a6b7?auto=format&fit=crop&w=800&q=80">
+            <div class="product-info">
+                <h3>**冷柜与冰箱**</h3>
+                <p>各式展示型冷柜 · 家用冰箱</p>
+                                <a class="btn-whatsapp" href="**chiller.html**">
+                    **查看详情**
+                </a>
+            </div>
+        </div>
+
+                <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1598300056391-ddb6fc974c94?auto=format&fit=crop&w=800&q=80">
+            <div class="product-info">
+                <h3>空调</h3>
+                <p>快速制冷 · 省电 · 多马力选择</p>
+                <a class="btn-whatsapp" href="https://wa.me/60123456789?text=我要询问空调">
+                    WhatsApp 下单
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    © 2025 Siong Cheong Trading | WhatsApp: 012-345 6789
+</footer>
 
 </body>
 </html>
