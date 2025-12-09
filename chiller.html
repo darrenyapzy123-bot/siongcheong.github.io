@@ -22,13 +22,13 @@
             position: relative; 
         }
 
-        /* Logo 尺寸 - 110px */
+        /* Logo 尺寸 - 250px */
         .header-logo {
             position: absolute; 
             top: 50%; 
             right: 20px; 
             transform: translateY(-50%); 
-            width: 110px; /* 加大尺寸 */
+            width: 250px; /* 加大尺寸 */
             height: auto;
         }
         
@@ -513,27 +513,31 @@
     const cards = document.querySelectorAll('.product-card');
 
     // 1. 切换按钮的点击事件 (显示/隐藏筛选器)
-    toggleButton.addEventListener('click', function() {
-        filterContent.classList.toggle('active'); 
-    });
+    if (toggleButton) {
+        toggleButton.addEventListener('click', function() {
+            filterContent.classList.toggle('active'); 
+        });
+    }
 
     // 2. 筛选器下拉菜单的更改事件
-    filter.addEventListener('change', function() {
-        const selectedBrand = this.value;
+    if (filter) {
+        filter.addEventListener('change', function() {
+            const selectedBrand = this.value;
 
-        // 筛选后关闭筛选器内容，保持页面简洁
-        filterContent.classList.remove('active'); 
+            // 筛选后关闭筛选器内容，保持页面简洁
+            filterContent.classList.remove('active'); 
 
-        cards.forEach(card => {
-            const cardBrand = card.getAttribute('data-brand');
-            
-            if (selectedBrand === 'all' || selectedBrand === cardBrand) {
-                card.classList.remove('hidden'); // 显示匹配的卡片
-            } else {
-                card.classList.add('hidden'); // 隐藏不匹配的卡片
-            }
+            cards.forEach(card => {
+                const cardBrand = card.getAttribute('data-brand');
+                
+                if (selectedBrand === 'all' || selectedBrand === cardBrand) {
+                    card.classList.remove('hidden'); // 显示匹配的卡片
+                } else {
+                    card.classList.add('hidden'); // 隐藏不匹配的卡片
+                }
+            });
         });
-    });
+    }
     // ***筛选器逻辑结束***
 </script>
 
