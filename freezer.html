@@ -16,6 +16,38 @@
             background-color: #f4f7f6;
         }
 
+        /* ------------------- 过滤按钮样式 ------------------- */
+        #filter-bar {
+            text-align: center; 
+            padding: 20px 20px 0 20px; 
+            background-color: #ecf0f1;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .filter-btn {
+            padding: 10px 15px;
+            margin: 5px 5px 20px 5px;
+            cursor: pointer;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            background-color: #ffffff;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .filter-btn.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        /* ---------------------------------------------------- */
+
+
         /* 页面主体内容容器的样式，使用 Flexbox 实现灵活布局 */
         .products-container {
             display: flex;
@@ -27,18 +59,14 @@
 
         /* 品牌分组标题样式 */
         .brand-group-title {
-            /*
-             * ✅ 用户添加的规则：强制标题独占一行
-             * flex: 0 0 100%; 表示不伸展(0)，不收缩(0)，基准宽度为 100%。
-             * 这确保了标题会占据父容器的整个宽度，并在其后强制换行。
-             */
+            /* 强制标题独占一行，解决排版错乱的核心CSS */
             flex: 0 0 100%; 
             
             width: 100%;
             text-align: left;
             margin: 30px 0 15px 0;
             padding-left: 10px;
-            font-size: 1.8em; /* 增大字体以提高区分度 */
+            font-size: 1.8em;
             color: #34495e;
             border-bottom: 3px solid #3498db;
             padding-bottom: 5px;
@@ -46,12 +74,9 @@
 
         /* 单个产品卡片样式 (Flexbox 弹性宽度优化) */
         .product-card {
-            /* 优化：将固定 width 替换为 Flex 弹性宽度，
-             * 在大屏幕上强制一行显示 3 个卡片 (33.333% 减去间距调整)
-             * 这确保了卡片排列整齐且不因数量变化而错乱。
-             */
-            flex: 0 0 calc(33.333% - 16.666px); /* 25px / 3 * 2 = 16.666px */
-            max-width: 350px; /* 设定最大宽度，防止卡片过大 */
+            /* 弹性宽度：在大屏幕上实现一行 3 个卡片 */
+            flex: 0 0 calc(33.333% - 16.666px); 
+            max-width: 350px; 
             min-width: 280px;
 
             background-color: #ffffff;
@@ -92,7 +117,7 @@
             flex-grow: 1; /* 关键：确保内容区域占据剩余空间，维持卡片等高 */
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* 确保标题和按钮分隔 */
+            justify-content: space-between;
         }
 
         .product-details h3 {
@@ -106,7 +131,7 @@
             color: #7f8c8d;
             margin-bottom: 15px;
             line-height: 1.5;
-            flex-grow: 1; /* 确保描述部分尽可能填充空间 */
+            flex-grow: 1;
         }
 
         .detail-button {
@@ -118,7 +143,7 @@
             border-radius: 5px;
             font-weight: bold;
             transition: background-color 0.3s;
-            margin-top: auto; /* 确保按钮在底部对齐 */
+            margin-top: auto;
         }
         
         .detail-button:hover {
@@ -129,7 +154,7 @@
         @media (max-width: 1200px) {
             .product-card {
                 /* 中等屏幕：一行 2 个卡片 */
-                flex: 0 0 calc(50% - 12.5px); /* 25px / 2 = 12.5px */
+                flex: 0 0 calc(50% - 12.5px); 
             }
         }
         
@@ -139,7 +164,6 @@
                 flex: 0 0 100%;
             }
         }
-
     </style>
 </head>
 <body>
@@ -148,14 +172,21 @@
         <h1>Commercial Freezer Series</h1>
     </header>
 
-    <div class="filter-bar" style="text-align: center; padding: 20px; background-color: #ecf0f1;">
-        <h2>All Models</h2>
+    <div id="filter-bar">
+        <button class="filter-btn active" data-filter="all">所有品牌</button>
+        <button class="filter-btn" data-filter="Sharp">Sharp</button>
+        <button class="filter-btn" data-filter="Panalux">Panalux</button>
+        <button class="filter-btn" data-filter="Khind">Khind</button>
+        <button class="filter-btn" data-filter="Warehouse">Warehouse</button>
+        <button class="filter-btn" data-filter="Midea">Midea</button>
+        <button class="filter-btn" data-filter="Hisense">Hisense</button>
+        <button class="filter-btn" data-filter="Komachi">Komachi</button>
+        <button class="filter-btn" data-filter="Narutron">Narutron</button>
     </div>
-
     <div class="products-container">
         
-        <h2 class="brand-group-title">Sharp Freezer Series</h2>
-        <div class="product-card">
+        <h2 class="brand-group-title" data-brand="Sharp">Sharp Freezer Series</h2>
+        <div class="product-card" data-brand="Sharp">
             <div class="product-image-box">
                 <img src="images/sharp-sjc118.png" alt="Sharp SJC118 冷冻柜" class="product-image">
             </div>
@@ -165,7 +196,7 @@
                 <a href="freezer-details/sjc118.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Sharp">
             <div class="product-image-box">
                 <img src="images/sharp-sjc168.png" alt="Sharp SJC168 冷冻柜" class="product-image">
             </div>
@@ -175,7 +206,7 @@
                 <a href="freezer-details/sjc168.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Sharp">
             <div class="product-image-box">
                 <img src="images/sharp-sjc218.png" alt="Sharp SJC218 冷冻柜" class="product-image">
             </div>
@@ -185,7 +216,7 @@
                 <a href="freezer-details/sjc218.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Sharp">
             <div class="product-image-box">
                 <img src="images/sharp-sjc318.png" alt="Sharp SJC318 冷冻柜" class="product-image">
             </div>
@@ -197,9 +228,9 @@
         </div>
 
 
-        <h2 class="brand-group-title">Panalux Freezer Series</h2>
+        <h2 class="brand-group-title" data-brand="Panalux">Panalux Freezer Series</h2>
         
-        <div class="product-card">
+        <div class="product-card" data-brand="Panalux">
             <div class="product-image-box">
                 <img src="images/panalux-model-1.png" alt="Panalux 卧式冷冻柜 1" class="product-image">
             </div>
@@ -210,7 +241,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="Panalux">
             <div class="product-image-box">
                 <img src="images/panalux-model-2.png" alt="Panalux 卧式冷冻柜 2" class="product-image">
             </div>
@@ -221,8 +252,8 @@
             </div>
         </div>
 
-        <h2 class="brand-group-title">Khind Freezer Series</h2>
-        <div class="product-card">
+        <h2 class="brand-group-title" data-brand="Khind">Khind Freezer Series</h2>
+        <div class="product-card" data-brand="Khind">
             <div class="product-image-box">
                 <img src="images/khind-fz100.png" alt="Khind FZ100 冷冻柜" class="product-image">
             </div>
@@ -233,7 +264,7 @@
             </div>
         </div>
         
-        <div class="product-card">
+        <div class="product-card" data-brand="Khind">
             <div class="product-image-box">
                 <img src="images/khind-fz142.png" alt="Khind FZ142 冷冻柜" class="product-image">
             </div>
@@ -244,7 +275,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="Khind">
             <div class="product-image-box">
                 <img src="images/khind-fz208.png" alt="Khind FZ208 冷冻柜" class="product-image">
             </div>
@@ -255,7 +286,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="Khind">
             <div class="product-image-box">
                 <img src="images/khind-fz295.png" alt="Khind FZ295 冷冻柜" class="product-image">
             </div>
@@ -266,7 +297,7 @@
             </div>
         </div>
         
-        <div class="product-card">
+        <div class="product-card" data-brand="Khind">
             <div class="product-image-box">
                 <img src="images/khind-fz400.png" alt="Khind FZ-400 冷冻柜" class="product-image">
             </div>
@@ -277,7 +308,7 @@
             </div>
         </div>
         
-        <div class="product-card">
+        <div class="product-card" data-brand="Khind">
             <div class="product-image-box">
                 <img src="images/khind-fz508.png" alt="Khind FZ-508 冷冻柜" class="product-image">
             </div>
@@ -288,7 +319,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="Khind">
             <div class="product-image-box">
                 <img src="images/khind-fz708.png" alt="Khind FZ-708 冷冻柜" class="product-image">
             </div>
@@ -299,7 +330,7 @@
             </div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card" data-brand="Khind">
             <div class="product-image-box">
                 <img src="images/khind-upright-245l.png" alt="Khind 立式冷冻柜" class="product-image">
             </div>
@@ -310,8 +341,8 @@
             </div>
         </div>
 
-        <h2 class="brand-group-title">Warehouse Freezer Series</h2>
-        <div class="product-card">
+        <h2 class="brand-group-title" data-brand="Warehouse">Warehouse Freezer Series</h2>
+        <div class="product-card" data-brand="Warehouse">
             <div class="product-image-box">
                 <img src="images/warehouse-fz90.png" alt="Warehouse FZ-90 冷冻柜" class="product-image">
             </div>
@@ -321,7 +352,7 @@
                 <a href="freezer-details/warehouse-fz90.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Warehouse">
             <div class="product-image-box">
                 <img src="images/warehouse-fz1188.png" alt="Warehouse FZ-1188 冷冻柜" class="product-image">
             </div>
@@ -331,7 +362,7 @@
                 <a href="freezer-details/warehouse-fz1188.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Warehouse">
             <div class="product-image-box">
                 <img src="images/warehouse-fz1588.png" alt="Warehouse FZ1588 冷冻柜" class="product-image">
             </div>
@@ -341,7 +372,7 @@
                 <a href="freezer-details/warehouse-fz1588.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Warehouse">
             <div class="product-image-box">
                 <img src="images/warehouse-fz2588.png" alt="Warehouse FZ-2588 冷冻柜" class="product-image">
             </div>
@@ -351,7 +382,7 @@
                 <a href="freezer-details/warehouse-fz2588.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Warehouse">
             <div class="product-image-box">
                 <img src="images/warehouse-fz3588.png" alt="Warehouse FZ-3588 冷冻柜" class="product-image">
             </div>
@@ -361,7 +392,7 @@
                 <a href="freezer-details/warehouse-fz3588.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Warehouse">
             <div class="product-image-box">
                 <img src="images/warehouse-fz4588.png" alt="Warehouse FZ-4588 冷冻柜" class="product-image">
             </div>
@@ -371,7 +402,7 @@
                 <a href="freezer-details/warehouse-fz4588.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Warehouse">
             <div class="product-image-box">
                 <img src="images/warehouse-fz5588.png" alt="Warehouse FZ-5588 冷冻柜" class="product-image">
             </div>
@@ -381,7 +412,7 @@
                 <a href="freezer-details/warehouse-fz5588.html" class="detail-button">View Details</a>
             </div>
             </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Warehouse">
             <div class="product-image-box">
                 <img src="images/warehouse-wd500wr.png" alt="Warehouse WD-500WR 冷冻柜" class="product-image">
             </div>
@@ -391,7 +422,7 @@
                 <a href="freezer-details/warehouse-wd500wr.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Warehouse">
             <div class="product-image-box">
                 <img src="images/warehouse-md860wr.png" alt="Warehouse MD-860WR 冷冻柜" class="product-image">
             </div>
@@ -401,7 +432,7 @@
                 <a href="freezer-details/warehouse-md860wr.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Warehouse">
             <div class="product-image-box">
                 <img src="images/warehouse-showcase220l.png" alt="Warehouse Showcase 220L" class="product-image">
             </div>
@@ -411,7 +442,7 @@
                 <a href="freezer-details/warehouse-sc220l.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Warehouse">
             <div class="product-image-box">
                 <img src="images/warehouse-showcase330l.png" alt="Warehouse Showcase 330L" class="product-image">
             </div>
@@ -421,7 +452,7 @@
                 <a href="freezer-details/warehouse-sc330l.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Warehouse">
             <div class="product-image-box">
                 <img src="images/warehouse-showcase550l.png" alt="Warehouse Showcase 550L" class="product-image">
             </div>
@@ -432,8 +463,8 @@
             </div>
         </div>
         
-        <h2 class="brand-group-title">Midea Freezer Series</h2>
-        <div class="product-card">
+        <h2 class="brand-group-title" data-brand="Midea">Midea Freezer Series</h2>
+        <div class="product-card" data-brand="Midea">
             <div class="product-image-box">
                 <img src="images/midea-mdrc151.png" alt="Midea MD-RC151FZB01 冷冻柜" class="product-image">
             </div>
@@ -443,7 +474,7 @@
                 <a href="freezer-details/midea-rc151.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Midea">
             <div class="product-image-box">
                 <img src="images/midea-mdrc207.png" alt="Midea MD-RC207FZB01 冷冻柜" class="product-image">
             </div>
@@ -453,7 +484,7 @@
                 <a href="freezer-details/midea-rc207.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Midea">
             <div class="product-image-box">
                 <img src="images/midea-mdrz458.png" alt="Midea MDRZ458FZG01Y 冷冻柜" class="product-image">
             </div>
@@ -463,7 +494,7 @@
                 <a href="freezer-details/midea-rz458.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Midea">
             <div class="product-image-box">
                 <img src="images/midea-mdrz577.png" alt="Midea MDRZ577FEG01Y 冷冻柜" class="product-image">
             </div>
@@ -474,8 +505,8 @@
             </div>
         </div>
 
-        <h2 class="brand-group-title">Hisense Freezer Series</h2>
-        <div class="product-card">
+        <h2 class="brand-group-title" data-brand="Hisense">Hisense Freezer Series</h2>
+        <div class="product-card" data-brand="Hisense">
             <div class="product-image-box">
                 <img src="images/hisense-fc125d4bws.png" alt="Hisense FC125D4BWS 冷冻柜" class="product-image">
             </div>
@@ -485,7 +516,7 @@
                 <a href="freezer-details/hisense-fc125.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Hisense">
             <div class="product-image-box">
                 <img src="images/hisense-fc206daw.png" alt="Hisense FC206DAW 冷冻柜" class="product-image">
             </div>
@@ -495,7 +526,7 @@
                 <a href="freezer-details/hisense-fc206.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Hisense">
             <div class="product-image-box">
                 <img src="images/hisense-fc258daw.png" alt="Hisense FC258DAW 冷冻柜" class="product-image">
             </div>
@@ -505,7 +536,7 @@
                 <a href="freezer-details/hisense-fc258.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Hisense">
             <div class="product-image-box">
                 <img src="images/hisense-fc326d4bwys.png" alt="Hisense FC326D4BWYS 冷冻柜" class="product-image">
             </div>
@@ -515,7 +546,7 @@
                 <a href="freezer-details/hisense-fc326.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Hisense">
             <div class="product-image-box">
                 <img src="images/hisense-fc428d4bwy.png" alt="Hisense FC428D4BWY 冷冻柜" class="product-image">
             </div>
@@ -525,7 +556,7 @@
                 <a href="freezer-details/hisense-fc428.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Hisense">
             <div class="product-image-box">
                 <img src="images/hisense-fc663d4bwb.png" alt="Hisense FC663D4BWB 冷冻柜" class="product-image">
             </div>
@@ -535,7 +566,7 @@
                 <a href="freezer-details/hisense-fc663.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Hisense">
             <div class="product-image-box">
                 <img src="images/hisense-fc900d4bwbp.png" alt="Hisense FC900D4BWBP 冷冻柜" class="product-image">
             </div>
@@ -545,7 +576,7 @@
                 <a href="freezer-details/hisense-fc900.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Hisense">
             <div class="product-image-box">
                 <img src="images/hisense-fv188n4awn.png" alt="Hisense FV188N4AWN 立式冷冻柜" class="product-image">
             </div>
@@ -555,7 +586,7 @@
                 <a href="freezer-details/hisense-fv188.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Hisense">
             <div class="product-image-box">
                 <img src="images/hisense-fv280n4awnp.png" alt="Hisense FV280N4AWNP 立式冷冻柜" class="product-image">
             </div>
@@ -566,8 +597,8 @@
             </div>
         </div>
         
-        <h2 class="brand-group-title">Komachi Freezer Series</h2>
-        <div class="product-card">
+        <h2 class="brand-group-title" data-brand="Komachi">Komachi Freezer Series</h2>
+        <div class="product-card" data-brand="Komachi">
             <div class="product-image-box">
                 <img src="images/komachi-90l.png" alt="Komachi 90L 冷冻柜" class="product-image">
             </div>
@@ -577,7 +608,7 @@
                 <a href="freezer-details/komachi-90l.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Komachi">
             <div class="product-image-box">
                 <img src="images/komachi-kmw1688.png" alt="Komachi KMW-1688 冷冻柜" class="product-image">
             </div>
@@ -587,7 +618,7 @@
                 <a href="freezer-details/komachi-kmw1688.html" class="detail-button">View Details</a>
             </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" data-brand="Komachi">
             <div class="product-image-box">
                 <img src="images/komachi-kmw2588.png" alt="Komachi KMW-2588 冷冻柜" class="product-image">
             </div>
@@ -598,8 +629,8 @@
             </div>
         </div>
         
-        <h2 class="brand-group-title">Narutron Freezer Series</h2>
-        <div class="product-card">
+        <h2 class="brand-group-title" data-brand="Narutron">Narutron Freezer Series</h2>
+        <div class="product-card" data-brand="Narutron">
             <div class="product-image-box">
                 <img src="images/narutron-110l-sliding.png" alt="Narutron 110L 冷冻柜" class="product-image">
             </div>
@@ -615,5 +646,58 @@
     <footer>
     </footer>
     
-</body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有需要操作的元素
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const allProducts = document.querySelectorAll('.product-card');
+            const allTitles = document.querySelectorAll('.brand-group-title');
+
+            // 监听所有过滤按钮的点击事件
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 获取要过滤的品牌 (e.g., 'Sharp', 'Khind', 'all')
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // 1. 更新按钮的激活状态
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // 2. 执行过滤操作
+                    filterProducts(filter);
+                });
+            });
+
+            function filterProducts(filter) {
+                let visibleBrands = new Set(); // 用于跟踪哪些品牌的产品被显示了
+                
+                // 遍历所有产品卡片
+                allProducts.forEach(card => {
+                    const cardBrand = card.getAttribute('data-brand');
+                    
+                    if (filter === 'all' || cardBrand === filter) {
+                        // 显示匹配的卡片
+                        card.style.display = 'flex'; 
+                        visibleBrands.add(cardBrand);
+                    } else {
+                        // 隐藏不匹配的卡片
+                        card.style.display = 'none';
+                    }
+                });
+
+                // 遍历所有品牌分组标题
+                allTitles.forEach(title => {
+                    const titleBrand = title.getAttribute('data-brand');
+                    
+                    // 只有在满足 'all' 模式或该品牌有显示的产品时，才显示标题
+                    if (filter === 'all' || visibleBrands.has(titleBrand)) {
+                        title.style.display = 'block'; // 标题独占一行
+                    } else {
+                        title.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+    </body>
 </html>
