@@ -20,8 +20,10 @@
         #main-content {
             width: 100%;
             max-width: 100vw;
-            /* 动画过渡，让补偿效果更平滑 */
             transition: margin-right 0.5s; 
+            /* 新增：设置它为 Flex 容器，让 header 和 container 垂直堆叠 */
+            display: flex;
+            flex-direction: column;
         }
 
         /* ------------------- 汉堡菜单和侧边栏样式 ------------------- */
@@ -118,7 +120,7 @@
             display: none;
         }
         
-        /* 调整 Header */
+        /* 3. 调整 Header 样式，修复背景覆盖问题 */
         header {
             background: #2c3e50;
             padding: 20px;
@@ -127,8 +129,10 @@
             font-size: 22px;
             font-weight: bold;
             position: relative;
-            /* 使用 margin-left 为左上角的汉堡图标留出空间 */
-            margin-left: 60px; 
+            /* 关键修复：让 padding 留出空间，同时 background 保持 100% 宽度 */
+            padding-left: 60px; 
+            width: 100%;
+            box-sizing: border-box; /* 确保 width: 100% 包含 padding */
         }
         
         .header-logo {
@@ -144,6 +148,8 @@
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
+            /* 确保在 #main-content flex 布局中正常显示 */
+            width: 100%; 
         }
 
         h2 {
@@ -236,8 +242,7 @@
         /* ------------------- 媒体查询 ------------------- */
         @media (max-width: 600px) {
             header {
-                /* 移动端移除 margin-left */
-                margin-left: 0;
+                /* 移动端图标在顶部，保持 20px 即可 */
                 padding-left: 20px;
             }
         }
@@ -378,9 +383,9 @@
         const sidebar = document.getElementById("mySidebar");
         const overlay = document.getElementById("overlay");
         const body = document.body;
-        const mainContent = document.getElementById("main-content"); // 获取主内容容器
+        const mainContent = document.getElementById("main-content"); 
         
-        // 假设滚动条宽度约为 17px (浏览器标准值)
+        // 假设滚动条宽度约为 17px 
         const scrollBarWidth = '17px'; 
         
         // 检查侧边栏是否已打开
@@ -394,9 +399,7 @@
             mainContent.style.marginRight = '0'; // 移除补偿边距
         } else {
             // 打开菜单
-            // 只有当页面有滚动条时才添加 margin-right 补偿
-            // 注意: body.scrollHeight > body.clientHeight 只有在 body.style.overflow = 'auto' 时才准确
-            // 为简化，我们直接在打开时添加补偿，然后在关闭时移除
+            // 添加 margin-right 补偿，防止页面内容跳动
             mainContent.style.marginRight = scrollBarWidth;
             
             body.style.overflow = 'hidden'; // 禁止滚动
