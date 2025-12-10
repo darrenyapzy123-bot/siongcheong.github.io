@@ -1,200 +1,259 @@
 <!DOCTYPE html>
-<html lang="zh">
-
+<html lang="zh-Hans">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freezer (冷冻柜) - Siong Cheong Trading</title>
-
+    <title>Freezer 产品卡片列表</title>
     <style>
+        /*
+         * ✅ 步骤 1: 清理所有隐藏的全角空格 / 异常字符
+         * - 所有样式均使用标准的半角字符和一致的命名。
+         *
+         * ✅ 步骤 2 & 3: 重新整理缩排 / 重新对齐所有 <div> 结构
+         * - 使用标准的 4 空格缩进。
+         * - 使用 Flexbox 布局保证 div 结构对齐。
+         */
+
+        /* 通用重置 */
+        *, *::before, *::after {
+            box-sizing: border-box; /* 确保 padding 和 border 不增加元素总宽度/高度 */
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-        }
-
-        header {
-            background: #2c3e50;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
             padding: 20px;
-            color: white;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            position: relative;
         }
 
-        .header-logo {
-            position: absolute;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            width: 250px;
-            height: auto;
+        /*
+         * ✅ 步骤 4: 确保 Freezer 卡片加入后不会再导致排版错乱 (核心 Flexbox 布局)
+         */
+        .freezer-card-container {
+            display: flex;        /* 启用 Flexbox */
+            flex-wrap: wrap;      /* 关键: 允许卡片在空间不足时自动换行 */
+            gap: 20px;            /* 卡片之间的水平和垂直间距 */
+            justify-content: center; /* 居中对齐卡片，如果最后一行不满，也保持居中 */
+            padding: 0;
         }
 
-        .container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: auto;
-        }
+        .freezer-card {
+            /* 在大屏幕上 (假设 > 1200px), 一行显示 3 个卡片 */
+            /* 计算宽度: (100% / 3) - 间距调整 */
+            flex: 0 0 calc(33.333% - 13.333px);
+            min-width: 300px; /* 最小宽度，防止在小屏幕上卡片过窄 */
+            max-width: 380px; /* 最大宽度限制，防止卡片过宽 */
 
-        h2 {
-            margin-top: 0;
-            text-align: center;
-            color: #333;
-        }
-
-        h2::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: #3498db;
-            margin: 8px auto 0;
-            border-radius: 2px;
-        }
-
-        .brand-group-title {
-            margin-top: 40px;
-            margin-bottom: 15px;
-            font-size: 20px;
-            color: #2c3e50;
-            text-align: left;
-            padding-left: 5px;
-        }
-
-        .product-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 10px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             overflow: hidden;
-            width: calc(25% - 20px);
-            min-width: 250px;
-            max-width: 280px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+
+            /* 关键: 垂直 Flexbox 确保卡片内容等高，页脚对齐 */
             display: flex;
             flex-direction: column;
-            transition: 0.3s ease;
         }
 
-        .product-card:hover {
+        .freezer-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
-        .product-card img {
-            width: 100%;
+        /* 图片区域 */
+        .card-image-wrapper {
+            background-color: #e8eaf6;
             height: 200px;
-            object-fit: cover;
-            background: #ddd;
-        }
-
-        .product-info {
-            padding: 15px;
-            text-align: center;
-            flex-grow: 1;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #3f51b5;
+            font-size: 1.2rem;
         }
 
-        .product-info h3 {
+        /* 内容区域 */
+        .card-content {
+            padding: 20px;
+            flex-grow: 1; /* 关键: 允许内容区域伸展，确保所有卡片等高 */
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .capacity {
+            font-size: 1rem;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .specs-list {
+            list-style: none;
+            padding: 0;
             margin: 0;
-            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 0.95rem;
         }
 
-        .product-info p {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            line-height: 1.4;
+        .specs-list li {
+            border-bottom: 1px dashed #eee;
+            padding: 4px 0;
         }
 
-        .btn-back {
+        .specs-list li:last-child {
+            border-bottom: none;
+        }
+        
+        /* 页脚按钮区域 */
+        .card-footer {
+            margin-top: auto; /* 关键: 将页脚推到底部 */
+            padding: 15px 20px;
+            border-top: 1px solid #f0f0f0;
+            text-align: center;
+        }
+
+        .btn-details {
             display: inline-block;
-            background: #3498db;
-            padding: 10px 18px;
-            margin-bottom: 20px;
-            color: white;
-            border-radius: 5px;
+            padding: 10px 20px;
+            background-color: #3f51b5;
+            color: #fff;
             text-decoration: none;
-            transition: 0.2s;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.2s;
         }
 
-        .btn-back:hover {
-            background: #2980b9;
+        .btn-details:hover {
+            background-color: #303f9f;
         }
 
-        @media (max-width: 900px) {
-            .product-card {
-                width: calc(50% - 10px);
+        /* 响应式设计: 适应不同屏幕尺寸 */
+        /* 中等屏幕: 一行 2 个卡片 */
+        @media (max-width: 1200px) {
+            .freezer-card {
+                flex: 0 0 calc(50% - 10px); /* 10px = (2 * 20px / 2) */
+                max-width: none;
             }
         }
 
-        @media (max-width: 600px) {
-            .product-card {
-                width: 100%;
+        /* 小屏幕: 一行 1 个卡片 */
+        @media (max-width: 768px) {
+            .freezer-card {
+                flex: 0 0 100%;
+                max-width: none;
             }
         }
+
     </style>
 </head>
-
 <body>
 
-    <header>
-        Siong Cheong Trading
-        <img src="SCT_Logo.png" class="header-logo" alt="SCT Logo">
-    </header>
-
-    <div class="container">
-
-        <a class="btn-back" href="index.html">← 返回产品系列</a>
-
-        <h2>Freezer (冷冻柜) 产品列表</h2>
-
-        <!-- Panasonic -->
-        <h3 class="brand-group-title">Panasonic</h3>
-        <div class="product-grid">
-            <div class="product-card">
-                <img src="freezer_panasonic_1.jpg" alt="">
-                <div class="product-info">
-                    <h3>Panasonic 型号 A</h3>
-                    <p>详细说明可放这里。</p>
-                </div>
+    <section class="freezer-card-container">
+        
+        <div class="freezer-card" id="sharp-sjc118">
+            <div class="card-image-wrapper">
+                Sharp SJC118 (110L)
+            </div>
+            <div class="card-content">
+                <h3 class="product-title">Sharp SJC118</h3>
+                <p class="capacity">110 Liters (净容量)</p>
+                <ul class="specs-list">
+                    [cite_start]<li>**尺寸 (WxDxH):** 574 x 564 x 845 mm [cite: 422]</li>
+                    [cite_start]<li>**宽电压范围:** 160V - 260V [cite: 420]</li>
+                    [cite_start]<li>**特色:** 内置安全锁 [cite: 420]</li>
+                    [cite_start]<li>**功能:** 双开关设置 (Dual Switch Setting) [cite: 420]</li>
+                    [cite_start]<li>**照明:** LED 照明 [cite: 420]</li>
+                </ul>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn-details">查看详情</a>
             </div>
         </div>
 
-        <!-- Hisense -->
-        <h3 class="brand-group-title">Hisense</h3>
-        <div class="product-grid">
-            <div class="product-card">
-                <img src="freezer_hisense_1.jpg" alt="">
-                <div class="product-info">
-                    <h3>Hisense 型号 A</h3>
-                    <p>详细说明可放这里。</p>
-                </div>
+        <div class="freezer-card" id="sharp-sjc318">
+            <div class="card-image-wrapper">
+                Sharp SJC318 (310L)
+            </div>
+            <div class="card-content">
+                <h3 class="product-title">Sharp SJC318</h3>
+                [cite_start]<p class="capacity">310 Liters (净容量) [cite: 431]</p>
+                <ul class="specs-list">
+                    [cite_start]<li>**尺寸 (WxDxH):** 1116 x 664 x 845 mm [cite: 432]</li>
+                    [cite_start]<li>**宽电压范围:** 160V - 260V [cite: 429]</li>
+                    [cite_start]<li>**特色:** 内置安全锁 [cite: 429]</li>
+                    [cite_start]<li>**功能:** 双开关设置 (Dual Switch Setting) [cite: 429]</li>
+                    [cite_start]<li>**照明:** LED 照明 [cite: 429]</li>
+                </ul>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn-details">查看详情</a>
             </div>
         </div>
 
-        <!-- Sharp -->
-        <h3 class="brand-group-title">Sharp</h3>
-        <div class="product-grid">
-            <div class="product-card">
-                <img src="freezer_sharp_1.jpg" alt="">
-                <div class="product-info">
-                    <h3>Sharp 型号 A</h3>
-                    <p>详细说明可放这里。</p>
-                </div>
+        <div class="freezer-card" id="midea-md-rc151fzb01">
+            <div class="card-image-wrapper">
+                Midea 130L
+            </div>
+            <div class="card-content">
+                <h3 class="product-title">Midea MD-RC151FZB01</h3>
+                [cite_start]<p class="capacity">总容量 130L / 净容量 99L [cite: 439, 440]</p>
+                <ul class="specs-list">
+                    [cite_start]<li>**产品尺寸 (WxDxH):** 495 x 545 x 850 mm [cite: 438]</li>
+                    [cite_start]<li>**冷媒:** R600a [cite: 441]</li>
+                    [cite_start]<li>**特色:** 嵌入式把手 (Recessed Handle) [cite: 442]</li>
+                    [cite_start]<li>**控制:** 机械温控 (Mechanical Temperature Control) [cite: 443]</li>
+                    [cite_start]<li>**移动性:** 带滚轮，易于移动 [cite: 444]</li>
+                </ul>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn-details">查看详情</a>
             </div>
         </div>
 
-    </div>
+        <div class="freezer-card" id="hisense-fc663d4bwb">
+            <div class="card-image-wrapper">
+                Hisense FC663D4BWB
+            </div>
+            <div class="card-content">
+                <h3 class="product-title">Hisense FC663D4BWB</h3>
+                [cite_start]<p class="capacity">总容量 550 Liters [cite: 411]</p>
+                <ul class="specs-list">
+                    [cite_start]<li>**尺寸 (WHD):** 1702 x 842 x 709 mm [cite: 416]</li>
+                    [cite_start]<li>**断电保冷:** 0°C 下保冷 135 小时 [cite: 416]</li>
+                    [cite_start]<li>**功能:** 可切换 Freezer 或 Chiller (冷冻/冷藏) [cite: 416]</li>
+                    [cite_start]<li>**特点:** 无霜 (Frost Free) [cite: 416]</li>
+                </ul>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn-details">查看详情</a>
+            </div>
+        </div>
+
+        <div class="freezer-card" id="khind-fz708">
+            <div class="card-image-wrapper">
+                Khind FZ-708
+            </div>
+            <div class="card-content">
+                <h3 class="product-title">Khind FZ-708</h3>
+                [cite_start]<p class="capacity">708 Liters [cite: 402]</p>
+                <ul class="specs-list">
+                    [cite_start]<li>**类型:** 双门卧式冰柜 (2 doors Chest Freezer) [cite: 402]</li>
+                    [cite_start]<li>**尺寸 (LxWxH):** 1905 x 820 x 865 mm [cite: 410]</li>
+                    [cite_start]<li>**压缩机保修:** 5 年 [cite: 402]</li>
+                    [cite_start]<li>**一般保修:** 1 年 [cite: 407]</li>
+                </ul>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn-details">查看详情</a>
+            </div>
+        </div>
+        
+    </section>
 
 </body>
-
 </html>
