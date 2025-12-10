@@ -82,6 +82,7 @@
 
         .filter-controls {
             display: flex;
+            flex-wrap: wrap; /* FIX 1: 允许筛选组并排显示 */
             gap: 20px;
             background: #ecf0f1; /* 浅灰色 */
             border-radius: 0 8px 8px 8px; 
@@ -92,7 +93,7 @@
             overflow: hidden;
             padding: 0 15px; /* 隐藏时，水平 padding 保留，垂直 padding 设为 0 */
             transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-            flex-direction: column;
+            /* 删除了 flex-direction: column; */
             flex-grow: 1; /* 占据剩余宽度 */
         }
 
@@ -106,7 +107,7 @@
         .filter-group {
             display: flex;
             flex-direction: column;
-            width: 100%;
+            flex-basis: 45%; /* FIX 1: 允许两个组并排显示并保持响应性 */
             max-width: 300px;
         }
 
@@ -246,6 +247,11 @@
             }
             .filter-controls.active {
                 padding: 15px; 
+            }
+            /* 小屏幕上，筛选器组堆叠 */
+            .filter-group {
+                flex-basis: 100%;
+                margin-bottom: 10px;
             }
         }
     </style>
@@ -689,9 +695,7 @@
         <a href="index.html">← Back to Home</a>
     </div>
 
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js" 
+</div> <script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js" 
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
