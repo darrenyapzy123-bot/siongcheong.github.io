@@ -1,151 +1,142 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freezer 产品卡片列表</title>
+    <title>Commercial Freezer Series</title>
     <style>
-        /*
-         * ✅ 步骤 1: 清理所有隐藏的全角空格 / 异常字符
-         * - 所有样式均使用标准的半角字符和一致的命名。
-         *
-         * ✅ 步骤 2 & 3: 重新整理缩排 / 重新对齐所有 <div> 结构
-         * - 使用标准的 4 空格缩进。
-         * - 使用 Flexbox 布局保证 div 结构对齐。
-         */
-
         /* 通用重置 */
         *, *::before, *::after {
-            box-sizing: border-box; /* 确保 padding 和 border 不增加元素总宽度/高度 */
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
-            padding: 20px;
         }
 
-        /*
-         * ✅ 步骤 4: 确保 Freezer 卡片加入后不会再导致排版错乱 (核心 Flexbox 布局)
-         */
-        .freezer-card-container {
-            display: flex;        /* 启用 Flexbox */
-            flex-wrap: wrap;      /* 关键: 允许卡片在空间不足时自动换行 */
-            gap: 20px;            /* 卡片之间的水平和垂直间距 */
-            justify-content: center; /* 居中对齐卡片，如果最后一行不满，也保持居中 */
-            padding: 0;
+        /* 页面主体内容容器的样式，使用 Flexbox 实现灵活布局 */
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;       /* 允许内容（标题和卡片）换行 */
+            justify-content: center; /* 居中卡片和标题 */
+            gap: 25px;             /* 卡片之间的间距 */
+            padding: 40px 20px;
         }
 
-        .freezer-card {
-            /* 在大屏幕上 (假设 > 1200px), 一行显示 3 个卡片 */
-            /* 计算宽度: (100% / 3) - 间距调整 */
-            flex: 0 0 calc(33.333% - 13.333px);
-            min-width: 300px; /* 最小宽度，防止在小屏幕上卡片过窄 */
-            max-width: 380px; /* 最大宽度限制，防止卡片过宽 */
+        /* 品牌分组标题样式 */
+        .brand-group-title {
+            /*
+             * ✅ 用户添加的规则：强制标题独占一行
+             * flex: 0 0 100%; 表示不伸展(0)，不收缩(0)，基准宽度为 100%。
+             * 这确保了标题会占据父容器的整个宽度，并在其后强制换行。
+             */
+            flex: 0 0 100%; 
+            
+            width: 100%;
+            text-align: left;
+            margin: 30px 0 15px 0;
+            padding-left: 10px;
+            font-size: 1.8em; /* 增大字体以提高区分度 */
+            color: #34495e;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        /* 单个产品卡片样式 (Flexbox 弹性宽度优化) */
+        .product-card {
+            /* 优化：将固定 width 替换为 Flex 弹性宽度，
+             * 在大屏幕上强制一行显示 3 个卡片 (33.333% 减去间距调整)
+             * 这确保了卡片排列整齐且不因数量变化而错乱。
+             */
+            flex: 0 0 calc(33.333% - 16.666px); /* 25px / 3 * 2 = 16.666px */
+            max-width: 350px; /* 设定最大宽度，防止卡片过大 */
+            min-width: 280px;
 
             background-color: #ffffff;
             border: 1px solid #e0e0e0;
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
             transition: transform 0.3s, box-shadow 0.3s;
-
-            /* 关键: 垂直 Flexbox 确保卡片内容等高，页脚对齐 */
+            
+            /* 垂直 Flexbox 布局以确保页脚对齐 */
             display: flex;
             flex-direction: column;
         }
 
-        .freezer-card:hover {
+        .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
 
-        /* 图片区域 */
-        .card-image-wrapper {
-            background-color: #e8eaf6;
-            height: 200px;
+        .product-image-box {
+            background-color: #fcfcfc;
+            padding: 25px;
+            height: 250px;
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-weight: bold;
-            color: #3f51b5;
-            font-size: 1.2rem;
+            align-items: center;
         }
 
-        /* 内容区域 */
-        .card-content {
-            padding: 20px;
-            flex-grow: 1; /* 关键: 允许内容区域伸展，确保所有卡片等高 */
+        .product-image {
+            max-width: 90%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
-        .product-title {
-            font-size: 1.5rem;
-            color: #333;
-            margin-bottom: 5px;
+        .product-details {
+            padding: 15px;
+            flex-grow: 1; /* 关键：确保内容区域占据剩余空间，维持卡片等高 */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* 确保标题和按钮分隔 */
         }
 
-        .capacity {
-            font-size: 1rem;
-            color: #777;
-            margin-bottom: 15px;
-        }
-
-        .specs-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            line-height: 1.8;
-            font-size: 0.95rem;
-        }
-
-        .specs-list li {
-            border-bottom: 1px dashed #eee;
-            padding: 4px 0;
-        }
-
-        .specs-list li:last-child {
-            border-bottom: none;
+        .product-details h3 {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 8px;
         }
         
-        /* 页脚按钮区域 */
-        .card-footer {
-            margin-top: auto; /* 关键: 将页脚推到底部 */
-            padding: 15px 20px;
-            border-top: 1px solid #f0f0f0;
-            text-align: center;
+        .product-details p {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            flex-grow: 1; /* 确保描述部分尽可能填充空间 */
         }
 
-        .btn-details {
+        .detail-button {
             display: inline-block;
-            padding: 10px 20px;
-            background-color: #3f51b5;
-            color: #fff;
+            padding: 10px 25px;
+            background-color: #3498db; 
+            color: white;
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 5px;
             font-weight: bold;
-            transition: background-color 0.2s;
+            transition: background-color 0.3s;
+            margin-top: auto; /* 确保按钮在底部对齐 */
+        }
+        
+        .detail-button:hover {
+            background-color: #2980b9;
         }
 
-        .btn-details:hover {
-            background-color: #303f9f;
-        }
-
-        /* 响应式设计: 适应不同屏幕尺寸 */
-        /* 中等屏幕: 一行 2 个卡片 */
+        /* 响应式设计: 确保布局在小屏幕上不乱 */
         @media (max-width: 1200px) {
-            .freezer-card {
-                flex: 0 0 calc(50% - 10px); /* 10px = (2 * 20px / 2) */
-                max-width: none;
+            .product-card {
+                /* 中等屏幕：一行 2 个卡片 */
+                flex: 0 0 calc(50% - 12.5px); /* 25px / 2 = 12.5px */
             }
         }
-
-        /* 小屏幕: 一行 1 个卡片 */
+        
         @media (max-width: 768px) {
-            .freezer-card {
+            .product-card {
+                /* 小屏幕：一行 1 个卡片 */
                 flex: 0 0 100%;
-                max-width: none;
             }
         }
 
@@ -153,107 +144,476 @@
 </head>
 <body>
 
-    <section class="freezer-card-container">
+    <header style="background-color: #0d47a1; color: white; padding: 25px; text-align: center;">
+        <h1>Commercial Freezer Series</h1>
+    </header>
+
+    <div class="filter-bar" style="text-align: center; padding: 20px; background-color: #ecf0f1;">
+        <h2>All Models</h2>
+    </div>
+
+    <div class="products-container">
         
-        <div class="freezer-card" id="sharp-sjc118">
-            <div class="card-image-wrapper">
-                Sharp SJC118 (110L)
+        <h2 class="brand-group-title">Sharp Freezer Series</h2>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/sharp-sjc118.png" alt="Sharp SJC118 冷冻柜" class="product-image">
             </div>
-            <div class="card-content">
-                <h3 class="product-title">Sharp SJC118</h3>
-                <p class="capacity">110 Liters (净容量)</p>
-                <ul class="specs-list">
-                    [cite_start]<li>**尺寸 (WxDxH):** 574 x 564 x 845 mm [cite: 422]</li>
-                    [cite_start]<li>**宽电压范围:** 160V - 260V [cite: 420]</li>
-                    [cite_start]<li>**特色:** 内置安全锁 [cite: 420]</li>
-                    [cite_start]<li>**功能:** 双开关设置 (Dual Switch Setting) [cite: 420]</li>
-                    [cite_start]<li>**照明:** LED 照明 [cite: 420]</li>
-                </ul>
+            <div class="product-details">
+                <h3>Sharp SJC118 (110L)</h3>
+                <p>Chest freezer, High voltage range: 160V-260V. Dimensions: W574xD564xH845mm.</p>
+                <a href="freezer-details/sjc118.html" class="detail-button">View Details</a>
             </div>
-            <div class="card-footer">
-                <a href="#" class="btn-details">查看详情</a>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/sharp-sjc168.png" alt="Sharp SJC168 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Sharp SJC168 (160L)</h3>
+                <p>Chest freezer, equipped with safety lock and LED lighting. Dimensions: W754xD564xH845mm.</p>
+                <a href="freezer-details/sjc168.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/sharp-sjc218.png" alt="Sharp SJC218 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Sharp SJC218 (220L)</h3>
+                <p>Medium chest freezer. Equipped with safety lock and dual switch setting. Dimensions: W950xD564xH845mm.</p>
+                <a href="freezer-details/sjc218.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/sharp-sjc318.png" alt="Sharp SJC318 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Sharp SJC318 (310L)</h3>
+                <p>Large chest freezer. High voltage range: 160V-260V. Dimensions: W1116xD664xH845mm.</p>
+                <a href="freezer-details/sjc318.html" class="detail-button">View Details</a>
             </div>
         </div>
 
-        <div class="freezer-card" id="sharp-sjc318">
-            <div class="card-image-wrapper">
-                Sharp SJC318 (310L)
+
+        <h2 class="brand-group-title">Panalux Freezer Series</h2>
+        
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/panalux-model-1.png" alt="Panalux 卧式冷冻柜 1" class="product-image">
             </div>
-            <div class="card-content">
-                <h3 class="product-title">Sharp SJC318</h3>
-                [cite_start]<p class="capacity">310 Liters (净容量) [cite: 431]</p>
-                <ul class="specs-list">
-                    [cite_start]<li>**尺寸 (WxDxH):** 1116 x 664 x 845 mm [cite: 432]</li>
-                    [cite_start]<li>**宽电压范围:** 160V - 260V [cite: 429]</li>
-                    [cite_start]<li>**特色:** 内置安全锁 [cite: 429]</li>
-                    [cite_start]<li>**功能:** 双开关设置 (Dual Switch Setting) [cite: 429]</li>
-                    [cite_start]<li>**照明:** LED 照明 [cite: 429]</li>
-                </ul>
-            </div>
-            <div class="card-footer">
-                <a href="#" class="btn-details">查看详情</a>
+            <div class="product-details">
+                <h3>Panalux CF 160L (Chest Type)</h3>
+                <p>Chest freezer. Comes with lock and key. Easy to move with bottom wheels. **(Please replace with actual model number)**</p>
+                <a href="freezer-details/panalux-160l.html" class="detail-button">View Details</a>
             </div>
         </div>
 
-        <div class="freezer-card" id="midea-md-rc151fzb01">
-            <div class="card-image-wrapper">
-                Midea 130L
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/panalux-model-2.png" alt="Panalux 卧式冷冻柜 2" class="product-image">
             </div>
-            <div class="card-content">
-                <h3 class="product-title">Midea MD-RC151FZB01</h3>
-                [cite_start]<p class="capacity">总容量 130L / 净容量 99L [cite: 439, 440]</p>
-                <ul class="specs-list">
-                    [cite_start]<li>**产品尺寸 (WxDxH):** 495 x 545 x 850 mm [cite: 438]</li>
-                    [cite_start]<li>**冷媒:** R600a [cite: 441]</li>
-                    [cite_start]<li>**特色:** 嵌入式把手 (Recessed Handle) [cite: 442]</li>
-                    [cite_start]<li>**控制:** 机械温控 (Mechanical Temperature Control) [cite: 443]</li>
-                    [cite_start]<li>**移动性:** 带滚轮，易于移动 [cite: 444]</li>
-                </ul>
-            </div>
-            <div class="card-footer">
-                <a href="#" class="btn-details">查看详情</a>
+            <div class="product-details">
+                <h3>Panalux CF 240L (Chest Type)</h3>
+                <p>Medium chest freezer. High-efficiency cooling with double-door design. **(Please replace with actual model number)**</p>
+                <a href="freezer-details/panalux-240l.html" class="detail-button">View Details</a>
             </div>
         </div>
 
-        <div class="freezer-card" id="hisense-fc663d4bwb">
-            <div class="card-image-wrapper">
-                Hisense FC663D4BWB
+        <h2 class="brand-group-title">Khind Freezer Series</h2>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/khind-fz100.png" alt="Khind FZ100 冷冻柜" class="product-image">
             </div>
-            <div class="card-content">
-                <h3 class="product-title">Hisense FC663D4BWB</h3>
-                [cite_start]<p class="capacity">总容量 550 Liters [cite: 411]</p>
-                <ul class="specs-list">
-                    [cite_start]<li>**尺寸 (WHD):** 1702 x 842 x 709 mm [cite: 416]</li>
-                    [cite_start]<li>**断电保冷:** 0°C 下保冷 135 小时 [cite: 416]</li>
-                    [cite_start]<li>**功能:** 可切换 Freezer 或 Chiller (冷冻/冷藏) [cite: 416]</li>
-                    [cite_start]<li>**特点:** 无霜 (Frost Free) [cite: 416]</li>
-                </ul>
-            </div>
-            <div class="card-footer">
-                <a href="#" class="btn-details">查看详情</a>
-            </div>
-        </div>
-
-        <div class="freezer-card" id="khind-fz708">
-            <div class="card-image-wrapper">
-                Khind FZ-708
-            </div>
-            <div class="card-content">
-                <h3 class="product-title">Khind FZ-708</h3>
-                [cite_start]<p class="capacity">708 Liters [cite: 402]</p>
-                <ul class="specs-list">
-                    [cite_start]<li>**类型:** 双门卧式冰柜 (2 doors Chest Freezer) [cite: 402]</li>
-                    [cite_start]<li>**尺寸 (LxWxH):** 1905 x 820 x 865 mm [cite: 410]</li>
-                    [cite_start]<li>**压缩机保修:** 5 年 [cite: 402]</li>
-                    [cite_start]<li>**一般保修:** 1 年 [cite: 407]</li>
-                </ul>
-            </div>
-            <div class="card-footer">
-                <a href="#" class="btn-details">查看详情</a>
+            <div class="product-details">
+                <h3>Khind FZ100 (100L Net)</h3>
+                <p>Chest freezer. Net capacity 100L. Dimensions: 545 x 545 x 845mm.</p>
+                <a href="freezer-details/khind-fz100.html" class="detail-button">View Details</a>
             </div>
         </div>
         
-    </section>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/khind-fz142.png" alt="Khind FZ142 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Khind FZ142 (142L Net)</h3>
+                <p>Chest freezer. Net capacity 142L. Dimensions: 635 x 565 x 850mm.</p>
+                <a href="freezer-details/khind-fz142.html" class="detail-button">View Details</a>
+            </div>
+        </div>
 
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/khind-fz208.png" alt="Khind FZ208 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Khind FZ208 (208L Net)</h3>
+                <p>Chest freezer. Net capacity 208L. Dimensions: 889 x 565 x 850mm.</p>
+                <a href="freezer-details/khind-fz208.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/khind-fz295.png" alt="Khind FZ295 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Khind FZ295 (295L Net)</h3>
+                <p>Chest freezer. Net capacity 295L. Dimensions: 1120 x 635 x 858mm.</p>
+                <a href="freezer-details/khind-fz295.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/khind-fz400.png" alt="Khind FZ-400 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Khind FZ-400 (508L Gross)</h3>
+                <p>Double-door chest freezer. Gross capacity 508L, with door lock and key.</p>
+                <a href="freezer-details/khind-fz400.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/khind-fz508.png" alt="Khind FZ-508 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Khind FZ-508 (508L)</h3>
+                <p>Double-door chest freezer. **5 Year Compressor Warranty**, Dimensions: 1905 x 820 x 865mm.</p>
+                <a href="freezer-details/khind-fz508.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/khind-fz708.png" alt="Khind FZ-708 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Khind FZ-708 (708L)</h3>
+                <p>Large double-door chest freezer. **5 Year Compressor Warranty**, 1 Year General Warranty.</p>
+                <a href="freezer-details/khind-fz708.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/khind-upright-245l.png" alt="Khind 立式冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Khind Upright Freezer (245L Gross)</h3>
+                <p>Upright freezer, 7 drawers, 5 year motor warranty. Dimensions: H170 x D60 x W60CM.</p>
+                <a href="freezer-details/khind-upright.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+
+        <h2 class="brand-group-title">Warehouse Freezer Series</h2>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/warehouse-fz90.png" alt="Warehouse FZ-90 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Warehouse FZ-90 (90L)</h3>
+                <p>Chest freezer. 90 Liters. Dimensions: 566x462x872mm.</p>
+                <a href="freezer-details/warehouse-fz90.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/warehouse-fz1188.png" alt="Warehouse FZ-1188 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Warehouse FZ-1188 (110L)</h3>
+                <p>Chest freezer. 110 Liters. Cabinet Dimensions: 575 x 625 x 867mm.</p>
+                <a href="freezer-details/warehouse-fz1188.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/warehouse-fz1588.png" alt="Warehouse FZ1588 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Warehouse FZ1588 (150L)</h3>
+                <p>Chest freezer. 150 Liters. Product Dimensions: 850 x 580 x 883mm.</p>
+                <a href="freezer-details/warehouse-fz1588.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/warehouse-fz2588.png" alt="Warehouse FZ-2588 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Warehouse FZ-2588 (215L)</h3>
+                <p>Chest freezer with glass door. 215 Liters. Cabinet Dimensions: 940 x 560 x 860mm.</p>
+                <a href="freezer-details/warehouse-fz2588.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/warehouse-fz3588.png" alt="Warehouse FZ-3588 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Warehouse FZ-3588 (315L)</h3>
+                <p>Chest freezer with glass door. 315 Liters. Cabinet Dimensions: 1160 x 665 x 889mm.</p>
+                <a href="freezer-details/warehouse-fz3588.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/warehouse-fz4588.png" alt="Warehouse FZ-4588 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Warehouse FZ-4588 (430L)</h3>
+                <p>Chest freezer, double-door design. 430 Liters. Cabinet Dimensions: 1326 x 755 x 900mm.</p>
+                <a href="freezer-details/warehouse-fz4588.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/warehouse-fz5588.png" alt="Warehouse FZ-5588 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Warehouse FZ-5588 (530L)</h3>
+                <p>Chest freezer, double-door design. Cabinet Dimensions: 1606 x 755 x 900mm.</p>
+                <a href="freezer-details/warehouse-fz5588.html" class="detail-button">View Details</a>
+            </div>
+            </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/warehouse-wd500wr.png" alt="Warehouse WD-500WR 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Warehouse WD-500WR (418L Net)</h3>
+                <p>500L Chest Freezer. Net capacity 418L, silent hinge, fast freezing.</p>
+                <a href="freezer-details/warehouse-wd500wr.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/warehouse-md860wr.png" alt="Warehouse MD-860WR 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Warehouse MD-860WR (860L Gross)</h3>
+                <p>Gross capacity 860L, Net capacity 702L. Double glass doors, dual mode.</p>
+                <a href="freezer-details/warehouse-md860wr.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/warehouse-showcase220l.png" alt="Warehouse Showcase 220L" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Warehouse Showcase (220L)</h3>
+                <p>Glass door display freezer. Dimensions: W880 x D880 x H720mm.</p>
+                <a href="freezer-details/warehouse-sc220l.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/warehouse-showcase330l.png" alt="Warehouse Showcase 330L" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Warehouse Showcase (330L)</h3>
+                <p>Glass door display freezer. Dimensions: W1234 x D653 x H850mm.</p>
+                <a href="freezer-details/warehouse-sc330l.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/warehouse-showcase550l.png" alt="Warehouse Showcase 550L" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Warehouse Showcase (550L)</h3>
+                <p>Large glass door display freezer. Dimensions: W1634 x D653 x H900mm.</p>
+                <a href="freezer-details/warehouse-sc550l.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        
+        <h2 class="brand-group-title">Midea Freezer Series</h2>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/midea-mdrc151.png" alt="Midea MD-RC151FZB01 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Midea MD-RC151FZB01 (99L Net)</h3>
+                <p>Chest freezer. Net capacity 99L, with wheels. Product Dimensions: 495 x 545 x 850mm.</p>
+                <a href="freezer-details/midea-rc151.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/midea-mdrc207.png" alt="Midea MD-RC207FZB01 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Midea MD-RC207FZB01 (142L Net)</h3>
+                <p>Chest freezer. Net capacity 142L. Product Dimensions: 632 x 550 x 850mm.</p>
+                <a href="freezer-details/midea-rc207.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/midea-mdrz458.png" alt="Midea MDRZ458FZG01Y 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Midea MDRZ458FZG01Y (336L)</h3>
+                <p>White ice cream freezer. Double glass doors, 5-year compressor warranty.</p>
+                <a href="freezer-details/midea-rz458.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/midea-mdrz577.png" alt="Midea MDRZ577FEG01Y 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Midea MDRZ577FEG01Y (428L)</h3>
+                <p>White ice cream freezer. Dimensions: 1405 x 695 x 845mm. 5-year compressor warranty.</p>
+                <a href="freezer-details/midea-rz577.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+
+        <h2 class="brand-group-title">Hisense Freezer Series</h2>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/hisense-fc125d4bws.png" alt="Hisense FC125D4BWS 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Hisense FC125D4BWS (128L)</h3>
+                <p>Chest freezer. Can keep cold for 5.5 days after power loss, 3-star energy efficiency rating.</p>
+                <a href="freezer-details/hisense-fc125.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/hisense-fc206daw.png" alt="Hisense FC206DAW 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Hisense FC206DAW (178L)</h3>
+                <p>Chest freezer. Gross capacity 178L. Can keep cold for 7.3 days after power loss.</p>
+                <a href="freezer-details/hisense-fc206.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/hisense-fc258daw.png" alt="Hisense FC258DAW 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Hisense FC258DAW (248L)</h3>
+                <p>Chest freezer. Can keep cold for 7.3 days after power loss, 5-star energy efficiency rating.</p>
+                <a href="freezer-details/hisense-fc258.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/hisense-fc326d4bwys.png" alt="Hisense FC326D4BWYS 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Hisense FC326D4BWYS (300L)</h3>
+                <p>Chest freezer. Can keep cold for 135 hours after power loss.</p>
+                <a href="freezer-details/hisense-fc326.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/hisense-fc428d4bwy.png" alt="Hisense FC428D4BWY 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Hisense FC428D4BWY (350L)</h3>
+                <p>Chest freezer. Can keep cold for 5.5 days after power loss.</p>
+                <a href="freezer-details/hisense-fc428.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/hisense-fc663d4bwb.png" alt="Hisense FC663D4BWB 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Hisense FC663D4BWB (550L Gross)</h3>
+                <p>Chest freezer. Convertible to freezer or chiller (Frost Free). Can keep cold for 5.5 days after power loss.</p>
+                <a href="freezer-details/hisense-fc663.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/hisense-fc900d4bwbp.png" alt="Hisense FC900D4BWBP 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Hisense FC900D4BWBP (780L)</h3>
+                <p>Extra-large capacity chest freezer. Can keep cold for 8 days after power loss.</p>
+                <a href="freezer-details/hisense-fc900.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/hisense-fv188n4awn.png" alt="Hisense FV188N4AWN 立式冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Hisense FV188N4AWN (180L)</h3>
+                <p>Frost Free Upright Freezer. Dimensions: W55 x D55.7 x H1434cm.</p>
+                <a href="freezer-details/hisense-fv188.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/hisense-fv280n4awnp.png" alt="Hisense FV280N4AWNP 立式冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Hisense FV280N4AWNP (280L)</h3>
+                <p>Frost Free Upright Freezer. **2 Year + 12 Year Warranty**.</p>
+                <a href="freezer-details/hisense-fv280.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        
+        <h2 class="brand-group-title">Komachi Freezer Series</h2>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/komachi-90l.png" alt="Komachi 90L 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Komachi 90L Freezer</h3>
+                <p>Chest freezer. Dimensions: 530 x 430 x 840mm.</p>
+                <a href="freezer-details/komachi-90l.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/komachi-kmw1688.png" alt="Komachi KMW-1688 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Komachi KMW-1688 (160L)</h3>
+                <p>Chest freezer. 160 Liters.</p>
+                <a href="freezer-details/komachi-kmw1688.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/komachi-kmw2588.png" alt="Komachi KMW-2588 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Komachi KMW-2588 (250L)</h3>
+                <p>Chest freezer. 250 Liters.</p>
+                <a href="freezer-details/komachi-kmw2588.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+        
+        <h2 class="brand-group-title">Narutron Freezer Series</h2>
+        <div class="product-card">
+            <div class="product-image-box">
+                <img src="images/narutron-110l-sliding.png" alt="Narutron 110L 冷冻柜" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Narutron 110L Sliding Glass Door Freezer</h3>
+                <p>Sliding glass door freezer. 110 Liters, suitable for retail display.</p>
+                <a href="freezer-details/narutron-110l.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+    </footer>
+    
 </body>
 </html>
