@@ -11,6 +11,8 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background: #f5f5f5;
+            /* 新增：添加一个过渡效果，使内容区域的变化更平滑 */
+            transition: padding-right 0.5s; 
         }
 
         /* ------------------- 汉堡菜单和侧边栏样式 ------------------- */
@@ -116,7 +118,7 @@
             font-size: 22px;
             font-weight: bold;
             position: relative;
-            padding-left: 60px; /* 为左上角的汉堡图标留出空间 */
+            padding-left: 60px;
         }
         
         .header-logo {
@@ -151,21 +153,19 @@
             border-radius: 2px;
         }
 
-        /* ------------------- 产品网格布局 (修改) ------------------- */
+        /* ------------------- 产品网格布局 ------------------- */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
-        /* -------------------------------------------------------- */
 
-        /* ------------------- 产品卡片样式 (修改) ------------------- */
+        /* ------------------- 产品卡片样式 ------------------- */
         .product-card {
             background: white;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            /* 原有的 flex 宽度属性已删除 */
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
@@ -223,8 +223,6 @@
             background: #2980b9;
         }
         
-        /* ------------------- 媒体查询 (修改) ------------------- */
-        /* 删除所有针对 .product-card 宽度的媒体查询，因为 Grid 已经处理了 */
         @media (max-width: 600px) {
             header {
                 padding-left: 20px;
@@ -290,8 +288,8 @@
             <div class="product-info">
                 <h3>Chiller (冷柜)</h3>
                 <p>直立式饮料展示柜、商用冷藏柜。</p>
-                <a class="btn-chiller" href="chiller.html">查看详情</a>
             </div>
+            <a class="btn-chiller" href="chiller.html">查看详情</a>
         </div>
 
         <div class="product-card">
@@ -299,8 +297,8 @@
             <div class="product-info">
                 <h3>Freezer (冷冻柜)</h3>
                 <p>卧式冷冻柜、立式冷柜和冰淇淋柜。</p>
-                <a class="btn-chiller" href="freezer.html">查看详情</a>
             </div>
+            <a class="btn-chiller" href="freezer.html">查看详情</a>
         </div>
 
         <div class="product-card">
@@ -308,8 +306,8 @@
             <div class="product-info">
                 <h3>Air Conditioner (空调)</h3>
                 <p>分体式、窗式空调及移动式空调。</p>
-                <a class="btn-chiller" href="ac.html">查看详情</a>
             </div>
+            <a class="btn-chiller" href="ac.html">查看详情</a>
         </div>
 
         <div class="product-card">
@@ -317,8 +315,8 @@
             <div class="product-info">
                 <h3>TV (电视)</h3>
                 <p>高清智能电视 · 各式尺寸和型号。</p>
-                <a class="btn-chiller" href="tv.html">查看详情</a>
             </div>
+            <a class="btn-chiller" href="tv.html">查看详情</a>
         </div>
 
         <div class="product-card">
@@ -326,8 +324,8 @@
             <div class="product-info">
                 <h3>Washer (洗衣机)</h3>
                 <p>全自动、半自动、波轮/滚筒洗衣机。</p>
-                <a class="btn-chiller" href="washer.html">查看详情</a>
             </div>
+            <a class="btn-chiller" href="washer.html">查看详情</a>
         </div>
 
         <div class="product-card">
@@ -335,8 +333,8 @@
             <div class="product-info">
                 <h3>Dryer (烘干机)</h3>
                 <p>热泵式、冷凝式、排风式烘干机。</p>
-                <a class="btn-chiller" href="dryer.html">查看详情</a>
             </div>
+            <a class="btn-chiller" href="dryer.html">查看详情</a>
         </div>
 
         <div class="product-card">
@@ -344,8 +342,8 @@
             <div class="product-info">
                 <h3>Kitchen Appliances</h3>
                 <p>烤箱、炉灶、抽油烟机等烹饪设备。</p>
-                <a class="btn-chiller" href="kitchen.html">查看详情</a>
             </div>
+            <a class="btn-chiller" href="kitchen.html">查看详情</a>
         </div>
 
         <div class="product-card">
@@ -353,8 +351,8 @@
             <div class="product-info">
                 <h3>Small Appliances</h3>
                 <p>吸尘机、热水器、风扇等小型电器。</p>
-                <a class="btn-chiller" href="small.html">查看详情</a>
             </div>
+            <a class="btn-chiller" href="small.html">查看详情</a>
         </div>
 
     </div>
@@ -365,6 +363,10 @@
     window.toggleNav = function() {
         const sidebar = document.getElementById("mySidebar");
         const overlay = document.getElementById("overlay");
+        const body = document.body;
+        
+        // 假设滚动条宽度约为 17px
+        const scrollBarWidth = '17px'; 
         
         // 侧边栏宽度设为250px
         const isOpened = sidebar.style.width === '250px';
@@ -372,11 +374,16 @@
         if (isOpened) {
             sidebar.style.width = '0';
             overlay.style.display = 'none';
-            document.body.style.overflow = 'auto'; // 恢复滚动
+            body.style.overflow = 'auto'; // 恢复滚动
+            body.style.paddingRight = '0'; // 恢复右边距，抵消偏移
         } else {
+            // 只有当页面有滚动条时才添加 padding-right
+            if (body.scrollHeight > body.clientHeight) {
+                body.style.paddingRight = scrollBarWidth;
+            }
+            body.style.overflow = 'hidden'; // 禁止滚动
             sidebar.style.width = '250px';
             overlay.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // 禁止滚动
         }
     }
 
