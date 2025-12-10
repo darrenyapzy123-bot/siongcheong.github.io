@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Commercial Freezer Series - 带筛选功能</title>
+    <title>Commercial Freezer Series - 下拉筛选</title>
     <style>
         /* 通用重置 */
         *, *::before, *::after {
@@ -14,151 +14,59 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
-            transition: margin-left .3s; /* 用于侧边栏打开时主体内容移动效果 */
         }
         
-        /* ------------------- 顶部导航和汉堡菜单样式 ------------------- */
+        /* ------------------- 顶部导航和筛选控制区样式 ------------------- */
         header {
             background-color: #0d47a1; 
             color: white; 
             padding: 20px; 
             text-align: center;
-            position: sticky; /* 顶部固定 */
-            top: 0;
-            z-index: 50; /* 低于侧边栏 */
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         header h1 {
-            font-size: 1.5em;
+            font-size: 1.8em;
+            margin-bottom: 5px;
         }
 
-        #menu-icon {
-            position: absolute;
-            left: 20px;
-            font-size: 2em;
-            cursor: pointer;
-            color: white;
-            z-index: 51; 
-            padding: 5px;
-        }
-
-        /* ------------------- 侧边栏 (Burger Menu Content) ------------------- */
-        #sidebar-menu {
-            height: 100%;
-            width: 300px; /* 侧边栏宽度 */
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            background-color: #ffffff;
-            overflow-y: auto; /* 允许滚动 */
-            padding-top: 60px;
-            transition: 0.3s;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-            transform: translateX(-100%); /* 默认隐藏在左侧 */
-        }
-        
-        #sidebar-menu.open {
-            transform: translateX(0); /* 显示时滑入 */
-        }
-
-        #sidebar-menu .sidebar-header {
-            position: fixed; /* 固定头部 */
-            top: 0;
-            left: 0;
-            /* 宽度与侧边栏一致，但需要调整，因为侧边栏默认偏移 */
-            width: 300px; 
-            background-color: #34495e;
-            color: white;
-            padding: 15px 20px;
-            font-size: 1.2em;
-            font-weight: bold;
+        /* 筛选控制容器 (模拟图片中的控制条) */
+        #filter-controls {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* 筛选和返回首页按钮分居两边 */
             align-items: center;
-            z-index: 1001; /* 确保头部在侧边栏内容之上 */
-        }
-        
-        /* 侧边栏头部在打开时需要移动到正确位置 */
-        #sidebar-menu.open .sidebar-header {
-            left: 0;
-            transition: left 0.3s;
-        }
-
-
-        #close-btn {
-            font-size: 2em;
-            cursor: pointer;
-            color: white;
-            line-height: 0.5;
-        }
-        
-        #filter-container {
-            padding: 20px;
-        }
-
-        /* 覆盖层 (在菜单打开时遮住主内容) */
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 999;
-            display: none; /* 默认隐藏 */
-            transition: opacity 0.3s;
-        }
-
-        /* ------------------- 侧边栏按钮样式 ------------------- */
-        .filter-btn {
-            display: block; 
-            width: 100%;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            border: 1px solid #bdc3c7;
-            border-radius: 5px;
-            background-color: #f4f7f6;
-            transition: background-color 0.2s, color 0.2s;
-            font-size: 1em;
-            font-weight: 600;
-            text-align: left;
-        }
-
-        .filter-btn:hover {
+            padding: 15px 20px;
             background-color: #ecf0f1;
+            border-bottom: 1px solid #e0e0e0;
         }
 
-        .filter-btn.active {
-            background-color: #3498db;
-            color: white;
-            border-color: #3498db;
+        /* 下拉菜单样式 */
+        #brand-filter-dropdown {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid #bdc3c7;
+            background-color: white;
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
-        
+
         /* 返回首页按钮 */
         #home-btn {
-            display: block;
-            width: 100%;
-            padding: 12px 15px;
-            margin-top: 30px;
-            background-color: #e74c3c;
+            padding: 8px 15px;
+            background-color: #3498db; /* 使用蓝色作为主色调 */
             color: white;
-            text-align: center;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
             transition: background-color 0.3s;
+            font-size: 0.95em;
         }
 
         #home-btn:hover {
-            background-color: #c0392b;
+            background-color: #2980b9;
         }
 
-        /* ------------------- 产品列表样式 ------------------- */
+        /* ------------------- 产品列表样式 (保持不变) ------------------- */
         .products-container {
             display: flex;
             flex-wrap: wrap;       
@@ -248,11 +156,6 @@
             margin-top: auto;
         }
         
-        .detail-button:hover {
-            background-color: #2980b9;
-        }
-
-        /* 响应式设计: 小屏幕布局 */
         @media (max-width: 1200px) {
             .product-card {
                 flex: 0 0 calc(50% - 12.5px); 
@@ -263,38 +166,38 @@
             .product-card {
                 flex: 0 0 100%;
             }
+            #filter-controls {
+                flex-direction: column; /* 小屏幕垂直堆叠 */
+                align-items: stretch;
+            }
+            #brand-filter-dropdown, #home-btn {
+                margin-bottom: 10px;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
     
-    <div id="overlay"></div>
-
-    <div id="sidebar-menu">
-        <div class="sidebar-header">
-            <span>筛选 (Filter)</span>
-            <span id="close-btn">&times;</span>
-        </div>
-        
-        <div id="filter-container">
-            <button class="filter-btn active" data-filter="all">所有品牌</button>
-            <button class="filter-btn" data-filter="Sharp">Sharp</button>
-            <button class="filter-btn" data-filter="Panalux">Panalux</button>
-            <button class="filter-btn" data-filter="Khind">Khind</button>
-            <button class="filter-btn" data-filter="Warehouse">Warehouse</button>
-            <button class="filter-btn" data-filter="Midea">Midea</button>
-            <button class="filter-btn" data-filter="Hisense">Hisense</button>
-            <button class="filter-btn" data-filter="Komachi">Komachi</button>
-            <button class="filter-btn" data-filter="Narutron">Narutron</button>
-            
-            <a href="index.html" id="home-btn">返回首页 (Back to Home)</a>
-        </div>
-    </div>
-
     <header>
-        <div id="menu-icon">&#9776;</div>
         <h1>Commercial Freezer Series</h1>
     </header>
+
+    <div id="filter-controls">
+        <select id="brand-filter-dropdown" onchange="filterProducts(this.value)">
+            <option value="all">筛选品牌 (Filter Brand)</option>
+            <option value="Sharp">Sharp</option>
+            <option value="Panalux">Panalux</option>
+            <option value="Khind">Khind</option>
+            <option value="Warehouse">Warehouse</option>
+            <option value="Midea">Midea</option>
+            <option value="Hisense">Hisense</option>
+            <option value="Komachi">Komachi</option>
+            <option value="Narutron">Narutron</option>
+        </select>
+        
+        <a href="index.html" id="home-btn">返回首页 (Back to Home)</a>
+    </div>
 
     <div class="products-container">
         
@@ -759,66 +662,25 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- 侧边栏控制元素 ---
-            const sidebar = document.getElementById('sidebar-menu');
-            const menuIcon = document.getElementById('menu-icon');
-            const closeBtn = document.getElementById('close-btn');
-            const overlay = document.getElementById('overlay');
-
-            // --- 过滤功能元素 ---
-            const filterButtons = document.querySelectorAll('.filter-btn');
+            // 获取所有需要操作的元素
+            const dropdown = document.getElementById('brand-filter-dropdown');
             const allProducts = document.querySelectorAll('.product-card');
             const allTitles = document.querySelectorAll('.brand-group-title');
 
-            // ----------------------------------------------------
-            // 侧边栏/汉堡菜单 控制逻辑
-            // ----------------------------------------------------
-            function toggleSidebar() {
-                const isOpen = sidebar.classList.toggle('open');
-                
-                // 切换覆盖层显示/隐藏
-                overlay.style.display = isOpen ? 'block' : 'none';
-                
-                // 阻止主体内容滚动，同时确保点击关闭按钮或覆盖层时恢复滚动
-                document.body.style.overflow = isOpen ? 'hidden' : '';
-            }
-
-            // 绑定事件监听器
-            menuIcon.addEventListener('click', toggleSidebar);
-            closeBtn.addEventListener('click', toggleSidebar);
-            overlay.addEventListener('click', toggleSidebar); 
-
-            // ----------------------------------------------------
-            // 过滤功能逻辑
-            // ----------------------------------------------------
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const filter = this.getAttribute('data-filter');
-                    
-                    // 1. 更新按钮的激活状态
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-
-                    // 2. 执行过滤操作
-                    filterProducts(filter);
-
-                    // 3. 过滤完成后自动关闭侧边栏
-                    // 使用 setTimeout 稍微延迟，让用户看到点击效果，但这不是必须的
-                    setTimeout(toggleSidebar, 100); 
-                });
-            });
-
-            function filterProducts(filter) {
-                let visibleBrands = new Set(); 
+            // 过滤函数（现在通过 onchange 事件直接从 HTML 调用）
+            window.filterProducts = function(filter) {
+                let visibleBrands = new Set(); // 用于跟踪哪些品牌的产品被显示了
                 
                 // 遍历所有产品卡片
                 allProducts.forEach(card => {
                     const cardBrand = card.getAttribute('data-brand');
                     
                     if (filter === 'all' || cardBrand === filter) {
+                        // 显示匹配的卡片
                         card.style.display = 'flex'; 
                         visibleBrands.add(cardBrand);
                     } else {
+                        // 隐藏不匹配的卡片
                         card.style.display = 'none';
                     }
                 });
@@ -827,9 +689,9 @@
                 allTitles.forEach(title => {
                     const titleBrand = title.getAttribute('data-brand');
                     
-                    // 只有在 'all' 模式或该品牌有显示的产品卡片时，才显示标题
+                    // 只有在满足 'all' 模式或该品牌有显示的产品时，才显示标题
                     if (filter === 'all' || visibleBrands.has(titleBrand)) {
-                        title.style.display = 'block'; 
+                        title.style.display = 'block'; // 标题独占一行
                     } else {
                         title.style.display = 'none';
                     }
