@@ -60,6 +60,7 @@
             display: flex;
             gap: 20px;
             margin-bottom: 25px;
+            align-items: flex-start; /* 确保按钮和筛选器顶部对齐 */
         }
 
         .filter-toggle-button {
@@ -82,21 +83,24 @@
         .filter-controls {
             display: flex;
             gap: 20px;
-            padding: 15px;
             background: #ecf0f1; /* 浅灰色 */
-            border-radius: 8px;
+            border-radius: 0 8px 8px 8px; /* 默认隐藏时，只保留右侧的圆角（如果需要） */
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            /* 默认隐藏筛选器内容 */
+            
+            /* 默认隐藏样式 (修复后的关键样式) */
             max-height: 0;
             overflow: hidden;
+            padding: 0 15px; /* 隐藏时，水平 padding 保留，垂直 padding 设为 0 */
             transition: max-height 0.3s ease-out, padding 0.3s ease-out;
             flex-direction: column;
+            flex-grow: 1; /* 占据剩余宽度 */
         }
 
         /* 筛选器被打开时，显示内容 */
         .filter-controls.active {
             max-height: 500px; /* 足够大，确保内容显示 */
-            padding: 15px;
+            padding: 15px; /* 显示时，恢复垂直 padding */
+            border-radius: 8px; /* 显示时，恢复所有圆角 */
         }
 
         .filter-group {
@@ -234,6 +238,14 @@
             }
             .filter-section {
                 flex-direction: column;
+            }
+            /* 在小屏幕上，筛选器应该占据全宽 */
+            .filter-controls {
+                padding: 0 15px; 
+                width: 100%;
+            }
+            .filter-controls.active {
+                padding: 15px; 
             }
         }
     </style>
@@ -520,7 +532,7 @@
             </a>
             <div class="info">
                 <h3>SHARP ESFK852EMW (8.5KG) Front Load</h3>
-                <p>J-Tech 变频电机 (Inverter Motor) [cite: 530]，电机 12 年保修 [cite: 528, 529]，iF 设计奖 [cite: 531]，大触摸屏控制面板 [cite: 532]。</p>
+                <p>J-Tech 变频电机 (Inverter Motor)，电机 12 年保修，iF 设计奖，大触摸屏控制面板。</p>
                 <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESFK852EMW">WhatsApp Inquiry</a>
             </div>
         </div>
@@ -531,7 +543,7 @@
             </a>
             <div class="info">
                 <h3>SHARP ESFH9BMB (9KG) Front Load</h3>
-                <p>BLDC 变频电机 (Inverter Motor) [cite: 543]，电机 12 年保修 [cite: 534, 535, 536]，蒸汽护理高效杀菌 (Steam Care) [cite: 540]，高温筒清洁 [cite: 542]，清洗过程中可添加衣物 [cite: 546]。</p>
+                <p>BLDC 变频电机 (Inverter Motor)，电机 12 年保修，蒸汽护理高效杀菌 (Steam Care)，高温筒清洁，清洗过程中可添加衣物。</p>
                 <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESFH9BMB">WhatsApp Inquiry</a>
             </div>
         </div>
