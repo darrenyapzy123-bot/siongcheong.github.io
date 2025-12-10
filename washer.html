@@ -146,12 +146,16 @@
             display: flex;
             flex-direction: column; 
             
+            /* 【修复1：添加 position: relative 允许 z-index 生效】 */
+            position: relative;
             transition: all 0.3s ease; 
         }
         
         .product-card:hover {
             box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
             transform: translateY(-5px); 
+            /* 【修复2：提高 z-index 确保悬浮卡片显示在最顶层】 */
+            z-index: 10;
         }
         
         /* 筛选隐藏的卡片 */
