@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shower Series (热水器/花洒系列)</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
     <style>
         /* 通用重置 */
         *, *::before, *::after {
@@ -17,12 +20,64 @@
             padding-bottom: 70px; /* 为底部的 "返回首页" 按钮留出空间 */
         }
         
+        /* ------------------- 菜单 & Sidebar Styles (新增) ------------------- */
+        .menu-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #3498db; /* 保持主品牌蓝色 */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .bar { width: 25px; height: 3px; background-color: white; margin: 5px 0; }
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            background-color: #2c3e50; /* 侧边栏背景色 */
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: 0.5s;
+            max-width: 250px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+        }
+        .sidebar a, .sidebar .submenu-toggle {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #ecf0f1;
+            display: block;
+            border-bottom: 1px solid #34495e;
+            cursor: pointer;
+        }
+        .sidebar a:hover, .sidebar .submenu-toggle:hover { background-color: #34495e; }
+        .closebtn { position: absolute; top: 0; right: 25px; font-size: 36px; line-height: 50px; }
+        .submenu { display: none; background-color: #3e566e; padding-left: 20px; }
+        .submenu a { padding: 10px 25px; font-size: 1em; border-bottom: none; }
+        .overlay { 
+            position: fixed; 
+            height: 100%; 
+            width: 100%; 
+            top: 0; 
+            left: 0; 
+            z-index: 998; 
+            background: rgba(0, 0, 0, 0.5); 
+            display: none; 
+        }
+
         /* ------------------- 顶部导航和筛选控制区样式 ------------------- */
         header {
             background-color: #0d47a1; 
             color: white; 
             padding: 20px; 
             text-align: center;
+            padding-left: 80px; /* 为汉堡菜单图标留出空间 */
         }
 
         header h1 {
@@ -206,7 +261,47 @@
 </head>
 <body>
     
-    <header>
+<div class="menu-icon" onclick="toggleNav()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+</div>
+
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">×</a>
+    
+    <a href="index.html">Home</a>
+    
+    <div class="submenu-toggle" onclick="toggleSubmenu(this)">
+        Products / 产品
+    </div>
+    <div class="submenu">
+        <a href="refrigerator.html">Refrigerator (冰箱)</a>
+        <a href="chiller.html">Chiller (冷柜)</a>
+        <a href="freezer.html">Freezer (冷冻柜)</a>
+        <a href="ac.html">Air Conditioner (空调)</a>
+        <a href="portable_ac.html">Portable Air Cond (移动式空调)</a>
+        <a href="tv.html">TV (电视)</a>
+        <a href="washer.html">Washer (洗衣机)</a>
+        <a href="dryer.html">Dryer (烘干机)</a>
+        <a href="kitchen.html">Kitchen Appliances (厨房电器)</a>
+        <a href="hood.html">Hood (抽油烟机)</a>
+        <a href="gas.html">Gas (燃气灶具)</a>
+        <a href="oven.html">Oven (烤箱)</a>
+        <a href="microwave.html">Microwave (微波炉)</a>
+        <a href="air_fryer.html">Air Fryer (空气炸锅)</a>
+        <a href="shower.html">Shower (热水器/花洒)</a>
+        <a href="air_purifier.html">Air Purifier (空气净化器)</a>
+        <a href="speaker.html">Speaker (音响)</a>
+        <a href="small.html">Small Appliances (小家电)</a>
+    </div>
+
+    <a href="about.html">About Us / 关于我们</a>
+    <a href="contact.html">Contact Us / 联系我们</a>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleNav()"></div>
+<header>
         <h1>Shower Series (热水器/花洒系列)</h1>
     </header>
 
@@ -226,10 +321,10 @@
                 <img src="images/sharp-whn115b-shower.png" alt="Sharp WHN115B 热水器" class="product-image">
             </div>
             <div class="product-details">
-                [cite_start]<h3>Sharp WHN115B (无泵型) [cite: 1, 2]</h3>
+                <h3>Sharp WHN115B (无泵型)</h3>
                 <p>
-                    [cite_start]这款热水器不带水泵 [cite: 2]，设计简洁可靠。
-                    [cite_start]主要安全功能包括：90 度截止阀 [cite: 3][cite_start]、流量传感器 [cite: 4][cite_start]、自动断热保护 [cite: 5][cite_start]、防水外壳 [cite: 6] [cite_start]和符合 RoHS 标准 [cite: 7]。
+                    这款热水器不带水泵，设计简洁可靠。
+                    主要安全功能包括：90 度截止阀、流量传感器、自动断热保护、防水外壳 和符合 RoHS 标准。
                 </p>
                 <a href="shower-details/sharp-whn115b.html" class="detail-button">查看详情</a>
             </div>
@@ -240,11 +335,11 @@
                 <img src="images/sharp-whp219sr-shower.png" alt="Sharp WHP219SR 热水器" class="product-image">
             </div>
             <div class="product-details">
-                [cite_start]<h3>Sharp WHP219SR (带泵型) [cite: 8, 9]</h3>
+                <h3>Sharp WHP219SR (带泵型)</h3>
                 <p>
-                    [cite_start]配备 AC 泵电机 [cite: 10]，提供强劲水流。
-                    [cite_start]特点包括：超亮光泽面板 [cite: 11][cite_start]、无级电子温度控制 [cite: 12][cite_start]、IP25 防溅水 [cite: 14][cite_start]、防扭曲亮银软管 [cite: 15] [cite_start]和 5 段可调多喷花洒 [cite: 16]。
-                    [cite_start]安全方面，它拥有双温度断热保护 [cite: 17][cite_start]、双极 RCD [cite: 18] [cite_start]和 SPCC 金属板外壳 [cite: 19, 20]。
+                    配备 AC 泵电机，提供强劲水流。
+                    特点包括：超亮光泽面板、无级电子温度控制、IP25 防溅水、防扭曲亮银软管 和 5 段可调多喷花洒。
+                    安全方面，它拥有双温度断热保护、双极 RCD 和 SPCC 金属板外壳。
                 </p>
                 <a href="shower-details/sharp-whp219sr.html" class="detail-button">查看详情</a>
             </div>
@@ -257,6 +352,46 @@
     </div>
     
     <script>
+        // --- Burger Menu & Submenu Logic (Start) ---
+        function toggleNav() {
+            const sidebar = document.getElementById("mySidebar");
+            const overlay = document.getElementById("overlay");
+            const body = document.body;
+            
+            const isOpen = sidebar.offsetWidth > 0;
+
+            if (isOpen) {
+                sidebar.style.width = "0";
+                overlay.style.display = "none";
+                body.style.overflow = "auto";
+            } else {
+                // 确保其他子菜单关闭
+                document.querySelectorAll(".submenu").forEach(s => (s.style.display = "none"));
+                sidebar.style.width = "250px";
+                overlay.style.display = "block";
+                body.style.overflow = "hidden";
+            }
+        }
+        window.toggleNav = toggleNav; 
+
+        function toggleSubmenu(element) {
+            const submenu = element.nextElementSibling;
+            const isShown = submenu.style.display === "block";
+
+            // 关闭所有其他打开的子菜单
+            document.querySelectorAll(".submenu").forEach(s => {
+                if (s !== submenu) {
+                    s.style.display = "none";
+                }
+            });
+
+            // 切换当前子菜单
+            submenu.style.display = isShown ? "none" : "block";
+        }
+        window.toggleSubmenu = toggleSubmenu; 
+        // --- Burger Menu & Submenu Logic (End) ---
+
+
         document.addEventListener('DOMContentLoaded', function() {
             const allProducts = document.querySelectorAll('.product-card');
             const allTitles = document.querySelectorAll('.brand-group-title');
@@ -288,6 +423,9 @@
                     }
                 });
             }
+
+            // 初始加载时确保所有产品都显示 (因为默认筛选是 'all')
+            window.filterProducts('all'); 
         });
     </script>
 </body>
