@@ -206,6 +206,7 @@
             background: #fff;
             border-bottom: 1px solid #ddd;
             padding: 10px;
+            cursor: pointer; /* Lightbox: Make image look clickable */
         }
 
         .product-info {
@@ -245,10 +246,90 @@
             transition: background 0.2s;
         }
         
+        /* ------------------- Lightbox Styles (新增) ------------------- */
+        .lightbox-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1001; /* Above sidebar */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        .lightbox-content {
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 900px;
+            position: relative;
+            text-align: center;
+        }
+
+        .lightbox-content img {
+            width: 100%;
+            height: auto;
+            max-height: 70vh; /* Max height for viewability */
+            object-fit: contain;
+            border-radius: 5px;
+            background: #fff;
+            cursor: default; /* Remove pointer on the large image */
+        }
+
+        #caption {
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        #caption h3 {
+            color: #f39c12;
+            margin-bottom: 5px;
+            font-size: 1.4em;
+        }
+        
+        #caption p {
+            color: #ecf0f1;
+            font-size: 1em;
+            margin-bottom: 5px;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            z-index: 1002;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* ------------------- Media Queries ------------------- */
         @media (max-width: 600px) {
             header { padding-left: 20px; }
             .filter-section { flex-direction: column; align-items: stretch; }
             .filter-group select { width: 100%; box-sizing: border-box; }
+            .lightbox-content { width: 95%; padding-top: 10px; }
+            .lightbox-content img { max-height: 60vh; }
         }
     </style>
 </head>
@@ -329,6 +410,14 @@
     </div>
 </div>
 
+<div id="productLightbox" class="lightbox-modal" onclick="closeLightbox()">
+    <span class="close" onclick="closeLightbox()">&times;</span>
+    
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+        <img id="lightboxImage" style="max-width: 100%; max-height: 100%;">
+        <div id="caption"></div>
+    </div>
+</div>
 <script>
     // 菜单逻辑 (保持不变)
     window.toggleNav = function() {
@@ -354,12 +443,12 @@
         submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
     }
 
-    // ------------------- 完整产品数据 (包含所有品牌及新的 Skyworth/Khind 型号) -------------------
+    // ------------------- 完整产品数据 -------------------
     const refrigeratorProducts = [
         // --- SHARP ---
         {
             model: "Sharp SJM60MK",
-            brand: "Sharp", liters: 60, image: "refrigerator_SJM60MK.jpg",
+            brand: "Sharp", liters: 60, image: "SJM60MK.jpg",
             description: "60L Mini Bar Fridge. Compact design with recessed handle, wired shelf, and utility box.",
             details: "Dim: 449x501x470mm | Adjustable Feet | Bottle Pocket."
         },
@@ -669,7 +758,6 @@
         },
         
         // --- SKYWORTH (Updated with 556L SBS details from Slide 71-72 info) ---
-        // Note: Image files are placeholders, please use the correct filenames if available.
         {
             model: "Skyworth 556L SBS (White Glass)", 
             brand: "Skyworth", liters: 556, image: "Skyworth_White_SBS.jpg", 
@@ -684,7 +772,31 @@
         }
     ];
 
-    // ------------------- 产品渲染和筛选逻辑 (保持不变) -------------------
+    // ------------------- Lightbox Functions (新增) -------------------
+
+    window.openLightbox = function(imgElement) {
+        const modal = document.getElementById("productLightbox");
+        const modalImg = document.getElementById("lightboxImage");
+        const captionText = document.getElementById("caption");
+        
+        modal.style.display = "block";
+        // 防止点击图片时关闭 Lightbox
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                closeLightbox();
+            }
+        };
+
+        modalImg.src = imgElement.getAttribute("data-full-src");
+        captionText.innerHTML = imgElement.getAttribute("data-caption");
+    }
+
+    window.closeLightbox = function() {
+        const modal = document.getElementById("productLightbox");
+        modal.style.display = "none";
+    }
+
+    // ------------------- 产品渲染和筛选逻辑 (修改了图片HTML结构) -------------------
 
     function renderProducts(productsToRender = refrigeratorProducts) {
         const productList = document.getElementById('product-list');
@@ -703,9 +815,23 @@
             
             // 路径指向根目录
             const imageSrc = product.image ? product.image : 'default_refrigerator.jpg'; 
+            
+            // 构建 Lightbox 需要的详细信息 HTML
+            const fullDetails = `<p><strong>Brand:</strong> ${product.brand}</p><p><strong>Capacity:</strong> ${product.liters}L</p><p>${product.details}</p>`;
+            
+            // 构建 Lightbox 标题
+            const captionContent = `<h3>${product.model}</h3><p>${product.description}</p>${fullDetails}`;
+
 
             card.innerHTML = `
-                <img src="${imageSrc}" alt="${product.model}" onerror="this.src='default_refrigerator.jpg'">
+                <img 
+                    src="${imageSrc}" 
+                    alt="${product.model}" 
+                    onerror="this.src='default_refrigerator.jpg'"
+                    onclick="openLightbox(this)"
+                    data-full-src="${imageSrc}"
+                    data-caption="${captionContent.replace(/"/g, '&quot;')}"
+                >
                 <div class="product-info">
                     <h3>${product.model}</h3>
                     <p><strong>${product.liters}L</strong> - ${product.description}</p>
@@ -750,4 +876,3 @@
 </script>
 </body>
 </html>
-
