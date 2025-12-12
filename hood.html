@@ -42,6 +42,16 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+        
+        /* ------------------- Section Title Style (H2) ------------------- */
+        .product-section-title {
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 2em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
 
         /* ------------------- Menu & Sidebar (Burger Menu) Styles (保持一致) ------------------- */
         .menu-icon {
@@ -137,6 +147,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
+            margin-top: 10px; /* Adjust spacing below H2 title */
         }
 
         .product-card {
@@ -287,27 +298,27 @@
     <a href="index.html">Home</a>
     
     <div class="submenu-toggle" onclick="toggleSubmenu(this)">
-        Products
+        Products / 产品
     </div>
     <div class="submenu">
-        <a href="refrigerator.html">Refrigerator</a>
-        <a href="chiller.html">Chiller</a>
-        <a href="freezer.html">Freezer</a>
-        <a href="ac.html">Air Conditioner</a>
-        <a href="tv.html">TV</a>
-        <a href="washer.html">Washer</a>
-        <a href="dryer.html">Dryer</a>
-        <a href="kitchen.html">Kitchen Appliances</a>
-        <a href="small.html">Small Appliances</a>
+        <a href="refrigerator.html">Refrigerator / 冰箱</a>
+        <a href="chiller.html">Chiller / 冷藏柜</a>
+        <a href="freezer.html">Freezer / 冰柜</a>
+        <a href="ac.html">Air Conditioner / 冷气机</a>
+        <a href="tv.html">TV / 电视</a>
+        <a href="washer.html">Washer / 洗衣机</a>
+        <a href="dryer.html">Dryer / 烘干机</a>
+        <a href="kitchen.html">Kitchen Appliances / 厨房电器</a>
+        <a href="small.html">Small Appliances / 小电器</a>
     </div>
 
-    <a href="about.html">About Us</a>
-    <a href="contact.html">Contact Us</a>
+    <a href="about.html">About Us / 关于我们</a>
+    <a href="contact.html">Contact Us / 联系我们</a>
 </div>
 
 <div id="overlay" class="overlay" onclick="toggleNav()"></div>
 <header>
-    Cooker Hoods
+    Cooker Hoods / 抽油烟机
     <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
 </header>
 
@@ -353,8 +364,9 @@
         </div>
     </div>
 
-    <div class="product-grid" id="productGrid">
-
+    <h2 class="product-section-title">Elba Cooker Hoods (1 Model)</h2>
+    <div class="product-grid" id="productGrid_Elba">
+        
         <div class="product-card" data-brand="Elba" data-power="1000" data-length="90">
             <img src="hood_ECH-E9022ST.png" alt="Elba ECH-E9022ST Cooker Hood">
             <div class="product-details">
@@ -363,6 +375,11 @@
                 <span class="product-badge">Elba | 1000 m³/hr</span>
             </div>
         </div>
+
+    </div>
+
+    <h2 class="product-section-title">Midea Cooker Hoods (16 Models)</h2>
+    <div class="product-grid" id="productGrid_Midea">
 
         <div class="product-card" data-brand="Midea" data-power="900" data-length="76">
             <img src="hood_MCH-76MSS.png" alt="Midea MCH-76MSS Slim Cooker Hood">
@@ -499,6 +516,15 @@
             </div>
         </div>
         
+        <div class="product-card" data-brand="Midea" data-power="1200" data-length="90">
+            <img src="hood_MCH-90V65.png" alt="Midea MCH-90V65 Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Cooker Hood - MCH-90V65</h3>
+                <p>High 1200m³/hr suction power. Features modern sloped design, LED lighting, and touch controls for easy use in a contemporary kitchen.</p>
+                <span class="product-badge">Midea | 1200 m³/hr</span>
+            </div>
+        </div>
+
     </div>
 
 </div>
@@ -519,6 +545,8 @@
         const brandFilter = document.getElementById('brandFilter');
         const powerFilter = document.getElementById('powerFilter');
         const lengthFilter = document.getElementById('lengthFilter');
+        
+        // 确保选择所有产品卡片，不分 grid
         const cards = document.querySelectorAll('.product-card');
 
         // Event Listeners for Filters
@@ -545,18 +573,17 @@
                 body.style.overflow = "hidden";
             }
         }
-        window.toggleNav = toggleNav; // Make function globally accessible
+        window.toggleNav = toggleNav; 
 
         function toggleSubmenu(element) {
             const submenu = element.nextElementSibling;
             const isShown = submenu.style.display === "block";
 
-            // Close all other submenus first
             document.querySelectorAll(".submenu").forEach(s => (s.style.display = "none"));
 
             submenu.style.display = isShown ? "none" : "block";
         }
-        window.toggleSubmenu = toggleSubmenu; // Make function globally accessible
+        window.toggleSubmenu = toggleSubmenu; 
 
         // --- Filter Toggle Logic for Mobile ---
         const filterToggleButton = document.getElementById('filterToggleButton');
@@ -588,20 +615,37 @@
                     card.classList.add('hidden');
                 }
             });
+            
+            // 隐藏/显示标题和网格容器 (如果所有卡片都隐藏了，就隐藏标题)
+            // Note: Using a robust selector for H2 to ensure filtering works correctly.
+            
+            const elbaCards = document.querySelectorAll('#productGrid_Elba .product-card');
+            const mideaCards = document.querySelectorAll('#productGrid_Midea .product-card');
+            
+            // 检查 Elba 区是否有可见卡片
+            let elbaVisible = Array.from(elbaCards).some(card => !card.classList.contains('hidden'));
+            
+            // 隐藏/显示 Elba 标题和 Grid
+            document.getElementById('productGrid_Elba').previousElementSibling.style.display = elbaVisible ? 'block' : 'none';
+            document.getElementById('productGrid_Elba').style.display = elbaVisible ? 'grid' : 'none';
+
+            // 检查 Midea 区是否有可见卡片
+            let mideaVisible = Array.from(mideaCards).some(card => !card.classList.contains('hidden'));
+            
+            // 隐藏/显示 Midea 标题和 Grid
+            document.getElementById('productGrid_Midea').previousElementSibling.style.display = mideaVisible ? 'block' : 'none';
+            document.getElementById('productGrid_Midea').style.display = mideaVisible ? 'grid' : 'none';
         }
         
         // --- Back to Home (Scroll) Logic ---
         const backToTopBtn = document.getElementById("backToTopBtn");
-        // 设定阈值：当用户滚动到网页高度的 40% 或滚动条在顶部 500px 以下时显示按钮
         const scrollThreshold = 40; 
 
         window.onscroll = function() { scrollFunction() };
 
         function scrollFunction() {
-            // 计算滚动位置相对于文档总高度的百分比
             const scrollPercent = (window.scrollY + window.innerHeight) / document.body.scrollHeight * 100;
             
-            // 检查是否达到底部阈值 (40%) 或滚动距离超过 500px
             if (scrollPercent > scrollThreshold || document.documentElement.scrollTop > 500) {
                 backToTopBtn.style.display = "block";
             } else {
@@ -615,9 +659,9 @@
                 behavior: 'smooth'
             });
         }
-        window.topFunction = topFunction; // Make function globally accessible
+        window.topFunction = topFunction; 
 
-        // Apply filters on initial load
+        // Initial application of filters
         applyFilters();
     });
 </script>
