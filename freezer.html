@@ -14,7 +14,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
-            padding-bottom: 70px; /* 为底部的 "返回首页" 按钮留出空间 */
+            padding-bottom: 20px; /* 减小底部的填充，因为按钮不再是固定栏 */
         }
         
         /* ------------------- 顶部导航和筛选控制区样式 ------------------- */
@@ -154,35 +154,39 @@
             margin-top: auto;
         }
         
-        /* ------------------- 底部固定条 ------------------- */
-        #footer-bar {
+        /* ------------------- 底部浮动按钮 (取代固定栏) ------------------- */
+        .fixed-home-btn {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #ffffff; 
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            padding: 10px 20px;
-            text-align: center;
-            z-index: 90;
+            bottom: 20px; /* 离底部 20px */
+            right: 20px; /* 离右侧 20px */
+            z-index: 90; 
+            opacity: 0; /* 默认隐藏 */
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
         }
 
-        #home-btn {
+        .fixed-home-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-home-float {
             display: inline-block;
-            width: 100%;
-            padding: 10px 0;
+            padding: 12px 20px;
             background-color: #2ecc71; /* 绿色按钮 */
             color: white;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s;
             font-size: 1em;
         }
 
-        #home-btn:hover {
+        .back-to-home-float:hover {
             background-color: #27ae60;
         }
+
 
         /* 响应式调整 */
         @media (max-width: 1200px) {
@@ -194,6 +198,10 @@
         @media (max-width: 768px) {
             .product-card {
                 flex: 0 0 100%;
+            }
+            .fixed-home-btn {
+                bottom: 10px;
+                right: 10px;
             }
         }
     </style>
@@ -676,8 +684,8 @@
         </div>
         </div>
 
-    <div id="footer-bar">
-        <a href="index.html" id="home-btn">返回首页 (Back to Home)</a>
+    <div id="back-to-home-fixed" class="fixed-home-btn">
+        <a href="index.html" class="back-to-home-float">返回首页 (Back to Home)</a>
     </div>
     
     <script>
@@ -685,7 +693,7 @@
             const allProducts = document.querySelectorAll('.product-card');
             const allTitles = document.querySelectorAll('.brand-group-title');
 
-            // 过滤函数
+            // 过滤函数 (保持不变)
             window.filterProducts = function(filter) {
                 let visibleBrands = new Set(); 
                 
@@ -712,8 +720,34 @@
                     }
                 });
             }
+            
+            // ------------------- 滚动显示/隐藏按钮逻辑 (新增) -------------------
+            const backToHomeButton = document.getElementById('back-to-home-fixed');
+
+            function toggleBackToHomeButton() {
+                if (!backToHomeButton) return;
+
+                const scrollPosition = window.scrollY;
+                const windowHeight = window.innerHeight;
+                const documentHeight = document.body.offsetHeight;
+                
+                // 阈值：当距离页面底部少于 200px 时显示按钮
+                const threshold = 200; 
+                const isNearBottom = (scrollPosition + windowHeight) >= (documentHeight - threshold);
+
+                if (isNearBottom) {
+                    backToHomeButton.classList.add('visible');
+                } else {
+                    backToHomeButton.classList.remove('visible');
+                }
+            }
+
+            // 监听滚动和加载事件
+            window.addEventListener('scroll', toggleBackToHomeButton);
+            // 立即检查一次，以防页面内容很短，一开始就在底部
+            window.addEventListener('load', toggleBackToHomeButton); 
+            toggleBackToHomeButton(); // 在 DOMContentLoaded 时也检查一次
         });
     </script>
 </body>
 </html>
-
