@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siong Cheong Trading - Refrigerator (冰箱)</title>
+
+    <style>
+        /* ------------------- 核心排版修复 ------------------- */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* 1. 主内容容器，用于居中和滚动条补偿 */
+        #main-content {
+            width: 100%;
+            max-width: 100vw;
+            transition: margin-right 0.5s; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ------------------- 汉堡菜单和侧边栏样式 ------------------- */
+        
+        /* 菜单图标（汉堡） */
+        .menu-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #3498db;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .menu-icon:hover {
+            background-color: #2980b9;
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 5px 0;
+            transition: 0.4s;
+        }
+
+        /* 侧边栏主体 */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            background-color: #2c3e50;
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: 0.5s;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+            max-width: 250px;
+        }
+
+        .sidebar a, .sidebar .submenu-toggle {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #ecf0f1;
+            display: block;
+            transition: 0.3s;
+            border-bottom: 1px solid #34495e;
+            cursor: pointer;
+        }
+
+        .sidebar a:hover, .sidebar .submenu-toggle:hover {
+            background-color: #34495e;
+            color: white;
+        }
+
+        /* 关闭按钮 (X) */
+        .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            line-height: 50px;
+        }
+
+        /* 子菜单样式 */
+        .submenu {
+            display: none;
+            background-color: #3e566e;
+            padding-left: 20px;
+        }
+
+        .submenu a {
+            padding: 10px 25px;
+            font-size: 1em;
+            border-bottom: none;
+        }
+        
+        /* 遮罩层 */
+        .overlay {
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            display: none;
+        }
+        
+        /* Header 样式 (覆盖整个顶部) */
+        header {
+            background: #2c3e50;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            position: relative;
+            padding-left: 60px; /* 留出图标空间 */
+            width: 100%;
+            box-sizing: border-box; 
+        }
+        
+        .header-logo {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 250px;
+            height: auto;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%; 
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #3498db;
+            margin: 8px auto 0;
+            border-radius: 2px;
+        }
+
+        /* ------------------- 筛选区域样式 ------------------- */
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+
+        .filter-group label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 10px;
+        }
+
+        .filter-group select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        
+        .filter-group select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .back-to-home {
+            background-color: #f39c12;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .back-to-home:hover {
+            background-color: #e67e22;
+        }
+
+        /* ------------------- 产品网格布局 (Grid) ------------------- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        /* ------------------- 产品卡片样式 ------------------- */
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .product-info {
+            padding: 20px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-info h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .product-info p {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            line-height: 1.5;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .btn-detail {
+            display: block;
+            background: #3498db;
+            padding: 12px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        .btn-detail:hover {
+            background: #2980b9;
+        }
+        
+        /* ------------------- 媒体查询 ------------------- */
+        @media (max-width: 600px) {
+            header {
+                padding-left: 20px;
+            }
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-group {
+                margin-bottom: 15px;
+            }
+            .filter-group select, .back-to-home {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+
+<body onload="renderProducts()">
+<div class="menu-icon" onclick="toggleNav()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+</div>
+
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+    <a href="index.html">首页 (Home)</a>
+    <div class="submenu-toggle" onclick="toggleSubmenu(this)">
+        产品 (Products)
+    </div>
+    <div class="submenu" style="display: block;"> <a href="refrigerator.html">Refrigerator (冰箱)</a>
+        <a href="chiller.html">Chiller (冷柜)</a>
+        <a href="freezer.html">Freezer (冷冻柜)</a>
+        <a href="ac.html">Air Conditioner (空调)</a>
+        <a href="tv.html">TV (电视)</a>
+        <a href="washer.html">Washer (洗衣机)</a>
+        <a href="dryer.html">Dryer (烘干机)</a>
+        <a href="kitchen.html">Kitchen Appliances</a>
+        <a href="small.html">Small Appliances</a>
+    </div>
+    <a href="about.html">关于我们 (About Us)</a>
+    <a href="location.html">我们的位置 (Our Location)</a>
+    <a href="contact.html">联系我们 (Contact Us)</a>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleNav()"></div>
+<div id="main-content">
+    <header>
+        Siong Cheong Trading
+        <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
+    </header>
+
+    <div class="container">
+        <h1>Refrigerator (冰箱) 系列</h1>
+
+        <div class="filter-section">
+            <div class="filter-group">
+                <label for="capacity-filter">按容量筛选:</label>
+                <select id="capacity-filter" onchange="filterProducts()">
+                    <option value="all">所有型号</option>
+                    <option value="mini">迷你/小型 (低于 200L)</option>
+                    <option value="medium">中型 (200L - 399L)</option>
+                    <option value="large">大型 (400L 及以上)</option>
+                </select>
+            </div>
+            <a href="index.html" class="back-to-home">返回首页 (Back to Home)</a>
+        </div>
+
+        <div id="product-list" class="product-grid">
+            </div>
+
+        <p id="no-products" style="text-align: center; color: #888; display: none;">抱歉，此类别下暂无符合筛选条件的产品。</p>
+
+    </div>
+</div>
+<script>
+    // 侧边栏和主内容补偿逻辑 (与首页保持一致)
+    window.toggleNav = function() {
+        const sidebar = document.getElementById("mySidebar");
+        const overlay = document.getElementById("overlay");
+        const body = document.body;
+        const mainContent = document.getElementById("main-content");
+        const scrollBarWidth = '17px'; 
+        const isOpened = sidebar.style.width === '250px';
+
+        if (isOpened) {
+            sidebar.style.width = '0';
+            overlay.style.display = 'none';
+            body.style.overflow = 'auto';
+            mainContent.style.marginRight = '0';
+        } else {
+            mainContent.style.marginRight = scrollBarWidth;
+            body.style.overflow = 'hidden';
+            sidebar.style.width = '250px';
+            overlay.style.display = 'block';
+        }
+    }
+
+    // 子菜单展开/收起逻辑
+    window.toggleSubmenu = function(element) {
+        const submenu = element.nextElementSibling;
+        if (submenu.style.display === 'block') {
+            submenu.style.display = 'none';
+        } else {
+            submenu.style.display = 'block';
+        }
+    }
+
+    // ------------------- 产品数据 -------------------
+    const refrigeratorProducts = [
+        {
+            model: "SJM60MK Mini Bar",
+            liters: 60,
+            category: "mini",
+            image: "refrigerator_SJM60MK.jpg", // 请替换为实际图片路径
+            description: "60L 迷你吧台冰箱，适合卧室或办公室使用。配备隐藏式把手、钢丝搁架、多功能储物盒等功能。",
+            [cite_start]details: "容量: 60L | 尺寸: (W)449mm x (H)501mm x (D)470mm [cite: 449, 450] | [cite_start]特点: Recessed Handle [cite: 444][cite_start], Wired Shelf [cite: 445][cite_start], Utility Box [cite: 446][cite_start], Adjustable Feet[cite: 448]."
+        },
+        {
+            model: "SJ-189",
+            liters: 170,
+            category: "mini",
+            image: "refrigerator_SJ189.jpg",
+            description: "170L 双门变频冰箱。具备高能效和持久保鲜能力。",
+            [cite_start]details: "容量: 170L [cite: 454] | [cite_start]门数: 2门变频 [cite: 454] | [cite_start]尺寸: W 535 x H 1275 x D 595mm [cite: 451] | [cite_start]保修: 1年整机保修，10年压缩机保修[cite: 452, 453]."
+        },
+        {
+            model: "SJ285MSS / SJ287MDS",
+            liters: 280,
+            category: "medium",
+            image: "refrigerator_SJ285MSS.jpg",
+            description: "夏普 280L 双门冰箱。具备钢化玻璃搁架和抗菌除味系统。",
+            [cite_start]details: "容量: 280L [cite: 461] | [cite_start]尺寸: W 545 x H 1560 x D 588mm [cite: 457] | [cite_start]特点: 钢化玻璃搁架 [cite: 462][cite_start], AG CU Nano 除味 [cite: 463][cite_start], 鸡蛋托 [cite: 464][cite_start], 保鲜盒[cite: 465]."
+        },
+        {
+            model: "SJ-2822MSS Inverter",
+            liters: 280,
+            category: "medium",
+            image: "refrigerator_SJ2822MSS.jpg",
+            description: "280L 变频冰箱。高效节能，带来持久的新鲜。",
+            [cite_start]details: "容量: 280L 变频 [cite: 475] | [cite_start]尺寸: W 545mm x H 1560mm x D 586mm[cite: 477, 478, 479]."
+        },
+        {
+            model: "SJ325MSS / SJ-327MDS",
+            liters: 320,
+            category: "medium",
+            image: "refrigerator_SJ325MSS.jpg",
+            description: "夏普 320L 双门冰箱。特有 LED 照明和扭转制冰器。",
+            [cite_start]details: "容量: 320L [cite: 474] | [cite_start]尺寸: W 545 x H 1700 x D 588mm [cite: 471] | [cite_start]特点: AG CU Nano 除味 [cite: 470][cite_start], 扭转制冰盘 [cite: 470][cite_start], 双向保鲜室 [cite: 470][cite_start], LED 照明[cite: 470]."
+        },
+        {
+            model: "SJ-3222MSS Inverter",
+            liters: 320,
+            category: "medium",
+            image: "refrigerator_SJ3222MSS.jpg",
+            description: "320L 变频冰箱。高容量，满足家庭日常所需。",
+            [cite_start]details: "容量: 320L 变频 [cite: 480] | [cite_start]尺寸: W 545mm x H 1700mm x D 586mm[cite: 482, 483, 484]."
+        },
+        {
+            model: "SJ-3822MSS Inverter",
+            liters: 380,
+            category: "medium",
+            image: "refrigerator_SJ3822MSS.jpg",
+            description: "380L 变频冰箱。更大的存储空间和更高效的能耗。",
+            [cite_start]details: "容量: 380L 变频 [cite: 485] | [cite_start]尺寸: W 645mm x H 1690mm x D 624mm[cite: 487, 488, 489]."
+        },
+        // 您可以根据需要添加更多产品数据...
+        // { model: "SJ489GK AVANCE", liters: 480, category: "large", image: "refrigerator_SJ489GK.jpg", description: "480L 变频冰箱。...", details: "..." },
+        // { model: "SJP735MBK", liters: 700, category: "large", image: "refrigerator_SJP735MBK.jpg", description: "700L 豪华对开门冰箱。...", details: "..." },
+    ];
+
+    // ------------------- 产品渲染和筛选逻辑 -------------------
+
+    function renderProducts(productsToRender = refrigeratorProducts) {
+        const productList = document.getElementById('product-list');
+        const noProducts = document.getElementById('no-products');
+        productList.innerHTML = ''; // 清空现有内容
+
+        if (productsToRender.length === 0) {
+            productList.style.display = 'none';
+            noProducts.style.display = 'block';
+            return;
+        }
+
+        productsToRender.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            
+            // 默认图片如果不存在，使用一个通用占位图
+            const imageSrc = product.image || 'default_refrigerator.jpg';
+
+            card.innerHTML = `
+                <img src="${imageSrc}" alt="${product.model}">
+                <div class="product-info">
+                    <h3>${product.model} (${product.liters}L)</h3>
+                    <p>${product.description}</p>
+                    <p style="font-size: 0.85em; color: #555; text-align: left;">
+                        ${product.details}
+                    </p>
+                    <a class="btn-detail" href="#${product.model.replace(/\s/g, '_')}">查看更多</a>
+                </div>
+            `;
+            productList.appendChild(card);
+        });
+
+        productList.style.display = 'grid';
+        noProducts.style.display = 'none';
+    }
+
+    function filterProducts() {
+        const selectedCategory = document.getElementById('capacity-filter').value;
+
+        if (selectedCategory === 'all') {
+            renderProducts(refrigeratorProducts);
+            return;
+        }
+
+        const filtered = refrigeratorProducts.filter(product => {
+            // 根据容量字段进行筛选
+            if (selectedCategory === 'mini') {
+                return product.liters < 200;
+            } else if (selectedCategory === 'medium') {
+                return product.liters >= 200 && product.liters < 400;
+            } else if (selectedCategory === 'large') {
+                return product.liters >= 400;
+            }
+            return false;
+        });
+
+        renderProducts(filtered);
+    }
+</script>
+</body>
+</html>
