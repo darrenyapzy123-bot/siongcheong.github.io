@@ -6,7 +6,7 @@
     <title>Siong Cheong Trading - Refrigerator (冰箱)</title>
 
     <style>
-        /* ------------------- CSS 样式保持不变 ------------------- */
+        /* ------------------- 核心排版修复 ------------------- */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -23,6 +23,7 @@
             flex-direction: column;
         }
 
+        /* ------------------- 菜单 & Sidebar ------------------- */
         .menu-icon {
             position: fixed;
             top: 20px;
@@ -35,6 +36,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s;
         }
+
+        .menu-icon:hover { background-color: #2980b9; }
 
         .bar {
             width: 25px;
@@ -70,6 +73,11 @@
             cursor: pointer;
         }
 
+        .sidebar a:hover, .sidebar .submenu-toggle:hover {
+            background-color: #34495e;
+            color: white;
+        }
+
         .closebtn {
             position: absolute;
             top: 0;
@@ -83,6 +91,12 @@
             background-color: #3e566e;
             padding-left: 20px;
         }
+
+        .submenu a {
+            padding: 10px 25px;
+            font-size: 1em;
+            border-bottom: none;
+        }
         
         .overlay {
             position: fixed;
@@ -95,6 +109,7 @@
             display: none;
         }
         
+        /* ------------------- Header & Container ------------------- */
         header {
             background: #2c3e50;
             padding: 20px;
@@ -130,7 +145,18 @@
             margin-bottom: 25px;
             color: #333;
         }
-        
+
+        h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #3498db;
+            margin: 8px auto 0;
+            border-radius: 2px;
+        }
+
+        /* ------------------- Filter ------------------- */
         .filter-section {
             display: flex;
             justify-content: flex-start;
@@ -140,8 +166,26 @@
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-group label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 10px;
+        }
+
+        .filter-group select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            transition: border-color 0.2s;
         }
         
+        /* ------------------- Footer ------------------- */
         .page-footer {
             padding: 30px 20px;
             text-align: center;
@@ -161,6 +205,9 @@
             display: inline-block;
         }
 
+        .page-footer .back-to-home:hover { background-color: #e67e22; }
+
+        /* ------------------- Grid & Card ------------------- */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -177,12 +224,18 @@
             transition: all 0.3s ease;
         }
 
+        .product-card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+        }
+
         .product-card img {
             width: 100%;
             height: 250px;
-            object-fit: cover;
-            background: #eee;
+            object-fit: contain; /* 改为 contain 以完整显示冰箱 */
+            background: #fff;
             border-bottom: 1px solid #ddd;
+            padding: 10px;
         }
 
         .product-info {
@@ -192,6 +245,21 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+
+        .product-info h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+
+        .product-info p {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            line-height: 1.5;
+            text-align: left;
+            margin-bottom: 10px;
         }
 
         .btn-detail {
@@ -206,11 +274,19 @@
             margin-top: 15px;
             transition: background 0.2s;
         }
-        /* ------------------- CSS 样式结束 ------------------- */
+
+        .btn-detail:hover { background: #2980b9; }
+        
+        @media (max-width: 600px) {
+            header { padding-left: 20px; }
+            .filter-section { flex-direction: column; align-items: stretch; }
+            .filter-group select { width: 100%; box-sizing: border-box; }
+        }
     </style>
 </head>
 
 <body onload="renderProducts()">
+
 <div class="menu-icon" onclick="toggleNav()">
     <div class="bar"></div>
     <div class="bar"></div>
@@ -220,9 +296,7 @@
 <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
     <a href="index.html">Home</a>
-    <div class="submenu-toggle" onclick="toggleSubmenu(this)">
-        Products
-    </div>
+    <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
     <div class="submenu" style="display: block;"> 
         <a href="refrigerator.html">Refrigerator (冰箱)</a>
         <a href="chiller.html">Chiller (冷柜)</a>
@@ -252,21 +326,32 @@
 
         <div class="filter-section">
             <div class="filter-group">
-                <label for="capacity-filter">Filter by Capacity:</label>
+                <label for="capacity-filter">Capacity:</label>
                 <select id="capacity-filter" onchange="filterProducts()">
-                    <option value="all">All Models</option>
-                    <option value="mini">Mini/Small (Below 200L)</option>
-                    <option value="medium">Medium (200L - 399L)</option>
-                    <option value="large">Large (400L and above)</option>
+                    <option value="all">All Capacities</option>
+                    <option value="mini">Mini Bar (&lt; 150L)</option>
+                    <option value="small">Small (150L - 299L)</option>
+                    <option value="medium">Medium (300L - 499L)</option>
+                    <option value="large">Large (500L - 699L)</option>
+                    <option value="xlarge">Extra Large (&gt; 700L)</option>
                 </select>
+            </div>
+            <div class="filter-group">
+                <label for="brand-filter">Brand:</label>
+                <select id="brand-filter" onchange="filterProducts()">
+                    <option value="all">All Brands</option>
+                    <option value="Sharp">Sharp</option>
+                    <option value="Toshiba">Toshiba</option>
+                    <option value="Midea">Midea</option>
+                    <option value="Hisense">Hisense</option>
+                    <option value="Dekka">Dekka</option>
+                    <option value="Narutron">Narutron</option>
+                    </select>
             </div>
         </div>
 
-        <div id="product-list" class="product-grid">
-        </div>
-
-        <p id="no-products" style="text-align: center; color: #888; display: none;">Sorry, no products match the selected filter criteria.</p>
-
+        <div id="product-list" class="product-grid"></div>
+        <p id="no-products" style="text-align: center; color: #888; display: none;">No products found matching your criteria.</p>
     </div>
     
     <div class="page-footer">
@@ -274,157 +359,337 @@
     </div>
 </div>
 
-
 <script>
-    // 侧边栏和主内容补偿逻辑
+    // 菜单逻辑
     window.toggleNav = function() {
         const sidebar = document.getElementById("mySidebar");
         const overlay = document.getElementById("overlay");
         const body = document.body;
         const mainContent = document.getElementById("main-content");
-        const scrollBarWidth = '17px'; 
         const isOpened = sidebar.style.width === '250px';
-
         if (isOpened) {
             sidebar.style.width = '0';
             overlay.style.display = 'none';
             body.style.overflow = 'auto';
             mainContent.style.marginRight = '0';
         } else {
-            mainContent.style.marginRight = scrollBarWidth;
+            mainContent.style.marginRight = '17px';
             body.style.overflow = 'hidden';
             sidebar.style.width = '250px';
             overlay.style.display = 'block';
         }
     }
-
-    // 子菜单展开/收起逻辑
     window.toggleSubmenu = function(element) {
         const submenu = element.nextElementSibling;
-        if (submenu.style.display === 'block') {
-            submenu.style.display = 'none';
-        } else {
-            submenu.style.display = 'block';
-        }
+        submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
     }
 
-    // ------------------- 产品数据 (已包含 PPTX 中所有型号) -------------------
+    // ------------------- 完整产品数据 -------------------
     const refrigeratorProducts = [
+        // --- SHARP ---
         {
-            model: "SJM60MK Mini Bar",
-            liters: 60,
-            image: "refrigerator_SJM60MK.jpg",
-            description: "A compact mini bar refrigerator perfect for bedrooms, offices, or dorm rooms. Features a practical design for small spaces.",
-            [cite_start]details: "Capacity: 60L [cite: 405] | [cite_start]Dimensions (W x H x D): 449mm x 501mm x 470mm [cite: 406] | [cite_start]Key Features: Recessed Handle [cite: 400][cite_start], Wired Shelf [cite: 401][cite_start], Utility Box [cite: 402][cite_start], Bottle Pocket [cite: 403][cite_start], Adjustable Feet[cite: 404]."
+            model: "Sharp SJM60MK",
+            brand: "Sharp", liters: 60, image: "SJM60MK.jpg",
+            description: "60L Mini Bar Fridge. Compact design with recessed handle, wired shelf, and utility box.",
+            details: "Dim: 449x501x470mm | Adjustable Feet | Bottle Pocket."
         },
         {
-            model: "SJ-189",
-            liters: 170,
-            image: "refrigerator_SJ189.jpg",
-            description: "170L 2-door Inverter refrigerator. Offers high energy efficiency and reliable, long-lasting freshness for small to medium households.",
-            [cite_start]details: "Capacity: 170L [cite: 410] | [cite_start]Type: 2-door Inverter refrigerator [cite: 410] | [cite_start]Dimensions (W x H x D): 535 x 1275 x 595mm [cite: 407] | [cite_start]Warranty: 1 Year General [cite: 408][cite_start], 10 Years Compressor[cite: 409]."
+            model: "Sharp SJ-189",
+            brand: "Sharp", liters: 170, image: "SJ189.jpg",
+            description: "170L 2-Door Inverter Refrigerator. J-Tech Inverter technology.",
+            details: "Dim: 535x1275x595mm | 10yr Compressor Warranty | 1yr General."
         },
         {
-            model: "SJ285MSS",
-            liters: 280,
-            image: "refrigerator_SJ285MSS.jpg",
-            description: "Sharp 280L 2-Door Fridge. Designed for optimal food preservation with its advanced deodorising and storage features.",
-            [cite_start]details: "Capacity: 280L [cite: 417] | [cite_start]Dimensions (W x H x D): 545 x 1560 x 588mm [cite: 413] | [cite_start]Warranty: 1 Year General Part [cite: 415][cite_start], 10 Years Compressor [cite: 416] | [cite_start]Key Features: Tempered Glass Shelf [cite: 418][cite_start], AG CU Nano Deodoriser [cite: 419][cite_start], Egg Tray [cite: 420][cite_start], Fresh Case [cite: 421][cite_start], Utility Door Pocket[cite: 422]."
+            model: "Sharp SJ285MSS",
+            brand: "Sharp", liters: 280, image: "SJ285MSS.jpg",
+            description: "280L 2-Door Fridge. AG CU Nano Deodoriser keeps food fresh.",
+            details: "Dim: 545x1560x588mm | Tempered Glass Shelf | Fresh Case."
         },
         {
-            model: "SJ287MDS",
-            liters: 280,
-            image: "refrigerator_SJ287MDS.jpg",
-            description: "Sharp 280L Refrigerator. Excellent cooling performance with convenient storage compartments and durability.",
-            [cite_start]details: "Capacity: 280L [cite: 423] | [cite_start]Sharp Refrigerator Model[cite: 423]. (Dimensions and features assumed similar to SJ285MSS)."
+            model: "Sharp SJ287MDS",
+            brand: "Sharp", liters: 280, image: "SJ287MDS.jpg",
+            description: "280L Refrigerator (Dark Silver). Reliable cooling performance.",
+            details: "Capacity: 280L | Features similar to SJ285MSS series."
         },
         {
-            model: "SJ-2822MSS Inverter",
-            liters: 280,
-            image: "refrigerator_SJ2822MSS.jpg",
-            description: "280L Inverter refrigerator. Highly energy-efficient and provides stable cooling performance for daily needs.",
-            [cite_start]details: "Capacity: 280L Inverter [cite: 431] | [cite_start]Dimensions (W x H x D): 545mm x 1560mm x 586mm[cite: 432, 433, 434, 435]."
+            model: "Sharp SJ-2822MSS",
+            brand: "Sharp", liters: 280, image: "SJ2822MSS.jpg",
+            description: "280L J-Tech Inverter Refrigerator. Energy efficient cooling.",
+            details: "Dim: 545x1560x586mm | Inverter Compressor."
         },
         {
-            model: "SJ325MSS",
-            liters: 320,
-            image: "refrigerator_SJ325MSS.jpg",
-            description: "Sharp 320L 2-Door Fridge. Features LED lighting, ice tray, and multiple storage sections for enhanced organization.",
-            [cite_start]details: "Capacity: 320L (Inferred) [cite: 424] | [cite_start]Key Features: AG CU Nano Deodoriser [cite: 426][cite_start], Twist & Serve Ice Tray [cite: 426][cite_start], LED Lighting [cite: 426][cite_start], Vegetable Clase[cite: 426]. [cite_start](Dimensions assumed from SJ-327MDS [cite: 427])."
+            model: "Sharp SJ325MSS",
+            brand: "Sharp", liters: 320, image: "SJ325MSS.jpg",
+            description: "320L 2-Door Fridge with Twist & Serve Ice Tray and LED Lighting.",
+            details: "Dim: 545x1700x588mm | Vegetable Case | Bottle Pocket."
         },
         {
-            model: "SJ-327MDS",
-            liters: 320,
-            image: "refrigerator_SJ327MDS.jpg",
-            description: "Sharp 320L 2-door refrigerator with advanced features like 2-Way Fresh Room for better preservation.",
-            [cite_start]details: "Capacity: 320L 2-DOOR REFRIGERATOR [cite: 430] | [cite_start]Dimensions (W x H x D): 545 x 1700 x 588mm [cite: 427] | [cite_start]Warranty: 1 Year General Parts [cite: 429][cite_start], 10 Years Compressor Motor [cite: 428] | [cite_start]Key Features: AG CU Nano Deodoriser [cite: 426][cite_start], Twist & Serve Ice Tray [cite: 426][cite_start], 2-Way Fresh Room[cite: 426]."
+            model: "Sharp SJ-327MDS",
+            brand: "Sharp", liters: 320, image: "SJ327MDS.jpg",
+            description: "320L 2-Door Fridge. Features 2-Way Fresh Room and AG+ Nano Deodoriser.",
+            details: "Dim: 545x1700x588mm | 10yr Compressor Warranty."
         },
         {
-            model: "SJ-3222MSS Inverter",
-            liters: 320,
-            image: "refrigerator_SJ3222MSS.jpg",
-            description: "320L Inverter refrigerator model providing spacious storage and energy saving cooling technology.",
-            [cite_start]details: "Capacity: 320L Inverter [cite: 436] | [cite_start]Dimensions (W x H x D): 545mm x 1700mm x 586mm[cite: 437, 438, 439, 440]."
+            model: "Sharp SJ-3222MSS",
+            brand: "Sharp", liters: 320, image: "SJ3222MSS.jpg",
+            description: "320L J-Tech Inverter Refrigerator. Spacious and energy saving.",
+            details: "Dim: 545x1700x586mm | Inverter Technology."
         },
         {
-            model: "GR-RT412WE-PMY(DS)",
-            liters: 360,
-            image: "refrigerator_GRRT412WE.jpg",
-            description: "360L Toshiba 2-Door Inverter refrigerator with high-efficiency cooling and long-term warranty protection.",
-            details: "Capacity: 360L 2-Door Inverter | Dimensions (W x D x H): 545 x 623 x 1545mm | Warranty: 2 years general warranty + 12 years compressor warranty."
+            model: "Sharp SJ-3822MSS",
+            brand: "Sharp", liters: 380, image: "SJ3822MSS.jpg",
+            description: "380L J-Tech Inverter Refrigerator. Large capacity for families.",
+            details: "Dim: 645x1690x624mm | Inverter Technology."
         },
         {
-            model: "SJ-3822MSS Inverter",
-            liters: 380,
-            image: "refrigerator_SJ3822MSS.jpg",
-            description: "A large 380L Inverter model from Sharp, offering more space and robust temperature management.",
-            [cite_start]details: "Capacity: 380L Inverter [cite: 441] | [cite_start]Dimensions (W x H x D): 645mm x 1690mm x 624mm[cite: 442, 443, 444, 445]."
+            model: "Sharp SJ-4122MSS",
+            brand: "Sharp", liters: 410, image: "SJ4122MSS.jpg",
+            description: "410L J-Tech Inverter Refrigerator. Superior cooling efficiency.",
+            details: "Dim: 645x1690x665mm | Inverter Technology."
         },
         {
-            model: "GR-RT466WE-PMY(DS)",
-            liters: 410,
-            image: "refrigerator_GRRT466WE.jpg",
-            description: "410L Toshiba 2-Door Inverter Refrigerator. A great family-sized model with competitive warranty terms.",
-            details: "Capacity: 410L 2-Door Inverter | Dimensions (W x D x H): 595 x 695 x 1620mm | Warranty: 2 years general warranty + 12 years compressor warranty."
+            model: "Sharp SJ-4422MSS",
+            brand: "Sharp", liters: 440, image: "SJ4422MSS.jpg",
+            description: "440L Inverter Fridge. Hybrid Cooling System & Extra Cool feature.",
+            details: "Dim: 645x1795x665mm | Express Freezing | Ag-Nano Deodorizer."
         },
         {
-            model: "SJ-4122MSS Inverter",
-            liters: 410,
-            image: "refrigerator_SJ4122MSS.jpg",
-            description: "410L Sharp Inverter refrigerator model, balancing large capacity with efficient energy use.",
-            [cite_start]details: "Capacity: 410L Inverter [cite: 451] | [cite_start]Dimensions (W x H x D): 645mm x 1690mm x 665mm[cite: 452, 453, 454, 455]."
+            model: "Sharp SJ489GK AVANCE",
+            brand: "Sharp", liters: 480, image: "SJ489GK.jpg",
+            description: "480L AVANCE Series 4-Door Refrigerator. Premium glass design.",
+            details: "Dim: 795x1800x692mm | Plasmacluster Ion | Hybrid Cooling."
         },
         {
-            model: "SJ-4422MSS Inverter",
-            liters: 440,
-            image: "refrigerator_SJ4422MSS.jpg",
-            description: "440L Sharp J-Tech Inverter model featuring Hybrid Cooling System and Ag-Nano Deodorizer for superior food storage.",
-            [cite_start]details: "Capacity: 440L Inverter [cite: 456, 461] | [cite_start]Dimensions (W x H x D): 645mm x 1795mm x 665mm [cite: 457, 458, 459, 460] | [cite_start]Key Features: J-Tech Inverter Technology [cite: 462][cite_start], Hybrid Cooling System [cite: 463][cite_start], Express Freezing [cite: 464][cite_start], Ag-Nano Deodorizer [cite: 465][cite_start], Extra Cool[cite: 466]."
+            model: "Sharp SJP682MFGK",
+            brand: "Sharp", liters: 610, image: "SJP682MFGK.jpg",
+            description: "610L Premium Multi-Door Refrigerator with Glass Door.",
+            details: "Dim: 820x1770x740mm | Plasmacluster Ion | Inverter."
         },
         {
-            model: "SJ489GK AVANCE",
-            liters: 480,
-            image: "refrigerator_SJ489GK.jpg",
-            description: "480L Sharp AVANCE Refrigerator. A modern large-capacity unit designed for extensive storage needs.",
-            [cite_start]details: "Capacity: 480L AVANCE Refrigerator [cite: 446] | [cite_start]Dimensions (W x H x D): 795mm x 1800mm x 692mm[cite: 447, 448, 449, 450]."
+            model: "Sharp SJP782MFGK",
+            brand: "Sharp", liters: 670, image: "SJP782MFGK.jpg",
+            description: "670L Huge Capacity Multi-Door Fridge. Tempered Glass Door.",
+            details: "Dim: 820x1870x740mm | Express Freezing | Extra Cool."
         },
         {
-            model: "SBS-501WPGE (White Glass)",
-            liters: 556,
-            image: "refrigerator_SBS501WPGE.jpg",
-            description: "556L Inverter Side-by-Side Refrigerator with an elegant White Glass Door finish. A premium choice for modern kitchens.",
-            details: "Capacity: 556L Inverter Side-by-Side Refrigerator | Dimensions (W x D x H): 833 x 670 x 1785mm | White Glass Door | Warranty: 2 years general warranty + 12 years compressor warranty."
+            model: "Sharp SJP882MFGK",
+            brand: "Sharp", liters: 720, image: "SJP882MFGK.jpg",
+            description: "720L Extra Large Multi-Door Fridge. Ultimate storage solution.",
+            details: "Dim: 865x1870x740mm | Plasmacluster Ion | Hybrid Cooling."
         },
         {
-            model: "SBS-501WP (Black Glass)",
-            liters: 556,
-            image: "refrigerator_SBS501WP.jpg",
-            description: "556L Inverter Side-by-Side Refrigerator with a sophisticated Black Glass Door. Large storage capacity and excellent temperature control.",
-            details: "Capacity: 556L Inverter Side-by-Side Refrigerator | Dimensions (W x D x H): 833 x 670 x 1785mm | Black Glass Door | Warranty: 2 years general warranty + 12 years compressor warranty."
+            model: "Sharp SJX-6322Ms",
+            brand: "Sharp", liters: 620, image: "SJX6322Ms.jpg",
+            description: "620L Side-by-Side Inverter Refrigerator. External LED Control.",
+            details: "Dim: 670x1770x910mm | Multi Air Flow | Quick Cooling/Freezing."
         },
-    ];
+        {
+            model: "Sharp SJF821VMSS",
+            brand: "Sharp", liters: 700, image: "SJF821VMSS.jpg",
+            description: "700L 4-Door Inverter Refrigerator. ActiFresh Hybrid Cooling.",
+            details: "Deep Freezing | Extra Cool Plus | Antibacterial Deodorizer."
+        },
 
-    // ------------------- 产品渲染和筛选逻辑 (保持不变) -------------------
+        // --- TOSHIBA ---
+        {
+            model: "Toshiba GR-RT230WE",
+            brand: "Toshiba", liters: 220, image: "GRRT230WE.jpg",
+            description: "220L 2-Door Inverter Fridge. Compact and efficient.",
+            details: "Dim: 545x623x1285mm | 12 Years Compressor Warranty."
+        },
+        {
+            model: "Toshiba GR-RT300WE",
+            brand: "Toshiba", liters: 270, image: "GRRT300WE.jpg",
+            description: "270L 2-Door Inverter Fridge. Ideal for medium usage.",
+            details: "Dim: 545x623x1545mm | 12 Years Compressor Warranty."
+        },
+        {
+            model: "Toshiba GR-RT412WE",
+            brand: "Toshiba", liters: 360, image: "GRRT412WE.jpg",
+            description: "360L 2-Door Inverter Fridge. Spacious and durable.",
+            details: "Dim: 545x623x1545mm | 12 Years Compressor Warranty."
+        },
+        {
+            model: "Toshiba GR-RT466WE",
+            brand: "Toshiba", liters: 410, image: "GRRT466WE.jpg",
+            description: "410L 2-Door Inverter Fridge. Large capacity cooling.",
+            details: "Dim: 595x695x1620mm | 12 Years Compressor Warranty."
+        },
+        {
+            model: "Toshiba SBS-501WPGE",
+            brand: "Toshiba", liters: 556, image: "SBS501WPGE.jpg",
+            description: "556L Inverter Side-by-Side Fridge (White Glass Door).",
+            details: "Dim: 833x670x1785mm | Modern design | 12yr Compressor Warranty."
+        },
+        {
+            model: "Toshiba SBS-501WP",
+            brand: "Toshiba", liters: 556, image: "SBS501WP.jpg",
+            description: "556L Inverter Side-by-Side Fridge (Black Glass Door).",
+            details: "Dim: 833x670x1785mm | Stylish finish | 12yr Compressor Warranty."
+        },
+
+        // --- MIDEA (Only Fridges, excluding Chest Freezers) ---
+        {
+            model: "Midea MDRD229FGD",
+            brand: "Midea", liters: 157, image: "MDRD229.jpg",
+            description: "157L Single Door Refrigerator. Available in Silver/Black.",
+            details: "Compact single door design."
+        },
+        {
+            model: "Midea MDRT267MTB30",
+            brand: "Midea", liters: 200, image: "MDRT267.jpg",
+            description: "200L 2-Door Refrigerator. (Net 179L).",
+            details: "Dim: 545x1267mm (WxH) | 10yr Compressor Warranty."
+        },
+        {
+            model: "Midea MDRT306MTB30",
+            brand: "Midea", liters: 240, image: "MDRT306.jpg",
+            description: "240L 2-Door Refrigerator. (Net 203L).",
+            details: "Dim: 545x1372mm (WxH) | 10yr Compressor Warranty."
+        },
+        {
+            model: "Midea MDRT307MTB28",
+            brand: "Midea", liters: 240, image: "MDRT307.jpg",
+            description: "240L 2-Door Inverter Refrigerator.",
+            details: "Dim: 545x1372mm (WxH) | 12yr Compressor Warranty."
+        },
+        {
+            model: "Midea MDRT345MTB30",
+            brand: "Midea", liters: 280, image: "MDRT345.jpg",
+            description: "280L 2-Door Refrigerator. (Net 236L).",
+            details: "Dim: 545x1522mm (WxH)."
+        },
+        {
+            model: "Midea MDRT346MTB28",
+            brand: "Midea", liters: 280, image: "MDRT346.jpg",
+            description: "280L 2-Door Inverter Refrigerator.",
+            details: "Dim: 545x1657mm (WxH) | 12yr Compressor Warranty."
+        },
+        {
+            model: "Midea MDRT384MTB30",
+            brand: "Midea", liters: 330, image: "MDRT384.jpg",
+            description: "330L 2-Door Refrigerator. Spacious interior.",
+            details: "10yr Compressor Warranty."
+        },
+        {
+            model: "Midea MDRB431FGG28",
+            brand: "Midea", liters: 400, image: "MDRB431.jpg",
+            description: "400L Bottom Mount Refrigerator (Net 325L).",
+            details: "Dim: 595x695x1724mm | 12yr Compressor Warranty."
+        },
+        {
+            model: "Midea MDRT489MTB28",
+            brand: "Midea", liters: 400, image: "MDRT489.jpg",
+            description: "400L 2-Door Inverter Refrigerator (Net 338L).",
+            details: "Dim: 700x670x1723mm | 12yr Compressor Warranty."
+        },
+        {
+            model: "Midea MDRS712FIE61W",
+            brand: "Midea", liters: 660, image: "MDRS712.jpg",
+            description: "660L Inverter Side-by-Side Fridge. White/Black Glass Door.",
+            details: "Dim: 1765x706x897mm."
+        },
+        {
+            model: "Midea MDRF633MIF",
+            brand: "Midea", liters: 570, image: "MDRF633.jpg",
+            description: "570L 4-Glass Door Inverter Refrigerator.",
+            details: "Premium 4-door design."
+        },
+
+        // --- HISENSE ---
+        {
+            model: "Hisense RR120D4AGN",
+            brand: "Hisense", liters: 110, image: "RR120.jpg",
+            description: "110L Single Door Fridge. Compact and simple.",
+            details: "Dim: 84.9x47.5x44.8cm."
+        },
+        {
+            model: "Hisense RT208N4ASN",
+            brand: "Hisense", liters: 200, image: "RT208.jpg",
+            description: "200L 2-Door Fridge. Frost Free.",
+            details: "Dim: 1440x557x475mm | 12yr Compressor Warranty."
+        },
+        {
+            model: "Hisense RT220N4ABN",
+            brand: "Hisense", liters: 206, image: "RT220.jpg",
+            description: "206L 2-Door Inverter Fridge.",
+            details: "25yr Compressor Warranty | 3yr General."
+        },
+        {
+            model: "Hisense RT328N4ABN",
+            brand: "Hisense", liters: 320, image: "RT328.jpg",
+            description: "320L 2-Door Inverter Fridge.",
+            details: "12yr Compressor Warranty | 3yr General."
+        },
+        {
+            model: "Hisense RT439N4ABN",
+            brand: "Hisense", liters: 420, image: "RT439.jpg",
+            description: "420L 2-Door Inverter Fridge.",
+            details: "25yr Compressor Warranty | 3yr General."
+        },
+        {
+            model: "Hisense RT469N4AW",
+            brand: "Hisense", liters: 420, image: "RT469.jpg",
+            description: "420L 2-Glass Door Inverter Fridge.",
+            details: "Dim: 1696x650x595mm | 25yr Compressor Warranty."
+        },
+        {
+            model: "Hisense RT549N4ABU",
+            brand: "Hisense", liters: 500, image: "RT549.jpg",
+            description: "500L Inverter Fridge. Glass Door (Black/White).",
+            details: "12yr Compressor Warranty."
+        },
+        {
+            model: "Hisense RS588N4ABNIV",
+            brand: "Hisense", liters: 510, image: "RS588.jpg",
+            description: "510L Side-by-Side Inverter Fridge.",
+            details: "Dim: 833x623x1777mm | 25yr Compressor Warranty."
+        },
+        {
+            model: "Hisense RQ556N4ABU",
+            brand: "Hisense", liters: 530, image: "RQ556.jpg",
+            description: "530L 4-Glass Door Inverter Fridge.",
+            details: "25yr Compressor Warranty | 3yr General."
+        },
+        {
+            model: "Hisense RS808N4ABU",
+            brand: "Hisense", liters: 726, image: "RS808.jpg",
+            description: "726L Side-by-Side Inverter Fridge (Mirror Glass).",
+            details: "Dim: 910x697x1786mm."
+        },
+        {
+            model: "Hisense RQ568N4ABU",
+            brand: "Hisense", liters: 520, image: "RQ568.jpg",
+            description: "520L 4-Door Inverter Fridge (Glass Door).",
+            details: "Dim: 181x70x79.4cm | 25yr Compressor Warranty."
+        },
+        {
+            model: "Hisense RS869N4ABV",
+            brand: "Hisense", liters: 780, image: "RS869.jpg",
+            description: "780L Side-by-Side Inverter Fridge.",
+            details: "Dim: 910x717x1795mm | 25yr Compressor Warranty."
+        },
+
+        // --- OTHERS ---
+        {
+            model: "Dekka RD-50",
+            brand: "Dekka", liters: 50, image: "RD50.jpg",
+            description: "50L Mini Bar. Very compact.",
+            details: "Dim: 425x445x1008mm (Note: Height seems tall for 50L, check spec)."
+        },
+        {
+            model: "Nakama 160L",
+            brand: "Nakama", liters: 160, image: "Nakama160.jpg",
+            description: "160L Fridge. Standard size.",
+            details: "Size approx 3 ft 3 inch."
+        },
+        {
+            model: "Narutron NCD-100R",
+            brand: "Narutron", liters: 100, image: "NCD100R.jpg",
+            description: "100L Refrigerator.",
+            details: "Compact model."
+        }
+    ];
 
     function renderProducts(productsToRender = refrigeratorProducts) {
         const productList = document.getElementById('product-list');
@@ -440,19 +705,18 @@
         productsToRender.forEach(product => {
             const card = document.createElement('div');
             card.className = 'product-card';
-            
-            // 路径指向根目录
-            const imageSrc = product.image || 'default_refrigerator.jpg'; 
+            // 使用文件名作为路径，如果不存在则使用默认图
+            const imageSrc = product.image ? product.image : 'default_refrigerator.jpg'; 
 
             card.innerHTML = `
-                <img src="${imageSrc}" alt="${product.model}">
+                <img src="${imageSrc}" alt="${product.model}" onerror="this.src='default_refrigerator.jpg'">
                 <div class="product-info">
-                    <h3>${product.model} (${product.liters}L)</h3>
-                    <p>${product.description}</p>
-                    <p style="font-size: 0.85em; color: #555; text-align: left;">
+                    <h3>${product.model}</h3>
+                    <p><strong>${product.liters}L</strong> - ${product.description}</p>
+                    <p style="font-size: 0.85em; color: #555; text-align: left; border-top: 1px dashed #eee; padding-top: 5px;">
                         ${product.details}
                     </p>
-                    <a class="btn-detail" href="#${product.model.replace(/\s/g, '_')}">View Details</a>
+                    <a class="btn-detail" href="javascript:void(0)">View Details</a>
                 </div>
             `;
             productList.appendChild(card);
@@ -463,22 +727,25 @@
     }
 
     function filterProducts() {
-        const selectedCategory = document.getElementById('capacity-filter').value;
-
-        if (selectedCategory === 'all') {
-            renderProducts(refrigeratorProducts);
-            return;
-        }
+        const capFilter = document.getElementById('capacity-filter').value;
+        const brandFilter = document.getElementById('brand-filter').value;
 
         const filtered = refrigeratorProducts.filter(product => {
-            if (selectedCategory === 'mini') {
-                return product.liters < 200;
-            } else if (selectedCategory === 'medium') {
-                return product.liters >= 200 && product.liters < 400;
-            } else if (selectedCategory === 'large') {
-                return product.liters >= 400;
-            }
-            return false;
+            // 1. 筛选容量
+            let capMatch = false;
+            if (capFilter === 'all') capMatch = true;
+            else if (capFilter === 'mini' && product.liters < 150) capMatch = true;
+            else if (capFilter === 'small' && product.liters >= 150 && product.liters < 300) capMatch = true;
+            else if (capFilter === 'medium' && product.liters >= 300 && product.liters < 500) capMatch = true;
+            else if (capFilter === 'large' && product.liters >= 500 && product.liters < 700) capMatch = true;
+            else if (capFilter === 'xlarge' && product.liters >= 700) capMatch = true;
+
+            // 2. 筛选品牌
+            let brandMatch = false;
+            if (brandFilter === 'all') brandMatch = true;
+            else if (product.brand === brandFilter) brandMatch = true;
+
+            return capMatch && brandMatch;
         });
 
         renderProducts(filtered);
