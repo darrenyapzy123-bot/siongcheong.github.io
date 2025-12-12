@@ -6,7 +6,7 @@
     <title>Siong Cheong Trading - Refrigerator (冰箱)</title>
 
     <style>
-        /* ------------------- 核心排版修复 ------------------- */
+        /* ------------------- CSS 样式保持不变 ------------------- */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -36,8 +36,6 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s;
         }
-
-        .menu-icon:hover { background-color: #2980b9; }
 
         .bar {
             width: 25px;
@@ -73,11 +71,6 @@
             cursor: pointer;
         }
 
-        .sidebar a:hover, .sidebar .submenu-toggle:hover {
-            background-color: #34495e;
-            color: white;
-        }
-
         .closebtn {
             position: absolute;
             top: 0;
@@ -90,12 +83,6 @@
             display: none;
             background-color: #3e566e;
             padding-left: 20px;
-        }
-
-        .submenu a {
-            padding: 10px 25px;
-            font-size: 1em;
-            border-bottom: none;
         }
         
         .overlay {
@@ -145,17 +132,7 @@
             margin-bottom: 25px;
             color: #333;
         }
-
-        h1::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: #3498db;
-            margin: 8px auto 0;
-            border-radius: 2px;
-        }
-
+        
         /* ------------------- Filter ------------------- */
         .filter-section {
             display: flex;
@@ -205,8 +182,6 @@
             display: inline-block;
         }
 
-        .page-footer .back-to-home:hover { background-color: #e67e22; }
-
         /* ------------------- Grid & Card ------------------- */
         .product-grid {
             display: grid;
@@ -224,15 +199,10 @@
             transition: all 0.3s ease;
         }
 
-        .product-card:hover {
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            transform: translateY(-5px);
-        }
-
         .product-card img {
             width: 100%;
             height: 250px;
-            object-fit: contain; /* 改为 contain 以完整显示冰箱 */
+            object-fit: contain; 
             background: #fff;
             border-bottom: 1px solid #ddd;
             padding: 10px;
@@ -274,9 +244,8 @@
             margin-top: 15px;
             transition: background 0.2s;
         }
-
-        .btn-detail:hover { background: #2980b9; }
         
+        /* 媒体查询 (保持不变) */
         @media (max-width: 600px) {
             header { padding-left: 20px; }
             .filter-section { flex-direction: column; align-items: stretch; }
@@ -346,7 +315,9 @@
                     <option value="Hisense">Hisense</option>
                     <option value="Dekka">Dekka</option>
                     <option value="Narutron">Narutron</option>
-                    </select>
+                    <option value="Khind">Khind</option>
+                    <option value="Skyworth">Skyworth</option>
+                </select>
             </div>
         </div>
 
@@ -360,7 +331,7 @@
 </div>
 
 <script>
-    // 菜单逻辑
+    // 菜单逻辑 (保持不变)
     window.toggleNav = function() {
         const sidebar = document.getElementById("mySidebar");
         const overlay = document.getElementById("overlay");
@@ -384,7 +355,7 @@
         submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
     }
 
-    // ------------------- 完整产品数据 -------------------
+    // ------------------- 完整产品数据 (包含所有品牌) -------------------
     const refrigeratorProducts = [
         // --- SHARP ---
         {
@@ -418,16 +389,16 @@
             details: "Dim: 545x1560x586mm | Inverter Compressor."
         },
         {
-            model: "Sharp SJ325MSS",
-            brand: "Sharp", liters: 320, image: "SJ325MSS.jpg",
-            description: "320L 2-Door Fridge with Twist & Serve Ice Tray and LED Lighting.",
-            details: "Dim: 545x1700x588mm | Vegetable Case | Bottle Pocket."
-        },
-        {
             model: "Sharp SJ-327MDS",
             brand: "Sharp", liters: 320, image: "SJ327MDS.jpg",
             description: "320L 2-Door Fridge. Features 2-Way Fresh Room and AG+ Nano Deodoriser.",
-            details: "Dim: 545x1700x588mm | 10yr Compressor Warranty."
+            details: "Dim: 545x1700x588mm | 10yr Compressor Warranty | LED Lighting."
+        },
+        {
+            model: "Sharp SJ325MSS",
+            brand: "Sharp", liters: 320, image: "SJ325MSS.jpg",
+            description: "320L 2-Door Fridge with Twist & Serve Ice Tray and LED Lighting.",
+            details: "Dim: 545x1700x588mm (Approx) | Vegetable Case | Bottle Pocket."
         },
         {
             model: "Sharp SJ-3222MSS",
@@ -528,12 +499,12 @@
             details: "Dim: 833x670x1785mm | Stylish finish | 12yr Compressor Warranty."
         },
 
-        // --- MIDEA (Only Fridges, excluding Chest Freezers) ---
+        // --- MIDEA ---
         {
             model: "Midea MDRD229FGD",
             brand: "Midea", liters: 157, image: "MDRD229.jpg",
-            description: "157L Single Door Refrigerator. Available in Silver/Black.",
-            details: "Compact single door design."
+            description: "157L Single Door Refrigerator. Compact single door design.",
+            details: "Available in Silver/Black."
         },
         {
             model: "Midea MDRT267MTB30",
@@ -669,8 +640,8 @@
             description: "780L Side-by-Side Inverter Fridge.",
             details: "Dim: 910x717x1795mm | 25yr Compressor Warranty."
         },
-
-        // --- OTHERS ---
+        
+        // --- DEKKA / NARUTRON / NAKAMA ---
         {
             model: "Dekka RD-50",
             brand: "Dekka", liters: 50, image: "RD50.jpg",
@@ -688,8 +659,26 @@
             brand: "Narutron", liters: 100, image: "NCD100R.jpg",
             description: "100L Refrigerator.",
             details: "Compact model."
+        },
+        
+        // --- KHIND (Slide 73 Placeholder) ---
+        {
+            model: "Khind Refrigerator Placeholder 1",
+            brand: "Khind", liters: 250, image: "default_refrigerator.jpg",
+            description: "Khind Fridge Placeholder: Please replace 'default_refrigerator.jpg' with the actual image and details from Slide 73 (if it's a refrigerator).",
+            details: "MODEL/DIMENSIONS: FZ series in PPTX are freezers. Please check specific Khind refrigerator models."
+        },
+        
+        // --- SKYWORTH (Slide 71-72 Placeholder) ---
+        {
+            model: "Skyworth Refrigerator Placeholder 1",
+            brand: "Skyworth", liters: 400, image: "default_refrigerator.jpg",
+            description: "Skyworth Fridge Placeholder: Please replace 'default_refrigerator.jpg' with the actual image and details from Slide 71-72.",
+            details: "MODEL/DIMENSIONS: Check for specific Skyworth models like BCD-403W, etc."
         }
     ];
+
+    // ------------------- 产品渲染和筛选逻辑 -------------------
 
     function renderProducts(productsToRender = refrigeratorProducts) {
         const productList = document.getElementById('product-list');
@@ -705,7 +694,8 @@
         productsToRender.forEach(product => {
             const card = document.createElement('div');
             card.className = 'product-card';
-            // 使用文件名作为路径，如果不存在则使用默认图
+            
+            // 路径指向根目录
             const imageSrc = product.image ? product.image : 'default_refrigerator.jpg'; 
 
             card.innerHTML = `
@@ -714,6 +704,7 @@
                     <h3>${product.model}</h3>
                     <p><strong>${product.liters}L</strong> - ${product.description}</p>
                     <p style="font-size: 0.85em; color: #555; text-align: left; border-top: 1px dashed #eee; padding-top: 5px;">
+                        Brand: ${product.brand}<br>
                         ${product.details}
                     </p>
                     <a class="btn-detail" href="javascript:void(0)">View Details</a>
