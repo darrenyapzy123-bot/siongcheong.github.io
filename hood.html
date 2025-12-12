@@ -44,7 +44,6 @@
         }
         
         /* ------------------- Section Title Style (H2) ------------------- */
-        /* 保持 freezer.html 中的分组标题样式 */
         .product-section-title {
             color: #2c3e50;
             margin-top: 30px;
@@ -155,7 +154,6 @@
             background: white;
             border-radius: 8px;
             overflow: hidden;
-            /* 简化边框，像 freezer.html 一样更简洁 */
             border: 1px solid #ddd;
             box-shadow: none; 
             transition: transform 0.2s;
@@ -170,7 +168,7 @@
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hover时增加阴影 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
         }
 
         .product-card img {
@@ -188,7 +186,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            text-align: left; /* 保持文字左对齐 */
+            text-align: left; 
         }
 
         .product-details h3 {
@@ -557,7 +555,6 @@
         const powerFilter = document.getElementById('powerFilter');
         const lengthFilter = document.getElementById('lengthFilter');
         
-        // 确保选择所有产品卡片，不分 grid
         const cards = document.querySelectorAll('.product-card');
 
         // Event Listeners for Filters
@@ -627,25 +624,19 @@
                 }
             });
             
-            // 隐藏/显示标题和网格容器 (如果所有卡片都隐藏了，就隐藏标题)
+            // 隐藏/显示标题和网格容器
             
             const elbaCards = document.querySelectorAll('#productGrid_Elba .product-card');
             const mideaCards = document.querySelectorAll('#productGrid_Midea .product-card');
             
-            // 检查 Elba 区是否有可见卡片
             let elbaVisible = Array.from(elbaCards).some(card => !card.classList.contains('hidden'));
-            
-            // 隐藏/显示 Elba 标题和 Grid
             const elbaTitle = document.getElementById('productGrid_Elba').previousElementSibling;
             if (elbaTitle && elbaTitle.tagName === 'H2') {
                 elbaTitle.style.display = elbaVisible ? 'block' : 'none';
             }
             document.getElementById('productGrid_Elba').style.display = elbaVisible ? 'grid' : 'none';
 
-            // 检查 Midea 区是否有可见卡片
             let mideaVisible = Array.from(mideaCards).some(card => !card.classList.contains('hidden'));
-            
-            // 隐藏/显示 Midea 标题和 Grid
             const mideaTitle = document.getElementById('productGrid_Midea').previousElementSibling;
             if (mideaTitle && mideaTitle.tagName === 'H2') {
                 mideaTitle.style.display = mideaVisible ? 'block' : 'none';
