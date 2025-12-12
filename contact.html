@@ -14,17 +14,19 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background: #f5f5f5;
+            /* 【已修复】移除 display: flex; justify-content: center; */
         }
 
         #main-content {
             width: 100%;
             max-width: 100vw;
+            /* 保持 transition 以便未来需要时使用，但margin-right操作已在JS中移除 */
             transition: margin-right 0.5s; 
             display: flex;
             flex-direction: column;
         }
 
-        /* ------------------- 汉堡菜单和侧边栏样式 (保持不变) ------------------- */
+        /* ------------------- 汉堡菜单和侧边栏样式 ------------------- */
         
         .menu-icon {
             position: fixed;
@@ -113,7 +115,7 @@
             display: none;
         }
         
-        /* Header 样式 (保持不变) */
+        /* Header 样式 */
         header {
             background: #2c3e50;
             padding: 20px;
@@ -160,7 +162,7 @@
             border-radius: 2px;
         }
         
-        /* ------------------- 联系方式卡片样式 (保持不变) ------------------- */
+        /* ------------------- 联系方式卡片样式 ------------------- */
         
         .contact-grid {
             display: grid;
@@ -248,7 +250,7 @@
             color: #000000; 
         }
         
-        /* 其他信息卡片样式 - 精简保留电话和时间 */
+        /* 其他信息卡片样式 - 精简保留电话和时间 (已移除地址) */
         .other-info {
             background: white;
             padding: 25px;
@@ -278,7 +280,7 @@
         }
 
 
-        /* 媒体查询 (保持不变) */
+        /* 媒体查询 */
         @media (max-width: 600px) {
             header {
                 padding-left: 20px;
@@ -378,10 +380,8 @@
         const sidebar = document.getElementById("mySidebar");
         const overlay = document.getElementById("overlay");
         const body = document.body;
-        const mainContent = document.getElementById("main-content"); 
-        
-        const scrollBarWidth = '17px'; 
-        
+        // 【已修复】删除了对 mainContent 的引用和 scrollbarWidth 的计算
+        
         const isOpened = sidebar.style.width === '250px';
 
         if (isOpened) {
@@ -389,12 +389,12 @@
             sidebar.style.width = '0';
             overlay.style.display = 'none';
             body.style.overflow = 'auto'; // 恢复滚动
-            mainContent.style.marginRight = '0'; // 移除补偿边距
+            // 【已修复】删除了 mainContent.style.marginRight = '0'; 
         } else {
             // 打开菜单
-            mainContent.style.marginRight = scrollBarWidth;
+            // 【已修复】删除了 mainContent.style.marginRight = scrollBarWidth;
             
-            body.style.overflow = 'hidden'; // 禁止滚动
+            body.style.overflow = 'hidden'; // 禁止滚动，同时移除滚动条
             sidebar.style.width = '250px';
             overlay.style.display = 'block';
         }
