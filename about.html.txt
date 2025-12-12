@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Siong Cheong Trading</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <style>
+        /* ------------------- General Base Styles ------------------- */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        #main-content {
+            /* Width and centering for main content container */
+            width: 100%;
+            max-width: 1000px; /* Limit content max width */
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles - Ensures full-width background (Fix from contact.html) */
+        header {
+            background: #2c3e50;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            position: relative;
+            box-sizing: border-box;
+            /* Force full-screen background */
+            width: 100vw;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
+        }
+
+        .header-logo {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 200px;
+            height: auto;
+        }
+
+        /* Menu and Sidebar Styles */
+        .menu-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #3498db;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .bar { width: 25px; height: 3px; background-color: white; margin: 5px 0; }
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            background-color: #2c3e50;
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: 0.5s;
+            max-width: 250px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+        }
+        .sidebar a, .sidebar .submenu-toggle {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #ecf0f1;
+            display: block;
+            border-bottom: 1px solid #34495e;
+            cursor: pointer;
+        }
+        .sidebar a:hover, .sidebar .submenu-toggle:hover { background-color: #34495e; }
+        .closebtn { position: absolute; top: 0; right: 25px; font-size: 36px; line-height: 50px; }
+        .submenu { display: none; background-color: #3e566e; padding-left: 20px; }
+        .submenu a { padding: 10px 25px; font-size: 1em; border-bottom: none; }
+        .overlay { position: fixed; height: 100%; width: 100%; top: 0; left: 0; z-index: 998; background: rgba(0, 0, 0, 0.5); display: none; }
+
+        .container {
+            padding: 40px 20px;
+            margin: 0 auto;
+        }
+
+        /* ------------------- Hero Section (Company Introduction) ------------------- */
+        .hero-section {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .hero-section h2 {
+            font-size: 2.2em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .hero-section p {
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.6;
+            max-width: 850px;
+            margin: 0 auto 15px;
+            text-align: left; /* Make long text readable */
+        }
+        
+        /* ------------------- Core Values Cards ------------------- */
+        .section-title {
+            text-align: center;
+            font-size: 1.8em;
+            color: #3498db;
+            margin-bottom: 30px;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .value-card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-card i {
+            font-size: 3em;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .value-card h3 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .value-card p {
+            color: #7f8c8d;
+            font-size: 0.95em;
+        }
+        
+        /* ------------------- Call to Action (CTA) ------------------- */
+        .cta-section {
+            text-align: center;
+            padding: 40px;
+            background: #2c3e50; /* Dark background for emphasis */
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+
+        .cta-section h3 {
+            margin-top: 0;
+            font-size: 1.8em;
+            color: #3498db;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #e74c3c; /* Red action color */
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background: #c0392b;
+        }
+
+        /* ------------------- Footer (Consistent with contact.html) ------------------- */
+        #footer-info {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 30px 20px;
+            margin-top: 50px;
+            text-align: center;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            box-sizing: border-box;
+        }
+
+        .footer-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        #footer-info p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+        
+        #footer-info a {
+            color: #ecf0f1;
+            text-decoration: none;
+        }
+
+        .copyright {
+            margin-top: 15px;
+            color: #7f8c8d;
+        }
+        
+        @media (max-width: 600px) {
+             .hero-section h2 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="menu-icon" onclick="toggleNav()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+</div>
+
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">×</a>
+    
+    <a href="index.html">Home</a>
+    
+    <div class="submenu-toggle" onclick="toggleSubmenu(this)">
+        Products
+    </div>
+    <div class="submenu">
+        <a href="refrigerator.html">Refrigerator</a>
+        <a href="chiller.html">Chiller</a>
+        <a href="freezer.html">Freezer</a>
+        <a href="ac.html">Air Conditioner</a>
+        <a href="tv.html">TV</a>
+        <a href="washer.html">Washer</a>
+        <a href="dryer.html">Dryer</a>
+        <a href="kitchen.html">Kitchen Appliances</a>
+        <a href="small.html">Small Appliances</a>
+    </div>
+
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact Us</a>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleNav()"></div>
+<div id="main-content">
+    
+    <header>
+        About Us
+        <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
+    </header>
+
+    <div class="container">
+        
+        <section class="hero-section">
+            <h2>Introduction to Siong Cheong Trading</h2>
+            <p>
+                Siong Cheong Trading is a trusted supplier committed to delivering quality products and reliable service to businesses across the region. With years of industry experience, the company has built a strong reputation for offering a diverse range of goods at competitive prices, supported by prompt delivery and excellent customer service.
+            </p>
+            <p>
+                Driven by professionalism and long-term customer relationships, Siong Cheong Trading continues to grow as a dependable partner for retailers, wholesalers, and enterprises seeking efficient and consistent supply solutions.
+            </p>
+        </section>
+
+        <h2 class="section-title">Our Core Values</h2>
+
+        <section class="values-grid">
+            <div class="value-card">
+                <i class="fas fa-handshake"></i>
+                <h3>Integrity & Reliability</h3>
+                <p>We ensure every transaction is built on trust, delivering genuine products from renowned brands you can rely on.</p>
+            </div>
+            <div class="value-card">
+                <i class="fas fa-truck-fast"></i>
+                <h3>Efficiency & Service</h3>
+                <p>From initial consultation to prompt delivery and efficient after-sales support, we guarantee a seamless experience.</p>
+            </div>
+            <div class="value-card">
+                <i class="fas fa-award"></i>
+                <h3>Commitment to Quality</h3>
+                <p>We selectively source high-quality, high-performance appliances to provide the best long-term value for our customers.</p>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h3>Ready to Explore Our Product Range?</h3>
+            <p>Browse our extensive catalog of residential and commercial appliances.</p>
+            <a href="index.html" class="cta-button">View All Products</a>
+        </section>
+        
+        </div>
+
+    <div id="footer-info">
+        <div class="footer-content">
+            <p>Siong Cheong Trading Sdn. Bhd.</p>
+            <p>Contact No: <a href="tel:+601110948581">+60 11-1094 8581</a></p>
+            <p class="copyright">© 2024. All rights reserved.</p>
+        </div>
+    </div>
+    </div>
+
+
+<script>
+    // Sidebar Toggle Logic
+    function toggleNav() {
+        const sidebar = document.getElementById("mySidebar");
+        const overlay = document.getElementById("overlay");
+        const body = document.body;
+        
+        const isOpen = sidebar.offsetWidth > 0;
+
+        if (isOpen) {
+            sidebar.style.width = "0";
+            overlay.style.display = "none";
+            body.style.overflow = "auto";
+        } else {
+            sidebar.style.width = "250px";
+            overlay.style.display = "block";
+            body.style.overflow = "hidden";
+        }
+    }
+
+    // Submenu Toggle Logic
+    function toggleSubmenu(element) {
+        const submenu = element.nextElementSibling;
+        const isShown = submenu.style.display === "block";
+
+        document.querySelectorAll(".submenu").forEach(s => (s.style.display = "none"));
+
+        submenu.style.display = isShown ? "none" : "block";
+    }
+</script>
+
+</body>
+</html>
