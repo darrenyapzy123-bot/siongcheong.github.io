@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Fryer Series (空气炸锅系列)</title>
+    <style>
+        /* 通用重置 */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            padding-bottom: 70px; /* 为底部的 "返回首页" 按钮留出空间 */
+        }
+        
+        /* ------------------- 顶部导航和筛选控制区样式 ------------------- */
+        header {
+            background-color: #0d47a1; 
+            color: white; 
+            padding: 20px; 
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        /* 筛选控制容器 */
+        #filter-controls {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #ecf0f1;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* 下拉菜单样式 (保持蓝色配色) */
+        #brand-filter-dropdown {
+            padding: 10px 18px;
+            border-radius: 5px;
+            border: 1px solid #3498db; 
+            background-color: #3498db; 
+            color: white; 
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        #brand-filter-dropdown option {
+            color: black;
+            background-color: white;
+        }
+
+        /* ------------------- 产品列表和卡片优化 ------------------- */
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;       
+            justify-content: center; 
+            gap: 25px;             
+            padding: 40px 20px;
+        }
+        
+        .brand-group-title {
+            flex: 0 0 100%; 
+            width: 100%;
+            text-align: left;
+            margin: 30px 0 15px 0;
+            padding-left: 10px;
+            font-size: 1.8em;
+            color: #34495e;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        .product-card {
+            /* 实现响应式多列布局 */
+            flex: 0 0 calc(33.333% - 16.666px); 
+            max-width: 350px; 
+            min-width: 280px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image-box {
+            background-color: #fcfcfc;
+            padding: 25px;
+            height: 250px; /* 固定图片框高度 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-image {
+            max-width: 90%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .product-details {
+            padding: 15px;
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* 产品名称颜色标注和字体大小调整 */
+        .product-details h3 {
+            font-size: 1.4em; 
+            color: #c0392b; /* 红色系，用于名称突出 */
+            margin-bottom: 10px; 
+            font-weight: 600;
+        }
+        
+        /* 介绍文本优化 */
+        .product-details p {
+            font-size: 0.95em;
+            color: #555; 
+            margin-bottom: 20px; 
+            line-height: 1.6; /* 增加行高，减少拥挤感 */
+            text-align: left; /* 左对齐描述文本 */
+            flex-grow: 1;
+        }
+        
+        /* 统一蓝色按钮 */
+        .detail-button {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #3498db; 
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: auto;
+        }
+        
+        .detail-button:hover {
+            background-color: #2980b9; 
+        }
+
+        /* ------------------- 底部固定条 ------------------- */
+        #footer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff; 
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            text-align: center;
+            z-index: 90;
+        }
+
+        #home-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 10px 0;
+            background-color: #2ecc71; /* 绿色按钮 */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            font-size: 1em;
+        }
+
+        #home-btn:hover {
+            background-color: #27ae60;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 1200px) {
+            .product-card {
+                flex: 0 0 calc(50% - 12.5px); 
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .product-card {
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <h1>Air Fryer Series (空气炸锅系列)</h1>
+    </header>
+
+    <div id="filter-controls">
+        <select id="brand-filter-dropdown" onchange="filterProducts(this.value)">
+            <option value="all">筛选品牌 (Filter Brand)</option>
+            <option value="Milux">Milux</option>
+            <option value="Khind">Khind</option>
+            <option value="Elba">Elba</option>
+        </select>
+    </div>
+
+    <div class="products-container">
+        
+        <h2 class="brand-group-title" data-brand="Milux">Milux 空气炸锅系列</h2>
+        <div class="product-card" data-brand="Milux">
+            <div class="product-image-box">
+                <img src="milux-maf060-airfryer.jpg" alt="Milux MAF-060 空气炸锅" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Milux MAF-060 (7.0L 大容量)</h3>
+                <p>
+                    7.0L 超大容量健康空气炸锅。功率 1700W，多功能（可煎炸、烘烤、烧烤），只需少量或不使用油。具有 30 分钟计时器、蜂鸣声自动关机和过热保护功能。不粘涂层，外壳为不锈钢色。
+                </p>
+                <a href="air-fryer-details/milux-maf060.html" class="detail-button">查看详情</a>
+            </div>
+        </div>
+        
+        <h2 class="brand-group-title" data-brand="Khind">Khind 空气炸锅系列</h2>
+        <div class="product-card" data-brand="Khind">
+            <div class="product-image-box">
+                <img src="khind-arf77-airfryer.jpg" alt="Khind ARF77 XXL 空气炸锅" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Khind ARF77 (XXL 7.7L)</h3>
+                <p>
+                    外锅容量 7.7L，炸篮容量 6.0L。功率 1800W，采用高速空气循环技术进行健康烹饪。可调节温度高达 200°C，定时器长达 60 分钟。带有不粘可拆卸炸篮，并具有自动关闭加热开关以提供额外保护。
+                </p>
+                <a href="air-fryer-details/khind-arf77.html" class="detail-button">查看详情</a>
+            </div>
+        </div>
+        
+        <h2 class="brand-group-title" data-brand="Elba">Elba 空气炸锅系列</h2>
+        <div class="product-card" data-brand="Elba">
+            <div class="product-image-box">
+                <img src="elba-eafh3214-airfryer.jpg" alt="Elba EAF-H3214 空气炸锅" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Elba EAF-H3214 (3.2L 机械式)</h3>
+                <p>
+                    容量 3.2L，额定功率 1,400W。采用 360° 快速热空气循环技术，温度设置范围为 80-200ºC，定时器控制为 30 分钟。具有可拆卸炸篮、过热安全保护 和酷感触摸机身。
+                </p>
+                <a href="air-fryer-details/elba-eafh3214.html" class="detail-button">查看详情</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="footer-bar">
+        <a href="index.html" id="home-btn">返回首页 (Back to Home)</a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const allProducts = document.querySelectorAll('.product-card');
+            const allTitles = document.querySelectorAll('.brand-group-title');
+
+            // 过滤函数
+            window.filterProducts = function(filter) {
+                let visibleBrands = new Set(); 
+                
+                // 遍历所有产品卡片
+                allProducts.forEach(card => {
+                    const cardBrand = card.getAttribute('data-brand');
+                    
+                    if (filter === 'all' || cardBrand === filter) {
+                        card.style.display = 'flex'; 
+                        visibleBrands.add(cardBrand);
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // 遍历所有品牌分组标题
+                allTitles.forEach(title => {
+                    const titleBrand = title.getAttribute('data-brand');
+                    
+                    if (filter === 'all' || visibleBrands.has(titleBrand)) {
+                        title.style.display = 'block'; 
+                    } else {
+                        title.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
