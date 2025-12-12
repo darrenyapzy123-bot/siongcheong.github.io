@@ -36,14 +36,10 @@
             z-index: 1000;
             cursor: pointer;
             padding: 10px;
-            background-color: #3498db;
+            background-color: #3498db; /* 蓝色主题 */
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s;
-        }
-
-        .menu-icon:hover {
-            background-color: #2980b9;
         }
 
         .bar {
@@ -54,6 +50,7 @@
             transition: 0.4s;
         }
 
+        /* 侧边栏 */
         .sidebar {
             height: 100%;
             width: 0;
@@ -72,7 +69,7 @@
         .sidebar a, .sidebar .submenu-toggle {
             padding: 15px 25px;
             text-decoration: none;
-            font-size: 1.1em;
+            font-size: 1.2em;
             color: #ecf0f1;
             display: block;
             transition: 0.3s;
@@ -81,8 +78,8 @@
         }
 
         .sidebar a:hover, .sidebar .submenu-toggle:hover {
-            background-color: #34495e;
-            color: #f39c12; 
+            background-color: #3498db;
+            color: white;
         }
 
         .closebtn {
@@ -91,21 +88,15 @@
             right: 25px;
             font-size: 36px;
             line-height: 50px;
-            color: #ecf0f1;
         }
 
         .submenu {
             display: none;
             background-color: #3e566e;
-            padding-left: 10px;
+            padding-left: 20px;
         }
         
-        .submenu a {
-            padding: 10px 25px;
-            font-size: 1em;
-            border-bottom: none;
-        }
-
+        /* 遮罩层 */
         .overlay {
             position: fixed;
             height: 100%;
@@ -117,7 +108,7 @@
             display: none;
         }
 
-        /* ------------------- Header & Banner ------------------- */
+        /* ------------------- 顶部 Header ------------------- */
         header {
             background: #2c3e50;
             padding: 20px;
@@ -126,139 +117,125 @@
             font-size: 24px;
             font-weight: bold;
             position: relative;
-            padding-left: 60px; 
+            padding-left: 60px; /* 为汉堡图标留出空间 */
             width: 100%;
             box-sizing: border-box; 
         }
-        
+
         .header-logo {
             position: absolute;
             top: 50%;
             right: 20px;
             transform: translateY(-50%);
-            width: 250px; /* 调整宽度以适应 Header */
+            width: 250px; /* 调整 Logo 宽度 */
             height: auto;
         }
 
-        .banner {
-            text-align: center;
-            padding: 50px 20px;
-            background: linear-gradient(135deg, #3498db, #2c3e50);
-            color: white;
-        }
-
-        .banner h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .banner p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        /* ------------------- Content Container ------------------- */
-        .container {
+        /* ------------------- 产品卡片容器 ------------------- */
+        .products-container {
             padding: 40px 20px;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
-            width: 100%; 
         }
 
-        .product-grid {
+        .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            padding-top: 20px;
+            gap: 25px;
         }
 
-        /* ------------------- Card Styling ------------------- */
-        .card {
+        /* 产品卡片 */
+        .product-card {
             background: white;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
             transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-image-box {
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f7f9fb;
-            border-bottom: 1px solid #eee;
-        }
-
-        .card-image {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-        }
-
-        .card-info {
-            padding: 20px;
-            flex-grow: 1;
+            text-align: center;
+            padding-bottom: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        .card-info h3 {
-            font-size: 1.5em;
-            color: #34495e;
-            margin-bottom: 15px;
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
-        .btn-chiller {
+        .product-card h2 {
+            font-size: 1.6em;
+            color: #34495e;
+            margin: 15px 0 10px;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            background-color: #fcfcfc;
+            border-bottom: 1px solid #eee;
+            padding: 20px;
+        }
+
+        .description {
+            padding: 0 15px;
+            color: #7f8c8d;
+            font-size: 0.95em;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        /* ------------------- 详情按钮样式 - 统一蓝色 ------------------- */
+        /* 使用通用的 .btn-detail 确保所有按钮样式一致 */
+        .btn-detail {
             display: inline-block;
             padding: 12px 25px;
-            background-color: #e67e22; /* Orange for distinction */
+            background-color: #3498db; /* 统一蓝色 */
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 6px;
             font-weight: bold;
-            transition: background-color 0.3s;
-            margin-top: 15px;
-        }
-
-        .btn-chiller:hover {
-            background-color: #d35400;
+            transition: background-color 0.2s, transform 0.2s;
+            margin-top: 10px;
         }
         
-        /* Specific button colors for main categories */
-        .btn-blue { background-color: #3498db; }
-        .btn-blue:hover { background-color: #2980b9; }
-
-        .btn-green { background-color: #2ecc71; }
-        .btn-green:hover { background-color: #27ae60; }
+        .btn-detail:hover {
+            background-color: #2980b9; /* 悬停深蓝色 */
+            transform: scale(1.03);
+        }
         
-        .btn-red { background-color: #e74c3c; }
-        .btn-red:hover { background-color: #c0392b; }
+        /* 移除之前针对特定类别的颜色覆盖 */
+        /* .btn-chiller, .btn-freezer, .btn-ac, .btn-tv, .btn-washer, .btn-dryer, .btn-kitchen, .btn-small 的独立颜色已被移除 */
+        /* ------------------- 底部 Footer ------------------- */
+        .page-footer {
+            padding: 30px 20px;
+            text-align: center;
+            background-color: #2c3e50;
+            margin-top: 40px; 
+            color: white;
+        }
 
-        /* ------------------- Media Queries ------------------- */
-        @media (max-width: 768px) {
-            .product-grid {
-                grid-template-columns: 1fr;
-            }
+        .page-footer p {
+            margin: 0;
+            font-size: 1em;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 600px) {
             .header-logo {
                 width: 150px;
             }
             header {
                 font-size: 20px;
             }
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
         }
+
     </style>
 </head>
-
 <body>
 
 <div class="menu-icon" onclick="toggleNav()">
@@ -304,217 +281,143 @@
         <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
     </header>
 
-    <div class="banner">
-        <h1>探索我们的电器产品系列</h1>
-        <p>我们提供来自世界一流品牌的各式家用和商用电器，满足您的所有需求。</p>
-    </div>
-
-    <div class="container">
-        <h2 style="text-align: center; color: #2c3e50; margin-bottom: 30px;">主要产品分类 (Main Categories)</h2>
-        
-        <div class="product-grid">
-
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/refrigerator.png" alt="Refrigerator" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>冰箱 (Refrigerator)</h3>
-                    <p>家用双门、多门冰箱及变频节能型号。</p>
-                    <a class="btn-chiller btn-blue" href="refrigerator.html">查看详情</a>
-                </div>
+    <div class="products-container">
+        <div class="category-grid">
+            
+            <div class="product-card">
+                <img src="refrigerator_icon.png" alt="Refrigerator">
+                <h2>Refrigerator (冰箱)</h2>
+                <p class="description">提供各种尺寸和技术（Inverter, No Frost）的家用冰箱。</p>
+                <a class="btn-detail" href="refrigerator.html">查看详情</a>
             </div>
 
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/freezer.png" alt="Freezer" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>冷冻柜 (Freezer)</h3>
-                    <p>卧式冷冻柜和立式冷冻柜，适用于商业及大容量储存。</p>
-                    <a class="btn-chiller btn-blue" href="freezer.html">查看详情</a>
-                </div>
+            <div class="product-card">
+                <img src="chiller_icon.png" alt="Chiller">
+                <h2>Chiller (展示冷柜)</h2>
+                <p class="description">适用于商业用途的饮料和食品展示冷柜。</p>
+                <a class="btn-detail" href="chiller.html">查看详情</a>
             </div>
 
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/chiller.png" alt="Chiller" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>冷藏展示柜 (Chiller)</h3>
-                    <p>饮料冷柜、展示柜，适用于零售和餐饮业。</p>
-                    <a class="btn-chiller btn-blue" href="chiller.html">查看详情</a>
-                </div>
+            <div class="product-card">
+                <img src="freezer_icon.png" alt="Freezer">
+                <h2>Freezer (冷冻柜)</h2>
+                <p class="description">卧式、立式和展示型冷冻柜，满足大容量冷冻需求。</p>
+                <a class="btn-detail" href="freezer.html">查看详情</a>
             </div>
 
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/ac.png" alt="Air Conditioner" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>空调 (Air Conditioner)</h3>
-                    <p>分体式空调、变频空调、窗式空调等。</p>
-                    <a class="btn-chiller btn-blue" href="ac.html">查看详情</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/portable_ac.png" alt="Portable Air Cond" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>移动式空调 (Portable AC)</h3>
-                    <p>易于移动，随时随地享受清凉。</p>
-                    <a class="btn-chiller btn-blue" href="portable_ac.html">查看详情</a>
-                </div>
+            <div class="product-card">
+                <img src="ac_icon.png" alt="Air Conditioner">
+                <h2>Air Conditioner (空调)</h2>
+                <p class="description">分体式、窗式和中央空调系统，提供舒适的室内温度。</p>
+                <a class="btn-detail" href="ac.html">查看详情</a>
             </div>
             
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/tv.png" alt="TV" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>电视 (TV)</h3>
-                    <p>智能电视、UHD 4K 高清电视等影音设备。</p>
-                    <a class="btn-chiller btn-red" href="tv.html">查看详情</a>
-                </div>
+            <div class="product-card">
+                <img src="portable_ac_icon.png" alt="Portable Air Cond">
+                <h2>Portable Air Cond (移动式空调)</h2>
+                <p class="description">无需安装，方便移动的制冷解决方案。</p>
+                <a class="btn-detail" href="portable_ac.html">查看详情</a>
             </div>
 
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/washer.png" alt="Washer" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>洗衣机 (Washer)</h3>
-                    <p>全自动、半自动、滚筒及波轮洗衣机。</p>
-                    <a class="btn-chiller btn-green" href="washer.html">查看详情</a>
-                </div>
+            <div class="product-card">
+                <img src="tv_icon.png" alt="TV">
+                <h2>TV (电视)</h2>
+                <p class="description">提供 Smart TV、4K UHD 等多种型号，享受家庭娱乐。</p>
+                <a class="btn-detail" href="tv.html">查看详情</a>
             </div>
 
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/dryer.png" alt="Dryer" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>烘干机 (Dryer)</h3>
-                    <p>滚筒式、热泵式烘干机，保护衣物，高效烘干。</p>
-                    <a class="btn-chiller btn-green" href="dryer.html">查看详情</a>
-                </div>
+            <div class="product-card">
+                <img src="washer_icon.png" alt="Washer">
+                <h2>Washer (洗衣机)</h2>
+                <p class="description">全自动、半自动和滚筒式洗衣机。</p>
+                <a class="btn-detail" href="washer.html">查看详情</a>
             </div>
 
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/hood.png" alt="Hood" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>抽油烟机 (Hood)</h3>
-                    <p>强力排风，保持厨房空气清新。</p>
-                    <a class="btn-chiller btn-orange" href="hood.html">查看详情</a>
-                </div>
+            <div class="product-card">
+                <img src="dryer_icon.png" alt="Dryer">
+                <h2>Dryer (烘干机)</h2>
+                <p class="description">热泵式、冷凝式等高效烘干机，保护衣物。</p>
+                <a class="btn-detail" href="dryer.html">查看详情</a>
             </div>
 
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/gas.png" alt="Gas" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>燃气灶具 (Gas)</h3>
-                    <p>嵌入式及台式燃气炉，火力强劲，安全可靠。</p>
-                    <a class="btn-chiller btn-orange" href="gas.html">查看详情</a>
-                </div>
+            <div class="product-card">
+                <img src="kitchen_icon.png" alt="Kitchen Appliances">
+                <h2>Kitchen Appliances (厨房电器)</h2>
+                <p class="description">各类灶具、烤箱、微波炉、抽油烟机等厨房必备品。</p>
+                <a class="btn-detail" href="kitchen.html">查看详情</a>
             </div>
             
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/oven.png" alt="Oven" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>烤箱 (Oven)</h3>
-                    <p>嵌入式和台式烤箱，满足烘焙和烹饪需求。</p>
-                    <a class="btn-chiller btn-orange" href="oven.html">查看详情</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/microwave.png" alt="Microwave" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>微波炉 (Microwave)</h3>
-                    <p>快速加热、解冻和烹饪的厨房必备品。</p>
-                    <a class="btn-chiller btn-orange" href="microwave.html">查看详情</a>
-                </div>
+            <div class="product-card">
+                <img src="hood_icon.png" alt="Hood">
+                <h2>Hood (抽油烟机)</h2>
+                <p class="description">高效吸油烟机，保持厨房清洁。</p>
+                <a class="btn-detail" href="hood.html">查看详情</a>
             </div>
             
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/air_fryer.png" alt="Air Fryer" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>空气炸锅 (Air Fryer)</h3>
-                    <p>健康无油煎炸，轻松享受美味。</p>
-                    <a class="btn-chiller btn-orange" href="air_fryer.html">查看详情</a>
-                </div>
+            <div class="product-card">
+                <img src="gas_icon.png" alt="Gas">
+                <h2>Gas (燃气灶具)</h2>
+                <p class="description">嵌入式和台式燃气炉，火力强劲稳定。</p>
+                <a class="btn-detail" href="gas.html">查看详情</a>
             </div>
             
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/kitchen.png" alt="Kitchen Appliances" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>厨房电器 (Kitchen)</h3>
-                    <p>涵盖各类烹饪和备餐工具。</p>
-                    <a class="btn-chiller btn-orange" href="kitchen.html">查看详情</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/shower.png" alt="Shower" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>热水器 (Shower)</h3>
-                    <p>即热式、储水式热水器及花洒套装。</p>
-                    <a class="btn-chiller btn-green" href="shower.html">查看详情</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/air_purifier.png" alt="Air Purifier" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>空气净化器 (Air Purifier)</h3>
-                    <p>高效过滤，改善室内空气质量。</p>
-                    <a class="btn-chiller btn-blue" href="air_purifier.html">查看详情</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/speaker.png" alt="Speaker" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>音响/扬声器 (Speaker)</h3>
-                    <p>家庭影院、蓝牙音箱，提供卓越音质。</p>
-                    <a class="btn-chiller btn-red" href="speaker.html">查看详情</a>
-                </div>
+            <div class="product-card">
+                <img src="oven_icon.png" alt="Oven">
+                <h2>Oven (烤箱)</h2>
+                <p class="description">嵌入式或独立式烤箱，满足您的烘焙需求。</p>
+                <a class="btn-detail" href="oven.html">查看详情</a>
             </div>
             
-            <div class="card">
-                <div class="card-image-box">
-                    <img src="icons/small.png" alt="Small Appliances" class="card-image">
-                </div>
-                <div class="card-info">
-                    <h3>小家电 (Small)</h3>
-                    <p>各类便捷小电器，提升生活质量。</p>
-                    <a class="btn-chiller" href="small.html">查看详情</a>
-                </div>
+            <div class="product-card">
+                <img src="microwave_icon.png" alt="Microwave">
+                <h2>Microwave (微波炉)</h2>
+                <p class="description">多功能微波炉，快速加热和烹饪食物。</p>
+                <a class="btn-detail" href="microwave.html">查看详情</a>
+            </div>
+            
+            <div class="product-card">
+                <img src="air_fryer_icon.png" alt="Air Fryer">
+                <h2>Air Fryer (空气炸锅)</h2>
+                <p class="description">无油烹饪，健康美味的空气炸锅系列。</p>
+                <a class="btn-detail" href="air_fryer.html">查看详情</a>
+            </div>
+            
+            <div class="product-card">
+                <img src="shower_icon.png" alt="Shower">
+                <h2>Shower (热水器/花洒)</h2>
+                <p class="description">即热式热水器及淋浴设备，提供舒适洗浴体验。</p>
+                <a class="btn-detail" href="shower.html">查看详情</a>
+            </div>
+            
+            <div class="product-card">
+                <img src="air_purifier_icon.png" alt="Air Purifier">
+                <h2>Air Purifier (空气净化器)</h2>
+                <p class="description">高效过滤PM2.5，改善室内空气质量。</p>
+                <a class="btn-detail" href="air_purifier.html">查看详情</a>
+            </div>
+            
+            <div class="product-card">
+                <img src="speaker_icon.png" alt="Speaker">
+                <h2>Speaker (音响)</h2>
+                <p class="description">家庭影院和高品质音响系统。</p>
+                <a class="btn-detail" href="speaker.html">查看详情</a>
+            </div>
+
+            <div class="product-card">
+                <img src="small_icon.png" alt="Small Appliances">
+                <h2>Small Appliances (小家电)</h2>
+                <p class="description">各种便捷实用的小型家用电器。</p>
+                <a class="btn-detail" href="small.html">查看详情</a>
             </div>
 
         </div>
     </div>
+    
+    <div class="page-footer">
+        <p>© 2025 Siong Cheong Trading. All Rights Reserved.</p>
+    </div>
 </div>
+
 <script>
     // 侧边栏打开/关闭逻辑
     window.toggleNav = function() {
@@ -526,7 +429,6 @@
         // 假设滚动条宽度约为 17px 
         const scrollBarWidth = '17px'; 
         
-        // 检查侧边栏是否已打开
         const isOpened = sidebar.style.width === '250px';
 
         if (isOpened) {
@@ -537,7 +439,6 @@
             mainContent.style.marginRight = '0'; // 移除补偿边距
         } else {
             // 打开菜单
-            // 添加 margin-right 补偿，防止页面内容跳动
             mainContent.style.marginRight = scrollBarWidth;
             
             body.style.overflow = 'hidden'; // 禁止滚动
@@ -549,10 +450,7 @@
     // 子菜单展开/收起逻辑
     window.toggleSubmenu = function(element) {
         const submenu = element.nextElementSibling;
-        // 确保 Submenu 是产品列表
-        if (submenu && submenu.classList.contains('submenu')) {
-            submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
-        }
+        submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
     }
 </script>
 </body>
