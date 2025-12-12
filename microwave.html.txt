@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microwave Series (微波炉系列)</title>
+    <style>
+        /* 通用重置 */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            padding-bottom: 70px; /* 为底部的 "返回首页" 按钮留出空间 */
+        }
+        
+        /* ------------------- 顶部导航和筛选控制区样式 ------------------- */
+        header {
+            background-color: #0d47a1; 
+            color: white; 
+            padding: 20px; 
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        /* 筛选控制容器 */
+        #filter-controls {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #ecf0f1;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* 下拉菜单样式 (保持蓝色配色) */
+        #brand-filter-dropdown {
+            padding: 10px 18px;
+            border-radius: 5px;
+            border: 1px solid #3498db; 
+            background-color: #3498db; 
+            color: white; 
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        #brand-filter-dropdown option {
+            color: black;
+            background-color: white;
+        }
+
+        /* ------------------- 产品列表和卡片优化 ------------------- */
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;       
+            justify-content: center; 
+            gap: 25px;             
+            padding: 40px 20px;
+        }
+        
+        .brand-group-title {
+            flex: 0 0 100%; 
+            width: 100%;
+            text-align: left;
+            margin: 30px 0 15px 0;
+            padding-left: 10px;
+            font-size: 1.8em;
+            color: #34495e;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        .product-card {
+            /* 实现响应式多列布局 */
+            flex: 0 0 calc(33.333% - 16.666px); 
+            max-width: 350px; 
+            min-width: 280px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image-box {
+            background-color: #fcfcfc;
+            padding: 25px;
+            height: 250px; /* 固定图片框高度 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-image {
+            max-width: 90%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .product-details {
+            padding: 15px;
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* 产品名称颜色标注和字体大小调整 */
+        .product-details h3 {
+            font-size: 1.4em; 
+            color: #c0392b; /* 红色系，用于名称突出 */
+            margin-bottom: 10px; 
+            font-weight: 600;
+        }
+        
+        /* 介绍文本优化 */
+        .product-details p {
+            font-size: 0.95em;
+            color: #555; 
+            margin-bottom: 20px; 
+            line-height: 1.6; /* 增加行高，减少拥挤感 */
+            text-align: left; /* 左对齐描述文本 */
+            flex-grow: 1;
+        }
+        
+        /* 统一蓝色按钮 */
+        .detail-button {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #3498db; 
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: auto;
+        }
+        
+        .detail-button:hover {
+            background-color: #2980b9; 
+        }
+
+        /* ------------------- 底部固定条 ------------------- */
+        #footer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff; 
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            text-align: center;
+            z-index: 90;
+        }
+
+        #home-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 10px 0;
+            background-color: #2ecc71; /* 绿色按钮 */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            font-size: 1em;
+        }
+
+        #home-btn:hover {
+            background-color: #27ae60;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 1200px) {
+            .product-card {
+                flex: 0 0 calc(50% - 12.5px); 
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .product-card {
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <h1>Microwave Series (微波炉系列)</h1>
+    </header>
+
+    <div id="filter-controls">
+        <select id="brand-filter-dropdown" onchange="filterProducts(this.value)">
+            <option value="all">筛选品牌 (Filter Brand)</option>
+            <option value="Sharp">Sharp</option>
+        </select>
+    </div>
+
+    <div class="products-container">
+        
+        <h2 class="brand-group-title" data-brand="Sharp">Sharp 微波炉系列</h2>
+        
+        <div class="product-card" data-brand="Sharp">
+            <div class="product-image-box">
+                <img src="sharp-r219ek-microwave.jpg" alt="Sharp R219EK 20L 微波炉" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Sharp R219EK (20L 旋钮)</h3>
+                <p>
+                    20L 容量，旋钮式控制。特点包括：双向解冻、节能模式和易按开门。适用于加热、蒸汽、解冻和烹饪。
+                    产品尺寸 (宽x高x深): 452mm x 262mm x 330mm。
+                </p>
+                <a href="microwave-details/sharp-r219ek.html" class="detail-button">查看详情</a>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Sharp">
+            <div class="product-image-box">
+                <img src="sharp-r2021gk-microwave.jpg" alt="Sharp R2021GK 20L 微波炉" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Sharp R2021GK (20L 触控)</h3>
+                <p>
+                    20L 容量，基本触控面板。特点包括：双向解冻、节能模式、自动菜单 和 有把手开门设计。适用于蒸汽、加热、解冻和烹饪。
+                </p>
+                <a href="microwave-details/sharp-r2021gk.html" class="detail-button">查看详情</a>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Sharp">
+            <div class="product-image-box">
+                <img src="sharp-r2121fgk-microwave.jpg" alt="Sharp R2121FGK 20L 微波炉" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Sharp R2121FGK (20L 无转盘)</h3>
+                <p>
+                    20L 容量，采用宽陶瓷平板（无转盘）设计。优点：加热均匀、易于清洁和维护。支持通过时间和重量解冻。
+                </p>
+                <a href="microwave-details/sharp-r2121fgk.html" class="detail-button">查看详情</a>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Sharp">
+            <div class="product-image-box">
+                <img src="sharp-r2321fgk-microwave.jpg" alt="Sharp R2321FGK 23L 微波炉" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Sharp R2321FGK (23L 无转盘)</h3>
+                <p>
+                    23L 容量，采用宽陶瓷平板（无转盘）设计，提供更大的烹饪空间。具有旋钮控制，易于清洁，确保均匀加热。支持通过时间和重量解冻。
+                </p>
+                <a href="microwave-details/sharp-r2321fgk.html" class="detail-button">查看详情</a>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Sharp">
+            <div class="product-image-box">
+                <img src="sharp-r7521gk-microwave.jpg" alt="Sharp R7521GK 25L 烧烤微波炉" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Sharp R7521GK (25L 带烧烤)</h3>
+                <p>
+                    25L 容量，多功能微波炉，**带烧烤 (Grill) 功能**。特点包括：9个自动菜单、儿童锁和厨房定时器。提供更专业的烹饪选择。
+                </p>
+                <a href="microwave-details/sharp-r7521gk.html" class="detail-button">查看详情</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="footer-bar">
+        <a href="index.html" id="home-btn">返回首页 (Back to Home)</a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const allProducts = document.querySelectorAll('.product-card');
+            const allTitles = document.querySelectorAll('.brand-group-title');
+
+            // 过滤函数
+            window.filterProducts = function(filter) {
+                let visibleBrands = new Set(); 
+                
+                // 遍历所有产品卡片
+                allProducts.forEach(card => {
+                    const cardBrand = card.getAttribute('data-brand');
+                    
+                    if (filter === 'all' || cardBrand === filter) {
+                        card.style.display = 'flex'; 
+                        visibleBrands.add(cardBrand);
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // 遍历所有品牌分组标题
+                allTitles.forEach(title => {
+                    const titleBrand = title.getAttribute('data-brand');
+                    
+                    if (filter === 'all' || visibleBrands.has(titleBrand)) {
+                        title.style.display = 'block'; 
+                    } else {
+                        title.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
