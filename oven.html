@@ -18,7 +18,6 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
-            /* 确保底部有足够的空间用于按钮显示 */
             padding-bottom: 70px;
         }
 
@@ -232,7 +231,7 @@
             z-index: 99; 
             border: none; 
             outline: none; 
-            background-color: #3498db; /* 蓝色 */
+            background-color: #3498db; 
             color: white; 
             cursor: pointer; 
             padding: 10px 15px; 
@@ -583,12 +582,11 @@
         window.onscroll = function() { scrollFunction() };
 
         function scrollFunction() {
+            // 【修正：改为滚动超过 400px 即显示】
             const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const nearBottomThreshold = 50; 
+            const scrollTriggerHeight = 400; // 滚动超过 400px 时显示
             
-            // Show button only when near the bottom
-            if (maxScroll - scrollTop <= nearBottomThreshold && maxScroll > 0) {
+            if (scrollTop > scrollTriggerHeight) {
                 backToTopBtn.style.display = "block";
             } else {
                 backToTopBtn.style.display = "none";
