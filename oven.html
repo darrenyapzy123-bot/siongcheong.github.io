@@ -581,8 +581,8 @@
         
         window.onscroll = function() { scrollFunction() };
 
+        // 方案 B: 滚动超过 400px 即显示
         function scrollFunction() {
-            // 【修正：改为滚动超过 400px 即显示】
             const scrollTop = window.scrollY || document.documentElement.scrollTop;
             const scrollTriggerHeight = 400; // 滚动超过 400px 时显示
             
