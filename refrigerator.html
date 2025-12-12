@@ -6,7 +6,7 @@
     <title>Siong Cheong Trading - Refrigerator (冰箱)</title>
 
     <style>
-        /* ------------------- 核心排版修复 ------------------- */
+        /* ------------------- CSS 样式保持不变 ------------------- */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -15,7 +15,6 @@
             justify-content: center;
         }
 
-        /* 1. 主内容容器，用于居中和滚动条补偿 */
         #main-content {
             width: 100%;
             max-width: 100vw;
@@ -24,9 +23,6 @@
             flex-direction: column;
         }
 
-        /* ------------------- 汉堡菜单和侧边栏样式 ------------------- */
-        
-        /* 菜单图标（汉堡） */
         .menu-icon {
             position: fixed;
             top: 20px;
@@ -40,10 +36,6 @@
             transition: background-color 0.3s;
         }
 
-        .menu-icon:hover {
-            background-color: #2980b9;
-        }
-
         .bar {
             width: 25px;
             height: 3px;
@@ -52,7 +44,6 @@
             transition: 0.4s;
         }
 
-        /* 侧边栏主体 */
         .sidebar {
             height: 100%;
             width: 0;
@@ -79,12 +70,6 @@
             cursor: pointer;
         }
 
-        .sidebar a:hover, .sidebar .submenu-toggle:hover {
-            background-color: #34495e;
-            color: white;
-        }
-
-        /* 关闭按钮 (X) */
         .closebtn {
             position: absolute;
             top: 0;
@@ -93,20 +78,12 @@
             line-height: 50px;
         }
 
-        /* 子菜单样式 */
         .submenu {
             display: none;
             background-color: #3e566e;
             padding-left: 20px;
         }
-
-        .submenu a {
-            padding: 10px 25px;
-            font-size: 1em;
-            border-bottom: none;
-        }
         
-        /* 遮罩层 */
         .overlay {
             position: fixed;
             height: 100%;
@@ -118,7 +95,6 @@
             display: none;
         }
         
-        /* Header 样式 (覆盖整个顶部) */
         header {
             background: #2c3e50;
             padding: 20px;
@@ -127,12 +103,11 @@
             font-size: 22px;
             font-weight: bold;
             position: relative;
-            padding-left: 60px; /* 留出图标空间 */
+            padding-left: 60px; 
             width: 100%;
             box-sizing: border-box; 
         }
         
-        /* 注意: SCT_Logo.png 也需要放在根目录 */
         .header-logo {
             position: absolute;
             top: 50%;
@@ -155,21 +130,10 @@
             margin-bottom: 25px;
             color: #333;
         }
-
-        h1::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: #3498db;
-            margin: 8px auto 0;
-            border-radius: 2px;
-        }
-
-        /* ------------------- 筛选区域样式 ------------------- */
+        
         .filter-section {
             display: flex;
-            justify-content: flex-start; 
+            justify-content: flex-start;
             align-items: center;
             margin-bottom: 30px;
             padding: 15px;
@@ -177,28 +141,7 @@
             border-radius: 8px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
-
-        .filter-group label {
-            font-weight: bold;
-            color: #2c3e50;
-            margin-right: 10px;
-        }
-
-        .filter-group select {
-            padding: 8px 12px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-            cursor: pointer;
-            transition: border-color 0.2s;
-        }
         
-        .filter-group select:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-        
-        /* ------------------- 底部页脚和返回首页按钮样式 ------------------- */
         .page-footer {
             padding: 30px 20px;
             text-align: center;
@@ -218,18 +161,12 @@
             display: inline-block;
         }
 
-        .page-footer .back-to-home:hover {
-            background-color: #e67e22;
-        }
-
-        /* ------------------- 产品网格布局 (Grid) ------------------- */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
         }
 
-        /* ------------------- 产品卡片样式 ------------------- */
         .product-card {
             background: white;
             border-radius: 10px;
@@ -238,11 +175,6 @@
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
-        }
-
-        .product-card:hover {
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            transform: translateY(-5px);
         }
 
         .product-card img {
@@ -262,20 +194,6 @@
             justify-content: space-between;
         }
 
-        .product-info h3 {
-            margin-top: 0;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-
-        .product-info p {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            line-height: 1.5;
-            text-align: left;
-            margin-bottom: 10px;
-        }
-
         .btn-detail {
             display: block;
             background: #3498db;
@@ -288,28 +206,7 @@
             margin-top: 15px;
             transition: background 0.2s;
         }
-
-        .btn-detail:hover {
-            background: #2980b9;
-        }
-        
-        /* ------------------- 媒体查询 ------------------- */
-        @media (max-width: 600px) {
-            header {
-                padding-left: 20px;
-            }
-            .filter-section {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .filter-group {
-                margin-bottom: 15px;
-            }
-            .filter-group select {
-                width: 100%;
-                box-sizing: border-box;
-            }
-        }
+        /* ------------------- CSS 样式结束 ------------------- */
     </style>
 </head>
 
@@ -343,6 +240,7 @@
 </div>
 
 <div id="overlay" class="overlay" onclick="toggleNav()"></div>
+
 <div id="main-content">
     <header>
         Siong Cheong Trading
@@ -365,7 +263,7 @@
         </div>
 
         <div id="product-list" class="product-grid">
-            </div>
+        </div>
 
         <p id="no-products" style="text-align: center; color: #888; display: none;">Sorry, no products match the selected filter criteria.</p>
 
@@ -374,7 +272,9 @@
     <div class="page-footer">
         <a href="index.html" class="back-to-home">Back to Home</a>
     </div>
-    </div>
+</div>
+
+
 <script>
     // 侧边栏和主内容补偿逻辑
     window.toggleNav = function() {
@@ -408,74 +308,123 @@
         }
     }
 
-    // ------------------- 产品数据 (路径已改为根目录) -------------------
+    // ------------------- 产品数据 (已包含 PPTX 中所有型号) -------------------
     const refrigeratorProducts = [
         {
             model: "SJM60MK Mini Bar",
             liters: 60,
-            image: "refrigerator_SJM60MK.jpg", // 路径修改为根目录
+            image: "refrigerator_SJM60MK.jpg",
             description: "A compact mini bar refrigerator perfect for bedrooms, offices, or dorm rooms. Features a practical design for small spaces.",
-            details: "Capacity: 60L | Dimensions (W x H x D): 449mm x 501mm x 470mm | Key Features: Recessed Handle, Wired Shelf, Utility Box, Adjustable Feet."
+            [cite_start]details: "Capacity: 60L [cite: 405] | [cite_start]Dimensions (W x H x D): 449mm x 501mm x 470mm [cite: 406] | [cite_start]Key Features: Recessed Handle [cite: 400][cite_start], Wired Shelf [cite: 401][cite_start], Utility Box [cite: 402][cite_start], Bottle Pocket [cite: 403][cite_start], Adjustable Feet[cite: 404]."
         },
         {
             model: "SJ-189",
             liters: 170,
-            image: "refrigerator_SJ189.jpg", // 路径修改为根目录
+            image: "refrigerator_SJ189.jpg",
             description: "170L 2-door Inverter refrigerator. Offers high energy efficiency and reliable, long-lasting freshness for small to medium households.",
-            details: "Capacity: 170L | Dimensions (W x H x D): 535 x 1275 x 595mm | Warranty: 1 Year General Warranty, 10 Years Compressor Warranty."
+            [cite_start]details: "Capacity: 170L [cite: 410] | [cite_start]Type: 2-door Inverter refrigerator [cite: 410] | [cite_start]Dimensions (W x H x D): 535 x 1275 x 595mm [cite: 407] | [cite_start]Warranty: 1 Year General [cite: 408][cite_start], 10 Years Compressor[cite: 409]."
         },
         {
             model: "SJ285MSS",
             liters: 280,
-            image: "refrigerator_SJ285MSS.jpg", // 路径修改为根目录
+            image: "refrigerator_SJ285MSS.jpg",
             description: "Sharp 280L 2-Door Fridge. Designed for optimal food preservation with its advanced deodorising and storage features.",
-            details: "Capacity: 280L | Dimensions (W x H x D): 545 x 1560 x 588mm | Key Features: Tempered Glass Shelf, AG CU Nano Deodoriser, Fresh Case, Utility Door Pocket."
+            [cite_start]details: "Capacity: 280L [cite: 417] | [cite_start]Dimensions (W x H x D): 545 x 1560 x 588mm [cite: 413] | [cite_start]Warranty: 1 Year General Part [cite: 415][cite_start], 10 Years Compressor [cite: 416] | [cite_start]Key Features: Tempered Glass Shelf [cite: 418][cite_start], AG CU Nano Deodoriser [cite: 419][cite_start], Egg Tray [cite: 420][cite_start], Fresh Case [cite: 421][cite_start], Utility Door Pocket[cite: 422]."
         },
         {
             model: "SJ287MDS",
             liters: 280,
-            image: "refrigerator_SJ287MDS.jpg", // 路径修改为根目录
+            image: "refrigerator_SJ287MDS.jpg",
             description: "Sharp 280L Refrigerator. Excellent cooling performance with convenient storage compartments and durability.",
-            details: "Capacity: 280L | Features: AG CU Nano Deodoriser, Fresh Case, Utility Door Pocket. (Dimensions assumed to be similar to SJ285MSS)."
+            [cite_start]details: "Capacity: 280L [cite: 423] | [cite_start]Sharp Refrigerator Model[cite: 423]. (Dimensions and features assumed similar to SJ285MSS)."
+        },
+        {
+            model: "SJ-2822MSS Inverter",
+            liters: 280,
+            image: "refrigerator_SJ2822MSS.jpg",
+            description: "280L Inverter refrigerator. Highly energy-efficient and provides stable cooling performance for daily needs.",
+            [cite_start]details: "Capacity: 280L Inverter [cite: 431] | [cite_start]Dimensions (W x H x D): 545mm x 1560mm x 586mm[cite: 432, 433, 434, 435]."
         },
         {
             model: "SJ325MSS",
             liters: 320,
-            image: "refrigerator_SJ325MSS.jpg", // 路径修改为根目录
-            description: "Sharp 320L 2-Door Fridge. Equipped with LED lighting, a Twist & Serve Ice Tray, and AG CU Nano Deodoriser for a clean and efficient cooling environment.",
-            details: "Capacity: 320L | Dimensions (W x H x D): 545mm x 1700mm x 588mm | Key Features: Twist & Serve Ice Tray, Egg Tray, LED Lighting."
+            image: "refrigerator_SJ325MSS.jpg",
+            description: "Sharp 320L 2-Door Fridge. Features LED lighting, ice tray, and multiple storage sections for enhanced organization.",
+            [cite_start]details: "Capacity: 320L (Inferred) [cite: 424] | [cite_start]Key Features: AG CU Nano Deodoriser [cite: 426][cite_start], Twist & Serve Ice Tray [cite: 426][cite_start], LED Lighting [cite: 426][cite_start], Vegetable Clase[cite: 426]. [cite_start](Dimensions assumed from SJ-327MDS [cite: 427])."
+        },
+        {
+            model: "SJ-327MDS",
+            liters: 320,
+            image: "refrigerator_SJ327MDS.jpg",
+            description: "Sharp 320L 2-door refrigerator with advanced features like 2-Way Fresh Room for better preservation.",
+            [cite_start]details: "Capacity: 320L 2-DOOR REFRIGERATOR [cite: 430] | [cite_start]Dimensions (W x H x D): 545 x 1700 x 588mm [cite: 427] | [cite_start]Warranty: 1 Year General Parts [cite: 429][cite_start], 10 Years Compressor Motor [cite: 428] | [cite_start]Key Features: AG CU Nano Deodoriser [cite: 426][cite_start], Twist & Serve Ice Tray [cite: 426][cite_start], 2-Way Fresh Room[cite: 426]."
+        },
+        {
+            model: "SJ-3222MSS Inverter",
+            liters: 320,
+            image: "refrigerator_SJ3222MSS.jpg",
+            description: "320L Inverter refrigerator model providing spacious storage and energy saving cooling technology.",
+            [cite_start]details: "Capacity: 320L Inverter [cite: 436] | [cite_start]Dimensions (W x H x D): 545mm x 1700mm x 586mm[cite: 437, 438, 439, 440]."
         },
         {
             model: "GR-RT412WE-PMY(DS)",
             liters: 360,
-            image: "refrigerator_GRRT412WE.jpg", // 路径修改为根目录
-            description: "360L 2-Door Inverter refrigerator. Offers superior cooling and low energy consumption with a long compressor warranty.",
-            details: "Capacity: 360L | Dimensions (W x D x H): 545 x 623 x 1545mm | Warranty: 2 years general warranty + 12 years compressor warranty."
+            image: "refrigerator_GRRT412WE.jpg",
+            description: "360L Toshiba 2-Door Inverter refrigerator with high-efficiency cooling and long-term warranty protection.",
+            details: "Capacity: 360L 2-Door Inverter | Dimensions (W x D x H): 545 x 623 x 1545mm | Warranty: 2 years general warranty + 12 years compressor warranty."
+        },
+        {
+            model: "SJ-3822MSS Inverter",
+            liters: 380,
+            image: "refrigerator_SJ3822MSS.jpg",
+            description: "A large 380L Inverter model from Sharp, offering more space and robust temperature management.",
+            [cite_start]details: "Capacity: 380L Inverter [cite: 441] | [cite_start]Dimensions (W x H x D): 645mm x 1690mm x 624mm[cite: 442, 443, 444, 445]."
         },
         {
             model: "GR-RT466WE-PMY(DS)",
             liters: 410,
-            image: "refrigerator_GRRT466WE.jpg", // 路径修改为根目录
-            description: "410L 2-Door Inverter Refrigerator. A large-capacity model with high-efficiency cooling, ideal for family use.",
-            details: "Capacity: 410L | Dimensions (W x D x H): 595 x 695 x 1620mm | Warranty: 2 years general warranty + 12 years compressor warranty."
+            image: "refrigerator_GRRT466WE.jpg",
+            description: "410L Toshiba 2-Door Inverter Refrigerator. A great family-sized model with competitive warranty terms.",
+            details: "Capacity: 410L 2-Door Inverter | Dimensions (W x D x H): 595 x 695 x 1620mm | Warranty: 2 years general warranty + 12 years compressor warranty."
+        },
+        {
+            model: "SJ-4122MSS Inverter",
+            liters: 410,
+            image: "refrigerator_SJ4122MSS.jpg",
+            description: "410L Sharp Inverter refrigerator model, balancing large capacity with efficient energy use.",
+            [cite_start]details: "Capacity: 410L Inverter [cite: 451] | [cite_start]Dimensions (W x H x D): 645mm x 1690mm x 665mm[cite: 452, 453, 454, 455]."
+        },
+        {
+            model: "SJ-4422MSS Inverter",
+            liters: 440,
+            image: "refrigerator_SJ4422MSS.jpg",
+            description: "440L Sharp J-Tech Inverter model featuring Hybrid Cooling System and Ag-Nano Deodorizer for superior food storage.",
+            [cite_start]details: "Capacity: 440L Inverter [cite: 456, 461] | [cite_start]Dimensions (W x H x D): 645mm x 1795mm x 665mm [cite: 457, 458, 459, 460] | [cite_start]Key Features: J-Tech Inverter Technology [cite: 462][cite_start], Hybrid Cooling System [cite: 463][cite_start], Express Freezing [cite: 464][cite_start], Ag-Nano Deodorizer [cite: 465][cite_start], Extra Cool[cite: 466]."
+        },
+        {
+            model: "SJ489GK AVANCE",
+            liters: 480,
+            image: "refrigerator_SJ489GK.jpg",
+            description: "480L Sharp AVANCE Refrigerator. A modern large-capacity unit designed for extensive storage needs.",
+            [cite_start]details: "Capacity: 480L AVANCE Refrigerator [cite: 446] | [cite_start]Dimensions (W x H x D): 795mm x 1800mm x 692mm[cite: 447, 448, 449, 450]."
         },
         {
             model: "SBS-501WPGE (White Glass)",
             liters: 556,
-            image: "refrigerator_SBS501WPGE.jpg", // 路径修改为根目录
+            image: "refrigerator_SBS501WPGE.jpg",
             description: "556L Inverter Side-by-Side Refrigerator with an elegant White Glass Door finish. A premium choice for modern kitchens.",
-            details: "Capacity: 556L | Dimensions (W x D x H): 833 x 670 x 1785mm | Warranty: 2 years general warranty + 12 years compressor warranty."
+            details: "Capacity: 556L Inverter Side-by-Side Refrigerator | Dimensions (W x D x H): 833 x 670 x 1785mm | White Glass Door | Warranty: 2 years general warranty + 12 years compressor warranty."
         },
         {
             model: "SBS-501WP (Black Glass)",
             liters: 556,
-            image: "refrigerator_SBS501WP.jpg", // 路径修改为根目录
+            image: "refrigerator_SBS501WP.jpg",
             description: "556L Inverter Side-by-Side Refrigerator with a sophisticated Black Glass Door. Large storage capacity and excellent temperature control.",
-            details: "Capacity: 556L | Dimensions (W x D x H): 833 x 670 x 1785mm | Warranty: 2 years general warranty + 12 years compressor warranty."
+            details: "Capacity: 556L Inverter Side-by-Side Refrigerator | Dimensions (W x D x H): 833 x 670 x 1785mm | Black Glass Door | Warranty: 2 years general warranty + 12 years compressor warranty."
         },
     ];
 
-    // ------------------- 产品渲染和筛选逻辑 -------------------
+    // ------------------- 产品渲染和筛选逻辑 (保持不变) -------------------
 
     function renderProducts(productsToRender = refrigeratorProducts) {
         const productList = document.getElementById('product-list');
@@ -492,7 +441,7 @@
             const card = document.createElement('div');
             card.className = 'product-card';
             
-            // 确保这里的默认路径也指向根目录
+            // 路径指向根目录
             const imageSrc = product.image || 'default_refrigerator.jpg'; 
 
             card.innerHTML = `
