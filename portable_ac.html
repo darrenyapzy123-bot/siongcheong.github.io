@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portable Air Cond Series (移动式空调系列)</title>
+    <title>Portable Air Cond Series</title>
     <style>
-        /* 通用重置 */
+        /* General Reset and Styling */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -14,10 +14,10 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
-            padding-bottom: 70px; /* 为底部的 "返回首页" 按钮留出空间 */
+            padding-bottom: 70px;
         }
         
-        /* ------------------- 顶部导航和筛选控制区样式 ------------------- */
+        /* Header and Filter Styles */
         header {
             background-color: #0d47a1; 
             color: white; 
@@ -30,7 +30,6 @@
             margin-bottom: 5px;
         }
 
-        /* 筛选控制容器 */
         #filter-controls {
             display: flex;
             justify-content: flex-start;
@@ -40,7 +39,6 @@
             border-bottom: 1px solid #e0e0e0;
         }
 
-        /* 下拉菜单样式 (保持蓝色配色) */
         #brand-filter-dropdown {
             padding: 10px 18px;
             border-radius: 5px;
@@ -60,7 +58,7 @@
             background-color: white;
         }
 
-        /* ------------------- 产品列表和卡片优化 ------------------- */
+        /* Product Container and Card Styles */
         .products-container {
             display: flex;
             flex-wrap: wrap;       
@@ -82,7 +80,6 @@
         }
 
         .product-card {
-            /* 实现响应式多列布局 */
             flex: 0 0 calc(33.333% - 16.666px); 
             max-width: 350px; 
             min-width: 280px;
@@ -105,7 +102,7 @@
         .product-image-box {
             background-color: #fcfcfc;
             padding: 25px;
-            height: 250px; /* 固定图片框高度 */
+            height: 250px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -125,25 +122,22 @@
             justify-content: space-between;
         }
 
-        /* 产品名称颜色标注和字体大小调整 */
         .product-details h3 {
             font-size: 1.4em; 
-            color: #c0392b; /* 红色系，用于名称突出 */
+            color: #c0392b; 
             margin-bottom: 10px; 
             font-weight: 600;
         }
         
-        /* 介绍文本优化 */
         .product-details p {
             font-size: 0.95em;
             color: #555; 
             margin-bottom: 20px; 
-            line-height: 1.6; /* 增加行高，减少拥挤感 */
-            text-align: left; /* 左对齐描述文本 */
+            line-height: 1.6;
+            text-align: left; 
             flex-grow: 1;
         }
         
-        /* 统一蓝色按钮 */
         .detail-button {
             display: inline-block;
             padding: 10px 25px;
@@ -160,7 +154,7 @@
             background-color: #2980b9; 
         }
 
-        /* ------------------- 底部固定条 ------------------- */
+        /* Fixed Footer Bar */
         #footer-bar {
             position: fixed;
             bottom: 0;
@@ -177,7 +171,7 @@
             display: inline-block;
             width: 100%;
             padding: 10px 0;
-            background-color: #2ecc71; /* 绿色按钮 */
+            background-color: #2ecc71; 
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -190,7 +184,7 @@
             background-color: #27ae60;
         }
 
-        /* 响应式调整 */
+        /* Responsive Adjustments */
         @media (max-width: 1200px) {
             .product-card {
                 flex: 0 0 calc(50% - 12.5px); 
@@ -207,61 +201,62 @@
 <body>
     
     <header>
-        <h1>Portable Air Cond Series (移动式空调系列)</h1>
+        <h1>Portable Air Cond Series</h1>
     </header>
 
     <div id="filter-controls">
         <select id="brand-filter-dropdown" onchange="filterProducts(this.value)">
-            <option value="all">筛选品牌 (Filter Brand)</option>
-            <option value="Hisense">Hisense (海信)</option>
-            <option value="Midea">Midea (美的)</option>
+            <option value="all">Filter Brand</option>
+            <option value="Hisense">Hisense</option>
+            <option value="Midea">Midea</option>
         </select>
     </div>
 
     <div class="products-container">
         
-        <h2 class="brand-group-title" data-brand="Hisense">Hisense 海信移动式空调系列</h2>
+        <h2 class="brand-group-title" data-brand="Hisense">Hisense Portable Air Conditioner Series</h2>
         
         <div class="product-card" data-brand="Hisense">
             <div class="product-image-box">
-                <img src="hisense-9000btu-r32-portable.jpg" alt="Hisense 9000BTU R32 移动空调" class="product-image">
+                <img src="hisense-9000btu-r32-portable.jpg" alt="Hisense 9000BTU R32 Portable AC" class="product-image">
             </div>
             <div class="product-details">
                 <h3>Hisense 9000BTU (R32)</h3>
                 <p>
-                    9000BTU 制冷量，使用环保 R32 制冷剂。
-                    特点：5年压缩机保修 + 2年全面保修。具备基本的自我诊断和自动保护功能。
+                    9000BTU Cooling Capacity, uses eco-friendly R32 refrigerant gas. 
+                    <br>**Warranty:** 5 Years Compressor + 2 Years General Warranty. Features basic Self-Diagnosis and Auto Protection.
                 </p>
-                <a href="portable-ac-details/hisense-9000btu-r32.html" class="detail-button">查看详情</a>
+                <a href="portable-ac-details/hisense-9000btu-r32.html" class="detail-button">View Details</a>
             </div>
         </div>
 
         <div class="product-card" data-brand="Hisense">
             <div class="product-image-box">
-                <img src="hisense-1hp-1.5hp-portable.jpg" alt="Hisense 1HP/1.5HP 移动空调" class="product-image">
+                <img src="hisense-1hp-1.5hp-portable.jpg" alt="Hisense 1HP/1.5HP Portable AC" class="product-image">
             </div>
             <div class="product-details">
-                <h3>Hisense 1HP / 1.5HP 型号</h3>
+                <h3>Hisense 1HP / 1.5HP Models</h3>
                 <p>
-                    适用于中等到大型房间，提供 1HP 和 1.5HP 两种功率选择。
-                    特点：5年压缩机保修 + 2年全面保修，确保长期使用性能稳定。
+                    Suitable for medium to large rooms, offering 1HP and 1.5HP power options. 
+                    <br>**Warranty:** 5 Years Compressor + 2 Years General Warranty, ensuring long-term stable performance.
                 </p>
-                <a href="portable-ac-details/hisense-1-1.5hp.html" class="detail-button">查看详情</a>
+                <a href="portable-ac-details/hisense-1-1.5hp.html" class="detail-button">View Details</a>
             </div>
         </div>
         
-        <h2 class="brand-group-title" data-brand="Midea">Midea 美的移动式空调系列</h2>
+        <h2 class="brand-group-title" data-brand="Midea">Midea Portable Air Conditioner Series</h2>
 
         <div class="product-card" data-brand="Midea">
             <div class="product-image-box">
-                <img src="midea-ap12nxg-portable.jpg" alt="Midea AP-12NXG 12000BTU 移动空调" class="product-image">
+                <img src="midea-ap12nxg-portable.jpg" alt="Midea AP-12NXG 12000BTU Portable AC" class="product-image">
             </div>
             <div class="product-details">
                 <h3>Midea AP-12NXG (12000BTU)</h3>
                 <p>
-                    12000BTU 强劲制冷。**无水桶设计**（自动蒸发），无需排水。配备银离子滤网、VC 过滤网，并支持睡眠模式和 24 小时定时器。
+                    12000BTU Powerful Cooling. **No Bucket Design** (Self Evaporative), eliminating the need for drainage. 
+                    <br>Equipped with Silver Ion Filter, VC Filter, Sleep Mode, and 24 Hrs Timer.
                 </p>
-                <a href="portable-ac-details/midea-ap12nxg.html" class="detail-button">查看详情</a>
+                <a href="portable-ac-details/midea-ap12nxg.html" class="detail-button">View Details</a>
             </div>
         </div>
 
@@ -269,7 +264,7 @@
     </div>
 
     <div id="footer-bar">
-        <a href="index.html" id="home-btn">返回首页 (Back to Home)</a>
+        <a href="index.html" id="home-btn">Back to Home</a>
     </div>
     
     <script>
@@ -277,11 +272,9 @@
             const allProducts = document.querySelectorAll('.product-card');
             const allTitles = document.querySelectorAll('.brand-group-title');
 
-            // 过滤函数
             window.filterProducts = function(filter) {
                 let visibleBrands = new Set(); 
                 
-                // 遍历所有产品卡片
                 allProducts.forEach(card => {
                     const cardBrand = card.getAttribute('data-brand');
                     
@@ -293,7 +286,6 @@
                     }
                 });
 
-                // 遍历所有品牌分组标题
                 allTitles.forEach(title => {
                     const titleBrand = title.getAttribute('data-brand');
                     
