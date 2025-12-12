@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Conditioners - Siong Cheong Trading</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <style>
+        /* ------------------- Base Styles & Layout ------------------- */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        /* 主内容容器，用于居中和限制宽度 */
+        .main-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ------------------- Header (与 contact.html 一致) ------------------- */
+        header {
+            /* 统一的深蓝色主题 */
+            background: #2c3e50; 
+            padding: 20px 20px 20px 80px; /* 留出左侧空间给菜单图标 */
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+            box-sizing: border-box;
+            /* 强制全屏背景 */
+            width: 100vw;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
+            margin-bottom: 20px;
+        }
+
+        .header-logo {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: clamp(120px, 20vw, 250px);
+            height: auto;
+        }
+
+        /* ------------------- Sidebar and Menu ------------------- */
+        .menu-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #3498db; /* 亮蓝色强调 */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .bar { width: 25px; height: 3px; background-color: white; margin: 5px 0; }
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            background-color: #2c3e50;
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: 0.5s;
+            max-width: 250px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+        }
+        .sidebar a, .sidebar .submenu-toggle {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #ecf0f1;
+            display: block;
+            border-bottom: 1px solid #34495e;
+            cursor: pointer;
+        }
+        .sidebar a:hover, .sidebar .submenu-toggle:hover { background-color: #34495e; }
+        .closebtn { position: absolute; top: 0; right: 25px; font-size: 36px; line-height: 50px; }
+        .submenu { display: none; background-color: #3e566e; padding-left: 20px; }
+        .submenu a { padding: 10px 25px; font-size: 1em; border-bottom: none; }
+        .overlay { position: fixed; height: 100%; width: 100%; top: 0; left: 0; z-index: 998; background: rgba(0, 0, 0, 0.5); display: none; }
+
+
+        /* ------------------- Filter & Product Grid ------------------- */
+        .product-intro {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+        .product-intro h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .product-intro p {
+            color: #777;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 筛选容器 */
+        .filter-section {
+            background-color: white;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+        .filter-group label {
+            font-weight: bold;
+            color: #333;
+            margin-right: 10px;
+        }
+        .filter-group select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            min-width: 120px;
+        }
+
+        /* 产品卡片网格布局 */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 0 10px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card.hidden {
+            display: none;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 220px; /* 固定高度，保持卡片一致性 */
+            object-fit: contain;
+            background-color: #fcfcfc;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            font-size: 1.4em;
+            color: #3498db;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .card-content p {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #555;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .brand-tag, .hp-tag, .type-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .brand-tag { background: #e7e7e7; color: #333; }
+        .hp-tag { background: #d0e7ff; color: #3498db; }
+        .type-tag.inverter { background: #27ae60; color: white; }
+        .type-tag.non-inverter { background: #f39c12; color: white; }
+
+        /* ------------------- Back to Home Button ------------------- */
+        .back-to-home {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #e74c3c; /* 强调色 */
+            color: white;
+            padding: 12px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            transform: translateY(100%);
+            z-index: 900;
+        }
+
+        .back-to-home.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ------------------- Media Queries ------------------- */
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-group select {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="menu-icon" onclick="toggleNav()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+</div>
+
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">×</a>
+    
+    <a href="index.html">Home</a>
+    
+    <div class="submenu-toggle" onclick="toggleSubmenu(this)">
+        Products
+    </div>
+    <div class="submenu">
+        <a href="refrigerator.html">Refrigerator</a>
+        <a href="chiller.html">Chiller</a>
+        <a href="freezer.html">Freezer</a>
+        <a href="ac.html">Air Conditioner</a>
+        <a href="tv.html">TV</a>
+        <a href="washer.html">Washer</a>
+        <a href="dryer.html">Dryer</a>
+        <a href="kitchen.html">Kitchen Appliances</a>
+        <a href="small.html">Small Appliances</a>
+    </div>
+
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact Us</a>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleNav()"></div>
+<header>
+    Air Conditioners
+    <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
+</header>
+
+<div class="main-wrapper">
+    
+    <div class="product-intro">
+        <h2>Optimal Cooling Solutions for Every Space</h2>
+        <p>Explore our wide range of residential and commercial air conditioners, featuring energy-saving Inverter technology and powerful Non-Inverter models from leading brands like Sharp, Midea, and Hisense.</p>
+    </div>
+
+    <div class="filter-section">
+        <div class="filter-group">
+            <label for="brand-filter">Brand:</label>
+            <select id="brand-filter">
+                <option value="all">All Brands</option>
+                <option value="Sharp">Sharp</option>
+                <option value="Midea">Midea</option>
+                <option value="Hisense">Hisense</option>
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label for="hp-filter">HP (Horsepower):</label>
+            <select id="hp-filter">
+                <option value="all">All HP</option>
+                <option value="1.0">1.0 HP</option>
+                <option value="1.5">1.5 HP</option>
+                <option value="2.0">2.0 HP</option>
+                <option value="2.5">2.5 HP</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="type-filter">Technology:</label>
+            <select id="type-filter">
+                <option value="all">All Types</option>
+                <option value="Inverter">Inverter</option>
+                <option value="Non-Inverter">Non-Inverter</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="product-grid" id="product-list">
+        
+        <div class="product-card" data-brand="Sharp" data-hp="1.0" data-type="Non-Inverter">
+            <img src="placeholder_ac.png" alt="Sharp AHA-WCD2 1.0HP" onerror="this.src='placeholder_ac_fallback.png';">
+            <div class="card-content">
+                <h3>Sharp AHA-WCD2 Series</h3>
+                <p>1.0 HP Non-Inverter. Features Turbo Mode, Self-Clean function, and 24-hour ON/OFF Timer for basic, reliable cooling.</p>
+                <div class="card-details">
+                    <span class="brand-tag">Sharp</span>
+                    <span class="hp-tag">1.0 HP</span>
+                    <span class="type-tag non-inverter">Non-Inverter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Sharp" data-hp="1.5" data-type="Inverter">
+            <img src="placeholder_ac.png" alt="Sharp AHX-VED2 1.5HP" onerror="this.src='placeholder_ac_fallback.png';">
+            <div class="card-content">
+                <h3>Sharp AHX-VED2 Inverter</h3>
+                <p>1.5 HP Inverter model. Highly energy efficient with Plasmacluster Ion technology and advanced Self-Clean feature.</p>
+                <div class="card-details">
+                    <span class="brand-tag">Sharp</span>
+                    <span class="hp-tag">1.5 HP</span>
+                    <span class="type-tag inverter">Inverter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Sharp" data-hp="2.0" data-type="Non-Inverter">
+            <img src="placeholder_ac.png" alt="Sharp AHA-WCD2 2.0HP" onerror="this.src='placeholder_ac_fallback.png';">
+            <div class="card-content">
+                <h3>Sharp AHA-WCD2 Series</h3>
+                <p>2.0 HP Non-Inverter. Ideal for larger rooms, offering powerful and rapid cooling with Anti-Bacterial remote control.</p>
+                <div class="card-details">
+                    <span class="brand-tag">Sharp</span>
+                    <span class="hp-tag">2.0 HP</span>
+                    <span class="type-tag non-inverter">Non-Inverter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Midea" data-hp="1.0" data-type="Inverter">
+            <img src="placeholder_ac.png" alt="Midea Inverter 1.0HP" onerror="this.src='placeholder_ac_fallback.png';">
+            <div class="card-content">
+                <h3>Midea Xtreme Inverter</h3>
+                <p>1.0 HP Inverter (RM1188). Uses R32 refrigerant, offering excellent cooling performance and quiet operation.</p>
+                <div class="card-details">
+                    <span class="brand-tag">Midea</span>
+                    <span class="hp-tag">1.0 HP</span>
+                    <span class="type-tag inverter">Inverter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Midea" data-hp="1.5" data-type="Inverter">
+            <img src="placeholder_ac.png" alt="Midea Inverter 1.5HP" onerror="this.src='placeholder_ac_fallback.png';">
+            <div class="card-content">
+                <h3>Midea Xtreme Inverter</h3>
+                <p>1.5 HP Inverter (RM1390). Energy-saving model with high-density filter and rapid cooling function.</p>
+                <div class="card-details">
+                    <span class="brand-tag">Midea</span>
+                    <span class="hp-tag">1.5 HP</span>
+                    <span class="type-tag inverter">Inverter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Hisense" data-hp="1.0" data-type="Inverter">
+            <img src="placeholder_ac.png" alt="Hisense Inverter 1.0HP" onerror="this.src='placeholder_ac_fallback.png';">
+            <div class="card-content">
+                <h3>Hisense Smart Inverter</h3>
+                <p>1.0 HP Inverter (RM939). "Save Energy" model with a wide operating range and 5-year compressor warranty.</p>
+                <div class="card-details">
+                    <span class="brand-tag">Hisense</span>
+                    <span class="hp-tag">1.0 HP</span>
+                    <span class="type-tag inverter">Inverter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Hisense" data-hp="1.5" data-type="Inverter">
+            <img src="placeholder_ac.png" alt="Hisense Inverter 1.5HP" onerror="this.src='placeholder_ac_fallback.png';">
+            <div class="card-content">
+                <h3>Hisense Smart Inverter</h3>
+                <p>1.5 HP Inverter. Excellent energy efficiency, fast cooling, and long-lasting durability.</p>
+                <div class="card-details">
+                    <span class="brand-tag">Hisense</span>
+                    <span class="hp-tag">1.5 HP</span>
+                    <span class="type-tag inverter">Inverter</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Hisense" data-hp="2.0" data-type="Inverter">
+            <img src="placeholder_ac.png" alt="Hisense Inverter 2.0HP" onerror="this.src='placeholder_ac_fallback.png';">
+            <div class="card-content">
+                <h3>Hisense Smart Inverter</h3>
+                <p>2.0 HP Inverter. Provides consistent temperature control and significant energy cost reduction for large spaces.</p>
+                <div class="card-details">
+                    <span class="brand-tag">Hisense</span>
+                    <span class="hp-tag">2.0 HP</span>
+                    <span class="type-tag inverter">Inverter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Hisense" data-hp="1.0" data-type="Non-Inverter">
+            <img src="placeholder_ac.png" alt="Hisense Non-Inverter 1.0HP" onerror="this.src='placeholder_ac_fallback.png';">
+            <div class="card-content">
+                <h3>Hisense Basic Cool</h3>
+                <p>1.0 HP Non-Inverter. Reliable performance, simple operation, and strong dehumidification function.</p>
+                <div class="card-details">
+                    <span class="brand-tag">Hisense</span>
+                    <span class="hp-tag">1.0 HP</span>
+                    <span class="type-tag non-inverter">Non-Inverter</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Hisense" data-hp="1.5" data-type="Non-Inverter">
+            <img src="placeholder_ac.png" alt="Hisense Non-Inverter 1.5HP" onerror="this.src='placeholder_ac_fallback.png';">
+            <div class="card-content">
+                <h3>Hisense Basic Cool</h3>
+                <p>1.5 HP Non-Inverter. Robust compressor built for tropical climates, ensuring long-term cooling comfort.</p>
+                <div class="card-details">
+                    <span class="brand-tag">Hisense</span>
+                    <span class="hp-tag">1.5 HP</span>
+                    <span class="type-tag non-inverter">Non-Inverter</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Hisense" data-hp="2.0" data-type="Non-Inverter">
+            <img src="placeholder_ac.png" alt="Hisense Non-Inverter 2.0HP" onerror="this.src='placeholder_ac_fallback.png';">
+            <div class="card-content">
+                <h3>Hisense Basic Cool</h3>
+                <p>2.0 HP Non-Inverter. Powerful airflow for large living areas, featuring Auto-Restart function.</p>
+                <div class="card-details">
+                    <span class="brand-tag">Hisense</span>
+                    <span class="hp-tag">2.0 HP</span>
+                    <span class="type-tag non-inverter">Non-Inverter</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Hisense" data-hp="2.5" data-type="Non-Inverter">
+            <img src="placeholder_ac.png" alt="Hisense Non-Inverter 2.5HP" onerror="this.src='placeholder_ac_fallback.png';">
+            <div class="card-content">
+                <h3>Hisense Basic Cool</h3>
+                <p>2.5 HP Non-Inverter. Maximum cooling capacity for commercial or extremely large residential spaces.</p>
+                <div class="card-details">
+                    <span class="brand-tag">Hisense</span>
+                    <span class="hp-tag">2.5 HP</span>
+                    <span class="type-tag non-inverter">Non-Inverter</span>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<a href="index.html" class="back-to-home" id="back-to-home">
+    <i class="fas fa-home"></i> Back to Home
+</a>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const brandFilter = document.getElementById('brand-filter');
+        const hpFilter = document.getElementById('hp-filter');
+        const typeFilter = document.getElementById('type-filter');
+        const productList = document.getElementById('product-list');
+        const cards = productList.querySelectorAll('.product-card');
+
+        // 绑定筛选事件
+        brandFilter.addEventListener('change', applyFilters);
+        hpFilter.addEventListener('change', applyFilters);
+        typeFilter.addEventListener('change', applyFilters);
+
+        // 筛选函数：根据当前选择的品牌、HP和类型过滤卡片
+        function applyFilters() {
+            const selectedBrand = brandFilter.value;
+            const selectedHP = hpFilter.value;
+            const selectedType = typeFilter.value;
+
+            cards.forEach(card => {
+                const cardBrand = card.getAttribute('data-brand');
+                const cardHP = card.getAttribute('data-hp');
+                const cardType = card.getAttribute('data-type');
+
+                const brandMatch = (selectedBrand === 'all' || selectedBrand === cardBrand);
+                const hpMatch = (selectedHP === 'all' || selectedHP === cardHP);
+                const typeMatch = (selectedType === 'all' || selectedType === cardType);
+
+                if (brandMatch && hpMatch && typeMatch) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // --- Back to Home 按钮逻辑 ---
+        const backToHomeButton = document.getElementById('back-to-home');
+        
+        window.addEventListener('scroll', function() {
+            // 当滚动到底部时显示按钮。这里用滚动条位置与文档总高度差的阈值来判断。
+            const scrollThreshold = 300; // 滚动超过 300px 时显示
+            const isScrolledDown = window.scrollY > scrollThreshold;
+
+            if (isScrolledDown) {
+                backToHomeButton.classList.add('show');
+            } else {
+                backToHomeButton.classList.remove('show');
+            }
+        });
+
+        // --- 菜单和侧边栏逻辑 ---
+        window.toggleNav = function() {
+            const sidebar = document.getElementById("mySidebar");
+            const overlay = document.getElementById("overlay");
+            const body = document.body;
+            
+            const isOpen = sidebar.offsetWidth > 0;
+
+            if (isOpen) {
+                sidebar.style.width = "0";
+                overlay.style.display = "none";
+                body.style.overflow = "auto";
+            } else {
+                sidebar.style.width = "250px";
+                overlay.style.display = "block";
+                body.style.overflow = "hidden";
+            }
+        }
+
+        window.toggleSubmenu = function(element) {
+            const submenu = element.nextElementSibling;
+            const isShown = submenu.style.display === "block";
+
+            document.querySelectorAll(".submenu").forEach(s => (s.style.display = "none"));
+
+            submenu.style.display = isShown ? "none" : "block";
+        }
+        
+        // 确保页面加载时应用一次筛选（如果有默认值的话）
+        applyFilters();
+
+        // 隐藏加载失败的图片，避免破图影响布局 (防御性 JS)
+        document.querySelectorAll('.product-card img').forEach(img => {
+            img.onerror = function() { 
+                // 仅显示一个通用的图片占位符（如果第一个也失败了，就使用备用的）
+                this.src='placeholder_ac_fallback.png'; 
+                this.onerror = null; // 防止无限循环
+            };
+        });
+    });
+</script>
+
+</body>
+</html>
