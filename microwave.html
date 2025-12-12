@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Microwave Series (微波炉系列)</title>
+    <title>Microwave Series</title>
     <style>
-        /* 通用重置 */
+        /* General Reset and Styling */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -14,10 +14,10 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
-            padding-bottom: 70px; /* 为底部的 "返回首页" 按钮留出空间 */
+            padding-bottom: 70px;
         }
         
-        /* ------------------- 顶部导航和筛选控制区样式 ------------------- */
+        /* Header and Filter Styles */
         header {
             background-color: #0d47a1; 
             color: white; 
@@ -30,7 +30,6 @@
             margin-bottom: 5px;
         }
 
-        /* 筛选控制容器 */
         #filter-controls {
             display: flex;
             justify-content: flex-start;
@@ -40,7 +39,6 @@
             border-bottom: 1px solid #e0e0e0;
         }
 
-        /* 下拉菜单样式 (保持蓝色配色) */
         #brand-filter-dropdown {
             padding: 10px 18px;
             border-radius: 5px;
@@ -60,7 +58,7 @@
             background-color: white;
         }
 
-        /* ------------------- 产品列表和卡片优化 ------------------- */
+        /* Product Container and Card Styles */
         .products-container {
             display: flex;
             flex-wrap: wrap;       
@@ -82,7 +80,6 @@
         }
 
         .product-card {
-            /* 实现响应式多列布局 */
             flex: 0 0 calc(33.333% - 16.666px); 
             max-width: 350px; 
             min-width: 280px;
@@ -105,7 +102,7 @@
         .product-image-box {
             background-color: #fcfcfc;
             padding: 25px;
-            height: 250px; /* 固定图片框高度 */
+            height: 250px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -125,25 +122,22 @@
             justify-content: space-between;
         }
 
-        /* 产品名称颜色标注和字体大小调整 */
         .product-details h3 {
             font-size: 1.4em; 
-            color: #c0392b; /* 红色系，用于名称突出 */
+            color: #c0392b; 
             margin-bottom: 10px; 
             font-weight: 600;
         }
         
-        /* 介绍文本优化 */
         .product-details p {
             font-size: 0.95em;
             color: #555; 
             margin-bottom: 20px; 
-            line-height: 1.6; /* 增加行高，减少拥挤感 */
-            text-align: left; /* 左对齐描述文本 */
+            line-height: 1.6;
+            text-align: left; 
             flex-grow: 1;
         }
         
-        /* 统一蓝色按钮 */
         .detail-button {
             display: inline-block;
             padding: 10px 25px;
@@ -160,7 +154,7 @@
             background-color: #2980b9; 
         }
 
-        /* ------------------- 底部固定条 ------------------- */
+        /* Fixed Footer Bar */
         #footer-bar {
             position: fixed;
             bottom: 0;
@@ -177,7 +171,7 @@
             display: inline-block;
             width: 100%;
             padding: 10px 0;
-            background-color: #2ecc71; /* 绿色按钮 */
+            background-color: #2ecc71; 
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -190,7 +184,7 @@
             background-color: #27ae60;
         }
 
-        /* 响应式调整 */
+        /* Responsive Adjustments */
         @media (max-width: 1200px) {
             .product-card {
                 flex: 0 0 calc(50% - 12.5px); 
@@ -207,12 +201,12 @@
 <body>
     
     <header>
-        <h1>Microwave Series (微波炉系列)</h1>
+        <h1>Microwave Series</h1>
     </header>
 
     <div id="filter-controls">
         <select id="brand-filter-dropdown" onchange="filterProducts(this.value)">
-            <option value="all">筛选品牌 (Filter Brand)</option>
+            <option value="all">Filter Brand</option>
             <option value="Sharp">Sharp</option>
             <option value="Midea">Midea</option>
         </select>
@@ -220,119 +214,120 @@
 
     <div class="products-container">
         
-        <h2 class="brand-group-title" data-brand="Midea">Midea 美的微波炉系列</h2>
+        <h2 class="brand-group-title" data-brand="Midea">Midea Microwave Oven Series</h2>
         
         <div class="product-card" data-brand="Midea">
             <div class="product-image-box">
-                <img src="midea-mm720cge-microwave.jpg" alt="Midea MM720CGE 20L 微波炉" class="product-image">
+                <img src="midea-mm720cge-microwave.jpg" alt="Midea MM720CGE 20L Microwave Oven" class="product-image">
             </div>
             <div class="product-details">
-                <h3>Midea MM720CGE (20L 旋钮)</h3>
+                <h3>Midea MM720CGE (20L Rotary)</h3>
                 <p>
-                    [cite_start]20L 容量 [cite: 1][cite_start]，700W 功率 [cite: 1][cite_start]，35 分钟定时器 [cite: 1][cite_start]，旋钮控制。支持按时间解冻 (Defrost by Time) [cite: 1]。基础型号，操作简单。
+                    20L Capacity, 700W Power, 35 minutes Timer, Knob Control. Supports Defrost by Time. Basic model, simple to operate.
                 </p>
-                <a href="microwave-details/midea-mm720cge.html" class="detail-button">查看详情</a>
+                <a href="microwave-details/midea-mm720cge.html" class="detail-button">View Details</a>
             </div>
         </div>
 
 
-        <h2 class="brand-group-title" data-brand="Sharp">Sharp 夏普微波炉系列</h2>
+        <h2 class="brand-group-title" data-brand="Sharp">Sharp Microwave Oven Series</h2>
         
         <div class="product-card" data-brand="Sharp">
             <div class="product-image-box">
-                <img src="sharp-r219ek-microwave.jpg" alt="Sharp R219EK 20L 微波炉" class="product-image">
+                <img src="sharp-r219ek-microwave.jpg" alt="Sharp R219EK 20L Microwave Oven" class="product-image">
             </div>
             <div class="product-details">
-                <h3>Sharp R219EK (20L 旋钮)</h3>
+                <h3>Sharp R219EK (20L Rotary)</h3>
                 <p>
-                    [cite_start]20L 容量 [cite: 5][cite_start]，旋钮式控制。特点包括：双向解冻 [cite: 1][cite_start]，节能模式 [cite: 2][cite_start]，易按开门 [cite: 3][cite_start]。支持蒸汽、加热、解冻和烹饪 [cite: 4][cite_start]。尺寸：452mm x 262mm x 330mm [cite: 6, 7]。
+                    20L Capacity, Rotary Control. Features: 2-Way Defrost, Energy-Saving Mode, Easy-Push Door. Supports Steam, Reheat, Defrost, and Cooking. 
+                    <br>**Dimensions (WxHxD):** 452mm x 262mm x 330mm.
                 </p>
-                <a href="microwave-details/sharp-r219ek.html" class="detail-button">查看详情</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="Sharp">
-            <div class="product-image-box">
-                <img src="sharp-r2021gk-microwave.jpg" alt="Sharp R2021GK 20L 微波炉" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Sharp R2021GK (20L 触控)</h3>
-                <p>
-                    [cite_start]20L 容量 [cite: 14][cite_start]，基本触控面板。特点包括：双向解冻 [cite: 9][cite_start]，节能模式 [cite: 10][cite_start]，自动菜单 [cite: 11] [cite_start]和 有把手开门设计 [cite: 12][cite_start]。支持蒸汽、加热、解冻和烹饪 [cite: 13]。
-                </p>
-                <a href="microwave-details/sharp-r2021gk.html" class="detail-button">查看详情</a>
+                <a href="microwave-details/sharp-r219ek.html" class="detail-button">View Details</a>
             </div>
         </div>
 
         <div class="product-card" data-brand="Sharp">
             <div class="product-image-box">
-                <img src="sharp-r2121fgk-microwave.jpg" alt="Sharp R2121FGK 20L 微波炉" class="product-image">
+                <img src="sharp-r2021gk-microwave.jpg" alt="Sharp R2021GK 20L Microwave Oven" class="product-image">
             </div>
             <div class="product-details">
-                <h3>Sharp R2121FGK (20L 无转盘)</h3>
+                <h3>Sharp R2021GK (20L Touch)</h3>
                 <p>
-                    [cite_start]20L 容量 [cite: 15, 17][cite_start]，采用宽陶瓷平板（无转盘）设计 [cite: 18][cite_start]，加热均匀 [cite: 20][cite_start]，易于清洁和维护 [cite: 21][cite_start]。旋钮控制带发光刻度盘 [cite: 19][cite_start]。支持按重量或时间解冻 [cite: 22]。
+                    20L Capacity, Basic Touch Panel. Features: 2-Way Defrost, Energy-Saving Mode, Auto Menu, and Handle Door design. Supports Steam, Reheat, Defrost, and Cooking.
                 </p>
-                <a href="microwave-details/sharp-r2121fgk.html" class="detail-button">查看详情</a>
+                <a href="microwave-details/sharp-r2021gk.html" class="detail-button">View Details</a>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Sharp">
+            <div class="product-image-box">
+                <img src="sharp-r2121fgk-microwave.jpg" alt="Sharp R2121FGK 20L Flatbed Microwave" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3>Sharp R2121FGK (20L Flatbed)</h3>
+                <p>
+                    20L Capacity, Wide Ceramic Flatbed (no turntable) design. Even cooking, easy cleaning & maintenance. Light-up Dial Control. Supports Defrost by Weight or Time.
+                </p>
+                <a href="microwave-details/sharp-r2121fgk.html" class="detail-button">View Details</a>
             </div>
         </div>
         
         <div class="product-card" data-brand="Sharp">
             <div class="product-image-box">
-                <img src="sharp-r2321fgk-microwave.jpg" alt="Sharp R2321FGK 23L 微波炉" class="product-image">
+                <img src="sharp-r2321fgk-microwave.jpg" alt="Sharp R2321FGK 23L Flatbed Microwave" class="product-image">
             </div>
             <div class="product-details">
-                <h3>Sharp R2321FGK (23L 无转盘)</h3>
+                <h3>Sharp R2321FGK (23L Flatbed)</h3>
                 <p>
-                    [cite_start]23L 容量 [cite: 23, 25][cite_start]，采用宽陶瓷平板（无转盘）设计 [cite: 26][cite_start]，提供更大的烹饪空间。旋钮控制带发光刻度盘 [cite: 27][cite_start]，确保均匀加热 [cite: 28] [cite_start]且易于清洁 [cite: 29][cite_start]。支持按重量或时间解冻 [cite: 30]。
+                    23L Capacity, Wide Ceramic Flatbed (no turntable) design, providing larger cooking space. Light-up Dial Control ensures even heating and easy cleaning. Supports Defrost by Weight or Time.
                 </p>
-                <a href="microwave-details/sharp-r2321fgk.html" class="detail-button">查看详情</a>
+                <a href="microwave-details/sharp-r2321fgk.html" class="detail-button">View Details</a>
             </div>
         </div>
         
         <div class="product-card" data-brand="Sharp">
             <div class="product-image-box">
-                <img src="sharp-r7521gk-microwave.jpg" alt="Sharp R7521GK 25L 烧烤微波炉" class="product-image">
+                <img src="sharp-r7521gk-microwave.jpg" alt="Sharp R7521GK 25L Grill Microwave" class="product-image">
             </div>
             <div class="product-details">
-                <h3>Sharp R7521GK (25L 带烧烤)</h3>
+                <h3>Sharp R7521GK (25L with Grill)</h3>
                 <p>
-                    [cite_start]25L 容量 [cite: 32][cite_start]，多功能微波炉，**带烧烤 (Grill) 功能** [cite: 31][cite_start]。特点包括：9个自动菜单 [cite: 33][cite_start]，儿童锁 [cite: 34] [cite_start]和 厨房定时器 [cite: 35][cite_start]。支持简易/时间解冻 [cite: 36] [cite_start]和 重量解冻 [cite: 37]。
+                    25L Capacity, Multi-function Microwave, **with Grill function**. Features: 9 Auto Menus, Child Lock, and Kitchen Timer. Supports Simple/Time Defrost and Weight Defrost.
                 </p>
-                <a href="microwave-details/sharp-r7521gk.html" class="detail-button">查看详情</a>
+                <a href="microwave-details/sharp-r7521gk.html" class="detail-button">View Details</a>
             </div>
         </div>
         
         <div class="product-card" data-brand="Sharp">
             <div class="product-image-box">
-                <img src="sharp-r8521gk-microwave.jpg" alt="Sharp R8521GK 30L 微波对流烤箱" class="product-image">
+                <img src="sharp-r8521gk-microwave.jpg" alt="Sharp R8521GK 30L Convection Microwave Oven" class="product-image">
             </div>
             <div class="product-details">
-                <h3>Sharp R8521GK (30L 热风对流)</h3>
+                <h3>Sharp R8521GK (30L Convection)</h3>
                 <p>
-                    [cite_start]30L 容量 [cite: 39][cite_start]，微波/热风对流烤箱 (microwave/convection oven) [cite: 39][cite_start]。特点包括：儿童锁 [cite: 40][cite_start]，8 个自动菜单 [cite: 41][cite_start]，厨房定时器 [cite: 42][cite_start]，简易解冻 [cite: 43] [cite_start]和 节能模式 [cite: 44]。
+                    30L Capacity, Microwave/Convection Oven. Features: Child Lock, 8 Auto Menus, Kitchen Timer, Simple Defrost, and Energy-Saving Mode.
                 </p>
-                <a href="microwave-details/sharp-r8521gk.html" class="detail-button">查看详情</a>
+                <a href="microwave-details/sharp-r8521gk.html" class="detail-button">View Details</a>
             </div>
         </div>
         
         <div class="product-card" data-brand="Sharp">
             <div class="product-image-box">
-                <img src="sharp-r954ast-microwave.jpg" alt="Sharp R954AST 42L 微波对流烤箱" class="product-image">
+                <img src="sharp-r954ast-microwave.jpg" alt="Sharp R954AST 42L Convection Microwave Oven" class="product-image">
             </div>
             <div class="product-details">
-                <h3>Sharp R954AST (42L 烧烤+对流)</h3>
+                <h3>Sharp R954AST (42L Grill+Convection)</h3>
                 <p>
-                    [cite_start]42L 超大容量 [cite: 38][cite_start]，多功能微波炉，集成了微波、烧烤 (Grill) 和 热风对流 (Convection) 功能 [cite: 38]。适合大家庭或需要进行烘焙的用户。
+                    42L Extra Large Capacity, Multi-function Microwave integrating Microwave, Grill, and Convection functions. Ideal for large families or users who need baking features.
                 </p>
-                <a href="microwave-details/sharp-r954ast.html" class="detail-button">查看详情</a>
+                <a href="microwave-details/sharp-r954ast.html" class="detail-button">View Details</a>
             </div>
         </div>
 
     </div>
 
     <div id="footer-bar">
-        <a href="index.html" id="home-btn">返回首页 (Back to Home)</a>
+        <a href="index.html" id="home-btn">Back to Home</a>
     </div>
     
     <script>
@@ -340,11 +335,9 @@
             const allProducts = document.querySelectorAll('.product-card');
             const allTitles = document.querySelectorAll('.brand-group-title');
 
-            // 过滤函数
             window.filterProducts = function(filter) {
                 let visibleBrands = new Set(); 
                 
-                // 遍历所有产品卡片
                 allProducts.forEach(card => {
                     const cardBrand = card.getAttribute('data-brand');
                     
@@ -356,7 +349,6 @@
                     }
                 });
 
-                // 遍历所有品牌分组标题
                 allTitles.forEach(title => {
                     const titleBrand = title.getAttribute('data-brand');
                     
