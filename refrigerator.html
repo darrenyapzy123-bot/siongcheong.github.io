@@ -6,7 +6,7 @@
     <title>Siong Cheong Trading - Refrigerator (冰箱)</title>
 
     <style>
-        /* CSS 样式部分保持不变，确保排版和定位的修复依然有效 */
+        /* ------------------- 核心排版修复 ------------------- */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -15,6 +15,7 @@
             justify-content: center;
         }
 
+        /* 1. 主内容容器，用于居中和滚动条补偿 */
         #main-content {
             width: 100%;
             max-width: 100vw;
@@ -22,9 +23,10 @@
             display: flex;
             flex-direction: column;
         }
-        
-        /* ... (省略了侧边栏、Header、筛选和卡片样式，它们与上次回复保持一致) ... */
 
+        /* ------------------- 汉堡菜单和侧边栏样式 ------------------- */
+        
+        /* 菜单图标（汉堡） */
         .menu-icon {
             position: fixed;
             top: 20px;
@@ -38,6 +40,10 @@
             transition: background-color 0.3s;
         }
 
+        .menu-icon:hover {
+            background-color: #2980b9;
+        }
+
         .bar {
             width: 25px;
             height: 3px;
@@ -46,6 +52,7 @@
             transition: 0.4s;
         }
 
+        /* 侧边栏主体 */
         .sidebar {
             height: 100%;
             width: 0;
@@ -61,6 +68,23 @@
             max-width: 250px;
         }
 
+        .sidebar a, .sidebar .submenu-toggle {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #ecf0f1;
+            display: block;
+            transition: 0.3s;
+            border-bottom: 1px solid #34495e;
+            cursor: pointer;
+        }
+
+        .sidebar a:hover, .sidebar .submenu-toggle:hover {
+            background-color: #34495e;
+            color: white;
+        }
+
+        /* 关闭按钮 (X) */
         .closebtn {
             position: absolute;
             top: 0;
@@ -69,6 +93,20 @@
             line-height: 50px;
         }
 
+        /* 子菜单样式 */
+        .submenu {
+            display: none;
+            background-color: #3e566e;
+            padding-left: 20px;
+        }
+
+        .submenu a {
+            padding: 10px 25px;
+            font-size: 1em;
+            border-bottom: none;
+        }
+        
+        /* 遮罩层 */
         .overlay {
             position: fixed;
             height: 100%;
@@ -80,6 +118,7 @@
             display: none;
         }
         
+        /* Header 样式 (覆盖整个顶部) */
         header {
             background: #2c3e50;
             padding: 20px;
@@ -88,11 +127,12 @@
             font-size: 22px;
             font-weight: bold;
             position: relative;
-            padding-left: 60px; 
+            padding-left: 60px; /* 留出图标空间 */
             width: 100%;
             box-sizing: border-box; 
         }
         
+        /* 注意: SCT_Logo.png 也需要放在根目录 */
         .header-logo {
             position: absolute;
             top: 50%;
@@ -115,10 +155,21 @@
             margin-bottom: 25px;
             color: #333;
         }
-        
+
+        h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #3498db;
+            margin: 8px auto 0;
+            border-radius: 2px;
+        }
+
+        /* ------------------- 筛选区域样式 ------------------- */
         .filter-section {
             display: flex;
-            justify-content: flex-start;
+            justify-content: flex-start; 
             align-items: center;
             margin-bottom: 30px;
             padding: 15px;
@@ -126,7 +177,28 @@
             border-radius: 8px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
+
+        .filter-group label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 10px;
+        }
+
+        .filter-group select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
         
+        .filter-group select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        /* ------------------- 底部页脚和返回首页按钮样式 ------------------- */
         .page-footer {
             padding: 30px 20px;
             text-align: center;
@@ -146,12 +218,18 @@
             display: inline-block;
         }
 
+        .page-footer .back-to-home:hover {
+            background-color: #e67e22;
+        }
+
+        /* ------------------- 产品网格布局 (Grid) ------------------- */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
         }
 
+        /* ------------------- 产品卡片样式 ------------------- */
         .product-card {
             background: white;
             border-radius: 10px;
@@ -160,6 +238,11 @@
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
         }
 
         .product-card img {
@@ -179,6 +262,20 @@
             justify-content: space-between;
         }
 
+        .product-info h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .product-info p {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            line-height: 1.5;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
         .btn-detail {
             display: block;
             background: #3498db;
@@ -190,6 +287,28 @@
             font-weight: bold;
             margin-top: 15px;
             transition: background 0.2s;
+        }
+
+        .btn-detail:hover {
+            background: #2980b9;
+        }
+        
+        /* ------------------- 媒体查询 ------------------- */
+        @media (max-width: 600px) {
+            header {
+                padding-left: 20px;
+            }
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-group {
+                margin-bottom: 15px;
+            }
+            .filter-group select {
+                width: 100%;
+                box-sizing: border-box;
+            }
         }
     </style>
 </head>
@@ -207,7 +326,7 @@
     <div class="submenu-toggle" onclick="toggleSubmenu(this)">
         Products
     </div>
-    <div class="submenu" style="display: block;">
+    <div class="submenu" style="display: block;"> 
         <a href="refrigerator.html">Refrigerator (冰箱)</a>
         <a href="chiller.html">Chiller (冷柜)</a>
         <a href="freezer.html">Freezer (冷冻柜)</a>
@@ -224,7 +343,6 @@
 </div>
 
 <div id="overlay" class="overlay" onclick="toggleNav()"></div>
-
 <div id="main-content">
     <header>
         Siong Cheong Trading
@@ -247,7 +365,7 @@
         </div>
 
         <div id="product-list" class="product-grid">
-        </div>
+            </div>
 
         <p id="no-products" style="text-align: center; color: #888; display: none;">Sorry, no products match the selected filter criteria.</p>
 
@@ -256,11 +374,9 @@
     <div class="page-footer">
         <a href="index.html" class="back-to-home">Back to Home</a>
     </div>
-</div>
-
-
+    </div>
 <script>
-    // ... (toggleNav 和 toggleSubmenu 函数保持不变) ...
+    // 侧边栏和主内容补偿逻辑
     window.toggleNav = function() {
         const sidebar = document.getElementById("mySidebar");
         const overlay = document.getElementById("overlay");
@@ -282,6 +398,7 @@
         }
     }
 
+    // 子菜单展开/收起逻辑
     window.toggleSubmenu = function(element) {
         const submenu = element.nextElementSibling;
         if (submenu.style.display === 'block') {
@@ -291,69 +408,68 @@
         }
     }
 
-
-    // ------------------- 产品数据 (图片路径已修改为 'images/') -------------------
+    // ------------------- 产品数据 (路径已改为根目录) -------------------
     const refrigeratorProducts = [
         {
             model: "SJM60MK Mini Bar",
             liters: 60,
-            image: "images/refrigerator_SJM60MK.jpg", // 路径修改
+            image: "refrigerator_SJM60MK.jpg", // 路径修改为根目录
             description: "A compact mini bar refrigerator perfect for bedrooms, offices, or dorm rooms. Features a practical design for small spaces.",
             details: "Capacity: 60L | Dimensions (W x H x D): 449mm x 501mm x 470mm | Key Features: Recessed Handle, Wired Shelf, Utility Box, Adjustable Feet."
         },
         {
             model: "SJ-189",
             liters: 170,
-            image: "images/refrigerator_SJ189.jpg", // 路径修改
+            image: "refrigerator_SJ189.jpg", // 路径修改为根目录
             description: "170L 2-door Inverter refrigerator. Offers high energy efficiency and reliable, long-lasting freshness for small to medium households.",
             details: "Capacity: 170L | Dimensions (W x H x D): 535 x 1275 x 595mm | Warranty: 1 Year General Warranty, 10 Years Compressor Warranty."
         },
         {
             model: "SJ285MSS",
             liters: 280,
-            image: "images/refrigerator_SJ285MSS.jpg", // 路径修改
+            image: "refrigerator_SJ285MSS.jpg", // 路径修改为根目录
             description: "Sharp 280L 2-Door Fridge. Designed for optimal food preservation with its advanced deodorising and storage features.",
             details: "Capacity: 280L | Dimensions (W x H x D): 545 x 1560 x 588mm | Key Features: Tempered Glass Shelf, AG CU Nano Deodoriser, Fresh Case, Utility Door Pocket."
         },
         {
             model: "SJ287MDS",
             liters: 280,
-            image: "images/refrigerator_SJ287MDS.jpg", // 路径修改
+            image: "refrigerator_SJ287MDS.jpg", // 路径修改为根目录
             description: "Sharp 280L Refrigerator. Excellent cooling performance with convenient storage compartments and durability.",
             details: "Capacity: 280L | Features: AG CU Nano Deodoriser, Fresh Case, Utility Door Pocket. (Dimensions assumed to be similar to SJ285MSS)."
         },
         {
             model: "SJ325MSS",
             liters: 320,
-            image: "images/refrigerator_SJ325MSS.jpg", // 路径修改
+            image: "refrigerator_SJ325MSS.jpg", // 路径修改为根目录
             description: "Sharp 320L 2-Door Fridge. Equipped with LED lighting, a Twist & Serve Ice Tray, and AG CU Nano Deodoriser for a clean and efficient cooling environment.",
             details: "Capacity: 320L | Dimensions (W x H x D): 545mm x 1700mm x 588mm | Key Features: Twist & Serve Ice Tray, Egg Tray, LED Lighting."
         },
         {
             model: "GR-RT412WE-PMY(DS)",
             liters: 360,
-            image: "images/refrigerator_GRRT412WE.jpg", // 路径修改
+            image: "refrigerator_GRRT412WE.jpg", // 路径修改为根目录
             description: "360L 2-Door Inverter refrigerator. Offers superior cooling and low energy consumption with a long compressor warranty.",
             details: "Capacity: 360L | Dimensions (W x D x H): 545 x 623 x 1545mm | Warranty: 2 years general warranty + 12 years compressor warranty."
         },
         {
             model: "GR-RT466WE-PMY(DS)",
             liters: 410,
-            image: "images/refrigerator_GRRT466WE.jpg", // 路径修改
+            image: "refrigerator_GRRT466WE.jpg", // 路径修改为根目录
             description: "410L 2-Door Inverter Refrigerator. A large-capacity model with high-efficiency cooling, ideal for family use.",
             details: "Capacity: 410L | Dimensions (W x D x H): 595 x 695 x 1620mm | Warranty: 2 years general warranty + 12 years compressor warranty."
         },
         {
             model: "SBS-501WPGE (White Glass)",
             liters: 556,
-            image: "images/refrigerator_SBS501WPGE.jpg", // 路径修改
+            image: "refrigerator_SBS501WPGE.jpg", // 路径修改为根目录
             description: "556L Inverter Side-by-Side Refrigerator with an elegant White Glass Door finish. A premium choice for modern kitchens.",
             details: "Capacity: 556L | Dimensions (W x D x H): 833 x 670 x 1785mm | Warranty: 2 years general warranty + 12 years compressor warranty."
         },
         {
             model: "SBS-501WP (Black Glass)",
             liters: 556,
-            image: "images/refrigerator_SBS501WP.jpg", // 路径修改
+            image: "refrigerator_SBS501WP.jpg", // 路径修改为根目录
             description: "556L Inverter Side-by-Side Refrigerator with a sophisticated Black Glass Door. Large storage capacity and excellent temperature control.",
             details: "Capacity: 556L | Dimensions (W x D x H): 833 x 670 x 1785mm | Warranty: 2 years general warranty + 12 years compressor warranty."
         },
@@ -376,8 +492,8 @@
             const card = document.createElement('div');
             card.className = 'product-card';
             
-            // **关键修改:** 确保这里的路径指向您仓库中 images 文件夹内的文件
-            const imageSrc = product.image || 'images/default_refrigerator.jpg'; 
+            // 确保这里的默认路径也指向根目录
+            const imageSrc = product.image || 'default_refrigerator.jpg'; 
 
             card.innerHTML = `
                 <img src="${imageSrc}" alt="${product.model}">
