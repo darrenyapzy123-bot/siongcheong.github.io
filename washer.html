@@ -134,43 +134,14 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-        }
-
-        /*
-        .product-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            
-            flex: 1 1 calc(33.333% - 14px); 
-            min-width: 250px;
-            display: flex;
-            flex-direction: column; 
-            
-            transition: all 0.3s ease; 
-        }
-        */
-        
-        .product-card:hover {
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
-            transform: translateY(-5px); 
+            /* 修复可能的浮动/内联元素造成的“外移” */
+            align-items: start;
         }
         
         /* 筛选隐藏的卡片 */
         .product-card.hidden {
             display: none;
         }
-
-        /* .product-card img {
-            width: 100%;
-            height: auto; 
-            max-height: 300px; 
-            object-fit: contain; 
-            background: #ddd;
-            border-bottom: 1px solid #eee; 
-            cursor: pointer; 
-        }
-        */
 
         .info {
             padding: 15px;
@@ -262,17 +233,22 @@
                 width: 100%;
             }
         }
-
-        /* ---------- 强制 gallery 链接与图片正确占位 (新规则) ---------- */
+        
+        /* ---------- 强制 gallery 链接与图片正确占位 (覆盖旧规则) ---------- */
         .product-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            
+            /* 关键修复：恢复三栏布局 */
+            flex: 1 1 calc(33.333% - 14px); 
+            min-width: 250px;
             display: flex;
             flex-direction: column;
-            /* 保持圆角 + 阴影同时避免内容跑出 */
-            border-radius: 10px;
-            overflow: hidden;          /* <-- 改回 hidden 可以保证 img/链接不会跑到卡片外 */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            overflow: hidden; /* 保证圆角和图片不跑出 */
         }
-
+        
         /* 确保链接与图片是块级并占满宽度（关键） */
         .product-card > a.gallery-item {
             display: block;
@@ -290,17 +266,13 @@
             background: #ddd;
         }
 
-        /* 确保 info 在图片下面（flex 顺序已是 column，防止意外） */
+        /* 确保 info 在图片下面 */
         .product-card .info {
             order: 1;
-            padding: 15px;
+            padding: 15px; 
+            text-align: center;
         }
-
-        /* 修复可能的浮动/内联元素造成的“外移” */
-        .product-grid { 
-            align-items: start; 
-        }
-
+        /* 修复 .product-grid align-items: start; 已移到上方 .product-grid 块 */
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -564,8 +536,8 @@
                     <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about KHIND WM100A">WhatsApp Inquiry</a>
                 </div>
             </div>
-
-            <h2>Front Load Washer Models</h2>
+        </div> <h2>Front Load Washer Models</h2>
+        <div class="product-grid">
 
             <div class="product-card" data-brand="sharp" data-capacity="8.5">
                 <a class="gallery-item" href="ESFK852EMW.jpg">
@@ -600,7 +572,8 @@
                 </div>
             </div>
 
-            <h2>Semi Auto Washer Models</h2>
+        </div> <h2>Semi Auto Washer Models</h2>
+        <div class="product-grid">
 
             <div class="product-card" data-brand="midea" data-capacity="7">
                 <a class="gallery-item" href="MT100W70.jpg">
@@ -624,9 +597,7 @@
                 </div>
             </div>
 
-        </div>
-
-        <div class="back">
+        </div> <div class="back">
             <a href="index.html">返回首页 (Back to Home)</a>
         </div>
     </div>
@@ -638,6 +609,7 @@
             const filterContent = document.getElementById('filter-content');
             const brandFilter = document.getElementById('brand-filter');
             const capacityFilter = document.getElementById('capacity-filter');
+            // 注意：现在 product-card 散布在多个 .product-grid 中，但 querySelectorAll 仍然可以获取所有卡片。
             const cards = document.querySelectorAll('.product-card');
             
             // 初始化 SimpleLightbox
@@ -663,7 +635,6 @@
                     const brandMatch = (selectedBrand === 'all' || selectedBrand === cardBrand);
                     
                     // 检查容量是否匹配 (或选择了 'all')
-                    // 注意：由于容量可能不是精确数字（如 "10.5"），使用字符串比较
                     const capacityMatch = (selectedCapacity === 'all' || selectedCapacity === cardCapacity);
 
                     if (brandMatch && capacityMatch) {
@@ -674,6 +645,14 @@
                 });
             }
 
+            // 隐藏加载失败的图片，避免破图影响布局 (防御性 JS)
+            document.querySelectorAll('.product-card img').forEach(img => {
+                img.onerror = function() { 
+                    this.style.display = 'none'; 
+                    // 考虑：同时隐藏父级卡片以避免空卡片，但可能会干扰筛选器，这里仅隐藏图片。
+                };
+            });
+            
             // 确保在页面加载时调用一次以应用初始过滤（如果需要）
             applyFilters();
         });
