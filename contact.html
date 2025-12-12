@@ -1,420 +1,362 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Siong Cheong Trading</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Siong Cheong Trading</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" 
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- 正确版 Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 
-    <style>
-        /* ------------------- 核心排版修复 ------------------- */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            /* 【已修复】移除 display: flex; justify-content: center; */
-        }
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
 
-        #main-content {
-            width: 100%;
-            max-width: 100vw;
-            /* 保持 transition 以便未来需要时使用，但margin-right操作已在JS中移除 */
-            transition: margin-right 0.5s; 
-            display: flex;
-            flex-direction: column;
-        }
+        #main-content {
+            width: 100%;
+            max-width: 100vw;
+            display: flex;
+            flex-direction: column;
+        }
 
-        /* ------------------- 汉堡菜单和侧边栏样式 ------------------- */
-        
-        .menu-icon {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            cursor: pointer;
-            padding: 10px;
-            background-color: #3498db;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s;
-        }
+        /* ------------------- 汉堡菜单按钮 ------------------- */
+        .menu-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #3498db;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
 
-        .menu-icon:hover {
-            background-color: #2980b9;
-        }
+        .menu-icon:hover {
+            background-color: #2980b9;
+        }
 
-        .bar {
-            width: 25px;
-            height: 3px;
-            background-color: white;
-            margin: 5px 0;
-            transition: 0.4s;
-        }
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 5px 0;
+        }
 
-        .sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 999;
-            top: 0;
-            left: 0;
-            background-color: #2c3e50;
-            overflow-x: hidden;
-            padding-top: 60px;
-            transition: 0.5s;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-            max-width: 250px;
-        }
+        /* ------------------- 左侧菜单 ------------------- */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            background-color: #2c3e50;
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: 0.5s;
+            max-width: 250px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+        }
 
-        .sidebar a, .sidebar .submenu-toggle {
-            padding: 15px 25px;
-            text-decoration: none;
-            font-size: 1.2em;
-            color: #ecf0f1;
-            display: block;
-            transition: 0.3s;
-            border-bottom: 1px solid #34495e;
-            cursor: pointer;
-        }
+        .sidebar a,
+        .sidebar .submenu-toggle {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #ecf0f1;
+            display: block;
+            border-bottom: 1px solid #34495e;
+            cursor: pointer;
+        }
 
-        .sidebar a:hover, .sidebar .submenu-toggle:hover {
-            background-color: #34495e;
-            color: white;
-        }
+        .sidebar a:hover,
+        .sidebar .submenu-toggle:hover {
+            background-color: #34495e;
+        }
 
-        .closebtn {
-            position: absolute;
-            top: 0;
-            right: 25px;
-            font-size: 36px;
-            line-height: 50px;
-        }
+        .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            line-height: 50px;
+        }
 
-        .submenu {
-            display: none;
-            background-color: #3e566e;
-            padding-left: 20px;
-        }
+        .submenu {
+            display: none;
+            background-color: #3e566e;
+            padding-left: 20px;
+        }
 
-        .submenu a {
-            padding: 10px 25px;
-            font-size: 1em;
-            border-bottom: none;
-        }
-        
-        .overlay {
-            position: fixed;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 998;
-            display: none;
-        }
-        
-        /* Header 样式 */
-        header {
-            background: #2c3e50;
-            padding: 20px;
-            color: white;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            position: relative;
-            padding-left: 60px; 
-            width: 100%;
-            box-sizing: border-box;
-        }
-        
-        .header-logo {
-            position: absolute;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            width: 250px;
-            height: auto;
-        }
+        .submenu a {
+            padding: 10px 25px;
+            font-size: 1em;
+            border-bottom: none;
+        }
 
-        .container {
-            padding: 20px;
-            max-width: 900px;
-            margin: 0 auto;
-            width: 100%; 
-        }
+        .overlay {
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 998;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+        }
 
-        h2 {
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 25px;
-            color: #333;
-        }
+        /* ------------------- Header ------------------- */
+        header {
+            background: #2c3e50;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+            padding-left: 10px;
+        }
 
-        h2::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: #3498db;
-            margin: 8px auto 0;
-            border-radius: 2px;
-        }
-        
-        /* ------------------- 联系方式卡片样式 ------------------- */
-        
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
+        .header-logo {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 200px;
+            height: auto;
+        }
 
-        .contact-card {
-            background: white;
-            padding: 30px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+        /* ------------------- 内容 ------------------- */
+        .container {
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-        .contact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        }
+        h2 {
+            text-align: center;
+            margin: 0 0 25px;
+            color: #333;
+        }
 
-        .contact-card i {
-            font-size: 3.5em;
-            margin-bottom: 15px;
-            color: #3498db;
-        }
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #3498db;
+            margin: 8px auto 0;
+        }
 
-        .contact-card h3 {
-            font-size: 1.5em;
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
+        /* ------------------- 联系方式卡片 ------------------- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
 
-        .contact-card p {
-            font-size: 1em;
-            color: #7f8c8d;
-            margin-bottom: 20px;
-        }
+        .contact-card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
 
-        .contact-link {
-            display: block;
-            padding: 12px;
-            border-radius: 5px;
-            font-weight: bold;
-            text-decoration: none;
-            color: white;
-            transition: background 0.3s;
-        }
+        .contact-card:hover {
+            transform: translateY(-5px);
+        }
 
-        /* WhatsApp 专用样式 */
-        .whatsapp .contact-link {
-            background: #25D366;
-        }
-        .whatsapp .contact-link:hover {
-            background: #1DA851;
-        }
-        .whatsapp i {
-            color: #25D366;
-        }
+        .contact-card i {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+        }
 
-        /* Facebook 专用样式 */
-        .facebook .contact-link {
-            background: #1877F2;
-        }
-        .facebook .contact-link:hover {
-            background: #145DBE;
-        }
-        .facebook i {
-            color: #1877F2;
-        }
-        
-        /* TikTok 专用样式 */
-        .tiktok .contact-link {
-            background: #000000;
-            position: relative;
-        }
-        .tiktok .contact-link:hover {
-            background: #333333;
-        }
-        .tiktok i {
-            color: #000000;
-        }
-        .tiktok i.fa-tiktok { 
-            color: #000000; 
-        }
-        
-        /* 其他信息卡片样式 - 精简保留电话和时间 (已移除地址) */
-        .other-info {
-            background: white;
-            padding: 25px;
-            margin-top: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            text-align: center;
-        }
+        .contact-card h3 {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
 
-        .other-info h3 {
-            color: #3498db;
-            margin-bottom: 15px;
-        }
+        .contact-link {
+            display: block;
+            padding: 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+        }
 
-        .other-info p {
-            line-height: 1.8;
-            color: #333;
-        }
+        /* WhatsApp */
+        .whatsapp i { color: #25D366; }
+        .whatsapp .contact-link { background: #25D366; }
+        .whatsapp .contact-link:hover { background: #1DA851; }
 
-        .other-info a {
-             color: #3498db;
-             text-decoration: none;
-             font-weight: bold;
-        }
-        .other-info a:hover {
-            text-decoration: underline;
-        }
+        /* Facebook */
+        .facebook i { color: #1877F2; }
+        .facebook .contact-link { background: #1877F2; }
+        .facebook .contact-link:hover { background: #145DBE; }
 
+        /* TikTok */
+        .tiktok i { color: #000000; }
+        .tiktok .contact-link { background: #000000; }
+        .tiktok .contact-link:hover { background: #333333; }
 
-        /* 媒体查询 */
-        @media (max-width: 600px) {
-            header {
-                padding-left: 20px;
-            }
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+        /* ------------------- 其他资讯 ------------------- */
+        .other-info {
+            margin-top: 40px;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .other-info a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding-left: 0;
+                text-align: center;
+            }
+            .header-logo {
+                width: 160px;
+                right: 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
+
+<!-- 菜单按钮 -->
 <div class="menu-icon" onclick="toggleNav()">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
 </div>
 
+<!-- 左侧菜单 -->
 <div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">×</a>
-    
-    <a href="index.html">首页 (Home)</a>
-    
-    <div class="submenu-toggle" onclick="toggleSubmenu(this)">
-        产品 (Products)
-    </div>
-    <div class="submenu">
-        <a href="refrigerator.html">Refrigerator (冰箱)</a>
-        <a href="chiller.html">Chiller (冷柜)</a>
-        <a href="freezer.html">Freezer (冷冻柜)</a>
-        <a href="ac.html">Air Conditioner (空调)</a>
-        <a href="tv.html">TV (电视)</a>
-        <a href="washer.html">Washer (洗衣机)</a>
-        <a href="dryer.html">Dryer (烘干机)</a>
-        <a href="kitchen.html">Kitchen Appliances</a>
-        <a href="small.html">Small Appliances</a>
-    </div>
+    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">×</a>
 
-    <a href="about.html">关于我们 (About Us)</a>
-        <a href="contact.html">联系我们 (Contact Us)</a>
+    <a href="index.html">首页 (Home)</a>
+
+    <div class="submenu-toggle" onclick="toggleSubmenu(this)">产品 (Products)</div>
+    <div class="submenu">
+        <a href="refrigerator.html">Refrigerator (冰箱)</a>
+        <a href="chiller.html">Chiller (冷柜)</a>
+        <a href="freezer.html">Freezer (冷冻柜)</a>
+        <a href="ac.html">Air Conditioner (空调)</a>
+        <a href="tv.html">TV (电视)</a>
+        <a href="washer.html">Washer (洗衣机)</a>
+        <a href="dryer.html">Dryer (烘干机)</a>
+        <a href="kitchen.html">Kitchen Appliances</a>
+        <a href="small.html">Small Appliances</a>
+    </div>
+
+    <a href="about.html">关于我们 (About Us)</a>
+    <a href="contact.html">联系我们 (Contact Us)</a>
 </div>
 
+<!-- 背景遮罩层 -->
 <div id="overlay" class="overlay" onclick="toggleNav()"></div>
+
+<!-- 主内容 -->
 <div id="main-content">
-    <header>
-        联系我们 (Contact Us)
-        <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
-    </header>
+    <header>
+        联系我们 (Contact Us)
+        <img src="SCT_Logo.png" class="header-logo">
+    </header>
 
-    <div class="container">
-        <h2>Stay Connected, We're Ready to Help</h2>
+    <div class="container">
+        <h2>Stay Connected, We're Ready to Help</h2>
 
-        <div class="contact-grid">
-            
-            <div class="contact-card whatsapp">
-                <i class="fab fa-whatsapp"></i>
-                <h3>WhatsApp (Instant Messaging)</h3>
-                <p>The fastest way to reach us. Click to start chatting!</p>
-                <a href="https://wa.me/601110948581?text=Hi%2C%20I%20have%20an%20enquiry%20from%20your%20website" target="_blank" class="contact-link">
-                    +60 11-1094 8581
-                </a>
-            </div>
+        <div class="contact-grid">
 
-            <div class="contact-card facebook">
-                <i class="fab fa-facebook-f"></i>
-                <h3>Facebook Page (Siong Cheong Trading Sdn. Bhd.)</h3>
-                <p>Follow our page for the latest promotions and product updates.</p>
-                <a href="https://www.facebook.com/SiongCheongTradingSdnBhd" target="_blank" class="contact-link">
-                    Visit Our Facebook
-                </a>
-            </div>
+            <div class="contact-card whatsapp">
+                <i class="fab fa-whatsapp"></i>
+                <h3>WhatsApp (Instant Messaging)</h3>
+                <p>Fastest way to reach us. Click to start chat!</p>
+                <a class="contact-link" target="_blank"
+                   href="https://wa.me/601110948581?text=Hi%2C%20I%20have%20an%20enquiry">
+                    +60 11-1094 8581
+                </a>
+            </div>
 
-            <div class="contact-card tiktok">
-                <i class="fab fa-tiktok"></i>
-                <h3>TikTok(@siongcheongtrading)</h3>
-                <p>Watch our exciting short videos for product demos and features.</p>
-                <a href="https://www.tiktok.com/@siongcheongtrading" target="_blank" class="contact-link">
-                    Follow Our TikTok
-                </a>
-            </div>
+            <div class="contact-card facebook">
+                <i class="fab fa-facebook-f"></i>
+                <h3>Facebook Page</h3>
+                <p>Follow for latest promotions and product updates.</p>
+                <a class="contact-link" target="_blank"
+                   href="https://www.facebook.com/SiongCheongTradingSdnBhd">
+                    Visit Our Facebook
+                </a>
+            </div>
 
-        </div>
+            <div class="contact-card tiktok">
+                <i class="fab fa-tiktok"></i>
+                <h3>TikTok (@siongcheongtrading)</h3>
+                <p>Watch demos, reviews & product highlights.</p>
+                <a class="contact-link" target="_blank"
+                   href="https://www.tiktok.com/@siongcheongtrading">
+                    Follow Our TikTok
+                </a>
+            </div>
 
-        <div class="other-info">
-            <h3>General Information</h3>
-        
-            <p><strong>Mobile:</strong> <a href="tel:+60111094858">+60 11-1094 858</a></p>
-            <p><strong>Business Hours:</strong> Monday - Saturday, 9:00 AM - 6:00 PM</p>
-        </div>
+        </div>
 
-    </div>
+        <div class="other-info">
+            <h3>General Information</h3>
+            <p><strong>Mobile:</strong>
+                <a href="tel:+601110948581">+60 11-1094 8581</a>
+            </p>
+            <p><strong>Business Hours:</strong> Monday – Saturday, 9:00 AM – 6:00 PM</p>
+        </div>
+
+    </div>
 </div>
 
+<!-- JS -->
 <script>
-    // 侧边栏打开/关闭逻辑
-    window.toggleNav = function() {
-        const sidebar = document.getElementById("mySidebar");
-        const overlay = document.getElementById("overlay");
-        const body = document.body;
-        // 【已修复】删除了对 mainContent 的引用和 scrollbarWidth 的计算
-        
-        const isOpened = sidebar.style.width === '250px';
+    function toggleNav() {
+        const sidebar = document.getElementById("mySidebar");
+        const overlay = document.getElementById("overlay");
 
-        if (isOpened) {
-            // 关闭菜单
-            sidebar.style.width = '0';
-            overlay.style.display = 'none';
-            body.style.overflow = 'auto'; // 恢复滚动
-            // 【已修复】删除了 mainContent.style.marginRight = '0'; 
-        } else {
-            // 打开菜单
-            // 【已修复】删除了 mainContent.style.marginRight = scrollBarWidth;
-            
-            body.style.overflow = 'hidden'; // 禁止滚动，同时移除滚动条
-            sidebar.style.width = '250px';
-            overlay.style.display = 'block';
-        }
-    }
+        const isOpen = sidebar.offsetWidth > 0;
 
-    // 子菜单展开/收起逻辑
-    window.toggleSubmenu = function(element) {
-        const submenu = element.nextElementSibling;
-        
-        if (submenu.style.display === "block") {
-            submenu.style.display = "none";
-        } else {
-            document.querySelectorAll('.submenu').forEach(sub => {
-                if (sub !== submenu) {
-                    sub.style.display = 'none';
-                }
-            });
-            submenu.style.display = "block";
-        }
-    }
+        if (isOpen) {
+            sidebar.style.width = "0";
+            overlay.style.display = "none";
+            document.body.style.overflow = "auto";
+        } else {
+            sidebar.style.width = "250px";
+            overlay.style.display = "block";
+            document.body.style.overflow = "hidden";
+        }
+    }
+
+    function toggleSubmenu(element) {
+        const submenu = element.nextElementSibling;
+        const isShown = submenu.style.display === "block";
+
+        document.querySelectorAll(".submenu").forEach(s => (s.style.display = "none"));
+
+        submenu.style.display = isShown ? "none" : "block";
+    }
 </script>
+
 </body>
 </html>
