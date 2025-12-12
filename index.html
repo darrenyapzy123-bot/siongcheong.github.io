@@ -131,17 +131,20 @@
             height: auto;
         }
 
-        /* ------------------- 产品卡片容器 ------------------- */
+        /* ------------------- 产品卡片容器 (多列排版的核心) ------------------- */
         .products-container {
             padding: 40px 20px;
             max-width: 1300px;
             margin: 0 auto;
         }
 
+        /* 确保多列布局 */
         .category-grid {
+            /* 关键 CSS：使用 grid 布局实现响应式多列 */
             display: grid;
+            /* auto-fit: 尽可能多地填充列。minmax(280px, 1fr): 每列最小宽度280px，最大宽度平均分配 */
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            gap: 25px; /* 卡片之间的间距 */
         }
 
         /* 产品卡片 */
@@ -187,7 +190,6 @@
         }
 
         /* ------------------- 详情按钮样式 - 统一蓝色 ------------------- */
-        /* 使用通用的 .btn-detail 确保所有按钮样式一致 */
         .btn-detail {
             display: inline-block;
             padding: 12px 25px;
@@ -205,8 +207,6 @@
             transform: scale(1.03);
         }
         
-        /* 移除之前针对特定类别的颜色覆盖 */
-        /* .btn-chiller, .btn-freezer, .btn-ac, .btn-tv, .btn-washer, .btn-dryer, .btn-kitchen, .btn-small 的独立颜色已被移除 */
         /* ------------------- 底部 Footer ------------------- */
         .page-footer {
             padding: 30px 20px;
@@ -229,9 +229,13 @@
             header {
                 font-size: 20px;
             }
+            /* 在小屏幕上，grid 布局会自动回退到单列，因为 minmax(280px, 1fr) 无法满足多列要求 */
+            /* 如果需要强制单列，可以显式设置：
             .category-grid {
                 grid-template-columns: 1fr;
-            }
+            } 
+            但当前设置已经足够。
+            */
         }
 
     </style>
