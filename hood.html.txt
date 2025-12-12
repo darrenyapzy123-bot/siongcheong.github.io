@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooker Hoods - Siong Cheong Trading</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <style>
+        /* ------------------- Base Styles (Adapted from washer.html) ------------------- */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        header {
+            /* Primary Brand Color: Blue #3498db */
+            background: #3498db; 
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: relative; 
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .header-logo {
+            position: absolute; 
+            top: 50%; 
+            right: 20px; 
+            transform: translateY(-50%); 
+            width: clamp(120px, 20vw, 250px); 
+            height: auto;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ------------------- Menu & Sidebar (Burger Menu) Styles ------------------- */
+        .menu-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #3498db;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .bar { width: 25px; height: 3px; background-color: white; margin: 5px 0; }
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            background-color: #2c3e50;
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: 0.5s;
+            max-width: 250px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+        }
+        .sidebar a, .sidebar .submenu-toggle {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #ecf0f1;
+            display: block;
+            border-bottom: 1px solid #34495e;
+            cursor: pointer;
+        }
+        .sidebar a:hover, .sidebar .submenu-toggle:hover { background-color: #34495e; }
+        .closebtn { position: absolute; top: 0; right: 25px; font-size: 36px; line-height: 50px; }
+        .submenu { display: none; background-color: #3e566e; padding-left: 20px; }
+        .submenu a { padding: 10px 25px; font-size: 1em; border-bottom: none; }
+        .overlay { position: fixed; height: 100%; width: 100%; top: 0; left: 0; z-index: 998; background: rgba(0, 0, 0, 0.5); display: none; }
+        
+        /* ------------------- Filter Bar Styles ------------------- */
+        .filter-bar {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        .filter-bar label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .filter-bar select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            min-width: 150px;
+            appearance: none; /* Hide default arrow */
+            background: #ecf0f1 url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%22292.4%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M287%20221.7c-4.4%204.4-10.9%207-17.7%207s-13.3-2.6-17.7-7L146.2%20118.8%2043.8%20221.7c-4.4%204.4-10.9%207-17.7%207s-13.3-2.6-17.7-7c-8.8-8.8-8.8-23.3%200-32.1L128.5%2081.7c4.4-4.4%2010.9-7%2017.7-7s13.3%202.6%2017.7%207l126.9%20108c8.8%208.8%208.8%2023.3%200%2032.1z%22%2F%3E%3C%2Fsvg%3E') no-repeat right 8px center;
+            background-size: 12px;
+            padding-right: 30px;
+        }
+
+        /* Mobile Filter Toggle */
+        .filter-toggle-button {
+            display: none; /* Hide initially on large screens */
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .filter-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 0;
+            transition: max-height 0.3s ease-out;
+        }
+
+        /* ------------------- Product Grid Styles ------------------- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .product-card.hidden {
+            display: none;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            max-height: 200px; /* Uniform height for images */
+            object-fit: contain;
+            background-color: #ecf0f1;
+            padding: 15px 0;
+        }
+
+        .product-details {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-details h3 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .product-details p {
+            color: #7f8c8d;
+            font-size: 0.95em;
+            line-height: 1.4;
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        
+        .product-badge {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-top: auto; /* Push to bottom */
+            align-self: flex-start;
+            margin-left: 0;
+        }
+
+        /* ------------------- Footer (Consistent with contact.html) ------------------- */
+        #footer-info {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 30px 20px;
+            margin-top: 50px;
+            text-align: center;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            box-sizing: border-box;
+        }
+        .footer-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        #footer-info p { margin: 5px 0; font-size: 0.9em; }
+        #footer-info a { color: #ecf0f1; text-decoration: none; }
+        .copyright { margin-top: 15px; color: #7f8c8d; }
+
+        /* ------------------- Back to Top Button ------------------- */
+        #backToTopBtn {
+            display: none; 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            z-index: 99; 
+            border: none; 
+            outline: none; 
+            background-color: #e74c3c; /* Red accent color */
+            color: white; 
+            cursor: pointer; 
+            padding: 10px 15px; 
+            border-radius: 8px;
+            font-size: 16px;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+        #backToTopBtn:hover {
+            opacity: 1;
+        }
+        
+        /* ------------------- Media Queries (Mobile/Tablet) ------------------- */
+        @media (max-width: 768px) {
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-content {
+                max-height: 0;
+                overflow: hidden;
+                flex-direction: column;
+            }
+            .filter-content.active {
+                max-height: 500px; /* Allows content to be visible */
+            }
+            .filter-toggle-button {
+                display: block; /* Show toggle button on mobile */
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .filter-bar select {
+                width: 100%;
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="menu-icon" onclick="toggleNav()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+</div>
+
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">×</a>
+    
+    <a href="index.html">Home</a>
+    
+    <div class="submenu-toggle" onclick="toggleSubmenu(this)">
+        Products
+    </div>
+    <div class="submenu">
+        <a href="refrigerator.html">Refrigerator</a>
+        <a href="chiller.html">Chiller</a>
+        <a href="freezer.html">Freezer</a>
+        <a href="ac.html">Air Conditioner</a>
+        <a href="tv.html">TV</a>
+        <a href="washer.html">Washer</a>
+        <a href="dryer.html">Dryer</a>
+        <a href="kitchen.html">Kitchen Appliances</a>
+        <a href="small.html">Small Appliances</a>
+    </div>
+
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact Us</a>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleNav()"></div>
+<header>
+    Cooker Hoods
+    <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
+</header>
+
+<div class="container">
+
+    <div class="filter-bar">
+        <button class="filter-toggle-button" id="filterToggleButton">Toggle Filters</button>
+        <div class="filter-content" id="filterContent">
+            
+            <div>
+                <label for="brandFilter">Brand:</label>
+                <select id="brandFilter">
+                    <option value="all">All Brands</option>
+                    <option value="Midea">Midea</option>
+                    <option value="Elba">Elba</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="powerFilter">Suction Power (m³/hr):</label>
+                <select id="powerFilter">
+                    <option value="all">All Power</option>
+                    <option value="900">900 m³/hr</option>
+                    <option value="1000">1000 m³/hr</option>
+                    <option value="1200">1200 m³/hr</option>
+                    <option value="1400">1400 m³/hr</option>
+                    <option value="1500">1500 m³/hr</option>
+                    <option value="1600">1600 m³/hr</option>
+                    <option value="1800">1800 m³/hr</option>
+                    <option value="2000">2000 m³/hr</option>
+                </select>
+            </div>
+            
+             <div>
+                <label for="lengthFilter">Length (cm):</label>
+                <select id="lengthFilter">
+                    <option value="all">All Lengths</option>
+                    <option value="76">76 cm</option>
+                    <option value="90">90 cm</option>
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+
+        <div class="product-card" data-brand="Elba" data-power="1000" data-length="90">
+            <img src="hood_ECH-E9022ST.png" alt="Elba ECH-E9022ST Cooker Hood">
+            <div class="product-details">
+                <h3>Elba Chimney Cooker Hood - ECH-E9022ST</h3>
+                <p>Powerful 1000m³/hr extraction, featuring a stylish tempered glass panel and stainless steel finish. Equipped with sensor touch control for easy operation and a time delay function.</p>
+                <span class="product-badge">Elba | 1000 m³/hr</span>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Midea" data-power="900" data-length="76">
+            <img src="hood_MCH-76MSS.png" alt="Midea MCH-76MSS Slim Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Slim Cooker Hood - MCH-76MSS</h3>
+                <p>900m³/hr suction power. Features Stainless Steel body, LED Lamp, Push Button control, and a Twin Motor for bigger power. Supports Duct Out or Recirculating System. [cite_start]Length: 76cm[cite: 119, 120, 121, 122, 123, 124, 125, 126, 127, 128].</p>
+                <span class="product-badge">Midea | 900 m³/hr</span>
+            </div>
+        </div>
+
+        <div class="product-card" data-brand="Midea" data-power="900" data-length="90">
+            <img src="hood_MCH-90F49SS.png" alt="Midea MCH-90F49SS Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Stainless Steel Cooker Hood - MCH-90F49SS</h3>
+                <p>900m³/hr extraction. 90cm length, stainless steel finish, LED button control, Twin motor, and supports duct out or recirculating system. [cite_start]Comes with Washable grease filters x 3 and Charcoal filters x 2[cite: 129, 130, 131, 132, 133, 134, 135, 136].</p>
+                <span class="product-badge">Midea | 900 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="900" data-length="90">
+            <img src="hood_MCH-90F49BK.png" alt="Midea MCH-90F49BK Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Cooker Hood - MCH-90F49BK (Black)</h3>
+                <p>Powerful 900m³/hr suction and 90cm length. Features LED button control, Twin motor, and versatile duct out or recirculating system. [cite_start]Includes Washable grease filters x 3 and Charcoal filters x 2[cite: 137, 138, 139, 140, 141, 142, 143].</p>
+                <span class="product-badge">Midea | 900 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="1200" data-length="90">
+            <img src="hood_MCH-90MV3.png" alt="Midea MCH-90MV3 Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Cooker Hood with Charcoal Filter - MCH-90MV3</h3>
+                <p>High extraction rate of 1200m³/hr. Built with Stainless Steel & Tempered Glass. Features 3-Speed Selection and Push Button control. [cite_start]Uses Washable 5-Layers Grease Filters and charcoal filter x 2[cite: 144, 145, 146, 147, 148, 149].</p>
+                <span class="product-badge">Midea | 1200 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="1400" data-length="90">
+            <img src="hood_MCH-90V71.png" alt="Midea MCH-90V71 Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Cooker Hood - MCH-90V71 (Tempered Glass)</h3>
+                <p>Super powerful 1400m³/hr extraction. Modern Tempered Glass design, Push button control, 3-Speed Selection, and 2 x 1.5W LED Lamps. Supports duct out or recirculation mode. [cite_start]Includes aluminum ducting hose 150mm[cite: 150, 151, 152, 153, 154, 155, 156, 157].</p>
+                <span class="product-badge">Midea | 1400 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="1400" data-length="90">
+            <img src="hood_MCH-90J82.png" alt="Midea MCH-90J82 Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Cooker Hood - MCH-90J82 (Duct Out Only)</h3>
+                <p>1400m³/hr suction. Features Touch Control, 2-Speed Selection with Turbo function, and an easy clean concealed oil cup. Duct Out operation only. [cite_start]Includes aluminum ducting hose 150mm[cite: 158, 159, 160, 161, 162, 163, 164, 165].</p>
+                <span class="product-badge">Midea | 1400 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="1800" data-length="90">
+            <img src="hood_MCH-90B68AT.png" alt="Midea MCH-90B68AT Premium Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Premium Cooker Hood - MCH-90B68AT</h3>
+                <p>Ultra-powerful 1800m³/hr suction. Features **Gesture Control**, Turbo Function, and **Smart Auto Steam Wash** technology. Duct Out Type only. [cite_start]Comes with a 5 Years Motor Warranty[cite: 110].</p>
+                <span class="product-badge">Midea | 1800 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="1800" data-length="90">
+            <img src="hood_MCH-90B65.png" alt="Midea MCH-90B65 Premium Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Premium Cooker Hood - MCH-90B65</h3>
+                <p>1800m³/hr suction power. Features Auto-Steam Wash Cleaning Technology, Touch Control, and **Gesture Control** (Hand wave On/Off). Easy clean elongated oil cup. Duct out operation mode. [cite_start]Includes aluminum ducting hose 180mm[cite: 110, 115].</p>
+                <span class="product-badge">Midea | 1800 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="2000" data-length="90">
+            <img src="hood_MCH-90M80AT.png" alt="Midea MCH-90M80AT Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Cooker Hood - MCH-90M80AT</h3>
+                <p>The most powerful model with **2000m³/hr** extraction. Duct Out Only. Features Touch Control, 2-speed selection, LED Lamp: 2x1.5W, and an easy clean elongated oil cup. [cite_start]Includes aluminium ducting hose 170mm[cite: 111, 116].</p>
+                <span class="product-badge">Midea | 2000 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="1500" data-length="90">
+            <img src="hood_MCH-90B82.png" alt="Midea MCH-90B82 Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Cooker Hood - MCH-90B82</h3>
+                <p>1500m³/hr suction (Duct Out Only). Features **Gesture Control** (Hand Wave On/Off), 2-speed selection, LED Lamp: 2x1.5W, and an easy clean elongated oil cup. [cite_start]Includes aluminium ducting hose 190mm[cite: 111, 116].</p>
+                <span class="product-badge">Midea | 1500 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="1500" data-length="90">
+            <img src="hood_MCH-90J52.png" alt="Midea MCH-90J52 Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Cooker Hood - MCH-90J52</h3>
+                <p>1500m³/hr suction (Duct Out Only). Features Touch Control and **Gesture Control** (Hand Wave On/Off). Includes 2-speed selection, LED Lamp: 2x1.5W, and an easy clean elongated oil cup. [cite_start]Includes aluminium ducting hose 180mm[cite: 111, 118].</p>
+                <span class="product-badge">Midea | 1500 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="1500" data-length="90">
+            <img src="hood_MCH-90J15.png" alt="Midea MCH-90J15 Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Cooker Hood - MCH-90J15</h3>
+                <p>1500m³/hr suction (Duct Out Only). [cite_start]Features Touch Control, **Gesture Control** (Hand Wave On/Off), 2-speed selection, LED Lamp: 2x1.5W, and an easy clean elongated oil cup[cite: 111, 118].</p>
+                <span class="product-badge">Midea | 1500 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="1200" data-length="90">
+            <img src="hood_MCH-90TM1.png" alt="Midea MCH-90TM1 Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Cooker Hood with Charcoal Filter - MCH-90TM1</h3>
+                <p>1200m³/hr extraction. Features Touch Control & Digital Display, 3-Speed Selection, and 2 x 1.5w LED Lamp. Air outlet: 150 mm. [cite_start]Includes Washable 5-Layers Grease Filters and Charcoal Filter x2[cite: 117, 118].</p>
+                <span class="product-badge">Midea | 1200 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="1500" data-length="90">
+            <img src="hood_MCH-90B88-BK.png" alt="Midea MCH-90B88(BK) Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Cooker Hood - MCH-90B88(BK)</h3>
+                <p>1500m³/hr powerful suction. [cite_start]Features **Gesture Control** (Hand Wave On/Off) for easy, no-touch operation[cite: 117].</p>
+                <span class="product-badge">Midea | 1500 m³/hr</span>
+            </div>
+        </div>
+        
+        <div class="product-card" data-brand="Midea" data-power="1600" data-length="90">
+            <img src="hood_MCH-90X99.png" alt="Midea MCH-90X99 Slim Profile Cooker Hood">
+            <div class="product-details">
+                <h3>Midea Slim Profile Cooker Hood - MCH-90X99</h3>
+                <p>High performance 1600m³/hr extraction. Features a sleek slim profile, oil collector, and responsive 3-speed Touch Control panel with bright LED lighting.</p>
+                <span class="product-badge">Midea | 1600 m³/hr</span>
+            </div>
+        </div>
+        
+    </div>
+
+</div>
+
+<div id="footer-info">
+    <div class="footer-content">
+        <p>Siong Cheong Trading Sdn. Bhd.</p>
+        <p>Contact No: <a href="tel:+601110948581">+60 11-1094 8581</a></p>
+        <p class="copyright">© 2024. All rights reserved.</p>
+    </div>
+</div>
+
+<button onclick="topFunction()" id="backToTopBtn" title="Go to top">Back to Home</button>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const brandFilter = document.getElementById('brandFilter');
+        const powerFilter = document.getElementById('powerFilter');
+        const lengthFilter = document.getElementById('lengthFilter');
+        const cards = document.querySelectorAll('.product-card');
+
+        // Event Listeners for Filters
+        brandFilter.addEventListener('change', applyFilters);
+        powerFilter.addEventListener('change', applyFilters);
+        lengthFilter.addEventListener('change', applyFilters);
+
+
+        // --- Burger Menu & Submenu Logic (Copied from previous pages) ---
+        function toggleNav() {
+            const sidebar = document.getElementById("mySidebar");
+            const overlay = document.getElementById("overlay");
+            const body = document.body;
+            
+            const isOpen = sidebar.offsetWidth > 0;
+
+            if (isOpen) {
+                sidebar.style.width = "0";
+                overlay.style.display = "none";
+                body.style.overflow = "auto";
+            } else {
+                sidebar.style.width = "250px";
+                overlay.style.display = "block";
+                body.style.overflow = "hidden";
+            }
+        }
+        window.toggleNav = toggleNav; // Make function globally accessible
+
+        function toggleSubmenu(element) {
+            const submenu = element.nextElementSibling;
+            const isShown = submenu.style.display === "block";
+
+            // Close all other submenus first
+            document.querySelectorAll(".submenu").forEach(s => (s.style.display = "none"));
+
+            submenu.style.display = isShown ? "none" : "block";
+        }
+        window.toggleSubmenu = toggleSubmenu; // Make function globally accessible
+
+        // --- Filter Toggle Logic for Mobile ---
+        const filterToggleButton = document.getElementById('filterToggleButton');
+        const filterContent = document.getElementById('filterContent');
+        if (filterToggleButton && filterContent) {
+            filterToggleButton.addEventListener('click', function() {
+                filterContent.classList.toggle('active'); 
+            });
+        }
+
+        // --- Main Filter Function ---
+        function applyFilters() {
+            const selectedBrand = brandFilter.value;
+            const selectedPower = powerFilter.value;
+            const selectedLength = lengthFilter.value;
+
+            cards.forEach(card => {
+                const cardBrand = card.getAttribute('data-brand');
+                const cardPower = card.getAttribute('data-power');
+                const cardLength = card.getAttribute('data-length');
+
+                const brandMatch = (selectedBrand === 'all' || selectedBrand === cardBrand);
+                const powerMatch = (selectedPower === 'all' || selectedPower === cardPower);
+                const lengthMatch = (selectedLength === 'all' || selectedLength === cardLength);
+
+                if (brandMatch && powerMatch && lengthMatch) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+        
+        // --- Back to Home (Scroll) Logic ---
+        const backToTopBtn = document.getElementById("backToTopBtn");
+        const scrollThreshold = 40; // Percentage of the page height to show the button
+
+        window.onscroll = function() { scrollFunction() };
+
+        function scrollFunction() {
+            // Calculate scroll position relative to document height
+            const scrollPercent = (window.scrollY + window.innerHeight) / document.body.scrollHeight * 100;
+            
+            // Check if the user is close to the bottom (e.g., last 40% of the page)
+            if (scrollPercent > scrollThreshold || document.documentElement.scrollTop > 500) {
+                backToTopBtn.style.display = "block";
+            } else {
+                backToTopBtn.style.display = "none";
+            }
+        }
+
+        function topFunction() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        window.topFunction = topFunction; // Make function globally accessible
+
+        // Apply filters on initial load
+        applyFilters();
+    });
+</script>
+
+</body>
+</html>
