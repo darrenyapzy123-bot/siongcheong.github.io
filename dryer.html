@@ -18,7 +18,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
-            /* 确保底部有足够的空间用于按钮显示 */
+            /* 预留底部空间给固定的页脚 */
             padding-bottom: 70px;
         }
 
@@ -223,53 +223,45 @@
             background-color: #2980b9;
         }
 
-        /* ------------------- 页脚 (非固定式) ------------------- */
-        .page-footer {
-            padding: 30px 20px;
+        /* ------------------- 【新增/修改】固定底栏样式 ------------------- */
+        #footer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2c3e50; /* 深色背景，与 Header/Menu 呼应 */
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+            padding: 10px 20px;
             text-align: center;
-            background-color: #ffffff; 
-            margin-top: 40px; 
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100; /* 确保它位于所有内容之上 */
         }
 
-        .page-footer .back-to-home {
+        #home-btn {
             display: inline-block;
+            max-width: 400px; /* 限制按钮最大宽度 */
+            width: 100%;
+            padding: 10px 0;
             background-color: #3498db; /* 蓝色按钮 */
             color: white;
-            padding: 10px 25px;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
             transition: background-color 0.3s;
+            font-size: 1em;
         }
 
-        .page-footer .back-to-home:hover {
+        #home-btn:hover {
             background-color: #2980b9;
         }
 
-        /* ------------------- Back to Home Button (Scroll Logic) ------------------- */
-        #backToTopBtn {
-            display: none; 
-            position: fixed; 
-            bottom: 20px; 
-            right: 20px; 
-            z-index: 99; 
-            border: none; 
-            outline: none; 
-            background-color: #3498db; 
-            color: white; 
-            cursor: pointer; 
-            padding: 10px 15px; 
-            border-radius: 8px;
-            font-size: 16px;
-            opacity: 0.9;
-            transition: opacity 0.3s;
-        }
-        #backToTopBtn:hover {
-            opacity: 1;
-        }
 
         /* 响应式调整 */
+        @media (max-width: 1200px) {
+            .product-card {
+                flex: 0 0 calc(50% - 12.5px); 
+            }
+        }
+        
         @media (max-width: 768px) {
             .product-card {
                 flex: 0 0 100%;
@@ -330,7 +322,7 @@
 
 <div id="overlay" class="overlay" onclick="toggleNav()"></div>
 <header>
-    <h1>Electric Oven Series (烤箱系列)</h1>
+    <h1>Dryer Series (烘干机系列)</h1>
     <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
 </header>
 
@@ -339,195 +331,181 @@
         <label for="brand-filter-dropdown">Brand:</label>
         <select id="brand-filter-dropdown" onchange="applyFilters()">
             <option value="all">All Brands</option>
-            <option value="Pensonic">Pensonic</option>
-            <option value="Khind">Khind</option>
             <option value="Midea">Midea</option>
-            <option value="Sharp">Sharp</option>
-            <option value="Warehouse">Warehouse</option>
+            <option value="Khind">Khind</option>
+            <option value="Hisense">Hisense</option>
         </select>
     </div>
     <div class="filter-group">
-        <label for="capacity-filter-dropdown">Capacity:</label>
+        <label for="capacity-filter-dropdown">Capacity (KG):</label>
         <select id="capacity-filter-dropdown" onchange="applyFilters()">
             <option value="all">All Capacity</option>
-            <option value="21L">21 L</option>
-            <option value="23L">23 L</option>
-            <option value="25L">25 L</option>
-            <option value="42L">42 L</option>
-            <option value="45L">45 L</option>
-            <option value="46L">46 L</option>
-            <option value="52L">52 L</option>
-            <option value="55L">55 L</option>
-            <option value="60L">60 L</option>
-            <option value="68L">68 L</option>
-            <option value="100L">100 L</option>
+            <option value="6kg">6 KG</option>
+            <option value="7kg">7 KG</option>
+            <option value="8kg">8 KG</option>
+            <option value="10kg">10 KG</option>
+            <option value="combo">Combo (Washer+Dryer)</option>
         </select>
     </div>
 </div>
 
 <div class="products-container">
     
-    <h2 class="brand-group-title" data-brand="Pensonic">Pensonic Oven Series (1 Model)</h2>
-    <div class="product-card" data-brand="Pensonic" data-capacity="23L">
+    <h2 class="brand-group-title" data-brand="Midea">Midea Dryer Series (5 Models)</h2>
+    
+    <div class="product-card" data-brand="Midea" data-capacity="7kg" data-type="Vented">
         <div class="product-image-box">
-            <img src="oven_PEO2305.png" alt="Pensonic PEO-2305 Electric Oven" class="product-image">
+            <img src="dryer_MD-7388.png" alt="Midea MD-7388 7kg Dryer" class="product-image">
         </div>
         <div class="product-details">
-            <h3>Pensonic PEO-2305 (23 Liters)</h3>
+            <h3>Midea Vented Dryer MD-7388 (7kg)</h3>
             <p>
-                Electric oven for Toast, Grill & Bake. Power: 1380W, adjustable temperature controls up to 250°C. Features a 60 minutes timer with automatic shut-off. Includes 4 pcs stainless steel heating elements. (1 Year Warranty).
+                7kg Capacity, Vented Dryer. Features Temperature Sensor, Child Lock, Anti Crease, Electronic Control, and Front Lint Filter. Comes with a **2 Year Full Warranty, 3 Year Control Panel, and 5 Year Motor Warranty.**
             </p>
-            <a href="oven-details/pensonic-23l.html" class="detail-button">View Details</a>
-        </div>
-    </div>
-
-    <h2 class="brand-group-title" data-brand="Khind">Khind Electric Oven Series (2 Models)</h2>
-    <div class="product-card" data-brand="Khind" data-capacity="52L">
-        <div class="product-image-box">
-            <img src="oven_OT5205.png" alt="Khind OT 5205 Electric Oven" class="product-image">
-        </div>
-        <div class="product-details">
-            <h3>Khind OT 5205 (52 Liters)</h3>
-            <p>
-                52 Liters capacity. Features a Rotisserie function that rotates 360° to roast food evenly, and a Convection function to distribute heat. Includes a 120 Minutes Timer with bell signal and temperature control up to 230°C. (2 Year Warranty).
-            </p>
-            <a href="oven-details/khind-52l.html" class="detail-button">View Details</a>
-        </div>
-    </div>
-
-    <div class="product-card" data-brand="Khind" data-capacity="68L">
-        <div class="product-image-box">
-            <img src="oven_OT6805.png" alt="Khind OT 6805 Electric Oven" class="product-image">
-        </div>
-        <div class="product-details">
-            <h3>Khind OT 6805 (68 Liters)</h3>
-            <p>
-                Large 68 Liters capacity, 2200W power. Includes Rotisserie and Convection functions for even heating. Features a 120 Minutes Timer and temperature control up to 230°C. Comes with accessories like a Rotisserie Basket. (2 Year Warranty).
-            </p>
-            <a href="oven-details/khind-68l.html" class="detail-button">View Details</a>
-        </div>
-    </div>
-
-    <h2 class="brand-group-title" data-brand="Midea">Midea Electric Oven Series (3 Models)</h2>
-    <div class="product-card" data-brand="Midea" data-capacity="25L">
-        <div class="product-image-box">
-            <img src="oven_MEO-25EX1.png" alt="Midea MEO-25EX1 Electric Oven" class="product-image">
-        </div>
-        <div class="product-details">
-            <h3>Midea MEO-25EX1 (25 Liters)</h3>
-            <p>
-                25L Capacity, 1500W rated power. Features Rotisseries and Convection Function. Includes a 60 minutes timer with bell ring and temperature control from 70ºC to 230ºC. (1 Year Warranty).
-            </p>
-            <a href="oven-details/midea-25l.html" class="detail-button">View Details</a>
-        </div>
-    </div>
-
-    <div class="product-card" data-brand="Midea" data-capacity="42L">
-        <div class="product-image-box">
-            <img src="oven_MEO-42LGY.png" alt="Midea MEO-42LGY Electric Oven" class="product-image">
-        </div>
-        <div class="product-details">
-            <h3>Midea MEO-42LGY (42 Liters)</h3>
-            <p>
-                42L Capacity, 1800W rated power. Features Rotisseries and Convection Function. Temperature control from 70ºC to 230ºC and a 60 minutes timer. Includes 5 heating functions and metallic heating elements. (1 Year Warranty).
-            </p>
-            <a href="oven-details/midea-42l.html" class="detail-button">View Details</a>
-        </div>
-    </div>
-
-    <div class="product-card" data-brand="Midea" data-capacity="55L">
-        <div class="product-image-box">
-            <img src="oven_MEO-55RCL-BK.png" alt="Midea MEO-55RCL-BK Electric Oven" class="product-image">
-        </div>
-        <div class="product-details">
-            <h3>Midea MEO-55RCL-BK (55 Liters)</h3>
-            <p>
-                55L Capacity. Features Hot Air Circulation, Rotisseries, and Convection. Includes a 120 Minutes Timer and 9 Cooking Modes. Temperature control up to 230ºC. (1 Year General Warranty).
-            </p>
-            <a href="oven-details/midea-55l.html" class="detail-button">View Details</a>
-        </div>
-    </div>
-
-    <h2 class="brand-group-title" data-brand="Sharp">Sharp Oven Series (2 Models)</h2>
-    <div class="product-card" data-brand="Sharp" data-capacity="25L">
-        <div class="product-image-box">
-            <img src="oven_EO-257CTBK.png" alt="Sharp EO-257CTBK Oven" class="product-image">
-        </div>
-        <div class="product-details">
-            <h3>Sharp EO-257CTBK (25 Liters)</h3>
-            <p>
-                25L Capacity. Features: Multiple heating and cooking options, large viewing window, and non-stick baking tray. Equipped with a 120 minutes timer, eliminating the need to constantly reset the timer for long dishes. (1 Year Warranty).
-            </p>
-            <a href="oven-details/sharp-25l.html" class="detail-button">View Details</a>
-        </div>
-    </div>
-
-    <div class="product-card" data-brand="Sharp" data-capacity="46L">
-        <div class="product-image-box">
-            <img src="oven_EO-469RTBK.png" alt="Sharp EO-469RTBK Oven" class="product-image">
-        </div>
-        <div class="product-details">
-            <h3>Sharp EO-469RTBK (46 Liters)</h3>
-            <p>
-                46L Capacity. Multi-function oven with Rotisserie and Convection functions. Features 3-Level Heater Setting, 120 Minutes Cooking Time, and temperature control from 90ºC to 250ºC.
-            </p>
-            <a href="oven-details/sharp-46l.html" class="detail-button">View Details</a>
+            <span class="product-badge">Vented Dryer | 7kg</span>
+            <a href="dryer-details/midea-7388.html" class="detail-button">View Details</a>
         </div>
     </div>
     
-    <h2 class="brand-group-title" data-brand="Warehouse">Warehouse Oven Series (4 Models)</h2>
-    <div class="product-card" data-brand="Warehouse" data-capacity="21L">
+    <div class="product-card" data-brand="Midea" data-capacity="8kg" data-type="Condensing">
         <div class="product-image-box">
-            <img src="oven_WEO2101.png" alt="Warehouse WEO2101 Oven" class="class="product-image">
+            <img src="dryer_MDC80-CH01.png" alt="Midea Condensing Dryer 8kg" class="product-image">
         </div>
         <div class="product-details">
-            <h3>Warehouse WEO2101 (21 Liters)</h3>
+            <h3>Midea Condensing Dryer (8kg)</h3>
             <p>
-                21L Capacity. Standard oven for simple Toast, Grill & Bake. Ideal for small kitchens or daily toasting needs. (Image price: RM179).
+                8kg Capacity, Condensing Technology. Features Anti-Wrinkle, Temperature Sensor, and Electronic Control. **Warranty:** 2 Years Full Warranty, 3 Years Control Panel, 10 Years Motor.
             </p>
-            <a href="oven-details/warehouse-21l.html" class="detail-button">View Details</a>
+            <span class="product-badge">Condensing Dryer | 8kg</span>
+            <a href="dryer-details/midea-condensing-8kg.html" class="detail-button">View Details</a>
         </div>
     </div>
-    <div class="product-card" data-brand="Warehouse" data-capacity="45L">
+    
+    <div class="product-card" data-brand="Midea" data-capacity="10kg" data-type="Heat Pump">
         <div class="product-image-box">
-            <img src="oven_WEO4501.png" alt="Warehouse WEO4501 Oven" class="class="product-image">
+            <img src="dryer_MD-K1088HP.png" alt="Midea 10kg Heat Pump Dryer" class="product-image">
         </div>
         <div class="product-details">
-            <h3>Warehouse WEO4501 (45 Liters)</h3>
+            <h3>Midea Heat Pump Dryer MD-K1088HP (10kg)</h3>
             <p>
-                45L Capacity. Medium size, suitable for light baking.. (Image price: RM258).
+                10kg Capacity, **Heat Pump Condensing Drying**. Rated Power: 750W, 5 Stars Energy Efficiency. Features Reverse Tumbling and 14 Programmes. **Warranty:** 2+3+10 Years.
             </p>
-            <a href="oven-details/warehouse-45l.html" class="detail-button">View Details</a>
+            <span class="product-badge">Heat Pump | 10kg</span>
+            <a href="dryer-details/midea-hp-10kg.html" class="detail-button">View Details</a>
         </div>
     </div>
-    <div class="product-card" data-brand="Warehouse" data-capacity="60L">
+    
+    <div class="product-card" data-brand="Midea" data-capacity="combo" data-type="WasherDryer">
         <div class="product-image-box">
-            <img src="oven_WEO6001.png" alt="Warehouse WEO6001 Oven" class="class="product-image">
+            <img src="dryer_MF200D85B.png" alt="Midea 8.5/6kg Washer Dryer Combo" class="product-image">
         </div>
         <div class="product-details">
-            <h3>Warehouse WEO6001 (60 Liters)</h3>
+            <h3>Midea 2 in 1 Washer & Dryer MF200D85B (8.5/6kg)</h3>
             <p>
-                60L Capacity. Large capacity oven suitable for family baking needs. (Image price: RM358).
+                8.5kg Washing / 6kg Drying Capacity Combo. Inverter Motor, features **Auto Clean** and **Steam Care** with Lunar Dial control. **Warranty:** 2+3+10 Years.
             </p>
-            <a href="oven-details/warehouse-60l.html" class="detail-button">View Details</a>
+            <span class="product-badge">Combo | 8.5/6kg</span>
+            <a href="dryer-details/midea-combo-8.5.html" class="detail-button">View Details</a>
         </div>
     </div>
-    <div class="product-card" data-brand="Warehouse" data-capacity="100L">
+    
+    <div class="product-card" data-brand="Midea" data-capacity="combo" data-type="WasherDryer">
         <div class="product-image-box">
-            <img src="oven_WEO1001.png" alt="Warehouse WEO1001 Oven" class="class="product-image">
+            <img src="dryer_MF200D100WB.png" alt="Midea 10/7kg Washer Dryer Combo" class="product-image">
         </div>
         <div class="product-details">
-            <h3>Warehouse WEO1001 (100 Liters)</h3>
+            <h3>Midea Big Capacity Combo MF200D100WB (10/7kg)</h3>
             <p>
-                100L Extra Large Capacity. Features Rotisserie and Convection functions (assumed based on size and typical oven features). (Image price: RM399).
+                10kg Washing / 7kg Drying Combo. **Big Capacity** Inverter model. Features HealthGuard and Steam Care. **Warranty:** 2 Years Full + 10 Years Motor.
             </p>
-            <a href="oven-details/warehouse-100l.html" class="detail-button">View Details</a>
+            <span class="product-badge">Combo | 10/7kg</span>
+            <a href="dryer-details/midea-combo-10.html" class="detail-button">View Details</a>
         </div>
     </div>
+
+    <h2 class="brand-group-title" data-brand="Khind">Khind Dryer Series (2 Models)</h2>
+    
+    <div class="product-card" data-brand="Khind" data-capacity="6kg" data-type="Vented">
+        <div class="product-image-box">
+            <img src="dryer_KCD60.png" alt="Khind KCD60 6kg Cloth Dryer" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Khind Cloth Dryer KCD60 (6kg)</h3>
+            <p>
+                6kg Capacity. Vented Dryer. Features 5 Drying Programmes (Cold Air, Anti-Wrinkle, etc.). Uses PTC Heating element for safety. Includes Wall mounting kits. **Warranty:** 1 Year General + 5 Year Motor.
+            </p>
+            <span class="product-badge">Vented Dryer | 6kg</span>
+            <a href="dryer-details/khind-kcd60.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+    
+    <div class="product-card" data-brand="Khind" data-capacity="8kg" data-type="Condensing">
+        <div class="product-image-box">
+            <img src="dryer_KCD80.png" alt="Khind 8kg Cloth Dryer" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Khind Cloth Dryer KCD80 (8kg)</h3>
+            <p>
+                8kg Capacity. Features LED display, **Crease Resist** function, and multiple drying programmes (Sterilization, Super Dry). **Warranty:** 2+3+5 Year General/Panel/Motor.
+            </p>
+            <span class="product-badge">Condensing Dryer | 8kg</span>
+            <a href="dryer-details/khind-kcd80.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+
+
+    <h2 class="brand-group-title" data-brand="Hisense">Hisense Washer & Dryer Combo (3 Models)</h2>
+    
+    <div class="product-card" data-brand="Hisense" data-capacity="combo" data-type="WasherDryer">
+        <div class="product-image-box">
+            <img src="dryer_WDQY1014EVJMT.png" alt="Hisense 10/6kg Washer Dryer Combo" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Hisense Combo WDQY1014EVJMT (10/6kg)</h3>
+            <p>
+                10kg Washing / 6kg Drying Inverter Combo. Features Pure Steam, Pure Jet Wash, and 5 Stars Energy Rating. **Warranty:** 2 Year General + 12 Year Motor.
+            </p>
+            <span class="product-badge">Combo | 10/6kg</span>
+            <a href="dryer-details/hisense-combo-10.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+    
+    <div class="product-card" data-brand="Hisense" data-capacity="combo" data-type="WasherDryer">
+        <div class="product-image-box">
+            <img src="dryer_WDQY8014EVJMT.png" alt="Hisense 8/5kg Washer Dryer Combo" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Hisense Combo WDQY8014EVJMT (8/5kg)</h3>
+            <p>
+                8kg Washing / 5kg Drying Inverter Combo. Features **Pure Steam** to remove bacteria and reduce creases. **Warranty:** 2 Year General + 12 Year Motor.
+            </p>
+            <span class="product-badge">Combo | 8/5kg</span>
+            <a href="dryer-details/hisense-combo-8.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+    
+    <div class="product-card" data-brand="Hisense" data-capacity="combo" data-type="WasherDryer">
+        <div class="product-image-box">
+            <img src="dryer_WD3Q8543BW.png" alt="Hisense 8.5/6kg Washer Dryer Combo" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Hisense Combo WD3Q8543BW (8.5/6kg)</h3>
+            <p>
+                8.5kg Washing / 6kg Drying Combo. **New design** with a 25 Year Motor Warranty (assumed from PPT). Features Steam and Allergy Care modes.
+            </p>
+            <span class="product-badge">Combo | 8.5/6kg</span>
+            <a href="dryer-details/hisense-combo-8.5.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+
 
 </div>
 
-<button onclick="topFunction()" id="backToTopBtn" title="Go to top">Back to Home</button>
+
+<div id="footer-bar">
+    <a href="index.html" id="home-btn">返回首页 (Back to Home)</a>
+</div>
+
 
 <script>
     // ------------------- 菜单 JS 逻辑 (完全复制自 freezer (1).html) -------------------
@@ -558,7 +536,7 @@
     }
     window.toggleSubmenu = toggleSubmenu; 
 
-    // ------------------- 筛选 JS 逻辑 (修改以处理容量和标题) -------------------
+    // ------------------- 筛选 JS 逻辑 -------------------
     document.addEventListener('DOMContentLoaded', function() {
         const brandFilter = document.getElementById('brand-filter-dropdown');
         const capacityFilter = document.getElementById('capacity-filter-dropdown');
@@ -576,7 +554,7 @@
             
             allProducts.forEach(card => {
                 const cardBrand = card.getAttribute('data-brand');
-                const cardCapacity = card.getAttribute('data-capacity'); // Get capacity data
+                const cardCapacity = card.getAttribute('data-capacity'); 
 
                 const brandMatch = (selectedBrand === 'all' || cardBrand === selectedBrand);
                 const capacityMatch = (selectedCapacity === 'all' || cardCapacity === selectedCapacity);
@@ -601,31 +579,6 @@
             });
         }
         
-        // --- Back to Home (Scroll) Logic ---
-        const backToTopBtn = document.getElementById("backToTopBtn");
-        
-        window.onscroll = function() { scrollFunction() };
-
-        // 方案 B: 滚动超过 400px 即显示
-        function scrollFunction() {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            const scrollTriggerHeight = 100; // 降低阈值到 100px 保证按钮能更快出现
-            
-            if (scrollTop > scrollTriggerHeight) {
-                backToTopBtn.style.display = "block";
-            } else {
-                backToTopBtn.style.display = "none";
-            }
-        }
-
-        function topFunction() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-        window.topFunction = topFunction; 
-
         // Apply filters on initial load
         window.applyFilters();
     });
