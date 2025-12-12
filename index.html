@@ -6,22 +6,19 @@
     <title>Siong Cheong Trading 产品系列</title>
 
     <style>
-        /* ------------------- 核心排版修复 ------------------- */
+        /* ------------------- 核心排版修正 - 恢复全宽 ------------------- */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background: #f5f5f5;
-            /* 1. 使用 Flexbox 强制内容水平居中 */
-            display: flex;
-            justify-content: center;
+            /* **已删除/修改：原有的 display: flex; 和 justify-content: center;** */
         }
 
-        /* 2. 新增的主内容容器，用于居中和滚动条补偿 */
+        /* 2. 主内容容器，现在它会自动占据全宽，内容将通过内部的 max-width 和 margin: 0 auto; 居中 */
         #main-content {
             width: 100%;
-            max-width: 100vw;
+            /* max-width: 100vw; 已移除，让其自然占据全宽 */
             transition: margin-right 0.5s; 
-            /* 新增：设置它为 Flex 容器，让 header 和 container 垂直堆叠 */
             display: flex;
             flex-direction: column;
         }
@@ -134,15 +131,13 @@
         /* ------------------- 产品卡片容器 (多列排版的核心) ------------------- */
         .products-container {
             padding: 40px 20px;
-            max-width: 1300px;
-            margin: 0 auto;
+            max-width: 1300px; /* 限制内容最大宽度 */
+            margin: 0 auto; /* 居中内容 */
         }
 
         /* 确保多列布局 */
         .category-grid {
-            /* 关键 CSS：使用 grid 布局实现响应式多列 */
             display: grid;
-            /* auto-fit: 尽可能多地填充列。minmax(280px, 1fr): 每列最小宽度280px，最大宽度平均分配 */
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px; /* 卡片之间的间距 */
         }
@@ -229,13 +224,6 @@
             header {
                 font-size: 20px;
             }
-            /* 在小屏幕上，grid 布局会自动回退到单列，因为 minmax(280px, 1fr) 无法满足多列要求 */
-            /* 如果需要强制单列，可以显式设置：
-            .category-grid {
-                grid-template-columns: 1fr;
-            } 
-            但当前设置已经足够。
-            */
         }
 
     </style>
