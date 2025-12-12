@@ -18,6 +18,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
+            /* 确保底部有足够的空间用于按钮显示 */
             padding-bottom: 70px;
         }
 
@@ -94,7 +95,7 @@
             padding: 15px 20px 15px 70px; 
             background-color: #ecf0f1;
             border-bottom: 1px solid #e0e0e0;
-            gap: 15px; /* Spacing between dropdowns */
+            gap: 15px; 
         }
 
         .filter-group {
@@ -126,7 +127,7 @@
             background-color: white;
         }
 
-        /* ------------------- Product Grid and Cards (保持一致) ------------------- */
+        /* ------------------- Product Grid and Cards ------------------- */
         .products-container {
             display: flex;
             flex-wrap: wrap;       
@@ -231,7 +232,7 @@
             z-index: 99; 
             border: none; 
             outline: none; 
-            background-color: #3498db; 
+            background-color: #3498db; /* 蓝色 */
             color: white; 
             cursor: pointer; 
             padding: 10px 15px; 
@@ -306,6 +307,7 @@
 <div id="overlay" class="overlay" onclick="toggleNav()"></div>
 <header>
     <h1>Electric Oven Series (烤箱系列)</h1>
+    <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
 </header>
 
 <div id="filter-controls">
@@ -349,7 +351,7 @@
         <div class="product-details">
             <h3>Pensonic PEO-2305 (23 Liters)</h3>
             <p>
-                Electric oven for Toast, Grill & Bake[cite: 1]. Power: 1380W, adjustable temperature controls up to 250°C[cite: 1]. Features a 60 minutes timer with automatic shut-off[cite: 1]. Includes 4 pcs stainless steel heating elements[cite: 1]. (1 Year Warranty) .
+                Electric oven for Toast, Grill & Bake. Power: 1380W, adjustable temperature controls up to 250°C. Features a 60 minutes timer with automatic shut-off. Includes 4 pcs stainless steel heating elements. (1 Year Warranty).
             </p>
             <a href="oven-details/pensonic-23l.html" class="detail-button">View Details</a>
         </div>
@@ -363,7 +365,7 @@
         <div class="product-details">
             <h3>Khind OT 5205 (52 Liters)</h3>
             <p>
-                52 Liters capacity[cite: 4, 5]. Features a Rotisserie function that rotates 360° to roast food evenly, and a Convection function to distribute heat[cite: 4]. Includes a 120 Minutes Timer with bell signal and temperature control up to 230°C[cite: 4]. (2 Year Warranty).
+                52 Liters capacity. Features a Rotisserie function that rotates 360° to roast food evenly, and a Convection function to distribute heat. Includes a 120 Minutes Timer with bell signal and temperature control up to 230°C. (2 Year Warranty).
             </p>
             <a href="oven-details/khind-52l.html" class="detail-button">View Details</a>
         </div>
@@ -390,7 +392,7 @@
         <div class="product-details">
             <h3>Midea MEO-25EX1 (25 Liters)</h3>
             <p>
-                25L Capacity [cite: 11, 24], 1500W rated power[cite: 13]. Features Rotisseries and Convection Function[cite: 14]. Includes a 60 minutes timer with bell ring [cite: 16] and temperature control from 70ºC to 230ºC[cite: 17]. (1 Year Warranty) [cite: 10, 23].
+                25L Capacity, 1500W rated power. Features Rotisseries and Convection Function. Includes a 60 minutes timer with bell ring and temperature control from 70ºC to 230ºC. (1 Year Warranty).
             </p>
             <a href="oven-details/midea-25l.html" class="detail-button">View Details</a>
         </div>
@@ -403,7 +405,7 @@
         <div class="product-details">
             <h3>Midea MEO-42LGY (42 Liters)</h3>
             <p>
-                42L Capacity, 1800W rated power[cite: 37]. Features Rotisseries and Convection Function[cite: 38]. Temperature control from 70ºC to 230ºC [cite: 27] and a 60 minutes timer[cite: 26]. Includes 5 heating functions [cite: 28] and metallic heating elements[cite: 39]. (1 Year Warranty) [cite: 31].
+                42L Capacity, 1800W rated power. Features Rotisseries and Convection Function. Temperature control from 70ºC to 230ºC and a 60 minutes timer. Includes 5 heating functions and metallic heating elements. (1 Year Warranty).
             </p>
             <a href="oven-details/midea-42l.html" class="detail-button">View Details</a>
         </div>
@@ -416,7 +418,7 @@
         <div class="product-details">
             <h3>Midea MEO-55RCL-BK (55 Liters)</h3>
             <p>
-                55L Capacity[cite: 42, 51]. Features Hot Air Circulation [cite: 48], Rotisseries, and Convection[cite: 47]. Includes a 120 Minutes Timer [cite: 44] and 9 Cooking Modes[cite: 46]. Temperature control up to 230ºC[cite: 43]. (1 Year General Warranty) [cite: 50].
+                55L Capacity. Features Hot Air Circulation, Rotisseries, and Convection. Includes a 120 Minutes Timer and 9 Cooking Modes. Temperature control up to 230ºC. (1 Year General Warranty).
             </p>
             <a href="oven-details/midea-55l.html" class="detail-button">View Details</a>
         </div>
@@ -430,7 +432,7 @@
         <div class="product-details">
             <h3>Sharp EO-257CTBK (25 Liters)</h3>
             <p>
-                25L Capacity[cite: 63]. Features: Multiple heating and cooking options [cite: 55], large viewing window [cite: 60], and non-stick baking tray[cite: 62]. Equipped with a 120 minutes timer, eliminating the need to constantly reset the timer for long dishes[cite: 56, 57, 58]. (1 Year Warranty).
+                25L Capacity. Features: Multiple heating and cooking options, large viewing window, and non-stick baking tray. Equipped with a 120 minutes timer, eliminating the need to constantly reset the timer for long dishes. (1 Year Warranty).
             </p>
             <a href="oven-details/sharp-25l.html" class="detail-button">View Details</a>
         </div>
@@ -443,7 +445,7 @@
         <div class="product-details">
             <h3>Sharp EO-469RTBK (46 Liters)</h3>
             <p>
-                46L Capacity[cite: 82]. Multi-function oven with Rotisserie and Convection functions[cite: 73, 78]. Features 3-Level Heater Setting [cite: 76, 69], 120 Minutes Cooking Time [cite: 77], and temperature control from 90ºC to 250ºC[cite: 80].
+                46L Capacity. Multi-function oven with Rotisserie and Convection functions. Features 3-Level Heater Setting, 120 Minutes Cooking Time, and temperature control from 90ºC to 250ºC.
             </p>
             <a href="oven-details/sharp-46l.html" class="detail-button">View Details</a>
         </div>
@@ -457,7 +459,7 @@
         <div class="product-details">
             <h3>Warehouse WEO2101 (21 Liters)</h3>
             <p>
-                21L Capacity. Standard oven for simple Toast, Grill & Bake[cite: 84, 85]. Ideal for small kitchens or daily toasting needs. (Image price: RM179) [cite: 93, 96].
+                21L Capacity. Standard oven for simple Toast, Grill & Bake. Ideal for small kitchens or daily toasting needs. (Image price: RM179).
             </p>
             <a href="oven-details/warehouse-21l.html" class="detail-button">View Details</a>
         </div>
@@ -469,7 +471,7 @@
         <div class="product-details">
             <h3>Warehouse WEO4501 (45 Liters)</h3>
             <p>
-                45L Capacity. Medium size, suitable for light baking.[cite: 86, 87]. (Image price: RM258) [cite: 98].
+                45L Capacity. Medium size, suitable for light baking.. (Image price: RM258).
             </p>
             <a href="oven-details/warehouse-45l.html" class="detail-button">View Details</a>
         </div>
@@ -481,7 +483,7 @@
         <div class="product-details">
             <h3>Warehouse WEO6001 (60 Liters)</h3>
             <p>
-                60L Capacity. Large capacity oven suitable for family baking needs[cite: 88, 89]. (Image price: RM358) [cite: 97].
+                60L Capacity. Large capacity oven suitable for family baking needs. (Image price: RM358).
             </p>
             <a href="oven-details/warehouse-60l.html" class="detail-button">View Details</a>
         </div>
@@ -493,7 +495,7 @@
         <div class="product-details">
             <h3>Warehouse WEO1001 (100 Liters)</h3>
             <p>
-                100L Extra Large Capacity[cite: 90, 91]. Features Rotisserie and Convection functions (assumed based on size and typical oven features). (Image price: RM399) [cite: 100].
+                100L Extra Large Capacity. Features Rotisserie and Convection functions (assumed based on size and typical oven features). (Image price: RM399).
             </p>
             <a href="oven-details/warehouse-100l.html" class="detail-button">View Details</a>
         </div>
