@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gas Series (燃气灶具系列)</title>
+    <title>Gas Series</title>
     <style>
-        /* 通用重置 */
+        /* General Reset and Styling */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -14,10 +14,10 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
-            padding-bottom: 70px; /* 为底部的 "返回首页" 按钮留出空间 */
+            padding-bottom: 70px;
         }
         
-        /* ------------------- 顶部导航和筛选控制区样式 ------------------- */
+        /* Header and Filter Styles */
         header {
             background-color: #0d47a1; 
             color: white; 
@@ -30,7 +30,6 @@
             margin-bottom: 5px;
         }
 
-        /* 筛选控制容器 */
         #filter-controls {
             display: flex;
             justify-content: flex-start;
@@ -40,7 +39,6 @@
             border-bottom: 1px solid #e0e0e0;
         }
 
-        /* 下拉菜单样式 (保持蓝色配色) */
         #brand-filter-dropdown {
             padding: 10px 18px;
             border-radius: 5px;
@@ -60,7 +58,7 @@
             background-color: white;
         }
 
-        /* ------------------- 产品列表和卡片优化 ------------------- */
+        /* Product Container and Card Styles */
         .products-container {
             display: flex;
             flex-wrap: wrap;       
@@ -82,7 +80,6 @@
         }
 
         .product-card {
-            /* 实现响应式多列布局 */
             flex: 0 0 calc(33.333% - 16.666px); 
             max-width: 350px; 
             min-width: 280px;
@@ -105,7 +102,7 @@
         .product-image-box {
             background-color: #fcfcfc;
             padding: 25px;
-            height: 250px; /* 固定图片框高度 */
+            height: 250px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -125,25 +122,22 @@
             justify-content: space-between;
         }
 
-        /* 产品名称颜色标注和字体大小调整 */
         .product-details h3 {
             font-size: 1.4em; 
-            color: #c0392b; /* 红色系，用于名称突出 */
+            color: #c0392b; 
             margin-bottom: 10px; 
             font-weight: 600;
         }
         
-        /* 介绍文本优化 */
         .product-details p {
             font-size: 0.95em;
             color: #555; 
             margin-bottom: 20px; 
-            line-height: 1.6; /* 增加行高，减少拥挤感 */
-            text-align: left; /* 左对齐描述文本 */
+            line-height: 1.6;
+            text-align: left; 
             flex-grow: 1;
         }
         
-        /* 统一蓝色按钮 */
         .detail-button {
             display: inline-block;
             padding: 10px 25px;
@@ -160,7 +154,7 @@
             background-color: #2980b9; 
         }
 
-        /* ------------------- 底部固定条 ------------------- */
+        /* Fixed Footer Bar */
         #footer-bar {
             position: fixed;
             bottom: 0;
@@ -177,7 +171,7 @@
             display: inline-block;
             width: 100%;
             padding: 10px 0;
-            background-color: #2ecc71; /* 绿色按钮 */
+            background-color: #2ecc71; 
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -190,7 +184,7 @@
             background-color: #27ae60;
         }
 
-        /* 响应式调整 */
+        /* Responsive Adjustments */
         @media (max-width: 1200px) {
             .product-card {
                 flex: 0 0 calc(50% - 12.5px); 
@@ -207,12 +201,12 @@
 <body>
     
     <header>
-        <h1>Gas Series (燃气灶具系列)</h1>
+        <h1>Gas Hob Series</h1>
     </header>
 
     <div id="filter-controls">
         <select id="brand-filter-dropdown" onchange="filterProducts(this.value)">
-            <option value="all">筛选品牌 (Filter Brand)</option>
+            <option value="all">Filter Brand</option>
             <option value="Milux">Milux</option>
             <option value="Elba">Elba</option>
         </select>
@@ -220,53 +214,53 @@
 
     <div class="products-container">
         
-        <h2 class="brand-group-title" data-brand="Milux">Milux 燃气灶具系列</h2>
+        <h2 class="brand-group-title" data-brand="Milux">Milux Gas Hob Series</h2>
         
         <div class="product-card" data-brand="Milux">
             <div class="product-image-box">
-                <img src="milux-range-850.jpg" alt="Milux 双头燃气灶/炉" class="product-image">
+                <img src="milux-range-850.jpg" alt="Milux Twin Burner Gas Range" class="product-image">
             </div>
             <div class="product-details">
-                <h3>Milux 850mm 落地式燃气炉</h3>
+                <h3>Milux 850mm Floor Standing Gas Range</h3>
                 <p>
-                    宽 850mm，高 800mm。大尺寸设计，适合家庭或半商业使用。火力强劲，烹饪稳定可靠。
+                    Width 850mm, Height 800mm. Large size design, suitable for home or semi-commercial use. Strong and stable firepower for reliable cooking.
                 </p>
-                <a href="gas-details/milux-range-large.html" class="detail-button">查看详情 (RM495)</a>
+                <a href="gas-details/milux-range-large.html" class="detail-button">View Details (RM495)</a>
             </div>
         </div>
 
         <div class="product-card" data-brand="Milux">
             <div class="product-image-box">
-                <img src="milux-stove-435.jpg" alt="Milux 紧凑型燃气灶" class="product-image">
+                <img src="milux-stove-435.jpg" alt="Milux Compact Gas Stove" class="product-image">
             </div>
             <div class="product-details">
-                <h3>Milux 435mm 紧凑型燃气灶</h3>
+                <h3>Milux 435mm Compact Gas Stove</h3>
                 <p>
-                    宽 435mm，高 800mm。单炉或双炉紧凑设计，节省空间，适合小厨房使用。
+                    Width 435mm, Height 800mm. Compact single or double burner design, space-saving, ideal for small kitchens.
                 </p>
-                <a href="gas-details/milux-stove-compact.html" class="detail-button">查看详情 (RM348)</a>
+                <a href="gas-details/milux-stove-compact.html" class="detail-button">View Details (RM348)</a>
             </div>
         </div>
         
-        <h2 class="brand-group-title" data-brand="Elba">Elba 嵌入式灶具系列</h2>
+        <h2 class="brand-group-title" data-brand="Elba">Elba Built-in Hob Series</h2>
         
         <div class="product-card" data-brand="Elba">
             <div class="product-image-box">
-                <img src="elba-built-in-hob.jpg" alt="Elba 嵌入式燃气灶" class="product-image">
+                <img src="elba-built-in-hob.jpg" alt="Elba Built-in Gas Hob" class="product-image">
             </div>
             <div class="product-details">
-                <h3>Elba 嵌入式双眼燃气灶</h3>
+                <h3>Elba Built-in Twin Gas Hob</h3>
                 <p>
-                    高品质钢化玻璃面板，多段火力调节，配备熄火保护装置，安全耐用。提供时尚简洁的厨房台面设计。
+                    High-quality tempered glass panel, multi-stage fire power control, equipped with flame failure safety device, safe and durable. Provides a stylish and clean kitchen countertop design.
                 </p>
-                <a href="gas-details/elba-built-in.html" class="detail-button">查看详情</a>
+                <a href="gas-details/elba-built-in.html" class="detail-button">View Details</a>
             </div>
         </div>
 
     </div>
 
     <div id="footer-bar">
-        <a href="index.html" id="home-btn">返回首页 (Back to Home)</a>
+        <a href="index.html" id="home-btn">Back to Home</a>
     </div>
     
     <script>
@@ -274,11 +268,9 @@
             const allProducts = document.querySelectorAll('.product-card');
             const allTitles = document.querySelectorAll('.brand-group-title');
 
-            // 过滤函数
             window.filterProducts = function(filter) {
                 let visibleBrands = new Set(); 
                 
-                // 遍历所有产品卡片
                 allProducts.forEach(card => {
                     const cardBrand = card.getAttribute('data-brand');
                     
@@ -290,7 +282,6 @@
                     }
                 });
 
-                // 遍历所有品牌分组标题
                 allTitles.forEach(title => {
                     const titleBrand = title.getAttribute('data-brand');
                     
