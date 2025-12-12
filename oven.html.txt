@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oven Series - Siong Cheong Trading</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <style>
+        /* ------------------- Base Styles (与 freezer.html 保持一致) ------------------- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            padding-bottom: 70px;
+        }
+
+        header {
+            background-color: #0d47a1; 
+            color: white; 
+            padding: 20px; 
+            text-align: center;
+            padding-left: 80px; /* Space for the menu icon */
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+        
+        .header-logo {
+            position: absolute; 
+            top: 50%; 
+            right: 20px; 
+            transform: translateY(-50%); 
+            width: clamp(120px, 20vw, 250px); 
+            height: auto;
+        }
+
+        /* ------------------- Menu & Sidebar Styles ------------------- */
+        .menu-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #3498db;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .bar { width: 25px; height: 3px; background-color: white; margin: 5px 0; }
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            background-color: #2c3e50;
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: 0.5s;
+            max-width: 250px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+        }
+        .sidebar a, .sidebar .submenu-toggle {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #ecf0f1;
+            display: block;
+            border-bottom: 1px solid #34495e;
+            cursor: pointer;
+        }
+        .sidebar a:hover, .sidebar .submenu-toggle:hover { background-color: #34495e; }
+        .closebtn { position: absolute; top: 0; right: 25px; font-size: 36px; line-height: 50px; }
+        .submenu { display: none; background-color: #3e566e; padding-left: 20px; }
+        .submenu a { padding: 10px 25px; font-size: 1em; border-bottom: none; }
+        .overlay { position: fixed; height: 100%; width: 100%; top: 0; left: 0; z-index: 998; background: rgba(0, 0, 0, 0.5); display: none; }
+        
+        /* ------------------- Filter Bar Styles ------------------- */
+        #filter-controls {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 15px 20px 15px 70px; 
+            background-color: #ecf0f1;
+            border-bottom: 1px solid #e0e0e0;
+            gap: 15px; /* Spacing between dropdowns */
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+        }
+        .filter-group label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 5px;
+        }
+
+        #brand-filter-dropdown, #capacity-filter-dropdown {
+            padding: 10px 18px;
+            border-radius: 5px;
+            border: 1px solid #3498db; 
+            background-color: #3498db; 
+            color: white; 
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        #brand-filter-dropdown option, #capacity-filter-dropdown option {
+            color: black;
+            background-color: white;
+        }
+
+        /* ------------------- Product Grid and Cards (保持一致) ------------------- */
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;       
+            justify-content: center; 
+            gap: 25px;             
+            padding: 40px 20px;
+        }
+        
+        .brand-group-title {
+            flex: 0 0 100%; 
+            width: 100%;
+            text-align: left;
+            margin: 30px 0 15px 0;
+            padding-left: 10px;
+            font-size: 1.8em;
+            color: #34495e;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        .product-card {
+            flex: 0 0 calc(33.333% - 16.666px); 
+            max-width: 350px; 
+            min-width: 280px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image-box {
+            background-color: #fcfcfc;
+            padding: 25px;
+            height: 250px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-image {
+            max-width: 90%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .product-details {
+            padding: 15px;
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-details h3 {
+            font-size: 1.4em; 
+            color: #c0392b; 
+            margin-bottom: 10px; 
+            font-weight: 600;
+        }
+        
+        .product-details p {
+            font-size: 0.95em;
+            color: #555; 
+            margin-bottom: 20px; 
+            line-height: 1.6; 
+            text-align: left; 
+            flex-grow: 1;
+        }
+        
+        .detail-button {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #3498db; 
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: auto;
+        }
+        
+        .detail-button:hover {
+            background-color: #2980b9;
+        }
+
+        /* ------------------- Back to Home Button (Fixed, 底部显示) ------------------- */
+        #backToTopBtn {
+            display: none; 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            z-index: 99; 
+            border: none; 
+            outline: none; 
+            background-color: #3498db; 
+            color: white; 
+            cursor: pointer; 
+            padding: 10px 15px; 
+            border-radius: 8px;
+            font-size: 16px;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+        #backToTopBtn:hover {
+            opacity: 1;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .product-card {
+                flex: 0 0 100%;
+            }
+            header, #filter-controls {
+                padding-left: 60px; 
+            }
+            #filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            #brand-filter-dropdown, #capacity-filter-dropdown {
+                width: 100%;
+            }
+            .filter-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu-icon" onclick="toggleNav()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+</div>
+
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+    <a href="index.html">Home</a>
+    <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
+    <div class="submenu" style="display: block;"> 
+        <a href="refrigerator.html">Refrigerator (冰箱)</a>
+        <a href="chiller.html">Chiller (冷柜)</a>
+        <a href="freezer.html">Freezer (冷冻柜)</a>
+        <a href="ac.html">Air Conditioner (空调)</a>
+        <a href="portable_ac.html">Portable Air Cond (移动式空调)</a>
+        <a href="tv.html">TV (电视)</a>
+        <a href="washer.html">Washer (洗衣机)</a>
+        <a href="dryer.html">Dryer (烘干机)</a>
+        <a href="kitchen.html">Kitchen Appliances (厨房电器)</a>
+        <a href="hood.html">Hood (抽油烟机)</a>
+        <a href="gas.html">Gas (燃气灶具)</a>
+        <a href="oven.html">Oven (烤箱)</a>
+        <a href="microwave.html">Microwave (微波炉)</a>
+        <a href="air_fryer.html">Air Fryer (空气炸锅)</a>
+        <a href="shower.html">Shower (热水器/花洒)</a>
+        <a href="air_purifier.html">Air Purifier (空气净化器)</a>
+        <a href="speaker.html">Speaker (音响)</a>
+        <a href="small.html">Small Appliances (小家电)</a>
+    </div>
+    <a href="about.html">About Us</a>
+    <a href="location.html">Our Location</a>
+    <a href="contact.html">Contact Us</a>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleNav()"></div>
+<header>
+    <h1>Electric Oven Series (烤箱系列)</h1>
+</header>
+
+<div id="filter-controls">
+    <div class="filter-group">
+        <label for="brand-filter-dropdown">Brand:</label>
+        <select id="brand-filter-dropdown" onchange="applyFilters()">
+            <option value="all">All Brands</option>
+            <option value="Pensonic">Pensonic</option>
+            <option value="Khind">Khind</option>
+            <option value="Midea">Midea</option>
+            <option value="Sharp">Sharp</option>
+            <option value="Warehouse">Warehouse</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="capacity-filter-dropdown">Capacity:</label>
+        <select id="capacity-filter-dropdown" onchange="applyFilters()">
+            <option value="all">All Capacity</option>
+            <option value="21L">21 L</option>
+            <option value="23L">23 L</option>
+            <option value="25L">25 L</option>
+            <option value="42L">42 L</option>
+            <option value="45L">45 L</option>
+            <option value="46L">46 L</option>
+            <option value="52L">52 L</option>
+            <option value="55L">55 L</option>
+            <option value="60L">60 L</option>
+            <option value="68L">68 L</option>
+            <option value="100L">100 L</option>
+        </select>
+    </div>
+</div>
+
+<div class="products-container">
+    
+    <h2 class="brand-group-title" data-brand="Pensonic">Pensonic Oven Series (1 Model)</h2>
+    <div class="product-card" data-brand="Pensonic" data-capacity="23L">
+        <div class="product-image-box">
+            <img src="oven_PEO2305.png" alt="Pensonic PEO-2305 Electric Oven" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Pensonic PEO-2305 (23 Liters)</h3>
+            <p>
+                Electric oven for Toast, Grill & Bake[cite: 1]. Power: 1380W, adjustable temperature controls up to 250°C[cite: 1]. Features a 60 minutes timer with automatic shut-off[cite: 1]. Includes 4 pcs stainless steel heating elements[cite: 1]. (1 Year Warranty) .
+            </p>
+            <a href="oven-details/pensonic-23l.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+
+    <h2 class="brand-group-title" data-brand="Khind">Khind Electric Oven Series (2 Models)</h2>
+    <div class="product-card" data-brand="Khind" data-capacity="52L">
+        <div class="product-image-box">
+            <img src="oven_OT5205.png" alt="Khind OT 5205 Electric Oven" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Khind OT 5205 (52 Liters)</h3>
+            <p>
+                52 Liters capacity[cite: 4, 5]. Features a Rotisserie function that rotates 360° to roast food evenly, and a Convection function to distribute heat[cite: 4]. Includes a 120 Minutes Timer with bell signal and temperature control up to 230°C[cite: 4]. (2 Year Warranty).
+            </p>
+            <a href="oven-details/khind-52l.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+
+    <div class="product-card" data-brand="Khind" data-capacity="68L">
+        <div class="product-image-box">
+            <img src="oven_OT6805.png" alt="Khind OT 6805 Electric Oven" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Khind OT 6805 (68 Liters)</h3>
+            <p>
+                Large 68 Liters capacity, 2200W power. Includes Rotisserie and Convection functions for even heating. Features a 120 Minutes Timer and temperature control up to 230°C. Comes with accessories like a Rotisserie Basket. (2 Year Warranty).
+            </p>
+            <a href="oven-details/khind-68l.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+
+    <h2 class="brand-group-title" data-brand="Midea">Midea Electric Oven Series (3 Models)</h2>
+    <div class="product-card" data-brand="Midea" data-capacity="25L">
+        <div class="product-image-box">
+            <img src="oven_MEO-25EX1.png" alt="Midea MEO-25EX1 Electric Oven" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Midea MEO-25EX1 (25 Liters)</h3>
+            <p>
+                25L Capacity [cite: 11, 24], 1500W rated power[cite: 13]. Features Rotisseries and Convection Function[cite: 14]. Includes a 60 minutes timer with bell ring [cite: 16] and temperature control from 70ºC to 230ºC[cite: 17]. (1 Year Warranty) [cite: 10, 23].
+            </p>
+            <a href="oven-details/midea-25l.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+
+    <div class="product-card" data-brand="Midea" data-capacity="42L">
+        <div class="product-image-box">
+            <img src="oven_MEO-42LGY.png" alt="Midea MEO-42LGY Electric Oven" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Midea MEO-42LGY (42 Liters)</h3>
+            <p>
+                42L Capacity, 1800W rated power[cite: 37]. Features Rotisseries and Convection Function[cite: 38]. Temperature control from 70ºC to 230ºC [cite: 27] and a 60 minutes timer[cite: 26]. Includes 5 heating functions [cite: 28] and metallic heating elements[cite: 39]. (1 Year Warranty) [cite: 31].
+            </p>
+            <a href="oven-details/midea-42l.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+
+    <div class="product-card" data-brand="Midea" data-capacity="55L">
+        <div class="product-image-box">
+            <img src="oven_MEO-55RCL-BK.png" alt="Midea MEO-55RCL-BK Electric Oven" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Midea MEO-55RCL-BK (55 Liters)</h3>
+            <p>
+                55L Capacity[cite: 42, 51]. Features Hot Air Circulation [cite: 48], Rotisseries, and Convection[cite: 47]. Includes a 120 Minutes Timer [cite: 44] and 9 Cooking Modes[cite: 46]. Temperature control up to 230ºC[cite: 43]. (1 Year General Warranty) [cite: 50].
+            </p>
+            <a href="oven-details/midea-55l.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+
+    <h2 class="brand-group-title" data-brand="Sharp">Sharp Oven Series (2 Models)</h2>
+    <div class="product-card" data-brand="Sharp" data-capacity="25L">
+        <div class="product-image-box">
+            <img src="oven_EO-257CTBK.png" alt="Sharp EO-257CTBK Oven" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Sharp EO-257CTBK (25 Liters)</h3>
+            <p>
+                25L Capacity[cite: 63]. Features: Multiple heating and cooking options [cite: 55], large viewing window [cite: 60], and non-stick baking tray[cite: 62]. Equipped with a 120 minutes timer, eliminating the need to constantly reset the timer for long dishes[cite: 56, 57, 58]. (1 Year Warranty).
+            </p>
+            <a href="oven-details/sharp-25l.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+
+    <div class="product-card" data-brand="Sharp" data-capacity="46L">
+        <div class="product-image-box">
+            <img src="oven_EO-469RTBK.png" alt="Sharp EO-469RTBK Oven" class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Sharp EO-469RTBK (46 Liters)</h3>
+            <p>
+                46L Capacity[cite: 82]. Multi-function oven with Rotisserie and Convection functions[cite: 73, 78]. Features 3-Level Heater Setting [cite: 76, 69], 120 Minutes Cooking Time [cite: 77], and temperature control from 90ºC to 250ºC[cite: 80].
+            </p>
+            <a href="oven-details/sharp-46l.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+    
+    <h2 class="brand-group-title" data-brand="Warehouse">Warehouse Oven Series (4 Models)</h2>
+    <div class="product-card" data-brand="Warehouse" data-capacity="21L">
+        <div class="product-image-box">
+            <img src="oven_WEO2101.png" alt="Warehouse WEO2101 Oven" class="class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Warehouse WEO2101 (21 Liters)</h3>
+            <p>
+                21L Capacity. Standard oven for simple Toast, Grill & Bake[cite: 84, 85]. Ideal for small kitchens or daily toasting needs. (Image price: RM179) [cite: 93, 96].
+            </p>
+            <a href="oven-details/warehouse-21l.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+    <div class="product-card" data-brand="Warehouse" data-capacity="45L">
+        <div class="product-image-box">
+            <img src="oven_WEO4501.png" alt="Warehouse WEO4501 Oven" class="class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Warehouse WEO4501 (45 Liters)</h3>
+            <p>
+                45L Capacity. Medium size, suitable for light baking.[cite: 86, 87]. (Image price: RM258) [cite: 98].
+            </p>
+            <a href="oven-details/warehouse-45l.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+    <div class="product-card" data-brand="Warehouse" data-capacity="60L">
+        <div class="product-image-box">
+            <img src="oven_WEO6001.png" alt="Warehouse WEO6001 Oven" class="class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Warehouse WEO6001 (60 Liters)</h3>
+            <p>
+                60L Capacity. Large capacity oven suitable for family baking needs[cite: 88, 89]. (Image price: RM358) [cite: 97].
+            </p>
+            <a href="oven-details/warehouse-60l.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+    <div class="product-card" data-brand="Warehouse" data-capacity="100L">
+        <div class="product-image-box">
+            <img src="oven_WEO1001.png" alt="Warehouse WEO1001 Oven" class="class="product-image">
+        </div>
+        <div class="product-details">
+            <h3>Warehouse WEO1001 (100 Liters)</h3>
+            <p>
+                100L Extra Large Capacity[cite: 90, 91]. Features Rotisserie and Convection functions (assumed based on size and typical oven features). (Image price: RM399) [cite: 100].
+            </p>
+            <a href="oven-details/warehouse-100l.html" class="detail-button">View Details</a>
+        </div>
+    </div>
+
+</div>
+
+<button onclick="topFunction()" id="backToTopBtn" title="Go to top">Back to Home</button>
+
+<script>
+    // ------------------- 菜单 JS 逻辑 (完全复制自 freezer (1).html) -------------------
+    function toggleNav() {
+        const sidebar = document.getElementById("mySidebar");
+        const overlay = document.getElementById("overlay");
+        const body = document.body;
+
+        const isOpen = sidebar.offsetWidth > 0;
+
+        if (isOpen) {
+            sidebar.style.width = "0";
+            overlay.style.display = "none";
+            body.style.overflow = "auto";
+        } else {
+            // Ensure other submenus are closed before opening
+            document.querySelectorAll(".submenu").forEach(s => (s.style.display = "none"));
+            sidebar.style.width = "250px"; 
+            overlay.style.display = "block";
+            body.style.overflow = "hidden"; 
+        }
+    }
+    window.toggleNav = toggleNav; 
+
+    function toggleSubmenu(element) {
+        const submenu = element.nextElementSibling;
+        submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
+    }
+    window.toggleSubmenu = toggleSubmenu; 
+
+    // ------------------- 筛选 JS 逻辑 (修改以处理容量和标题) -------------------
+    document.addEventListener('DOMContentLoaded', function() {
+        const brandFilter = document.getElementById('brand-filter-dropdown');
+        const capacityFilter = document.getElementById('capacity-filter-dropdown');
+        const allProducts = document.querySelectorAll('.product-card');
+        const allTitles = document.querySelectorAll('.brand-group-title');
+
+        // Combined filter event listener
+        brandFilter.addEventListener('change', applyFilters);
+        capacityFilter.addEventListener('change', applyFilters);
+
+        window.applyFilters = function() {
+            const selectedBrand = brandFilter.value;
+            const selectedCapacity = capacityFilter.value;
+            let visibleBrands = new Set();
+            
+            allProducts.forEach(card => {
+                const cardBrand = card.getAttribute('data-brand');
+                const cardCapacity = card.getAttribute('data-capacity'); // Get capacity data
+
+                const brandMatch = (selectedBrand === 'all' || cardBrand === selectedBrand);
+                const capacityMatch = (selectedCapacity === 'all' || cardCapacity === selectedCapacity);
+                
+                if (brandMatch && capacityMatch) {
+                    card.style.display = 'flex';
+                    visibleBrands.add(cardBrand);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Filter Brand Group Titles
+            allTitles.forEach(title => {
+                const titleBrand = title.getAttribute('data-brand');
+                
+                if (visibleBrands.has(titleBrand)) {
+                    title.style.display = 'block';
+                } else {
+                    title.style.display = 'none';
+                }
+            });
+        }
+        
+        // --- Back to Home (Scroll) Logic ---
+        const backToTopBtn = document.getElementById("backToTopBtn");
+        
+        window.onscroll = function() { scrollFunction() };
+
+        function scrollFunction() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const nearBottomThreshold = 50; 
+            
+            // Show button only when near the bottom
+            if (maxScroll - scrollTop <= nearBottomThreshold && maxScroll > 0) {
+                backToTopBtn.style.display = "block";
+            } else {
+                backToTopBtn.style.display = "none";
+            }
+        }
+
+        function topFunction() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        window.topFunction = topFunction; 
+
+        // Apply filters on initial load
+        window.applyFilters();
+    });
+</script>
+</body>
+</html>
