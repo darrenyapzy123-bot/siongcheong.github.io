@@ -245,7 +245,6 @@
             transition: background 0.2s;
         }
         
-        /* 媒体查询 (保持不变) */
         @media (max-width: 600px) {
             header { padding-left: 20px; }
             .filter-section { flex-direction: column; align-items: stretch; }
@@ -355,7 +354,7 @@
         submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
     }
 
-    // ------------------- 完整产品数据 (包含所有品牌) -------------------
+    // ------------------- 完整产品数据 (包含所有品牌及新的 Skyworth/Khind 型号) -------------------
     const refrigeratorProducts = [
         // --- SHARP ---
         {
@@ -661,24 +660,31 @@
             details: "Compact model."
         },
         
-        // --- KHIND (Slide 73 Placeholder) ---
+        // --- KHIND (Updated with RF165 from Slide 73 info) ---
         {
-            model: "Khind Refrigerator Placeholder 1",
-            brand: "Khind", liters: 250, image: "default_refrigerator.jpg",
-            description: "Khind Fridge Placeholder: Please replace 'default_refrigerator.jpg' with the actual image and details from Slide 73 (if it's a refrigerator).",
-            details: "MODEL/DIMENSIONS: FZ series in PPTX are freezers. Please check specific Khind refrigerator models."
+            model: "Khind 157L Refrigerator RF165",
+            brand: "Khind", liters: 157, image: "Khind_RF165.jpg", 
+            description: "157L Compact Refrigerator. Ideal for smaller spaces.",
+            details: "Model: RF165 | 2 years general warranty + 5 years compressor warranty."
         },
         
-        // --- SKYWORTH (Slide 71-72 Placeholder) ---
+        // --- SKYWORTH (Updated with 556L SBS details from Slide 71-72 info) ---
+        // Note: Image files are placeholders, please use the correct filenames if available.
         {
-            model: "Skyworth Refrigerator Placeholder 1",
-            brand: "Skyworth", liters: 400, image: "default_refrigerator.jpg",
-            description: "Skyworth Fridge Placeholder: Please replace 'default_refrigerator.jpg' with the actual image and details from Slide 71-72.",
-            details: "MODEL/DIMENSIONS: Check for specific Skyworth models like BCD-403W, etc."
+            model: "Skyworth 556L SBS (White Glass)", 
+            brand: "Skyworth", liters: 556, image: "Skyworth_White_SBS.jpg", 
+            description: "556 Liters inverter side by side refrigerator (White Glass Door).",
+            details: "2 years general warranty + 12 years compressor warranty. (Corresponds to SBS-501WPGE specs)."
+        },
+        {
+            model: "Skyworth 556L SBS (Black Glass)",
+            brand: "Skyworth", liters: 556, image: "Skyworth_Black_SBS.jpg", 
+            description: "556 Liters inverter side by side refrigerator (Black Glass Door).",
+            details: "2 years general warranty + 12 years compressor warranty. (Corresponds to SBS-501WP specs)."
         }
     ];
 
-    // ------------------- 产品渲染和筛选逻辑 -------------------
+    // ------------------- 产品渲染和筛选逻辑 (保持不变) -------------------
 
     function renderProducts(productsToRender = refrigeratorProducts) {
         const productList = document.getElementById('product-list');
