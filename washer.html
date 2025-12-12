@@ -1,841 +1,644 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fully Automatic Washers - Siong Cheong Trading</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fully Automatic Washers - Siong Cheong Trading</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-        }
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
 
-        header {
-            /* 【颜色修正】: 红色 #e74c3c -> 蓝色 #3498db */
-            background: #3498db; 
-            padding: 20px;
-            color: white;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            position: relative; 
-        }
+        header {
+            /* 【颜色修正】: 红色 #e74c3c -> 蓝色 #3498db */
+            background: #3498db; 
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: relative; 
+        }
 
-        /* 【优化 2：修正 LOGO 适配大小】: 使用 clamp 实现自适应宽度 (120px ~ 250px) */
-        .header-logo {
-            position: absolute; 
-            top: 50%; 
-            right: 20px; 
-            transform: translateY(-50%); 
-            width: clamp(120px, 20vw, 250px); 
-            height: auto;
-        }
-        
-        .container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: auto;
-        }
+        /* 【优化 2：修正 LOGO 适配大小】: 使用 clamp 实现自适应宽度 (120px ~ 250px) */
+        .header-logo {
+            position: absolute; 
+            top: 50%; 
+            right: 20px; 
+            transform: translateY(-50%); 
+            width: clamp(120px, 20vw, 250px); 
+            height: auto;
+        }
+        
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
 
-        h2 {
-            text-align: center;
-            margin-top: 40px; 
-            margin-bottom: 25px;
-            color: #333;
-        }
-        
-        h2::after {
-            content: '';
-            display: block;
-            width: 60px; 
-            height: 3px;
-            /* 【颜色修正】: 红色 #e74c3c -> 蓝色 #3498db */
-            background: #3498db; 
-            margin: 8px auto 0; 
-            border-radius: 2px;
-        }
-        
-        /* --- 筛选器按钮和容器样式 --- */
-        .filter-section {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 25px;
-            align-items: flex-start;
-        }
+        h2 {
+            text-align: center;
+            margin-top: 40px; 
+            margin-bottom: 25px;
+            color: #333;
+        }
+        
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px; 
+            height: 3px;
+            /* 【颜色修正】: 红色 #e74c3c -> 蓝色 #3498db */
+            background: #3498db; 
+            margin: 8px auto 0; 
+            border-radius: 2px;
+        }
+        
+        /* --- 筛选器按钮和容器样式 --- */
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap; /* 防止窄屏溢出 - 修复点 */
+            gap: 20px;
+            margin-bottom: 25px;
+            align-items: flex-start;
+        }
 
-        .filter-toggle-button {
-            width: 150px;
-            padding: 10px;
-            background: #34495e; 
-            color: white;
-            font-weight: bold;
-            text-align: center;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+        .filter-toggle-button {
+            width: 150px;
+            padding: 10px;
+            background: #34495e; 
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
-        .filter-toggle-button:hover {
-            background: #2c3e50;
-        }
+        .filter-toggle-button:hover {
+            background: #2c3e50;
+        }
 
-        .filter-controls {
-            display: flex;
-            gap: 20px;
-            background: #ecf0f1; 
-            border-radius: 0 8px 8px 8px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            
-            max-height: 0;
-            overflow: hidden;
-            padding: 0 15px; 
-            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-            flex-direction: column;
-            flex-grow: 1; 
-        }
+        .filter-controls {
+            flex: 1; /* 自动填满空间 - 修复点 */
+            display: flex;
+            gap: 20px;
+            background: #ecf0f1; 
+            border-radius: 0 8px 8px 8px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 15px; 
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            flex-direction: column;
+            /* 删除了 flex-grow: 1; 因为已被 flex: 1; 包含 */
+        }
 
-        /* 筛选器被打开时，显示内容 */
-        .filter-controls.active {
-            max-height: 500px; 
-            padding: 15px; 
-            border-radius: 8px; 
-        }
+        /* 筛选器被打开时，显示内容 */
+        .filter-controls.active {
+            max-height: 500px; 
+            padding: 15px; 
+            border-radius: 8px; 
+        }
 
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 300px;
-        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 300px;
+        }
 
-        .filter-controls label {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #34495e;
-            margin-bottom: 5px;
-        }
+        .filter-controls label {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
 
-        .filter-controls select {
-            padding: 10px 12px;
-            width: 100%; 
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-            cursor: pointer;
-            background-color: white;
-        }
-        /* --- 筛选器样式结束 --- */
+        .filter-controls select {
+            padding: 10px 12px;
+            width: 100%; 
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: white;
+        }
+        /* --- 筛选器样式结束 --- */
 
-        .product-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
 
-        .product-card {
-            background: white;
-            border-radius: 10px;
-            /* 【优化 1：删除 overflow:hidden】: 恢复悬浮阴影 */
-            /* overflow: hidden; <--- 已删除 */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            
-            flex: 1 1 calc(33.333% - 14px); 
-            min-width: 250px;
-            display: flex;
-            flex-direction: column; 
-            
-            transition: all 0.3s ease; 
-        }
-        
-        .product-card:hover {
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
-            transform: translateY(-5px); 
-        }
-        
-        /* 筛选隐藏的卡片 */
-        .product-card.hidden {
-            display: none;
-        }
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            /* 【优化 1：删除 overflow:hidden】: 恢复悬浮阴影 */
+            /* overflow: hidden; <--- 已删除 */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            
+            flex: 1 1 calc(33.333% - 14px); 
+            min-width: 250px;
+            display: flex;
+            flex-direction: column; 
+            
+            transition: all 0.3s ease; 
+        }
+        
+        .product-card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+            transform: translateY(-5px); 
+        }
+        
+        /* 筛选隐藏的卡片 */
+        .product-card.hidden {
+            display: none;
+        }
 
-        /* 【优化 3：修正图像设定】 */
-        .product-card img {
-            width: 100%;
-            height: auto; /* 自动高度，避免拉伸 */
-            max-height: 300px; /* 限制最大高度 */
-            object-fit: contain; 
-            background: #ddd;
-            border-bottom: 1px solid #eee; 
-            cursor: pointer; 
-        }
+        /* 【优化 3：修正图像设定】 */
+        .product-card img {
+            width: 100%;
+            height: auto; /* 自动高度，避免拉伸 */
+            max-height: 300px; /* 限制最大高度 */
+            object-fit: contain; 
+            background: #ddd;
+            border-bottom: 1px solid #eee; 
+            cursor: pointer; 
+        }
 
-        .info {
-            padding: 15px;
-            text-align: center;
-            flex-grow: 1; 
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; 
-        }
+        .info {
+            padding: 15px;
+            text-align: center;
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
+        }
 
-        .info h3 {
-            margin-top: 0;
-            margin-bottom: 8px;
-            /* 【颜色修正】: 红色 #e74c3c -> 蓝色 #3498db */
-            color: #3498db;
-        }
+        .info h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            /* 【颜色修正】: 红色 #e74c3c -> 蓝色 #3498db */
+            color: #3498db;
+        }
 
-        .info p {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            line-height: 1.4;
-            flex-grow: 1; 
-            display: block; 
-            padding-bottom: 10px;
-        }
-        
-        /* WhatsApp 按钮样式 */
-        .btn {
-            display: block;
-            background: #25D366;
-            padding: 12px; 
-            text-align: center;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 12px;
-            align-self: stretch; 
-            transition: background 0.2s;
-        }
+        .info p {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            line-height: 1.4;
+            flex-grow: 1; 
+            display: block; 
+            padding-bottom: 10px;
+        }
+        
+        /* WhatsApp 按钮样式 */
+        .btn {
+            display: block;
+            background: #25D366;
+            padding: 12px; 
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 12px;
+            align-self: stretch; 
+            transition: background 0.2s;
+        }
 
-        .btn:hover {
-            background: #1EBE55;
-        }
+        .btn:hover {
+            background: #1EBE55;
+        }
 
-        .back {
-            margin-top: 40px; 
-            text-align: center;
-        }
+        .back {
+            margin-top: 40px; 
+            text-align: center;
+        }
 
-        .back a {
-            text-decoration: none;
-            /* 【颜色修正】: 红色 #e74c3c -> 蓝色 #3498db */
-            color: #3498db;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px 15px;
-            /* 【颜色修正】: 红色 #e74c3c -> 蓝色 #3498db */
-            border: 2px solid #3498db;
-            border-radius: 5px;
-            transition: background 0.3s, color 0.3s;
-        }
+        .back a {
+            text-decoration: none;
+            /* 【颜色修正】: 红色 #e74c3c -> 蓝色 #3498db */
+            color: #3498db;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 15px;
+            /* 【颜色修正】: 红色 #e74c3c -> 蓝色 #3498db */
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
 
-        .back a:hover {
-            /* 【颜色修正】: 红色 #e74c3c -> 蓝色 #3498db */
-            background: #3498db;
-            color: white;
-        }
-        
-        /* 媒体查询：在小屏幕上显示两列 */
-        @media (max-width: 768px) {
-            .product-card {
-                flex: 1 1 calc(50% - 10px); 
-            }
-            .filter-section {
-                flex-direction: column;
-            }
-            .filter-controls {
-                padding: 0 15px; 
-                width: 100%;
-            }
-            .filter-controls.active {
-                padding: 15px; 
-            }
-        }
-    </style>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css" 
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+        .back a:hover {
+            /* 【颜色修正】: 红色 #e74c3c -> 蓝色 #3498db */
+            background: #3498db;
+            color: white;
+        }
+        
+        /* 媒体查询：在小屏幕上显示两列 */
+        @media (max-width: 768px) {
+            .product-card {
+                flex: 1 1 calc(50% - 10px); 
+            }
+            .filter-section {
+                flex-direction: column;
+            }
+            .filter-controls {
+                padding: 0 15px; 
+                width: 100%;
+            }
+            .filter-controls.active {
+                padding: 15px;
+            }
+            .filter-group {
+                max-width: 100%; /* 允许筛选组占满宽度 */
+            }
+            .filter-toggle-button {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-
 <body>
-
-<header>
-    Fully Automatic Washing Machine Series
-    <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
-</header>
-
-<div class="container">
-
-    <h2>Top Load Washer Models</h2>
-    
-    <div class="filter-section">
-        <button id="toggle-filter" class="filter-toggle-button">
-            筛选选项 (Filter)
-        </button>
-
-        <div class="filter-controls" id="filter-content">
-            <div class="filter-group">
-                <label for="brand-filter">选择品牌:</label>
-                <select id="brand-filter">
-                    <option value="all">所有品牌</option>
-                    <option value="sharp">SHARP</option>
-                    <option value="morgan">MORGAN</option>
-                    <option value="midea">MIDEA</option> 
-                    <option value="hisense">HISENSE</option>
-                    <option value="khind">KHIND</option> 
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <label for="capacity-filter">选择容量 (KG):</label>
-                <select id="capacity-filter">
-                    <option value="all">所有容量</option>
-                    <option value="7">7 KG</option> <option value="7.5">7.5 KG</option>
-                    <option value="8.0">8.0 KG</option> 
-                    <option value="8.5">8.5 KG</option>
-                    <option value="9.0">9.0 KG</option> <option value="9.5">9.5 KG</option>
-                    <option value="10">10 KG</option> 
-                    <option value="10.5">10.5 KG</option>
-                    <option value="11">11 KG</option>
-                    <option value="12">12 KG</option> <option value="12.5">12.5 KG</option> 
-                    <option value="13">13 KG</option> 
-                    <option value="15">15 KG</option> 
-                    <option value="15.5">15.5 KG</option> 
-                    <option value="16.5">16.5 KG</option> 
-                    <option value="17.0">17.0 KG</option> 
-                    <option value="20">20 KG</option> 
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="product-grid">
-
-        <div class="product-card" data-brand="sharp" data-capacity="7.5">
-            <a class="gallery-item" href="ESX-721.jpg">
-                <img src="ESX-721.jpg" alt="SHARP ESX-721 Washer">
-            </a>
-            <div class="info">
-                <h3>SHARP ESX-721 (7.5KG)</h3>
-                <p>Auto Start After Blackout, Fuzzy Control, Power-Off Memory, Smart Filter, SS Drum</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-721">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="sharp" data-capacity="8.5">
-            <a class="gallery-item" href="ESX-821.jpg">
-                <img src="ESX-821.jpg" alt="SHARP ESX-821 Washer">
-            </a>
-            <div class="info">
-                <h3>SHARP ESX-821 (8.5KG)</h3>
-                <p>Auto Start After Blackout, Fuzzy Control, Power-Off Memory, Smart Filter, SS Drum</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-821">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="sharp" data-capacity="9.5">
-            <a class="gallery-item" href="ESX-921.jpg">
-                <img src="ESX-921.jpg" alt="SHARP ESX-921 Washer">
-            </a>
-            <div class="info">
-                <h3>SHARP ESX-921 (9.5KG)</h3>
-                <p>Auto Start After Blackout, Fuzzy Control, Power-Off Memory, Smart Filter, SS Drum</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-921">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="sharp" data-capacity="11">
-            <a class="gallery-item" href="ESW-1109S.jpg">
-                <img src="ESW-1109S.jpg" alt="SHARP ESW-1109S No Hole Washer">
-            </a>
-            <div class="info">
-                <h3>SHARP ESW-1109S (11KG)</h3>
-                <p>Features **No Hole** Technology: No detergent wastage, minimises mold/bacteria, no fabric damage.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESW-1109S">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="sharp" data-capacity="10.5">
-            <a class="gallery-item" href="ESX-1021.jpg">
-                <img src="ESX-1021.jpg" alt="SHARP ESX-1021 Washer">
-            </a>
-            <div class="info">
-                <h3>SHARP ESX-1021 (10.5KG)</h3>
-                <p>Fuzzy Control, Intelligent Water Fall System, Smart Filter, Soft-Close Tempered Glass, Tub Cleaning</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-1021">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="sharp" data-capacity="12.5">
-            <a class="gallery-item" href="ESX-1221.jpg">
-                <img src="ESX-1221.jpg" alt="SHARP ESX-1221 Washer">
-            </a>
-            <div class="info">
-                <h3>SHARP ESX-1221 (12.5KG)</h3>
-                <p>Fuzzy Control, Intelligent Water Fall System, Smart Filter, Soft-Close Tempered Glass, Tub Cleaning</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-1221">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="sharp" data-capacity="15.5">
-            <a class="gallery-item" href="ESX-1521.jpg">
-                <img src="ESX-1521.jpg" alt="SHARP ESX-1521 Washer">
-            </a>
-            <div class="info">
-                <h3>SHARP ESX-1521 (15.5KG)</h3>
-                <p>Fuzzy Control, Intelligent Water Fall System, Smart Filter, Soft-Close Tempered Glass, Tub Cleaning</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-1521">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="morgan" data-capacity="7.5">
-            <a class="gallery-item" href="MFW-752S.jpg">
-                <img src="MFW-752S.jpg" alt="MORGAN MFW-752S Washer">
-            </a>
-            <div class="info">
-                <h3>MORGAN MFW-752S (7.5KG)</h3>
-                <p>Fuzzy, Error Alarm, LED Display, Child Lock, Auto Unbalancing Detection</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-752S">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="morgan" data-capacity="8.5">
-            <a class="gallery-item" href="MFW-852S.jpg">
-                <img src="MFW-852S.jpg" alt="MORGAN MFW-852S Washer">
-            </a>
-            <div class="info">
-                <h3>MORGAN MFW-852S (8.5KG)</h3>
-                <p>Fuzzy, Error Alarm, LED Display, Child Lock, Auto Unbalancing Detection</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-852S">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="morgan" data-capacity="9.5">
-            <a class="gallery-item" href="MFW-952S.jpg">
-                <img src="MFW-952S.jpg" alt="MORGAN MFW-952S Washer">
-            </a>
-            <div class="info">
-                <h3>MORGAN MFW-952S (9.5KG)</h3>
-                <p>Fuzzy, Error Alarm, LED Display, Child Lock, Auto Unbalancing Detection</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-952S">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="morgan" data-capacity="10.5">
-            <a class="gallery-item" href="MFW-1055CV.jpg">
-                <img src="MFW-1055CV.jpg" alt="MORGAN MFW-1055CV Washer">
-            </a>
-            <div class="info">
-                <h3>MORGAN MFW-1055CV (10.5KG)</h3>
-                <p>Fuzzy, Error Alarm, LED Display, Child Lock, Auto balancing detection, Auto-power off</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-1055CV">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="morgan" data-capacity="12.5">
-            <a class="gallery-item" href="MFW-1255CV.jpg">
-                <img src="MFW-1255CV.jpg" alt="MORGAN MFW-1255CV Washer">
-            </a>
-            <div class="info">
-                <h3>MORGAN MFW-1255CV (12.5KG)</h3>
-                <p>Fuzzy, Error Alarm, LED Display, Child Lock, Auto balancing detection, Auto-power off</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-1255CV">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="morgan" data-capacity="16.5">
-            <a class="gallery-item" href="MFW-1655CV.jpg">
-                <img src="MFW-1655CV.jpg" alt="MORGAN MFW-1655CV Washer">
-            </a>
-            <div class="info">
-                <h3>MORGAN MFW-1655CV (16.5KG) Inverter</h3>
-                <p>INVERTER model. Fuzzy, Error Alarm, LED Display, Child Lock, Auto balancing detection</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-1655CV">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="midea" data-capacity="7.5">
-            <a class="gallery-item" href="MA100W75.jpg">
-                <img src="MA100W75.jpg" alt="MIDEA MA100W75 Washer">
-            </a>
-            <div class="info">
-                <h3>MIDEA MA100W75 (7.5KG)</h3>
-                <p>Lunar Dial, 15' Quick Wash, One-Touch Smart Wash, Auto Clean, Hygiene Lint Filter</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MA100W75">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="midea" data-capacity="8.5">
-            <a class="gallery-item" href="MA100W85.jpg">
-                <img src="MA100W85.jpg" alt="MIDEA MA100W85 Washer">
-            </a>
-            <div class="info">
-                <h3>MIDEA MA100W85 (8.5KG)</h3>
-                <p>Lunar Dial, 15' Quick Wash, One-Touch Smart Wash, Auto Clean, Hygiene Lint Filter</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MA100W85">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="midea" data-capacity="9.5">
-            <a class="gallery-item" href="MA100W95.jpg">
-                <img src="MA100W95.jpg" alt="MIDEA MA100W95 Washer">
-            </a>
-            <div class="info">
-                <h3>MIDEA MA100W95 (9.5KG)</h3>
-                <p>Lunar Dial, 15' Quick Wash, One-Touch Smart Wash, Auto Clean, Hygiene Lint Filter</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MA100W95">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="midea" data-capacity="10.5">
-            <a class="gallery-item" href="MA200W105D.jpg">
-                <img src="MA200W105D.jpg" alt="MIDEA MA200W105D Washer">
-            </a>
-            <div class="info">
-                <h3>MIDEA MA200W105D (10.5KG) Inverter</h3>
-                <p>Inverter Quattro, AirFresh, Soft Close Lid, One-Touch Smart Wash, Deep Clean, Turbo</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MA200W105D">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="midea" data-capacity="13">
-            <a class="gallery-item" href="MA200W130D.jpg">
-                <img src="MA200W130D.jpg" alt="MIDEA MA200W130D Washer">
-            </a>
-            <div class="info">
-                <h3>MIDEA MA200W130D (13KG) Inverter</h3>
-                <p>Inverter Quattro, AirFresh, Soft Close Lid, One-Touch Smart Wash, Deep Clean, Turbo</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MA200W130D">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="midea" data-capacity="17.0">
-            <a class="gallery-item" href="MAN01W170D.jpg">
-                <img src="MAN01W170D.jpg" alt="MIDEA MAN01W170D Washer">
-            </a>
-            <div class="info">
-                <h3>MIDEA MAN01W170D (17.0KG) Inverter</h3>
-                <p>INVERTER model. Easy-To-Clean Metal Lint Filter, AirFresh, Soft Close Lid, One-Touch Smart Wash</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MAN01W170D">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="hisense" data-capacity="8.0">
-            <a class="gallery-item" href="WT80F30.jpg">
-                <img src="WT80F30.jpg" alt="HISENSE WT80F30 Washer">
-            </a>
-            <div class="info">
-                <h3>HISENSE WT80F30 (8.0KG)</h3>
-                <p>Top Load Washer with Soft Close Glass Door.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT80F30">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="hisense" data-capacity="10.5">
-            <a class="gallery-item" href="WT105GE30.jpg">
-                <img src="WT105GE30.jpg" alt="HISENSE WT105GE30 Washer">
-            </a>
-            <div class="info">
-                <h3>HISENSE WT105GE30 (10.5KG)</h3>
-                <p>Top Load Washer with Glass Door.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT105GE30">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="hisense" data-capacity="10.5">
-            <a class="gallery-item" href="WTZQ1015UT.jpg">
-                <img src="WTZQ1015UT.jpg" alt="HISENSE WTZQ1015UT Washer">
-            </a>
-            <div class="info">
-                <h3>HISENSE WTZQ1015UT (10.5KG)</h3>
-                <p>Fully Automatic Top Load Washer.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WTZQ1015UT">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="hisense" data-capacity="13">
-            <a class="gallery-item" href="WTJA1313UB.jpg">
-                <img src="WTJA1313UB.jpg" alt="HISENSE WTJA1313UB Washer">
-            </a>
-            <div class="info">
-                <h3>HISENSE WTJA1313UB (13KG)</h3>
-                <p>Fully Automatic Top Load Washer.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WTJA1313UB">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="hisense" data-capacity="10.5">
-            <a class="gallery-item" href="WT5J1013DT.jpg">
-                <img src="WT5J1013DT.jpg" alt="HISENSE WT5J1013DT Inverter Washer">
-            </a>
-            <div class="info">
-                <h3>HISENSE WT5J1013DT (10.5KG) Inverter</h3>
-                <p>INVERTER model. Comes with extensive Motor Warranty.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT5J1013DT">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="hisense" data-capacity="13">
-            <a class="gallery-item" href="WT5J1313DT.jpg">
-                <img src="WT5J1313DT.jpg" alt="HISENSE WT5J1313DT Inverter Washer">
-            </a>
-            <div class="info">
-                <h3>HISENSE WT5J1313DT (13KG) Inverter</h3>
-                <p>INVERTER model. Comes with extensive Motor Warranty.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT5J1313DT">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="hisense" data-capacity="10">
-            <a class="gallery-item" href="WT105F50.jpg">
-                <img src="WT105F50.jpg" alt="HISENSE WT105F50 Inverter Washer">
-            </a>
-            <div class="info">
-                <h3>HISENSE WT105F50 (10KG) Inverter</h3>
-                <p>INVERTER model. Comes with extensive Motor Warranty (up to 25 Years).</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT105F50">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="hisense" data-capacity="15">
-            <a class="gallery-item" href="WT150F50.jpg">
-                <img src="WT150F50.jpg" alt="HISENSE WT150F50 Inverter Washer">
-            </a>
-            <div class="info">
-                <h3>HISENSE WT150F50 (15KG) Inverter</h3>
-                <p>INVERTER model. Comes with extensive Motor Warranty (up to 25 Years).</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT150F50">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="hisense" data-capacity="20">
-            <a class="gallery-item" href="WT200Q50.jpg">
-                <img src="WT200Q50.jpg" alt="HISENSE WT200Q50 Inverter Washer">
-            </a>
-            <div class="info">
-                <h3>HISENSE WT200Q50 (20KG) Inverter</h3>
-                <p>INVERTER model. Comes with extensive Motor Warranty (up to 25 Years).</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT200Q50">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="khind" data-capacity="7">
-            <a class="gallery-item" href="WM70A.jpg">
-                <img src="WM70A.jpg" alt="KHIND WM70A Washer">
-            </a>
-            <div class="info">
-                <h3>KHIND WM70A (7KG)</h3>
-                <p>Fully Automatic Top Load Washer.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about KHIND WM70A">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="khind" data-capacity="8.0">
-            <a class="gallery-item" href="WM80A.jpg">
-                <img src="WM80A.jpg" alt="KHIND WM80A Washer">
-            </a>
-            <div class="info">
-                <h3>KHIND WM80A (8KG)</h3>
-                <p>Fully Automatic Top Load Washer.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about KHIND WM80A">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="khind" data-capacity="10">
-            <a class="gallery-item" href="WM100A.jpg">
-                <img src="WM100A.jpg" alt="KHIND WM100A Washer">
-            </a>
-            <div class="info">
-                <h3>KHIND WM100A (10KG)</h3>
-                <p>Fully Automatic Top Load Washer.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about KHIND WM100A">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="khind" data-capacity="12">
-            <a class="gallery-item" href="WM120A.jpg">
-                <img src="WM120A.jpg" alt="KHIND WM120A Washer">
-            </a>
-            <div class="info">
-                <h3>KHIND WM120A (12KG)</h3>
-                <p>Fully Automatic Top Load Washer.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about KHIND WM120A">WhatsApp Inquiry</a>
-            </div>
-        </div>
-        
-    </div> 
-    
-    <h2>Front Load Washer Models</h2>
-    
-    <div class="product-grid">
-
-        <div class="product-card" data-brand="sharp" data-capacity="8.5">
-            <a class="gallery-item" href="ESFK852EMW.jpg">
-                <img src="ESFK852EMW.jpg" alt="SHARP ESFK852EMW Front Load Washer">
-            </a>
-            <div class="info">
-                <h3>SHARP ESFK852EMW (8.5KG) Front Load</h3>
-                <p>J-Tech 变频电机 (Inverter Motor)，电机 12 年保修，iF 设计奖，大触摸屏控制面板。</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESFK852EMW">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="sharp" data-capacity="9.0">
-            <a class="gallery-item" href="ESFH9BMB.jpg">
-                <img src="ESFH9BMB.jpg" alt="SHARP ESFH9BMB Front Load Washer">
-            </a>
-            <div class="info">
-                <h3>SHARP ESFH9BMB (9KG) Front Load</h3>
-                <p>BLDC 变频电机 (Inverter Motor)，电机 12 年保修，蒸汽护理高效杀菌 (Steam Care)，高温筒清洁，清洗过程中可添加衣物。</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESFH9BMB">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-    </div> 
-    
-    <h2>Semi Auto Washer Models</h2>
-    
-    <div class="product-grid">
-
-        <div class="product-card" data-brand="midea" data-capacity="11">
-            <a class="gallery-item" href="MT100W110.jpg">
-                <img src="MT100W110.jpg" alt="MIDEA MT100W110 Semi-Auto Washer">
-            </a>
-            <div class="info">
-                <h3>MIDEA MT100W110 (11.0KG) Semi-Auto</h3>
-                <p>Durable Body, Higher Back Control Panel, Large Knob Design, Dual Force Pulsator, Metal Lint Filter, Air Fresh, Water Inlet Selection.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MT100W110">WhatsApp Inquiry</a>
+    <header>
+        Fully Automatic Washing Machine Series
+        <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
+    </header>
+    <div class="container">
+        <h2>Top Load Washer Models</h2>
+        
+        <div class="filter-section">
+            <button id="toggle-filter" class="filter-toggle-button">
+                筛选选项 (Filter)
+            </button>
+            <div class="filter-controls" id="filter-content">
+                <div class="filter-group">
+                    <label for="brand-filter">品牌 (Brand)</label>
+                    <select id="brand-filter" onchange="applyFilters()">
+                        <option value="all">所有品牌 (All Brands)</option>
+                        <option value="sharp">Sharp</option>
+                        <option value="morgan">Morgan</option>
+                        <option value="midea">Midea</option>
+                        <option value="hisense">Hisense</option>
+                        <option value="khind">Khind</option>
+                        <option value="elba">Elba</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="capacity-filter">容量 (Capacity)</label>
+                    <select id="capacity-filter" onchange="applyFilters()">
+                        <option value="all">所有容量 (All Capacities)</option>
+                        <option value="6.5">6.5 KG</option>
+                        <option value="7.5">7.5 KG</option>
+                        <option value="8.0">8.0 KG</option>
+                        <option value="9.0">9.0 KG</option>
+                        <option value="9.5">9.5 KG</option>
+                        <option value="10.0">10.0 KG</option>
+                        <option value="10.5">10.5 KG</option>
+                        <option value="11">11 KG</option>
+                        <option value="12">12 KG</option>
+                        <option value="13">13 KG</option>
+                        <option value="15">15 KG</option>
+                        <option value="15.5">15.5 KG</option>
+                        <option value="16.5">16.5 KG</option>
+                        <option value="17.0">17.0 KG</option>
+                        <option value="20">20 KG</option>
+                    </select>
+                </div>
             </div>
         </div>
 
-        <div class="product-card" data-brand="sharp" data-capacity="12">
-            <a class="gallery-item" href="EST1216.jpg">
-                <img src="EST1216.jpg" alt="SHARP EST1216 Semi-Auto Washer">
-            </a>
-            <div class="info">
-                <h3>SHARP EST1216 (12KG) Semi-Auto</h3>
-                <p>Twin Tub Semi-Automatic Washer with 12KG washing capacity.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP EST1216">WhatsApp Inquiry</a>
+        <div class="product-grid">
+
+            <div class="product-card" data-brand="sharp" data-capacity="9.5">
+                <a class="gallery-item" href="ESX-921.jpg">
+                    <img src="ESX-921.jpg" alt="SHARP ESX-921 Washer">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESX-921 (9.5KG)</h3>
+                    <p>Auto Start After Blackout, Fuzzy Control, Power-Off Memory, Smart Filter, SS Drum</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-921">WhatsApp Inquiry</a>
+                </div>
             </div>
+            
+            <div class="product-card" data-brand="sharp" data-capacity="11">
+                <a class="gallery-item" href="ESW-1109S.jpg">
+                    <img src="ESW-1109S.jpg" alt="SHARP ESW-1109S Washer">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESW-1109S (11KG)</h3>
+                    <p>W-screw pulsator, Auto Start After Blackout, Power-Off Memory, Stainless Steel Tub</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESW-1109S">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="sharp" data-capacity="12">
+                <a class="gallery-item" href="ESX-1221.jpg">
+                    <img src="ESX-1221.jpg" alt="SHARP ESX-1221 Washer">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESX-1221 (12KG)</h3>
+                    <p>Auto Start After Blackout, Fuzzy Control, Power-Off Memory, Smart Filter, SS Drum</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-1221">WhatsApp Inquiry</a>
+                </div>
+            </div>
+            
+            <div class="product-card" data-brand="sharp" data-capacity="15.5">
+                <a class="gallery-item" href="ESX-1521.jpg">
+                    <img src="ESX-1521.jpg" alt="SHARP ESX-1521 Washer">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESX-1521 (15.5KG)</h3>
+                    <p>Auto Start After Blackout, Fuzzy Control, Power-Off Memory, Smart Filter, SS Drum</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-1521">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="sharp" data-capacity="17.0">
+                <a class="gallery-item" href="ESX-1721.jpg">
+                    <img src="ESX-1721.jpg" alt="SHARP ESX-1721 Washer">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESX-1721 (17KG)</h3>
+                    <p>Auto Start After Blackout, Fuzzy Control, Power-Off Memory, Smart Filter, SS Drum</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-1721">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="sharp" data-capacity="20">
+                <a class="gallery-item" href="ESW-2009S.jpg">
+                    <img src="ESW-2009S.jpg" alt="SHARP ESW-2009S Washer">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESW-2009S (20KG)</h3>
+                    <p>W-screw pulsator, Auto Start After Blackout, Power-Off Memory, Stainless Steel Tub</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESW-2009S">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="morgan" data-capacity="9.5">
+                <a class="gallery-item" href="MFW-952S.jpg">
+                    <img src="MFW-952S.jpg" alt="MORGAN MFW-952S Washer">
+                </a>
+                <div class="info">
+                    <h3>MORGAN MFW-952S (9.5KG)</h3>
+                    <p>Fuzzy, Error Alarm, LED Display, Child Lock, Auto Unbalancing Detection</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-952S">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="morgan" data-capacity="13">
+                <a class="gallery-item" href="MFW-13000I.jpg">
+                    <img src="MFW-13000I.jpg" alt="MORGAN MFW-13000I Inverter Washer">
+                </a>
+                <div class="info">
+                    <h3>MORGAN MFW-13000I (13KG) Inverter</h3>
+                    <p>INVERTER model. Fuzzy, Error Alarm, LED Display, Child Lock, Auto balancing detection</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-13000I">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="morgan" data-capacity="15">
+                <a class="gallery-item" href="MFW-15000I.jpg">
+                    <img src="MFW-15000I.jpg" alt="MORGAN MFW-15000I Inverter Washer">
+                </a>
+                <div class="info">
+                    <h3>MORGAN MFW-15000I (15KG) Inverter</h3>
+                    <p>INVERTER model. Fuzzy, Error Alarm, LED Display, Child Lock, Auto balancing detection</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-15000I">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="morgan" data-capacity="16.5">
+                <a class="gallery-item" href="MFW-1655CV.jpg">
+                    <img src="MFW-1655CV.jpg" alt="MORGAN MFW-1655CV Inverter Washer">
+                </a>
+                <div class="info">
+                    <h3>MORGAN MFW-1655CV (16.5KG) Inverter</h3>
+                    <p>INVERTER model. Fuzzy, Error Alarm, LED Display, Child Lock, Auto balancing detection</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-1655CV">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="midea" data-capacity="7.5">
+                <a class="gallery-item" href="MA100W75.jpg">
+                    <img src="MA100W75.jpg" alt="MIDEA MA100W75 Washer">
+                </a>
+                <div class="info">
+                    <h3>MIDEA MA100W75 (7.5KG)</h3>
+                    <p>One-touch wash, 3D Water Flow, Turbo Mode, Water Magic Cube, Auto Clean</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MA100W75">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="midea" data-capacity="9.0">
+                <a class="gallery-item" href="MA100W95.jpg">
+                    <img src="MA100W95.jpg" alt="MIDEA MA100W95 Washer">
+                </a>
+                <div class="info">
+                    <h3>MIDEA MA100W95 (9.0KG)</h3>
+                    <p>One-touch wash, 3D Water Flow, Turbo Mode, Water Magic Cube, Auto Clean</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MA100W95">WhatsApp Inquiry</a>
+                </div>
+            </div>
+            
+            <div class="product-card" data-brand="midea" data-capacity="10.5">
+                <a class="gallery-item" href="MA200W105D.jpg">
+                    <img src="MA200W105D.jpg" alt="MIDEA MA200W105D Washer">
+                </a>
+                <div class="info">
+                    <h3>MIDEA MA200W105D (10.5KG) Inverter</h3>
+                    <p>INVERTER model. One-touch wash, 3D Water Flow, Turbo Mode, Water Magic Cube, Auto Clean</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MA200W105D">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="hisense" data-capacity="8.0">
+                <a class="gallery-item" href="WT80F30.jpg">
+                    <img src="WT80F30.jpg" alt="HISENSE WT80F30 Washer">
+                </a>
+                <div class="info">
+                    <h3>HISENSE WT80F30 (8.0KG)</h3>
+                    <p>Top Load Washer with Soft Close Glass Door.</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT80F30">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="hisense" data-capacity="12">
+                <a class="gallery-item" href="WTJA1313UB.jpg">
+                    <img src="WTJA1313UB.jpg" alt="HISENSE WTJA1313UB Washer">
+                </a>
+                <div class="info">
+                    <h3>HISENSE WTJA1313UB (12KG)</h3>
+                    <p>Fully Automatic Top Load Washer.</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WTJA1313UB">WhatsApp Inquiry</a>
+                </div>
+            </div>
+            
+            <div class="product-card" data-brand="hisense" data-capacity="10.5">
+                <a class="gallery-item" href="WT5J1013DT.jpg">
+                    <img src="WT5J1013DT.jpg" alt="HISENSE WT5J1013DT Inverter Washer">
+                </a>
+                <div class="info">
+                    <h3>HISENSE WT5J1013DT (10.5KG) Inverter</h3>
+                    <p>INVERTER model. Features Auto Wash, Soft Close Door, and Delay Start.</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT5J1013DT">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="hisense" data-capacity="15">
+                <a class="gallery-item" href="WT150F50.jpg">
+                    <img src="WT150F50.jpg" alt="HISENSE WT150F50 Inverter Washer">
+                </a>
+                <div class="info">
+                    <h3>HISENSE WT150F50 (15KG) Inverter</h3>
+                    <p>INVERTER model. Comes with extensive Motor Warranty (up to 25 Years).</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT150F50">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="khind" data-capacity="8.0">
+                <a class="gallery-item" href="WM80A.jpg">
+                    <img src="WM80A.jpg" alt="KHIND WM80A Washer">
+                </a>
+                <div class="info">
+                    <h3>KHIND WM80A (8KG)</h3>
+                    <p>Fully Automatic Top Load Washer.</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about KHIND WM80A">WhatsApp Inquiry</a>
+                </div>
+            </div>
+            
+            <div class="product-card" data-brand="khind" data-capacity="10">
+                <a class="gallery-item" href="WM100A.jpg">
+                    <img src="WM100A.jpg" alt="KHIND WM100A Washer">
+                </a>
+                <div class="info">
+                    <h3>KHIND WM100A (10KG)</h3>
+                    <p>Fully Automatic Top Load Washer.</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about KHIND WM100A">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <h2>Front Load Washer Models</h2>
+
+            <div class="product-card" data-brand="sharp" data-capacity="8.5">
+                <a class="gallery-item" href="ESFK852EMW.jpg">
+                    <img src="ESFK852EMW.jpg" alt="SHARP ESFK852EMW Front Load Washer">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESFK852EMW (8.5KG) Front Load</h3>
+                    <p>BLDC 变频电机 (Inverter Motor)，电机 12 年保修，iF 设计奖，大触摸屏控制面板。</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESFK852EMW">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="sharp" data-capacity="9.0">
+                <a class="gallery-item" href="ESFH9BMB.jpg">
+                    <img src="ESFH9BMB.jpg" alt="SHARP ESFH9BMB Front Load Washer">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESFH9BMB (9KG) Front Load</h3>
+                    <p>BLDC 变频电机 (Inverter Motor)，电机 12 年保修，蒸汽护理高效杀菌 (Steam Care)，高温筒清洁，清洗过程中可添加衣物。</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESFH9BMB">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="sharp" data-capacity="10.0">
+                <a class="gallery-item" href="ESFH10BMB.jpg">
+                    <img src="ESFH10BMB.jpg" alt="SHARP ESFH10BMB Front Load Washer">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESFH10BMB (10KG) Front Load</h3>
+                    <p>BLDC 变频电机 (Inverter Motor)，电机 12 年保修，蒸汽护理高效杀菌 (Steam Care)，高温筒清洁，清洗过程中可添加衣物。</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESFH10BMB">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <h2>Semi Auto Washer Models</h2>
+
+            <div class="product-card" data-brand="midea" data-capacity="7">
+                <a class="gallery-item" href="MT100W70.jpg">
+                    <img src="MT100W70.jpg" alt="MIDEA MT100W70 Semi-Auto Washer">
+                </a>
+                <div class="info">
+                    <h3>MIDEA MT100W70 (7.0KG) Semi-Auto</h3>
+                    <p>Durable Body, Higher Back Control Panel, Large Knob Design, Dual Force Pulsator, Metal Lint Filter, Air Fresh, Water Inlet Selection.</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MT100W70">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="midea" data-capacity="7">
+                <a class="gallery-item" href="MSW-8008P.jpg">
+                    <img src="MSW-8008P.jpg" alt="MIDEA MSW-8008P Semi-Auto Washer">
+                </a>
+                <div class="info">
+                    <h3>MIDEA MSW-8008P (7.0KG Wash / 3.6KG Spin) Semi-Auto</h3>
+                    <p>Fibre Body, Wash/Spin/Drain Selector & Timer, 5-Year Motor Warranty, 1-Year General Warranty, Dimensions: 735 x 430 x 845 mm</p>
+                    <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MSW-8008P">WhatsApp Inquiry</a>
+                </div>
+            </div>
+
         </div>
 
-        <div class="product-card" data-brand="midea" data-capacity="9.0">
-            <a class="gallery-item" href="MT100W90.jpg">
-                <img src="MT100W90.jpg" alt="MIDEA MT100W90 Semi-Auto Washer">
-            </a>
-            <div class="info">
-                <h3>MIDEA MT100W90 (9.0KG) Semi-Auto</h3>
-                <p>Durable Body, Higher Back Control Panel, Large Knob Design, Dual Force Pulsator, Metal Lint Filter, Air Fresh, Water Inlet Selection.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MT100W90">WhatsApp Inquiry</a>
-            </div>
+        <div class="back">
+            <a href="index.html">返回首页 (Back to Home)</a>
         </div>
-
-        <div class="product-card" data-brand="midea" data-capacity="8.0">
-            <a class="gallery-item" href="MT100W80.jpg">
-                <img src="MT100W80.jpg" alt="MIDEA MT100W80 Semi-Auto Washer">
-            </a>
-            <div class="info">
-                <h3>MIDEA MT100W80 (8.0KG) Semi-Auto</h3>
-                <p>Durable Body, Higher Back Control Panel, Large Knob Design, Dual Force Pulsator, Metal Lint Filter, Air Fresh, Water Inlet Selection.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MT100W80">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="midea" data-capacity="7">
-            <a class="gallery-item" href="MT100W70.jpg">
-                <img src="MT100W70.jpg" alt="MIDEA MT100W70 Semi-Auto Washer">
-            </a>
-            <div class="info">
-                <h3>MIDEA MT100W70 (7.0KG) Semi-Auto</h3>
-                <p>Durable Body, Higher Back Control Panel, Large Knob Design, Dual Force Pulsator, Metal Lint Filter, Air Fresh, Water Inlet Selection.</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MT100W70">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="midea" data-capacity="7">
-            <a class="gallery-item" href="MSW-8008P.jpg">
-                <img src="MSW-8008P.jpg" alt="MIDEA MSW-8008P Semi-Auto Washer">
-            </a>
-            <div class="info">
-                <h3>MIDEA MSW-8008P (7.0KG Wash / 3.6KG Spin) Semi-Auto</h3>
-                <p>Fibre Body, Wash/Spin/Drain Selector & Timer, 5-Year Motor Warranty, 1-Year General Warranty (Dimension: 735x430x845 mm).</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MSW-8008P">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
     </div>
-        <div class="back">
-        <a href="index.html">← Back to Home</a>
-    </div>
 
-</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButton = document.getElementById('toggle-filter');
+            const filterContent = document.getElementById('filter-content');
+            const brandFilter = document.getElementById('brand-filter');
+            const capacityFilter = document.getElementById('capacity-filter');
+            const cards = document.querySelectorAll('.product-card');
+            
+            // 初始化 SimpleLightbox
+            new SimpleLightbox('.product-grid a.gallery-item');
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js" 
-crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            // 切换筛选器展开/折叠
+            if (toggleButton && filterContent) {
+                toggleButton.addEventListener('click', function() {
+                    filterContent.classList.toggle('active'); 
+                });
+            }
 
-<script>
-    // 激活 Lightbox
-    new SimpleLightbox('.product-grid a.gallery-item', { 
-        captions: true, 
-        captionDelay: 100,
-        closeText: 'X',
-        navText: ['←','→'] 
-    });
+            // 筛选函数：根据当前选择的品牌和容量过滤卡片
+            function applyFilters() {
+                const selectedBrand = brandFilter.value;
+                const selectedCapacity = capacityFilter.value;
 
-    // ***筛选器切换和筛选逻辑***
-    const toggleButton = document.querySelector('#toggle-filter'); // 选择按钮
-    const filterContent = document.querySelector('#filter-content'); // 选择容器
-    const brandFilter = document.querySelector('#brand-filter'); // 品牌下拉菜单
-    const capacityFilter = document.querySelector('#capacity-filter'); // 容量下拉菜单
-    const cards = document.querySelectorAll('.product-card');
+                cards.forEach(card => {
+                    const cardBrand = card.getAttribute('data-brand');
+                    const cardCapacity = card.getAttribute('data-capacity');
 
-    // 1. 切换按钮的点击事件 (显示/隐藏筛选器)
-    if (toggleButton && filterContent) {
-        toggleButton.addEventListener('click', function() {
-            filterContent.classList.toggle('active'); 
-        });
-    }
+                    // 检查品牌是否匹配 (或选择了 'all')
+                    const brandMatch = (selectedBrand === 'all' || selectedBrand === cardBrand);
+                    
+                    // 检查容量是否匹配 (或选择了 'all')
+                    // 注意：由于容量可能不是精确数字（如 "10.5"），使用字符串比较
+                    const capacityMatch = (selectedCapacity === 'all' || selectedCapacity === cardCapacity);
 
-    // 筛选函数：根据当前选择的品牌和容量过滤卡片
-    function applyFilters() {
-        const selectedBrand = brandFilter.value;
-        const selectedCapacity = capacityFilter.value;
+                    if (brandMatch && capacityMatch) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            }
 
-        cards.forEach(card => {
-            const cardBrand = card.getAttribute('data-brand');
-            const cardCapacity = card.getAttribute('data-capacity');
-
-            // 检查品牌是否匹配 (或选择了 'all')
-            const brandMatch = (selectedBrand === 'all' || selectedBrand === cardBrand);
-            
-            // 检查容量是否匹配 (或选择了 'all')
-            const capacityMatch = (selectedCapacity === 'all' || selectedCapacity === cardCapacity);
-
-            if (brandMatch && capacityMatch) {
-                card.classList.remove('hidden'); // 显示匹配的卡片
-            } else {
-                card.classList.add('hidden'); // 隐藏不匹配的卡片
-            }
-        });
-    }
-    
-    // 2. 筛选器下拉菜单的更改事件
-    if (brandFilter && capacityFilter) {
-        brandFilter.addEventListener('change', function() {
-            applyFilters();
-            filterContent.classList.remove('active'); // 筛选后关闭
-        });
-        
-        capacityFilter.addEventListener('change', function() {
-            applyFilters();
-            filterContent.classList.remove('active'); // 筛选后关闭
-        });
-    }
-    // ***筛选器逻辑结束***
-</script>
-
+            // 确保在页面加载时调用一次以应用初始过滤（如果需要）
+            applyFilters();
+        });
+    </script>
 </body>
 </html>
