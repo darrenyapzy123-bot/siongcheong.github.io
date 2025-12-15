@@ -1,871 +1,1013 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siong Cheong Trading - Commercial Freezer Series (冷冻柜)</title>
+    <title>Commercial Freezer Collection</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Playfair Display & Lato -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* ------------------- CSS 样式（集成通用布局和产品专属样式） ------------------- */
-        body {
+        /* ------------------- Theme Variables ------------------- */
+        :root {
+            --bg-body: #0b1221;       /* Deep Navy Background */
+            --bg-card: #162030;       /* Card Background */
+            --text-main: #ffffff;     /* White Text */
+            --text-sub: #94a3b8;      /* Slate Grey Text */
+            --accent: #29b6f6;        /* Bright Blue Accent */
+            --btn-bg: #0ea5e9;        /* Button Background */
+            --btn-hover: #0284c7;     /* Button Hover */
+            --border-color: #1e293b;
+            --tag-bg: rgba(14, 165, 233, 0.2); /* Tag Background */
+            --tag-text: #38bdf8;      /* Tag Text */
+        }
+
+        /* ------------------- Reset & Base ------------------- */
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            display: flex;
-            justify-content: center;
+            padding: 0;
         }
-
-        #main-content {
-            width: 100%;
-            max-width: 100vw;
-            transition: margin-right 0.5s; 
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ------------------- 菜单 & Sidebar (新增) ------------------- */
-        .menu-icon {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            cursor: pointer;
-            padding: 10px;
-            background-color: #3498db;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s;
-        }
-
-        .bar {
-            width: 25px;
-            height: 3px;
-            background-color: white;
-            margin: 5px 0;
-            transition: 0.4s;
-        }
-
-        .sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 999;
-            top: 0;
-            left: 0;
-            background-color: #2c3e50;
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding-bottom: 60px;
             overflow-x: hidden;
-            padding-top: 60px;
-            transition: 0.5s;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-            max-width: 250px;
         }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
 
-        .sidebar a, .sidebar .submenu-toggle {
-            padding: 15px 25px;
-            text-decoration: none;
-            font-size: 1.2em;
-            color: #ecf0f1;
-            display: block;
-            transition: 0.3s;
-            border-bottom: 1px solid #34495e;
-            cursor: pointer;
-        }
-
-        .closebtn {
-            position: absolute;
-            top: 0;
-            right: 25px;
-            font-size: 36px;
-            line-height: 50px;
-        }
-
-        .submenu {
-            display: none;
-            background-color: #3e566e;
-            padding-left: 20px;
-        }
-        
-        .overlay {
-            position: fixed;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 998;
-            display: none;
-        }
-
-        /* ------------------- Header & Container (优化) ------------------- */
+        /* ------------------- Header (Siong Cheong Style) ------------------- */
         header {
-            background: #2c3e50; /* 统一 Header 颜色 */
-            padding: 20px;
-            color: white;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            position: relative;
-            padding-left: 60px; 
-            width: 100%;
-            box-sizing: border-box; 
-        }
-
-        .header-logo {
-            position: absolute;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            width: 250px;
-            height: auto;
-        }
-
-        /* ------------------- 产品专属样式 (保持不变) ------------------- */
-        
-        /* 筛选控制容器 */
-        #filter-controls {
             display: flex;
-            justify-content: flex-start;
             align-items: center;
-            padding: 15px 20px;
-            background-color: #ecf0f1;
-            border-bottom: 1px solid #e0e0e0;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 80px;
+            position: relative;
+            z-index: 1000;
+        }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .menu-icon { font-size: 24px; cursor: pointer; color: var(--text-main); }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: var(--text-sub); font-size: 16px; font-weight: 400; }
+        .nav-links a:hover { color: var(--text-main); }
+
+        /* ------------------- Sidebar ------------------- */
+        .sidebar {
+            height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0;
+            background-color: #080d16;
+            overflow-x: hidden; padding-top: 60px; transition: 0.4s;
+            border-right: 1px solid #1e293b; white-space: nowrap;
+        }
+        .sidebar a, .sidebar .submenu-toggle {
+            padding: 15px 30px; font-size: 16px; color: var(--text-sub);
+            display: block; border-bottom: 1px solid #1e293b; cursor: pointer;
+        }
+        .sidebar a:hover, .sidebar .submenu-toggle:hover {
+            color: var(--accent); background: rgba(255,255,255,0.05);
+        }
+        .sidebar .close-btn {
+            position: absolute; top: 15px; right: 25px; font-size: 30px; cursor: pointer;
+        }
+        .submenu { display: none; background: #0b1221; }
+        .submenu a { padding-left: 50px; font-size: 14px; }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 1500; display: none;
         }
 
-        /* 下拉菜单样式 (保持蓝色配色) */
-        #brand-filter-dropdown {
-            padding: 10px 18px;
-            border-radius: 5px;
-            border: 1px solid #3498db; 
-            background-color: #3498db; 
-            color: white; 
-            font-size: 1em;
+        /* ------------------- Hero ------------------- */
+        .hero-section { text-align: center; padding: 80px 20px 40px; }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .hero-subtitle {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        /* ------------------- Filter Button ------------------- */
+        .filter-container {
+            display: flex; justify-content: center; margin: 40px 0 60px; position: relative;
+        }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #1e3a8a;
+            border-radius: 50px;
+            padding: 12px 30px;
+            color: var(--accent);
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
+            display: flex; align-items: center; gap: 10px;
+            transition: 0.3s;
         }
+        .filter-btn:hover { border-color: var(--accent); background: rgba(41, 182, 246, 0.1); }
+        #filter-panel {
+            display: none; position: absolute; top: 60px;
+            background: #1e293b; border: 1px solid #334155;
+            padding: 20px; border-radius: 8px; z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); min-width: 250px;
+        }
+        #filter-panel.open { display: block; }
         
-        #brand-filter-dropdown option {
-            color: black;
-            background-color: white;
+        .filter-group { margin-bottom: 15px; }
+        .filter-label { display: block; margin-bottom: 5px; color: var(--text-sub); font-size: 0.9em; }
+        .filter-select {
+            width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155;
+            color: white; border-radius: 4px; outline: none;
         }
 
-        /* ------------------- 产品列表和卡片优化 (保持不变) ------------------- */
-        .products-container {
-            display: flex;
-            flex-wrap: wrap;       
-            justify-content: center; 
-            gap: 25px;             
-            padding: 40px 20px;
+        /* ------------------- Section Title ------------------- */
+        .brand-header { text-align: center; margin-bottom: 50px; }
+        .brand-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
         }
-        
-        .brand-group-title {
-            flex: 0 0 100%; 
-            width: 100%;
-            text-align: left;
-            margin: 30px 0 15px 0;
-            padding-left: 10px;
-            font-size: 1.8em;
-            color: #34495e;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 5px;
+        .brand-underline {
+            width: 60px; height: 4px; background-color: var(--accent);
+            margin: 0 auto; border-radius: 2px;
         }
 
-        .product-card {
-            flex: 0 0 calc(33.333% - 16.666px); 
-            max-width: 350px; 
-            min-width: 280px;
-            background-color: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+        /* ------------------- Product Card (Standardized) ------------------- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            height: 100%;
         }
 
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: var(--accent);
         }
 
-        .product-image-box {
-            background-color: #fcfcfc;
-            padding: 25px;
-            height: 250px; 
+        .card-img-container {
+            background-color: #ffffff;
+            width: 100%;
+            height: 280px;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px;
+            position: relative;
+            border-bottom: 1px solid #2d3748;
         }
-
-        .product-image {
+        
+        .card-img {
             max-width: 90%;
-            max-height: 100%;
+            max-height: 90%;
             object-fit: contain;
+            transition: transform 0.3s;
         }
+        .card:hover .card-img { transform: scale(1.05); }
 
-        .product-details {
-            padding: 15px;
-            flex-grow: 1; 
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
-        .product-details h3 {
-            font-size: 1.4em; 
-            color: #c0392b; 
-            margin-bottom: 10px; 
-            font-weight: 600;
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
         }
-        
-        .product-details p {
-            font-size: 0.95em;
-            color: #555; 
-            margin-bottom: 20px; 
-            line-height: 1.6; 
-            text-align: left; 
-            flex-grow: 1;
-        }
-        
-        .detail-button {
+
+        .card-tag {
             display: inline-block;
-            padding: 10px 25px;
-            background-color: #3498db; 
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-            margin-top: auto;
-        }
-        
-        .detail-button:hover {
-            background-color: #2980b9;
+            background-color: var(--tag-bg);
+            color: var(--tag-text);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            width: fit-content;
         }
 
-        /* ------------------- Footer (使用标准布局代替固定栏) ------------------- */
-        .page-footer {
-            padding: 30px 20px;
+        .card-desc {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            min-height: 40px; 
+        }
+        
+        .card-divider {
+            height: 1px;
+            background-color: #2d3748;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        
+        .card-details-text {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        .btn-details {
+            display: block;
+            width: 100%;
+            background-color: var(--btn-bg);
+            color: white;
             text-align: center;
-            background-color: #2c3e50;
-            margin-top: 40px; 
-            color: white;
+            padding: 12px 0;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background 0.3s;
+            margin-top: auto; 
         }
+        .btn-details:hover { background-color: var(--btn-hover); }
+        .btn-details i { margin-left: 5px; font-size: 0.9em; }
 
-        .page-footer .back-to-home {
-            background-color: #2ecc71; /* 绿色按钮 */
-            color: white;
-            padding: 10px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.2s;
-            display: inline-block;
+        /* ------------------- Footer ------------------- */
+        .footer-bar {
+            position: fixed; bottom: 20px; right: 20px; z-index: 100;
         }
-
-        .page-footer .back-to-home:hover {
-            background-color: #27ae60;
+        .btn-back {
+            background: rgba(30, 41, 59, 0.8); color: white;
+            padding: 12px; border-radius: 50%;
+            backdrop-filter: blur(5px); border: 1px solid #334155;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.3s; font-size: 18px;
         }
+        .btn-back:hover { border-color: var(--accent); color: var(--accent); }
 
-
-        /* 响应式调整 */
-        @media (max-width: 1200px) {
-            .product-card {
-                flex: 0 0 calc(50% - 12.5px); 
-            }
-        }
-        
+        /* Responsive */
         @media (max-width: 768px) {
-            .product-card {
-                flex: 0 0 100%;
-            }
+            header { padding: 0 20px; }
+            .nav-links { display: none; }
+            .hero-title { font-size: 2.5rem; }
+            .brand-title { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="menu-icon" onclick="toggleNav()">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-</div>
-
-<div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-    <a href="index.html">Home</a>
-    <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
-    <div class="submenu" style="display: block;"> 
-        <a href="refrigerator.html">Refrigerator (冰箱)</a>
-        <a href="chiller.html">Chiller (冷柜)</a>
-        <a href="freezer.html">Freezer (冷冻柜)</a>
-        <a href="ac.html">Air Conditioner (空调)</a>
-        <a href="portable_ac.html">Portable Air Cond (移动式空调)</a>
-        <a href="tv.html">TV (电视)</a>
-        <a href="washer.html">Washer (洗衣机)</a>
-        <a href="dryer.html">Dryer (烘干机)</a>
-        <a href="kitchen.html">Kitchen Appliances (厨房电器)</a>
-        <a href="hood.html">Hood (抽油烟机)</a>
-        <a href="gas.html">Gas (燃气灶具)</a>
-        <a href="oven.html">Oven (烤箱)</a>
-        <a href="microwave.html">Microwave (微波炉)</a>
-        <a href="air_fryer.html">Air Fryer (空气炸锅)</a>
-        <a href="shower.html">Shower (热水器/花洒)</a>
-        <a href="air_purifier.html">Air Purifier (空气净化器)</a>
-        <a href="speaker.html">Speaker (音响)</a>
-        <a href="small.html">Small Appliances (小家电)</a>
-    </div>
-    <a href="about.html">About Us</a>
-    <a href="location.html">Our Location</a>
-    <a href="contact.html">Contact Us</a>
-</div>
-
-<div id="overlay" class="overlay" onclick="toggleNav()"></div>
-
-<div id="main-content">
+    <!-- Header -->
     <header>
-        Commercial Freezer Series (冷冻柜系列)
-        <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo" style="width: 250px;">
+        <div class="header-left">
+            <div class="menu-icon" onclick="toggleNav()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="logo">Siong Cheong Trading</div>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#">Products</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+        </nav>
     </header>
 
-    <div id="filter-controls">
-        <select id="brand-filter-dropdown" onchange="filterProducts(this.value)">
-            <option value="all">筛选品牌 (Filter Brand)</option>
-            <option value="Sharp">Sharp</option>
-            <option value="Panalux">Panalux</option>
-            <option value="Khind">Khind</option>
-            <option value="Warehouse">Warehouse</option>
-            <option value="Midea">Midea</option>
-            <option value="Hisense">Hisense</option>
-            <option value="Komachi">Komachi</option>
-            <option value="Narutron">Narutron</option>
-        </select>
+    <!-- Sidebar -->
+    <div id="mySidebar" class="sidebar">
+        <div class="close-btn" onclick="toggleNav()">&times;</div>
+        <a href="index.html">Home</a>
+        <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
+        <div class="submenu" style="display: block;">
+            <a href="refrigerator.html">Refrigerator</a>
+            <a href="chiller.html">Chiller</a>
+            <a href="freezer.html" class="active" style="color:var(--accent)">Freezer</a>
+            <a href="ac.html">Air Conditioner</a>
+            <a href="portable_ac.html">Portable Air Cond</a>
+            <a href="tv.html">TV</a>
+            <a href="washer.html">Washer</a>
+            <a href="dryer.html">Dryer</a>
+            <a href="kitchen.html">Kitchen Appliances</a>
+            <a href="hood.html">Hood</a>
+            <a href="gas.html">Gas</a>
+            <a href="oven.html">Oven</a>
+            <a href="microwave.html">Microwave</a>
+            <a href="air_fryer.html">Air Fryer</a>
+            <a href="shower.html">Shower</a>
+            <a href="air_purifier.html">Air Purifier</a>
+            <a href="speaker.html">Speaker</a>
+            <a href="small.html">Small Appliances</a>
+        </div>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
     </div>
+    <div id="overlay" class="overlay" onclick="toggleNav()"></div>
 
-    <div class="products-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1 class="hero-title">Commercial Freezers</h1>
+        <p class="hero-subtitle">Reliable freezing solutions for business and home.</p>
+    </section>
+
+    <!-- Filter Button -->
+    <div class="filter-container">
+        <button class="filter-btn" onclick="toggleFilter()">
+            <i class="fas fa-filter"></i> Filter Options
+        </button>
         
-        <h2 class="brand-group-title" data-brand="Sharp">Sharp Freezer Series</h2>
-        <div class="product-card" data-brand="Sharp">
-            <div class="product-image-box">
-                <img src="images/sharp-sjc118.png" alt="Sharp SJC118 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Sharp SJC118 (110L)</h3>
-                <p>Chest freezer, High range voltage: 160V-260V. Equipped with Grip Handle and Built-in safety lock. Dimensions: W574 x D564 x H845 mm.</p>
-                <a href="freezer-details/sjc118.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Sharp">
-            <div class="product-image-box">
-                <img src="images/sharp-sjc168.png" alt="Sharp SJC168 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Sharp SJC168 (160L)</h3>
-                <p>Chest freezer, equipped with safety lock and LED lighting. Features Dual Switch Setting. Dimensions: W754 x D564 x H845 mm.</p>
-                <a href="freezer-details/sjc168.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Sharp">
-            <div class="product-image-box">
-                <img src="images/sharp-sjc218.png" alt="Sharp SJC218 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Sharp SJC218 (220L)</h3>
-                <p>Medium chest freezer. Features High Range Voltage: 160V-260V, Built-in safety lock, and LED lighting. Dimensions: W950 x D564 x H845 mm.</p>
-                <a href="freezer-details/sjc218.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Sharp">
-            <div class="product-image-box">
-                <img src="images/sharp-sjc318.png" alt="Sharp SJC318 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Sharp SJC318 (310L)</h3>
-                <p>Large chest freezer. High voltage range: 160V-260V. Equipped with Grip Handle and LED Lighting. Dimensions: W1116 x D664 x H845 mm.</p>
-                <a href="freezer-details/sjc318.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-
-
-        <h2 class="brand-group-title" data-brand="Panalux">Panalux Freezer Series</h2>
-        <div class="product-card" data-brand="Panalux">
-            <div class="product-image-box">
-                <img src="images/panalux-model-1.png" alt="Panalux 卧式冷冻柜 1" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Panalux CF 160L (Chest Type)</h3>
-                <p>Chest freezer. Comes with lock and key. Easy to move with bottom wheels. Ideal for home or small commercial use. **(Model details to be confirmed)**</p>
-                <a href="freezer-details/panalux-160l.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="Panalux">
-            <div class="product-image-box">
-                <img src="images/panalux-model-2.png" alt="Panalux 卧式冷冻柜 2" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Panalux CF 240L (Chest Type)</h3>
-                <p>Medium chest freezer. High-efficiency cooling system with a convenient double-door design for organized storage. **(Model details to be confirmed)**</p>
-                <a href="freezer-details/panalux-240l.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-
-        <h2 class="brand-group-title" data-brand="Khind">Khind Freezer Series</h2>
-        <div class="product-card" data-brand="Khind">
-            <div class="product-image-box">
-                <img src="images/khind-fz100.png" alt="Khind FZ100 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Khind FZ100 (100L Net)</h3>
-                <p>Compact chest freezer. Net capacity 100L. Suitable for small spaces. Dimensions: 545 x 545 x 845 mm.</p>
-                <a href="freezer-details/khind-fz100.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="Khind">
-            <div class="product-image-box">
-                <img src="images/khind-fz142.png" alt="Khind FZ142 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Khind FZ142 (142L Net)</h3>
-                <p>Chest freezer with increased storage. Net capacity 142L. Features internal baskets for organization. Dimensions: 635 x 565 x 850 mm.</p>
-                <a href="freezer-details/khind-fz142.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="Khind">
-            <div class="product-image-box">
-                <img src="images/khind-fz208.png" alt="Khind FZ208 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Khind FZ208 (208L Net)</h3>
-                <p>Standard chest freezer. Net capacity 208L. Provides excellent long-term freezing capability. Dimensions: 889 x 565 x 850 mm.</p>
-                <a href="freezer-details/khind-fz208.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="Khind">
-            <div class="product-image-box">
-                <img src="images/khind-fz295.png" alt="Khind FZ295 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Khind FZ295 (295L Net)</h3>
-                <p>Large chest freezer. Net capacity 295L. Includes heavy-duty castor wheels for mobility. Dimensions: 1120 x 635 x 858 mm.</p>
-                <a href="freezer-details/khind-fz295.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="Khind">
-            <div class="product-image-box">
-                <img src="images/khind-fz400.png" alt="Khind FZ-400 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Khind FZ-400 (508L Gross)</h3>
-                <p>Double-door chest freezer. Gross capacity 508L, with door lock and key. Designed for commercial volume storage.</p>
-                <a href="freezer-details/khind-fz400.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        
-        <div class="product-card" data-brand="Khind">
-            <div class="product-image-box">
-                <img src="images/khind-fz508.png" alt="Khind FZ-508 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Khind FZ-508 (508L)</h3>
-                <p>Double-door chest freezer. Features a **5 Year Compressor Warranty**. Dimensions: 1905 x 820 x 865 mm.</p>
-                <a href="freezer-details/khind-fz508.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="Khind">
-            <div class="product-image-box">
-                <img src="images/khind-fz708.png" alt="Khind FZ-708 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Khind FZ-708 (708L)</h3>
-                <p>Extra-large double-door chest freezer. Includes a **5 Year Compressor Warranty** and 1 Year General Warranty. Ideal for high-volume storage.</p>
-                <a href="freezer-details/khind-fz708.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="Khind">
-            <div class="product-image-box">
-                <img src="images/khind-upright-245l.png" alt="Khind 立式冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Khind Upright Freezer (245L Gross)</h3>
-                <p>Vertical freezer design with 7 drawers for easy access and organization. 5 year motor warranty. Dimensions: H170 x D60 x W60 CM.</p>
-                <a href="freezer-details/khind-upright.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-
-        <h2 class="brand-group-title" data-brand="Warehouse">Warehouse Freezer Series</h2>
-        <div class="product-card" data-brand="Warehouse">
-            <div class="product-image-box">
-                <img src="images/warehouse-fz90.png" alt="Warehouse FZ-90 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Warehouse FZ-90 (90L)</h3>
-                <p>Compact chest freezer. 90 Liters capacity. Perfect for small businesses or supplementary home storage. Dimensions: 566 x 462 x 872 mm.</p>
-                <a href="freezer-details/warehouse-fz90.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Warehouse">
-            <div class="product-image-box">
-                <img src="images/warehouse-fz1188.png" alt="Warehouse FZ-1188 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Warehouse FZ-1188 (110L)</h3>
-                <p>Chest freezer. 110 Liters. Features an efficient cooling system. Cabinet Dimensions: 575 x 625 x 867 mm.</p>
-                <a href="freezer-details/warehouse-fz1188.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Warehouse">
-            <div class="product-image-box">
-                <img src="images/warehouse-fz1588.png" alt="Warehouse FZ1588 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Warehouse FZ1588 (150L)</h3>
-                <p>Chest freezer. 150 Liters capacity. Reliable and energy efficient. Product Dimensions: 850 x 580 x 883 mm.</p>
-                <a href="freezer-details/warehouse-fz1588.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Warehouse">
-            <div class="product-image-box">
-                <img src="images/warehouse-fz2588.png" alt="Warehouse FZ-2588 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Warehouse FZ-2588 (215L)</h3>
-                <p>Chest freezer with a practical glass door for easy viewing of contents. 215 Liters. Cabinet Dimensions: 940 x 560 x 860 mm.</p>
-                <a href="freezer-details/warehouse-fz2588.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Warehouse">
-            <div class="product-image-box">
-                <img src="images/warehouse-fz3588.png" alt="Warehouse FZ-3588 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Warehouse FZ-3588 (315L)</h3>
-                <p>Chest freezer with clear glass door. 315 Liters capacity, ideal for commercial displays. Cabinet Dimensions: 1160 x 665 x 889 mm.</p>
-                <a href="freezer-details/warehouse-fz3588.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Warehouse">
-            <div class="product-image-box">
-                <img src="images/warehouse-fz4588.png" alt="Warehouse FZ-4588 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Warehouse FZ-4588 (430L)</h3>
-                <p>Chest freezer featuring a spacious double-door design. 430 Liters. Cabinet Dimensions: 1326 x 755 x 900 mm.</p>
-                <a href="freezer-details/warehouse-fz4588.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Warehouse">
-            <div class="product-image-box">
-                <img src="images/warehouse-fz5588.png" alt="Warehouse FZ-5588 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Warehouse FZ-5588 (530L)</h3>
-                <p>Large double-door chest freezer. High capacity storage for commercial needs. Cabinet Dimensions: 1606 x 755 x 900 mm.</p>
-                <a href="freezer-details/warehouse-fz5588.html" class="detail-button">View Details</a>
-            </div>
-            </div>
-        <div class="product-card" data-brand="Warehouse">
-            <div class="product-image-box">
-                <img src="images/warehouse-wd500wr.png" alt="Warehouse WD-500WR 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Warehouse WD-500WR (418L Net)</h3>
-                <p>500L Chest Freezer. Net capacity 418L, designed with a silent hinge and fast freezing capability.</p>
-                <a href="freezer-details/warehouse-wd500wr.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Warehouse">
-            <div class="product-image-box">
-                <img src="images/warehouse-md860wr.png" alt="Warehouse MD-860WR 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Warehouse MD-860WR (860L Gross)</h3>
-                <p>Large commercial unit. Gross capacity 860L, Net capacity 702L. Features double glass doors and dual mode functionality (freezer/chiller).</p>
-                <a href="freezer-details/warehouse-md860wr.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Warehouse">
-            <div class="product-image-box">
-                <img src="images/warehouse-showcase220l.png" alt="Warehouse Showcase 220L" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Warehouse Showcase (220L)</h3>
-                <p>Sliding glass door display freezer. 220L capacity, perfect for displaying frozen goods. Dimensions: W880 x D880 x H720 mm.</p>
-                <a href="freezer-details/warehouse-sc220l.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Warehouse">
-            <div class="product-image-box">
-                <img src="images/warehouse-showcase330l.png" alt="Warehouse Showcase 330L" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Warehouse Showcase (330L)</h3>
-                <p>Sliding glass door display freezer. 330L capacity. Excellent visibility for retail environments. Dimensions: W1234 x D653 x H850 mm.</p>
-                <a href="freezer-details/warehouse-sc330l.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Warehouse">
-            <div class="product-image-box">
-                <img src="images/warehouse-showcase550l.png" alt="Warehouse Showcase 550L" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Warehouse Showcase (550L)</h3>
-                <p>Large sliding glass door display freezer. 550L capacity. High-end display solution. Dimensions: W1634 x D653 x H900 mm.</p>
-                <a href="freezer-details/warehouse-sc550l.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        
-        <h2 class="brand-group-title" data-brand="Midea">Midea Freezer Series</h2>
-        <div class="product-card" data-brand="Midea">
-            <div class="product-image-box">
-                <img src="images/midea-mdrc151.png" alt="Midea MD-RC151FZB01 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Midea MD-RC151FZB01 (99L Net)</h3>
-                <p>Chest freezer. Net capacity 99L, includes wheels for mobility. Compact and reliable. Product Dimensions: 495 x 545 x 850 mm.</p>
-                <a href="freezer-details/midea-rc151.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Midea">
-            <div class="product-image-box">
-                <img src="images/midea-mdrc207.png" alt="Midea MD-RC207FZB01 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Midea MD-RC207FZB01 (142L Net)</h3>
-                <p>Chest freezer. Net capacity 142L. An efficient and durable choice for moderate storage. Product Dimensions: 632 x 550 x 850 mm.</p>
-                <a href="freezer-details/midea-rc207.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Midea">
-            <div class="product-image-box">
-                <img src="images/midea-mdrz458.png" alt="Midea MDRZ458FZG01Y 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Midea MDRZ458FZG01Y (336L)</h3>
-                <p>White ice cream display freezer. Features double curved glass doors and a reassuring 5-year compressor warranty.</p>
-                <a href="freezer-details/midea-rz458.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Midea">
-            <div class="product-image-box">
-                <img src="images/midea-mdrz577.png" alt="Midea MDRZ577FEG01Y 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Midea MDRZ577FEG01Y (428L)</h3>
-                <p>White ice cream display freezer. Large capacity with a 5-year compressor warranty. Dimensions: 1405 x 695 x 845 mm.</p>
-                <a href="freezer-details/midea-rz577.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-
-        <h2 class="brand-group-title" data-brand="Hisense">Hisense Freezer Series</h2>
-        <div class="product-card" data-brand="Hisense">
-            <div class="product-image-box">
-                <img src="images/hisense-fc125d4bws.png" alt="Hisense FC125D4BWS 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Hisense FC125D4BWS (128L)</h3>
-                <p>Chest freezer. Noteworthy for its insulation, maintaining cold for 5.5 days without power. 3-star energy efficiency rating.</p>
-                <a href="freezer-details/hisense-fc125.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Hisense">
-            <div class="product-image-box">
-                <img src="images/hisense-fc206daw.png" alt="Hisense FC206DAW 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Hisense FC206DAW (178L)</h3>
-                <p>Chest freezer. Gross capacity 178L. Impressively holds cold for 7.3 days after power loss. Highly reliable.</p>
-                <a href="freezer-details/hisense-fc206.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Hisense">
-            <div class="product-image-box">
-                <img src="images/hisense-fc258daw.png" alt="Hisense FC258DAW 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Hisense FC258DAW (248L)</h3>
-                <p>Chest freezer. Can keep cold for 7.3 days after power loss. Offers a high 5-star energy efficiency rating.</p>
-                <a href="freezer-details/hisense-fc258.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Hisense">
-            <div class="product-image-box">
-                <img src="images/hisense-fc326d4bwy.png" alt="Hisense FC326D4BWYS 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Hisense FC326D4BWYS (300L)</h3>
-                <p>Chest freezer. Features excellent thermal retention, keeping cold for up to 135 hours (5.6 days) after power loss.</p>
-                <a href="freezer-details/hisense-fc326.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Hisense">
-            <div class="product-image-box">
-                <img src="images/hisense-fc428d4bwy.png" alt="Hisense FC428D4BWY 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Hisense FC428D4BWY (350L)</h3>
-                <p>Chest freezer. Large capacity unit that can sustain temperatures for 5.5 days after power loss.</p>
-                <a href="freezer-details/hisense-fc428.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Hisense">
-            <div class="product-image-box">
-                <img src="images/hisense-fc663d4bwb.png" alt="Hisense FC663D4BWB 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Hisense FC663D4BWB (550L Gross)</h3>
-                <p>Convertible chest freezer (Freezer or Chiller, Frost Free). Exceptional thermal retention for 5.5 days after power loss.</p>
-                <a href="freezer-details/hisense-fc663.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Hisense">
-            <div class="product-image-box">
-                <img src="images/hisense-fc900d4bwbp.png" alt="Hisense FC900D4BWBP 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Hisense FC900D4BWBP (780L)</h3>
-                <p>Extra-large capacity chest freezer. Outstanding cold retention, lasting 8 days after power loss. Suitable for major commercial use.</p>
-                <a href="freezer-details/hisense-fc900.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Hisense">
-            <div class="product-image-box">
-                <img src="images/hisense-fv188n4awn.png" alt="Hisense FV188N4AWN 立式冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Hisense FV188N4AWN (180L)</h3>
-                <p>Frost Free Upright Freezer. Eliminates manual defrosting. Dimensions: W55 x D55.7 x H143.4 cm.</p>
-                <a href="freezer-details/hisense-fv188.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Hisense">
-            <div class="product-image-box">
-                <img src="images/hisense-fv280n4awnp.png" alt="Hisense FV280N4AWNP 立式冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Hisense FV280N4AWNP (280L)</h3>
-                <p>Frost Free Upright Freezer. Large capacity with a premium **2 Year General + 12 Year Compressor Warranty** for peace of mind.</p>
-                <a href="freezer-details/hisense-fv280.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        
-        <h2 class="brand-group-title" data-brand="Komachi">Komachi Freezer Series</h2>
-        <div class="product-card" data-brand="Komachi">
-            <div class="product-image-box">
-                <img src="images/komachi-90l.png" alt="Komachi 90L 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Komachi 90L Freezer</h3>
-                <p>Small, compact chest freezer. Ideal for personal use or very small space requirements. Dimensions: 530 x 430 x 840 mm.</p>
-                <a href="freezer-details/komachi-90l.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Komachi">
-            <div class="product-image-box">
-                <img src="images/komachi-kmw1688.png" alt="Komachi KMW-1688 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Komachi KMW-1688 (160L)</h3>
-                <p>Standard chest freezer. 160 Liters capacity. Reliable cooling performance.</p>
-                <a href="freezer-details/komachi-kmw1688.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        <div class="product-card" data-brand="Komachi">
-            <div class="product-image-box">
-                <img src="images/komachi-kmw2588.png" alt="Komachi KMW-2588 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Komachi KMW-2588 (250L)</h3>
-                <p>Mid-sized chest freezer. 250 Liters capacity. Great balance of size and storage.</p>
-                <a href="freezer-details/komachi-kmw2588.html" class="detail-button">View Details</a>
-            </div>
-        </div>
-        
-        <h2 class="brand-group-title" data-brand="Narutron">Narutron Freezer Series</h2>
-        <div class="product-card" data-brand="Narutron">
-            <div class="product-image-box">
-                <img src="images/narutron-110l-sliding.png" alt="Narutron 110L 冷冻柜" class="product-image">
-            </div>
-            <div class="product-details">
-                <h3>Narutron 110L Sliding Glass Door Freezer</h3>
-                <p>Compact display freezer with a sliding glass door. 110 Liters, perfect for retail display of ice cream or frozen items.</p>
-                <a href="freezer-details/narutron-110l.html" class="detail-button">View Details</a>
+        <!-- Filter Dropdown -->
+        <div id="filter-panel">
+            <div class="filter-group">
+                <label class="filter-label">Brand</label>
+                <select id="brand-select" class="filter-select" onchange="runFilter()">
+                    <option value="all">All Brands</option>
+                    <option value="Sharp">Sharp</option>
+                    <option value="Panalux">Panalux</option>
+                    <option value="Khind">Khind</option>
+                    <option value="Warehouse">Warehouse</option>
+                    <option value="Midea">Midea</option>
+                    <option value="Hisense">Hisense</option>
+                    <option value="Komachi">Komachi</option>
+                    <option value="Narutron">Narutron</option>
+                </select>
             </div>
         </div>
     </div>
-    <div class="page-footer">
-        <a href="index.html" class="back-to-home">返回首页 (Back to Home)</a>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Sharp Series -->
+        <div class="brand-section" data-brand="Sharp">
+            <div class="brand-header">
+                <h2 class="brand-title">Sharp Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                <div class="card" data-brand="Sharp">
+                    <div class="card-img-container">
+                        <img src="images/sharp-sjc118.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Sharp+SJC118'; this.style.objectFit='contain';" class="card-img" alt="Sharp SJC118">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Sharp SJC118</h3>
+                        <span class="card-tag">110L Capacity</span>
+                        <p class="card-desc">Chest freezer with Grip Handle and Built-in safety lock. High range voltage.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/sjc118.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Sharp">
+                    <div class="card-img-container">
+                        <img src="images/sharp-sjc168.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Sharp+SJC168'; this.style.objectFit='contain';" class="card-img" alt="Sharp SJC168">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Sharp SJC168</h3>
+                        <span class="card-tag">160L Capacity</span>
+                        <p class="card-desc">Chest freezer with safety lock, LED lighting, and Dual Switch Setting.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/sjc168.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Sharp">
+                    <div class="card-img-container">
+                        <img src="images/sharp-sjc218.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Sharp+SJC218'; this.style.objectFit='contain';" class="card-img" alt="Sharp SJC218">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Sharp SJC218</h3>
+                        <span class="card-tag">220L Capacity</span>
+                        <p class="card-desc">Medium chest freezer. High Range Voltage (160V-260V) with safety lock.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/sjc218.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Sharp">
+                    <div class="card-img-container">
+                        <img src="images/sharp-sjc318.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Sharp+SJC318'; this.style.objectFit='contain';" class="card-img" alt="Sharp SJC318">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Sharp SJC318</h3>
+                        <span class="card-tag">310L Capacity</span>
+                        <p class="card-desc">Large chest freezer. High voltage range. Equipped with Grip Handle and LED Lighting.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/sjc318.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panalux Series -->
+        <div class="brand-section" data-brand="Panalux">
+            <div class="brand-header">
+                <h2 class="brand-title">Panalux Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                <div class="card" data-brand="Panalux">
+                    <div class="card-img-container">
+                        <img src="images/panalux-model-1.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Panalux+160L'; this.style.objectFit='contain';" class="card-img" alt="Panalux 160L">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Panalux CF 160L</h3>
+                        <span class="card-tag">Chest Type</span>
+                        <p class="card-desc">Comes with lock and key. Easy to move with bottom wheels. Ideal for small use.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/panalux-160l.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Panalux">
+                    <div class="card-img-container">
+                        <img src="images/panalux-model-2.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Panalux+240L'; this.style.objectFit='contain';" class="card-img" alt="Panalux 240L">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Panalux CF 240L</h3>
+                        <span class="card-tag">Chest Type</span>
+                        <p class="card-desc">Medium chest freezer. High-efficiency cooling system with convenient double-door design.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/panalux-240l.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Khind Series -->
+        <div class="brand-section" data-brand="Khind">
+            <div class="brand-header">
+                <h2 class="brand-title">Khind Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                <div class="card" data-brand="Khind">
+                    <div class="card-img-container">
+                        <img src="images/khind-fz100.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+FZ100'; this.style.objectFit='contain';" class="card-img" alt="Khind FZ100">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind FZ100</h3>
+                        <span class="card-tag">100L Net</span>
+                        <p class="card-desc">Compact chest freezer suitable for small spaces.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/khind-fz100.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Khind">
+                    <div class="card-img-container">
+                        <img src="images/khind-fz142.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+FZ142'; this.style.objectFit='contain';" class="card-img" alt="Khind FZ142">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind FZ142</h3>
+                        <span class="card-tag">142L Net</span>
+                        <p class="card-desc">Chest freezer with increased storage. Features internal baskets for organization.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/khind-fz142.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Khind">
+                    <div class="card-img-container">
+                        <img src="images/khind-fz208.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+FZ208'; this.style.objectFit='contain';" class="card-img" alt="Khind FZ208">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind FZ208</h3>
+                        <span class="card-tag">208L Net</span>
+                        <p class="card-desc">Standard chest freezer. Provides excellent long-term freezing capability.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/khind-fz208.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Khind">
+                    <div class="card-img-container">
+                        <img src="images/khind-fz295.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+FZ295'; this.style.objectFit='contain';" class="card-img" alt="Khind FZ295">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind FZ295</h3>
+                        <span class="card-tag">295L Net</span>
+                        <p class="card-desc">Large chest freezer. Includes heavy-duty castor wheels for mobility.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/khind-fz295.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Khind">
+                    <div class="card-img-container">
+                        <img src="images/khind-fz400.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+FZ400'; this.style.objectFit='contain';" class="card-img" alt="Khind FZ400">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind FZ-400</h3>
+                        <span class="card-tag">508L Gross</span>
+                        <p class="card-desc">Double-door chest freezer with door lock and key. Designed for commercial volume.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/khind-fz400.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Khind">
+                    <div class="card-img-container">
+                        <img src="images/khind-fz508.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+FZ508'; this.style.objectFit='contain';" class="card-img" alt="Khind FZ508">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind FZ-508</h3>
+                        <span class="card-tag">508L Gross</span>
+                        <p class="card-desc">Double-door chest freezer. Features a 5 Year Compressor Warranty.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/khind-fz508.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Khind">
+                    <div class="card-img-container">
+                        <img src="images/khind-fz708.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+FZ708'; this.style.objectFit='contain';" class="card-img" alt="Khind FZ708">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind FZ-708</h3>
+                        <span class="card-tag">708L Gross</span>
+                        <p class="card-desc">Extra-large double-door chest freezer. 5 Year Compressor Warranty.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/khind-fz708.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Khind">
+                    <div class="card-img-container">
+                        <img src="images/khind-upright-245l.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+Upright'; this.style.objectFit='contain';" class="card-img" alt="Khind Upright">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind Upright Freezer</h3>
+                        <span class="card-tag">245L Gross</span>
+                        <p class="card-desc">Vertical freezer design with 7 drawers for easy access. 5 year motor warranty.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/khind-upright.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warehouse Series -->
+        <div class="brand-section" data-brand="Warehouse">
+            <div class="brand-header">
+                <h2 class="brand-title">Warehouse Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                <div class="card" data-brand="Warehouse">
+                    <div class="card-img-container">
+                        <img src="images/warehouse-fz90.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Warehouse+FZ90'; this.style.objectFit='contain';" class="card-img" alt="Warehouse FZ90">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse FZ-90</h3>
+                        <span class="card-tag">90L Capacity</span>
+                        <p class="card-desc">Compact chest freezer. Perfect for small businesses or supplementary home storage.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/warehouse-fz90.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Warehouse">
+                    <div class="card-img-container">
+                        <img src="images/warehouse-fz1188.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Warehouse+FZ1188'; this.style.objectFit='contain';" class="card-img" alt="Warehouse FZ1188">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse FZ-1188</h3>
+                        <span class="card-tag">110L Capacity</span>
+                        <p class="card-desc">Chest freezer. 110 Liters. Features an efficient cooling system.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/warehouse-fz1188.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Warehouse">
+                    <div class="card-img-container">
+                        <img src="images/warehouse-fz1588.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Warehouse+FZ1588'; this.style.objectFit='contain';" class="card-img" alt="Warehouse FZ1588">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse FZ1588</h3>
+                        <span class="card-tag">150L Capacity</span>
+                        <p class="card-desc">Chest freezer. 150 Liters capacity. Reliable and energy efficient.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/warehouse-fz1588.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Warehouse">
+                    <div class="card-img-container">
+                        <img src="images/warehouse-fz2588.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Warehouse+FZ2588'; this.style.objectFit='contain';" class="card-img" alt="Warehouse FZ2588">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse FZ-2588</h3>
+                        <span class="card-tag">215L Capacity</span>
+                        <p class="card-desc">Chest freezer with a practical glass door for easy viewing of contents.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/warehouse-fz2588.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Warehouse">
+                    <div class="card-img-container">
+                        <img src="images/warehouse-fz3588.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Warehouse+FZ3588'; this.style.objectFit='contain';" class="card-img" alt="Warehouse FZ3588">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse FZ-3588</h3>
+                        <span class="card-tag">315L Capacity</span>
+                        <p class="card-desc">Chest freezer with clear glass door. Ideal for commercial displays.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/warehouse-fz3588.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Warehouse">
+                    <div class="card-img-container">
+                        <img src="images/warehouse-fz4588.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Warehouse+FZ4588'; this.style.objectFit='contain';" class="card-img" alt="Warehouse FZ4588">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse FZ-4588</h3>
+                        <span class="card-tag">430L Capacity</span>
+                        <p class="card-desc">Chest freezer featuring a spacious double-door design.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/warehouse-fz4588.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Warehouse">
+                    <div class="card-img-container">
+                        <img src="images/warehouse-fz5588.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Warehouse+FZ5588'; this.style.objectFit='contain';" class="card-img" alt="Warehouse FZ5588">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse FZ-5588</h3>
+                        <span class="card-tag">530L Capacity</span>
+                        <p class="card-desc">Large double-door chest freezer. High capacity storage for commercial needs.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/warehouse-fz5588.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Warehouse">
+                    <div class="card-img-container">
+                        <img src="images/warehouse-wd500wr.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Warehouse+WD500WR'; this.style.objectFit='contain';" class="card-img" alt="Warehouse WD500WR">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse WD-500WR</h3>
+                        <span class="card-tag">418L Net</span>
+                        <p class="card-desc">500L Chest Freezer. Designed with a silent hinge and fast freezing capability.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/warehouse-wd500wr.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Warehouse">
+                    <div class="card-img-container">
+                        <img src="images/warehouse-md860wr.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Warehouse+MD860WR'; this.style.objectFit='contain';" class="card-img" alt="Warehouse MD860WR">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse MD-860WR</h3>
+                        <span class="card-tag">860L Gross</span>
+                        <p class="card-desc">Large commercial unit. Double glass doors and dual mode functionality.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/warehouse-md860wr.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Warehouse">
+                    <div class="card-img-container">
+                        <img src="images/warehouse-showcase220l.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Showcase+220L'; this.style.objectFit='contain';" class="card-img" alt="Warehouse Showcase 220L">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse Showcase 220L</h3>
+                        <span class="card-tag">Display Freezer</span>
+                        <p class="card-desc">Sliding glass door display freezer. Perfect for displaying frozen goods.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/warehouse-sc220l.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Warehouse">
+                    <div class="card-img-container">
+                        <img src="images/warehouse-showcase330l.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Showcase+330L'; this.style.objectFit='contain';" class="card-img" alt="Warehouse Showcase 330L">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse Showcase 330L</h3>
+                        <span class="card-tag">Display Freezer</span>
+                        <p class="card-desc">Sliding glass door display freezer. Excellent visibility for retail environments.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/warehouse-sc330l.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Warehouse">
+                    <div class="card-img-container">
+                        <img src="images/warehouse-showcase550l.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Showcase+550L'; this.style.objectFit='contain';" class="card-img" alt="Warehouse Showcase 550L">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse Showcase 550L</h3>
+                        <span class="card-tag">Display Freezer</span>
+                        <p class="card-desc">Large sliding glass door display freezer. High-end display solution.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/warehouse-sc550l.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Midea Series -->
+        <div class="brand-section" data-brand="Midea">
+            <div class="brand-header">
+                <h2 class="brand-title">Midea Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                <div class="card" data-brand="Midea">
+                    <div class="card-img-container">
+                        <img src="images/midea-mdrc151.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Midea+RC151'; this.style.objectFit='contain';" class="card-img" alt="Midea RC151">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Midea MD-RC151</h3>
+                        <span class="card-tag">99L Net</span>
+                        <p class="card-desc">Chest freezer. Includes wheels for mobility. Compact and reliable.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/midea-rc151.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Midea">
+                    <div class="card-img-container">
+                        <img src="images/midea-mdrc207.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Midea+RC207'; this.style.objectFit='contain';" class="card-img" alt="Midea RC207">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Midea MD-RC207</h3>
+                        <span class="card-tag">142L Net</span>
+                        <p class="card-desc">Chest freezer. An efficient and durable choice for moderate storage.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/midea-rc207.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Midea">
+                    <div class="card-img-container">
+                        <img src="images/midea-mdrz458.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Midea+RZ458'; this.style.objectFit='contain';" class="card-img" alt="Midea RZ458">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Midea MDRZ458</h3>
+                        <span class="card-tag">336L Display</span>
+                        <p class="card-desc">White ice cream display freezer. Double curved glass doors. 5-year compressor warranty.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/midea-rz458.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Midea">
+                    <div class="card-img-container">
+                        <img src="images/midea-mdrz577.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Midea+RZ577'; this.style.objectFit='contain';" class="card-img" alt="Midea RZ577">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Midea MDRZ577</h3>
+                        <span class="card-tag">428L Display</span>
+                        <p class="card-desc">White ice cream display freezer. Large capacity with a 5-year compressor warranty.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/midea-rz577.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hisense Series -->
+        <div class="brand-section" data-brand="Hisense">
+            <div class="brand-header">
+                <h2 class="brand-title">Hisense Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                <div class="card" data-brand="Hisense">
+                    <div class="card-img-container">
+                        <img src="images/hisense-fc125d4bws.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Hisense+FC125'; this.style.objectFit='contain';" class="card-img" alt="Hisense FC125">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Hisense FC125</h3>
+                        <span class="card-tag">128L Capacity</span>
+                        <p class="card-desc">Chest freezer. Maintains cold for 5.5 days without power.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/hisense-fc125.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Hisense">
+                    <div class="card-img-container">
+                        <img src="images/hisense-fc206daw.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Hisense+FC206'; this.style.objectFit='contain';" class="card-img" alt="Hisense FC206">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Hisense FC206</h3>
+                        <span class="card-tag">178L Capacity</span>
+                        <p class="card-desc">Chest freezer. Impressively holds cold for 7.3 days after power loss.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/hisense-fc206.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Hisense">
+                    <div class="card-img-container">
+                        <img src="images/hisense-fc258daw.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Hisense+FC258'; this.style.objectFit='contain';" class="card-img" alt="Hisense FC258">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Hisense FC258</h3>
+                        <span class="card-tag">248L Capacity</span>
+                        <p class="card-desc">Chest freezer. 5-star energy efficiency rating.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/hisense-fc258.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Hisense">
+                    <div class="card-img-container">
+                        <img src="images/hisense-fc326d4bwy.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Hisense+FC326'; this.style.objectFit='contain';" class="card-img" alt="Hisense FC326">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Hisense FC326</h3>
+                        <span class="card-tag">300L Capacity</span>
+                        <p class="card-desc">Excellent thermal retention, keeping cold for up to 135 hours.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/hisense-fc326.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Hisense">
+                    <div class="card-img-container">
+                        <img src="images/hisense-fc428d4bwy.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Hisense+FC428'; this.style.objectFit='contain';" class="card-img" alt="Hisense FC428">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Hisense FC428</h3>
+                        <span class="card-tag">350L Capacity</span>
+                        <p class="card-desc">Large capacity unit that can sustain temperatures for 5.5 days after power loss.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/hisense-fc428.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Hisense">
+                    <div class="card-img-container">
+                        <img src="images/hisense-fc663d4bwb.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Hisense+FC663'; this.style.objectFit='contain';" class="card-img" alt="Hisense FC663">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Hisense FC663</h3>
+                        <span class="card-tag">550L Gross</span>
+                        <p class="card-desc">Convertible chest freezer (Freezer or Chiller). Exceptional thermal retention.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/hisense-fc663.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Hisense">
+                    <div class="card-img-container">
+                        <img src="images/hisense-fc900d4bwbp.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Hisense+FC900'; this.style.objectFit='contain';" class="card-img" alt="Hisense FC900">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Hisense FC900</h3>
+                        <span class="card-tag">780L Capacity</span>
+                        <p class="card-desc">Extra-large capacity chest freezer. Outstanding cold retention.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/hisense-fc900.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Hisense">
+                    <div class="card-img-container">
+                        <img src="images/hisense-fv188n4awn.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Hisense+FV188'; this.style.objectFit='contain';" class="card-img" alt="Hisense FV188">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Hisense FV188</h3>
+                        <span class="card-tag">180L Upright</span>
+                        <p class="card-desc">Frost Free Upright Freezer. Eliminates manual defrosting.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/hisense-fv188.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Hisense">
+                    <div class="card-img-container">
+                        <img src="images/hisense-fv280n4awnp.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Hisense+FV280'; this.style.objectFit='contain';" class="card-img" alt="Hisense FV280">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Hisense FV280</h3>
+                        <span class="card-tag">280L Upright</span>
+                        <p class="card-desc">Frost Free Upright Freezer. Large capacity with premium warranty.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/hisense-fv280.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Komachi Series -->
+        <div class="brand-section" data-brand="Komachi">
+            <div class="brand-header">
+                <h2 class="brand-title">Komachi Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                <div class="card" data-brand="Komachi">
+                    <div class="card-img-container">
+                        <img src="images/komachi-90l.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Komachi+90L'; this.style.objectFit='contain';" class="card-img" alt="Komachi 90L">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Komachi 90L</h3>
+                        <span class="card-tag">Chest Freezer</span>
+                        <p class="card-desc">Small, compact chest freezer. Ideal for personal use.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/komachi-90l.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Komachi">
+                    <div class="card-img-container">
+                        <img src="images/komachi-kmw1688.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Komachi+160L'; this.style.objectFit='contain';" class="card-img" alt="Komachi 160L">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Komachi KMW-1688</h3>
+                        <span class="card-tag">160L Capacity</span>
+                        <p class="card-desc">Standard chest freezer. Reliable cooling performance.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/komachi-kmw1688.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card" data-brand="Komachi">
+                    <div class="card-img-container">
+                        <img src="images/komachi-kmw2588.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Komachi+250L'; this.style.objectFit='contain';" class="card-img" alt="Komachi 250L">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Komachi KMW-2588</h3>
+                        <span class="card-tag">250L Capacity</span>
+                        <p class="card-desc">Mid-sized chest freezer. Great balance of size and storage.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/komachi-kmw2588.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Narutron Series -->
+        <div class="brand-section" data-brand="Narutron">
+            <div class="brand-header">
+                <h2 class="brand-title">Narutron Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                <div class="card" data-brand="Narutron">
+                    <div class="card-img-container">
+                        <img src="images/narutron-110l-sliding.png" onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Narutron+110L'; this.style.objectFit='contain';" class="card-img" alt="Narutron 110L">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Narutron 110L</h3>
+                        <span class="card-tag">Sliding Glass</span>
+                        <p class="card-desc">Compact display freezer with a sliding glass door. Perfect for retail display.</p>
+                        <div class="card-divider"></div>
+                        <a href="freezer-details/narutron-110l.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-</div> <script>
-        // 侧边栏逻辑
-        window.toggleNav = function() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-            const body = document.body;
-            const mainContent = document.getElementById("main-content"); 
-            const scrollBarWidth = '17px'; 
-            
-            const isOpened = sidebar.style.width === '250px';
-            if (isOpened) {
-                sidebar.style.width = '0';
-                overlay.style.display = 'none';
-                body.style.overflow = 'auto';
-                mainContent.style.marginRight = '0';
+    <!-- Fixed Back Button -->
+    <div class="footer-bar">
+        <a href="index.html" class="btn-back" title="Back to Home"><i class="fas fa-home"></i></a>
+    </div>
+
+    <script>
+        // Toggle Sidebar
+        function toggleNav() {
+            const sb = document.getElementById("mySidebar");
+            const ov = document.getElementById("overlay");
+            if(sb.style.width === "250px") {
+                sb.style.width = "0"; ov.style.display = "none";
             } else {
-                mainContent.style.marginRight = scrollBarWidth;
-                body.style.overflow = 'hidden';
-                sidebar.style.width = '250px';
-                overlay.style.display = 'block';
+                sb.style.width = "250px"; ov.style.display = "block";
             }
         }
-        window.toggleSubmenu = function(element) {
-            const submenu = element.nextElementSibling;
-            submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
+        function toggleSubmenu(el) {
+            const sub = el.nextElementSibling;
+            sub.style.display = sub.style.display === "block" ? "none" : "block";
         }
 
+        // Toggle Filter
+        function toggleFilter() {
+            document.getElementById("filter-panel").classList.toggle("open");
+        }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const allProducts = document.querySelectorAll('.product-card');
-            const allTitles = document.querySelectorAll('.brand-group-title');
-
-            // 过滤函数
-            window.filterProducts = function(filter) {
-                let visibleBrands = new Set(); 
-                
-                // 遍历所有产品卡片
-                allProducts.forEach(card => {
-                    const cardBrand = card.getAttribute('data-brand');
-                    
-                    if (filter === 'all' || cardBrand === filter) {
-                        card.style.display = 'flex'; 
-                        visibleBrands.add(cardBrand);
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                // 遍历所有品牌分组标题
-                allTitles.forEach(title => {
-                    const titleBrand = title.getAttribute('data-brand');
-                    
-                    if (filter === 'all' || visibleBrands.has(titleBrand)) {
-                        title.style.display = 'block'; 
-                    } else {
-                        title.style.display = 'none';
-                    }
-                });
-            }
-        });
+        // Filter Logic
+        function runFilter() {
+            const val = document.getElementById("brand-select").value;
+            const sections = document.querySelectorAll(".brand-section");
+            sections.forEach(sec => {
+                const brand = sec.getAttribute("data-brand");
+                if(val === "all" || brand === val) {
+                    sec.style.display = "block";
+                } else {
+                    sec.style.display = "none";
+                }
+            });
+            document.getElementById("filter-panel").classList.remove("open");
+        }
     </script>
 </body>
 </html>
