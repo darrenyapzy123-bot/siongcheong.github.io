@@ -13,7 +13,7 @@
         /* ------------------- 核心配色方案 (Midnight Blue) ------------------- */
         :root {
             /* 深邃背景 */
-            --bg-color: #0f172a; /* 深岩蓝 */
+            --bg-color: #0f172a; 
             /* 卡片背景 - 稍浅的蓝灰 */
             --card-bg: #1e293b; 
             /* 主文字 - 接近纯白 */
@@ -25,7 +25,7 @@
             /* 悬停色 - 更亮的蓝 */
             --hover-blue: #7dd3fc; 
             /* 导航栏背景 - 半透明深蓝 */
-            --nav-bg: rgba(15, 23, 42, 0.85);
+            --nav-bg: rgba(15, 23, 42, 0.90); /*稍微增加不透明度以突出Logo*/
             
             --font-serif: 'Playfair Display', serif;
         }
@@ -36,7 +36,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-primary);
-            -webkit-font-smoothing: antialiased; /* 让字体在深色背景上更清晰 */
+            -webkit-font-smoothing: antialiased; 
             overflow-x: hidden;
         }
 
@@ -50,7 +50,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            height: 60px; /*稍微加高一点显大气*/
+            height: 70px; /* 增加高度以容纳 Logo */
             background-color: var(--nav-bg);
             backdrop-filter: saturate(180%) blur(20px);
             -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -58,12 +58,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* 极细的分割线 */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
         }
 
         .nav-content {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px; /* 加宽一点 */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -71,19 +71,31 @@
             height: 100%;
         }
 
-        .nav-logo {
+        /* 文字 Logo (左侧/中间) */
+        .nav-logo-text {
             color: var(--text-primary);
             font-family: var(--font-serif);
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             letter-spacing: 0.5px;
             z-index: 10001;
             font-style: italic;
+            white-space: nowrap;
+        }
+
+        /* 右上角图片 Logo */
+        .header-logo-right {
+            height: 45px; /* 适配导航栏高度 */
+            width: auto;
+            object-fit: contain;
+            /* 简单的阴影让Logo在深色背景更立体 */
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
         }
 
         .desktop-nav {
             display: flex;
-            gap: 35px;
+            gap: 30px;
+            margin: 0 20px; /* 稍微留出间距 */
         }
 
         .desktop-nav a {
@@ -96,7 +108,7 @@
         }
 
         .desktop-nav a:hover {
-            color: var(--accent-blue); /* 悬停变亮蓝 */
+            color: var(--accent-blue); 
         }
 
         /* ------------------- 汉堡图标 ------------------- */
@@ -127,9 +139,9 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background-color: var(--bg-color); /* 与主背景一致 */
+            background-color: var(--bg-color); 
             z-index: 10000;
-            padding-top: 80px; 
+            padding-top: 90px; /* 避开更高的导航栏 */
             transform: translateY(-100%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             visibility: hidden;
@@ -143,7 +155,6 @@
             visibility: visible;
         }
 
-        /* 汉堡按钮动画 */
         .menu-icon.active span:nth-child(1) {
             transform: rotate(45deg) translate(5px, 6px);
         }
@@ -154,7 +165,6 @@
             transform: rotate(-45deg) translate(5px, -6px);
         }
 
-        /* 移动端主链接样式 */
         .mobile-link-item {
             width: 100%;
             border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -174,15 +184,14 @@
         }
         
         .mobile-link:hover {
-            background-color: rgba(56, 189, 248, 0.1); /* 淡淡的蓝色背景 */
+            background-color: rgba(56, 189, 248, 0.1); 
             color: var(--accent-blue);
         }
 
-        /* 产品子菜单容器 */
         .mobile-submenu {
             max-height: 0;
             overflow: hidden;
-            background-color: #020617; /* 比主背景更深 */
+            background-color: #020617; 
             transition: max-height 0.4s ease-out; 
         }
 
@@ -190,7 +199,6 @@
             max-height: 1200px; 
         }
 
-        /* 子菜单链接样式 */
         .mobile-sublink {
             display: block;
             padding: 14px 40px 14px 60px; 
@@ -207,7 +215,6 @@
             padding-left: 65px; 
         }
 
-        /* 箭头动画 */
         .chevron {
             font-size: 0.8em;
             transition: transform 0.3s;
@@ -220,22 +227,20 @@
 
         /* ------------------- Hero 区域 ------------------- */
         .hero-section {
-            padding-top: 140px;
+            padding-top: 150px; /* 增加顶部间距以适应更高的导航栏 */
             padding-bottom: 80px;
             text-align: center;
-            /* 增加一个非常微妙的蓝色径向渐变，更有层次 */
             background: radial-gradient(circle at center top, #1e293b 0%, #0f172a 70%);
         }
 
         .hero-title {
             font-family: var(--font-serif);
-            font-size: 4.5rem; /* 大气 */
+            font-size: 4.5rem; 
             font-weight: 700;
             color: var(--text-primary);
             margin: 0 0 16px 0;
             letter-spacing: -0.02em;
             line-height: 1.1;
-            /* 字体渐变光泽效果 */
             background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -243,7 +248,7 @@
 
         .hero-subtitle {
             font-size: 1.4rem;
-            color: var(--accent-blue); /* 副标题用亮蓝色点缀 */
+            color: var(--accent-blue); 
             font-weight: 400;
             margin-bottom: 30px;
             max-width: 600px;
@@ -267,7 +272,7 @@
 
         .product-card {
             background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.05); /* 极细的边框 */
+            border: 1px solid rgba(255, 255, 255, 0.05); 
             border-radius: 20px;
             overflow: hidden;
             padding: 40px 30px;
@@ -281,11 +286,10 @@
             position: relative;
         }
 
-        /* 悬停效果：卡片发光 */
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); /* 深阴影 */
-            border-color: rgba(56, 189, 248, 0.3); /* 边框变蓝 */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); 
+            border-color: rgba(56, 189, 248, 0.3); 
             z-index: 2;
         }
 
@@ -322,7 +326,7 @@
 
         .btn-link:hover {
             color: var(--hover-blue);
-            transform: translateX(3px); /* 箭头移动效果 */
+            transform: translateX(3px); 
         }
 
         .btn-link::after {
@@ -339,7 +343,7 @@
             object-fit: contain;
             background-color: transparent; 
             transition: transform 0.5s ease;
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3)); /* 图片加投影增加立体感 */
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3)); 
         }
         
         .product-card:hover img {
@@ -352,19 +356,24 @@
 
         /* ------------------- Footer ------------------- */
         .page-footer {
-            background-color: #020617; /* 最深色 */
+            background-color: #020617; 
             padding: 40px 20px;
             text-align: center;
             font-size: 0.85rem;
-            color: #64748b; /* 暗淡的文字 */
+            color: #64748b; 
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             margin-top: 80px;
         }
 
         /* ------------------- 响应式 ------------------- */
-        @media (max-width: 768px) {
+        @media (max-width: 850px) { /* 调整断点以适应导航栏内容 */
             .desktop-nav { display: none; }
             .menu-icon { display: flex; }
+            
+            /* 在移动端，让 Logo 稍微小一点 */
+            .header-logo-right { height: 35px; }
+            .nav-logo-text { font-size: 1.1rem; }
+            
             .hero-title { font-size: 3rem; padding: 0 10px; }
             .hero-subtitle { font-size: 1.1rem; padding: 0 20px; }
             .category-grid { grid-template-columns: 1fr; padding: 0 10px; }
@@ -377,15 +386,17 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-content">
+            <!-- 1. 左侧：移动端汉堡菜单 (桌面端隐藏) -->
             <div class="menu-icon" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
 
-            <a href="#" class="nav-logo">Siong Cheong Trading</a>
+            <!-- 2. 左侧/中间：文字品牌名 -->
+            <a href="#" class="nav-logo-text">Siong Cheong Trading</a>
 
-            <!-- Desktop Links -->
+            <!-- 3. 中间：桌面端导航链接 (移动端隐藏) -->
             <div class="desktop-nav">
                 <a href="index.html">Home</a>
                 <a href="#products">Products</a> 
@@ -393,11 +404,12 @@
                 <a href="contact.html">Contact</a>
             </div>
             
-            <div style="width: 24px; display: block; @media(min-width:769px){display:none;}"></div>
+            <!-- 4. 右上角：恢复的图片 Logo -->
+            <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo-right" onerror="this.style.display='none'">
         </div>
     </nav>
 
-    <!-- Mobile Fullscreen Menu with Accordion -->
+    <!-- Mobile Fullscreen Menu -->
     <div class="mobile-menu-overlay" id="mobileMenu">
         
         <div class="mobile-link-item">
