@@ -1,450 +1,646 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siong Cheong Trading 产品系列</title>
+    <title>Siong Cheong Trading | Premium Appliances</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Playfair Display Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* ------------------- 核心排版修正 ------------------- */
+        /* ------------------- 核心配色方案 (Midnight Blue) ------------------- */
+        :root {
+            /* 深邃背景 */
+            --bg-color: #0f172a; /* 深岩蓝 */
+            /* 卡片背景 - 稍浅的蓝灰 */
+            --card-bg: #1e293b; 
+            /* 主文字 - 接近纯白 */
+            --text-primary: #f8fafc; 
+            /* 次级文字 - 蓝灰色 */
+            --text-secondary: #94a3b8; 
+            /* 强调色 - 亮天蓝 */
+            --accent-blue: #38bdf8; 
+            /* 悬停色 - 更亮的蓝 */
+            --hover-blue: #7dd3fc; 
+            /* 导航栏背景 - 半透明深蓝 */
+            --nav-bg: rgba(15, 23, 42, 0.85);
+            
+            --font-serif: 'Playfair Display', serif;
+        }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            /* ⚠️ 已按要求删除 display: flex; 和 justify-content: center; 恢复 body 默认行为 */
-        }
-
-        /* 2. 主内容容器 */
-        #main-content {
-            width: 100%;
-            transition: margin-right 0.5s; 
-            /* ✅ 已按要求删除 display: flex; 和 flex-direction: column; */
-        }
-
-        /* ------------------- 汉堡菜单和侧边栏样式 ------------------- */
-        
-        /* 菜单图标（汉堡） */
-        .menu-icon {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            cursor: pointer;
-            padding: 10px;
-            background-color: #3498db; /* 蓝色主题 */
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s;
-        }
-
-        .bar {
-            width: 25px;
-            height: 3px;
-            background-color: white;
-            margin: 5px 0;
-            transition: 0.4s;
-        }
-
-        /* 侧边栏 */
-        .sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 999;
-            top: 0;
-            left: 0;
-            background-color: #2c3e50;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased; /* 让字体在深色背景上更清晰 */
             overflow-x: hidden;
-            padding-top: 60px;
-            transition: 0.5s;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-            max-width: 250px;
         }
 
-        .sidebar a, .sidebar .submenu-toggle {
-            padding: 15px 25px;
+        a {
             text-decoration: none;
-            font-size: 1.2em;
-            color: #ecf0f1;
-            display: block;
-            transition: 0.3s;
-            border-bottom: 1px solid #34495e;
-            cursor: pointer;
+            color: inherit;
         }
 
-        .sidebar a:hover, .sidebar .submenu-toggle:hover {
-            background-color: #3498db;
-            color: white;
-        }
-
-        .closebtn {
-            position: absolute;
-            top: 0;
-            right: 25px;
-            font-size: 36px;
-            line-height: 50px;
-        }
-
-        .submenu {
-            display: none;
-            background-color: #3e566e;
-            padding-left: 20px;
-        }
-        
-        /* 遮罩层 */
-        .overlay {
+        /* ------------------- 顶部导航栏 ------------------- */
+        .navbar {
             position: fixed;
-            height: 100%;
+            top: 0;
             width: 100%;
+            height: 60px; /*稍微加高一点显大气*/
+            background-color: var(--nav-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* 极细的分割线 */
+        }
+
+        .nav-content {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            height: 100%;
+        }
+
+        .nav-logo {
+            color: var(--text-primary);
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            z-index: 10001;
+            font-style: italic;
+        }
+
+        .desktop-nav {
+            display: flex;
+            gap: 35px;
+        }
+
+        .desktop-nav a {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: 0.02em;
+            font-weight: 500;
+        }
+
+        .desktop-nav a:hover {
+            color: var(--accent-blue); /* 悬停变亮蓝 */
+        }
+
+        /* ------------------- 汉堡图标 ------------------- */
+        .menu-icon {
+            display: none;
+            cursor: pointer;
+            z-index: 10001;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+            width: 24px;
+            height: 24px;
+        }
+
+        .menu-icon span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--text-primary);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* ------------------- 移动端全屏菜单 ------------------- */
+        .mobile-menu-overlay {
+            position: fixed;
             top: 0;
             left: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 998;
-            display: none;
-        }
-
-        /* ------------------- 顶部 Header ------------------- */
-        header {
-            background: #2c3e50;
-            padding: 20px;
-            color: white;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            position: relative;
-            padding-left: 60px; /* 为汉堡图标留出空间 */
             width: 100%;
-            box-sizing: border-box; 
-        }
-
-        .header-logo {
-            position: absolute;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            width: 250px; /* 调整 Logo 宽度 */
-            height: auto;
-        }
-
-        /* ------------------- 产品卡片容器 (多列排版的核心) ------------------- */
-        .products-container {
-            padding: 40px 20px;
-            max-width: 1300px; /* 限制内容最大宽度 */
-            margin: 0 auto; /* 居中内容 */
-        }
-
-        /* 确保多列布局 */
-        .category-grid {
-            /* 关键 CSS：使用 grid 布局实现响应式多列 */
-            display: grid;
-            /* auto-fit: 尽可能多地填充列。minmax(280px, 1fr): 每列最小宽度280px，最大宽度平均分配 */
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px; /* 卡片之间的间距 */
-        }
-
-        /* 产品卡片 */
-        .product-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-align: center;
-            padding-bottom: 20px;
-            /* 内部使用 flex 垂直对齐，与外部布局不冲突 */
+            height: 100vh;
+            background-color: var(--bg-color); /* 与主背景一致 */
+            z-index: 10000;
+            padding-top: 80px; 
+            transform: translateY(-100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            visibility: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            overflow-y: auto; 
         }
 
+        .mobile-menu-overlay.active {
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        /* 汉堡按钮动画 */
+        .menu-icon.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+        .menu-icon.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-icon.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+
+        /* 移动端主链接样式 */
+        .mobile-link-item {
+            width: 100%;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .mobile-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            padding: 20px 40px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: var(--font-serif);
+            transition: background-color 0.2s;
+        }
+        
+        .mobile-link:hover {
+            background-color: rgba(56, 189, 248, 0.1); /* 淡淡的蓝色背景 */
+            color: var(--accent-blue);
+        }
+
+        /* 产品子菜单容器 */
+        .mobile-submenu {
+            max-height: 0;
+            overflow: hidden;
+            background-color: #020617; /* 比主背景更深 */
+            transition: max-height 0.4s ease-out; 
+        }
+
+        .mobile-submenu.open {
+            max-height: 1200px; 
+        }
+
+        /* 子菜单链接样式 */
+        .mobile-sublink {
+            display: block;
+            padding: 14px 40px 14px 60px; 
+            color: var(--text-secondary); 
+            font-size: 1.05rem;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            transition: color 0.3s, padding-left 0.3s;
+        }
+
+        .mobile-sublink:hover {
+            color: var(--accent-blue);
+            padding-left: 65px; 
+        }
+
+        /* 箭头动画 */
+        .chevron {
+            font-size: 0.8em;
+            transition: transform 0.3s;
+            color: var(--accent-blue);
+        }
+        .mobile-link.active .chevron {
+            transform: rotate(180deg);
+        }
+
+
+        /* ------------------- Hero 区域 ------------------- */
+        .hero-section {
+            padding-top: 140px;
+            padding-bottom: 80px;
+            text-align: center;
+            /* 增加一个非常微妙的蓝色径向渐变，更有层次 */
+            background: radial-gradient(circle at center top, #1e293b 0%, #0f172a 70%);
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: 4.5rem; /* 大气 */
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 16px 0;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            /* 字体渐变光泽效果 */
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: var(--accent-blue); /* 副标题用亮蓝色点缀 */
+            font-weight: 400;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            letter-spacing: 0.5px;
+        }
+
+        /* ------------------- 产品网格 ------------------- */
+        .products-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05); /* 极细的边框 */
+            border-radius: 20px;
+            overflow: hidden;
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s, border-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 380px;
+            position: relative;
+        }
+
+        /* 悬停效果：卡片发光 */
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); /* 深阴影 */
+            border-color: rgba(56, 189, 248, 0.3); /* 边框变蓝 */
+            z-index: 2;
+        }
+
+        .card-content {
+            margin-bottom: 30px;
+            width: 100%;
         }
 
         .product-card h2 {
-            font-size: 1.6em;
-            color: #34495e;
-            margin: 15px 0 10px;
+            font-size: 1.8rem;
+            margin: 0 0 10px 0;
+            color: var(--text-primary);
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .description {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin: 0 auto 15px auto;
+            max-width: 90%;
+            font-weight: 400;
+        }
+
+        .btn-link {
+            font-size: 1rem;
+            color: var(--accent-blue);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .btn-link:hover {
+            color: var(--hover-blue);
+            transform: translateX(3px); /* 箭头移动效果 */
+        }
+
+        .btn-link::after {
+            content: '›';
+            font-size: 1.4rem;
+            margin-left: 5px;
+            margin-top: -2px;
         }
 
         .product-card img {
             width: 100%;
-            height: 200px;
+            max-width: 220px;
+            height: 180px;
             object-fit: contain;
-            background-color: #fcfcfc;
-            border-bottom: 1px solid #eee;
-            padding: 20px;
-        }
-
-        .description {
-            padding: 0 15px;
-            color: #7f8c8d;
-            font-size: 0.95em;
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
-
-        /* ------------------- 详情按钮样式 - 统一蓝色 ------------------- */
-        .btn-detail {
-            display: inline-block;
-            padding: 12px 25px;
-            background-color: #3498db; /* 统一蓝色 */
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background-color 0.2s, transform 0.2s;
-            margin-top: 10px;
+            background-color: transparent; 
+            transition: transform 0.5s ease;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3)); /* 图片加投影增加立体感 */
         }
         
-        .btn-detail:hover {
-            background-color: #2980b9; /* 悬停深蓝色 */
-            transform: scale(1.03);
+        .product-card:hover img {
+            transform: scale(1.05);
         }
-        
-        /* ------------------- 底部 Footer ------------------- */
+
+        .product-card img[src=""], .product-card img:not([src]){
+            opacity: 0;
+        }
+
+        /* ------------------- Footer ------------------- */
         .page-footer {
-            padding: 30px 20px;
+            background-color: #020617; /* 最深色 */
+            padding: 40px 20px;
             text-align: center;
-            background-color: #2c3e50;
-            margin-top: 40px; 
-            color: white;
+            font-size: 0.85rem;
+            color: #64748b; /* 暗淡的文字 */
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 80px;
         }
 
-        .page-footer p {
-            margin: 0;
-            font-size: 1em;
+        /* ------------------- 响应式 ------------------- */
+        @media (max-width: 768px) {
+            .desktop-nav { display: none; }
+            .menu-icon { display: flex; }
+            .hero-title { font-size: 3rem; padding: 0 10px; }
+            .hero-subtitle { font-size: 1.1rem; padding: 0 20px; }
+            .category-grid { grid-template-columns: 1fr; padding: 0 10px; }
+            .product-card { min-height: auto; padding: 40px 24px; }
         }
-
-        /* 响应式调整 */
-        @media (max-width: 600px) {
-            .header-logo {
-                width: 150px;
-            }
-            header {
-                font-size: 20px;
-            }
-        }
-
     </style>
 </head>
 <body>
 
-<div class="menu-icon" onclick="toggleNav()">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-</div>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="menu-icon" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
 
-<div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-    <a href="index.html">Home</a>
-    <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
-    <div class="submenu" style="display: block;"> 
-        <a href="refrigerator.html">Refrigerator (冰箱)</a>
-        <a href="chiller.html">Chiller (冷柜)</a>
-        <a href="freezer.html">Freezer (冷冻柜)</a>
-        <a href="ac.html">Air Conditioner (空调)</a>
-        <a href="portable_ac.html">Portable Air Cond (移动式空调)</a>
-        <a href="tv.html">TV (电视)</a>
-        <a href="washer.html">Washer (洗衣机)</a>
-        <a href="dryer.html">Dryer (烘干机)</a>
-        <a href="kitchen.html">Kitchen Appliances (厨房电器)</a>
-        <a href="hood.html">Hood (抽油烟机)</a>
-        <a href="gas.html">Gas (燃气灶具)</a>
-        <a href="oven.html">Oven (烤箱)</a>
-        <a href="microwave.html">Microwave (微波炉)</a>
-        <a href="air_fryer.html">Air Fryer (空气炸锅)</a>
-        <a href="shower.html">Shower (热水器/花洒)</a>
-        <a href="air_purifier.html">Air Purifier (空气净化器)</a>
-        <a href="speaker.html">Speaker (音响)</a>
-        <a href="small.html">Small Appliances (小家电)</a>
+            <a href="#" class="nav-logo">Siong Cheong Trading</a>
+
+            <!-- Desktop Links -->
+            <div class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="#products">Products</a> 
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            
+            <div style="width: 24px; display: block; @media(min-width:769px){display:none;}"></div>
+        </div>
+    </nav>
+
+    <!-- Mobile Fullscreen Menu with Accordion -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        
+        <div class="mobile-link-item">
+            <a href="index.html" class="mobile-link" onclick="toggleMenu()">Home</a>
+        </div>
+
+        <!-- Products with Toggle Logic -->
+        <div class="mobile-link-item">
+            <div class="mobile-link" onclick="toggleProductSubmenu(this)">
+                Products 
+                <i class="fas fa-chevron-down chevron"></i>
+            </div>
+            <div class="mobile-submenu" id="productSubmenu">
+                <a href="refrigerator.html" class="mobile-sublink">Refrigerator</a>
+                <a href="chiller.html" class="mobile-sublink">Chiller</a>
+                <a href="freezer.html" class="mobile-sublink">Freezer</a>
+                <a href="ac.html" class="mobile-sublink">Air Conditioner</a>
+                <a href="portable_ac.html" class="mobile-sublink">Portable Air Cond</a>
+                <a href="tv.html" class="mobile-sublink">TV</a>
+                <a href="washer.html" class="mobile-sublink">Washer</a>
+                <a href="dryer.html" class="mobile-sublink">Dryer</a>
+                <a href="kitchen.html" class="mobile-sublink">Kitchen Appliances</a>
+                <a href="hood.html" class="mobile-sublink">Hood</a>
+                <a href="gas.html" class="mobile-sublink">Gas</a>
+                <a href="oven.html" class="mobile-sublink">Oven</a>
+                <a href="microwave.html" class="mobile-sublink">Microwave</a>
+                <a href="air_fryer.html" class="mobile-sublink">Air Fryer</a>
+                <a href="shower.html" class="mobile-sublink">Shower</a>
+                <a href="air_purifier.html" class="mobile-sublink">Air Purifier</a>
+                <a href="speaker.html" class="mobile-sublink">Speaker</a>
+                <a href="small.html" class="mobile-sublink">Small Appliances</a>
+            </div>
+        </div>
+
+        <div class="mobile-link-item">
+            <a href="about.html" class="mobile-link" onclick="toggleMenu()">About Us</a>
+        </div>
+        
+        <div class="mobile-link-item">
+            <a href="contact.html" class="mobile-link" onclick="toggleMenu()">Contact</a>
+        </div>
+
     </div>
-    <a href="about.html">About Us</a>
-    <a href="location.html">Our Location</a>
-    <a href="contact.html">Contact Us</a>
-</div>
 
-<div id="overlay" class="overlay" onclick="toggleNav()"></div>
+    <!-- Hero -->
+    <div class="hero-section">
+        <h1 class="hero-title">Siong Cheong Trading</h1>
+        <p class="hero-subtitle">Elevating life with premium quality appliances.</p>
+    </div>
 
-<div id="main-content">
-    <header>
-        Siong Cheong Trading 产品系列
-        <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
-    </header>
-
-    <div class="products-container">
+    <!-- Products Grid -->
+    <div class="products-wrapper" id="products">
         <div class="category-grid">
-            
+            <!-- Grid Items -->
             <div class="product-card">
-                <img src="refrigerator_icon.png" alt="Refrigerator">
-                <h2>Refrigerator (冰箱)</h2>
-                <p class="description">提供各种尺寸和技术（Inverter, No Frost）的家用冰箱。</p>
-                <a class="btn-detail" href="refrigerator.html">查看详情</a>
+                <div class="card-content">
+                    <h2>Refrigerator</h2>
+                    <p class="description">Inverter & No Frost technology for intelligent freshness.</p>
+                    <a class="btn-link" href="refrigerator.html">Learn more</a>
+                </div>
+                <img src="refrigerator_icon.png" alt="Refrigerator" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Fridge'">
             </div>
 
             <div class="product-card">
-                <img src="chiller_icon.png" alt="Chiller">
-                <h2>Chiller (展示冷柜)</h2>
-                <p class="description">适用于商业用途的饮料和食品展示冷柜。</p>
-                <a class="btn-detail" href="chiller.html">查看详情</a>
+                <div class="card-content">
+                    <h2>Chiller</h2>
+                    <p class="description">High-efficiency display chillers, perfect for commercial use.</p>
+                    <a class="btn-link" href="chiller.html">Learn more</a>
+                </div>
+                <img src="chiller_icon.png" alt="Chiller" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Chiller'">
+            </div>
+            
+            <div class="product-card">
+                <div class="card-content">
+                    <h2>Freezer</h2>
+                    <p class="description">Massive capacity with rapid freezing performance.</p>
+                    <a class="btn-link" href="freezer.html">Learn more</a>
+                </div>
+                <img src="freezer_icon.png" alt="Freezer" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Freezer'">
             </div>
 
             <div class="product-card">
-                <img src="freezer_icon.png" alt="Freezer">
-                <h2>Freezer (冷冻柜)</h2>
-                <p class="description">卧式、立式和展示型冷冻柜，满足大容量冷冻需求。</p>
-                <a class="btn-detail" href="freezer.html">查看详情</a>
+                <div class="card-content">
+                    <h2>Air Conditioner</h2>
+                    <p class="description">Quiet comfort with smart whole-home temperature control.</p>
+                    <a class="btn-link" href="ac.html">Learn more</a>
+                </div>
+                <img src="ac_icon.png" alt="AC" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=AC'">
             </div>
 
             <div class="product-card">
-                <img src="ac_icon.png" alt="Air Conditioner">
-                <h2>Air Conditioner (空调)</h2>
-                <p class="description">分体式、窗式和中央空调系统，提供舒适的室内温度。</p>
-                <a class="btn-detail" href="ac.html">查看详情</a>
-            </div>
-            
-            <div class="product-card">
-                <img src="portable_ac_icon.png" alt="Portable Air Cond">
-                <h2>Portable Air Cond (移动式空调)</h2>
-                <p class="description">无需安装，方便移动的制冷解决方案。</p>
-                <a class="btn-detail" href="portable_ac.html">查看详情</a>
+                <div class="card-content">
+                    <h2>Portable AC</h2>
+                    <p class="description">Cooling on the go, wherever you need it.</p>
+                    <a class="btn-link" href="portable_ac.html">Learn more</a>
+                </div>
+                <img src="portable_ac_icon.png" alt="Portable AC" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Portable+AC'">
             </div>
 
             <div class="product-card">
-                <img src="tv_icon.png" alt="TV">
-                <h2>TV (电视)</h2>
-                <p class="description">提供 Smart TV、4K UHD 等多种型号，享受家庭娱乐。</p>
-                <a class="btn-detail" href="tv.html">查看详情</a>
+                <div class="card-content">
+                    <h2>TV</h2>
+                    <p class="description">Immersive 4K UHD visual experience.</p>
+                    <a class="btn-link" href="tv.html">Learn more</a>
+                </div>
+                <img src="tv_icon.png" alt="TV" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=TV'">
             </div>
 
             <div class="product-card">
-                <img src="washer_icon.png" alt="Washer">
-                <h2>Washer (洗衣机)</h2>
-                <p class="description">全自动、半自动和滚筒式洗衣机。</p>
-                <a class="btn-detail" href="washer.html">查看详情</a>
+                <div class="card-content">
+                    <h2>Washer</h2>
+                    <p class="description">Smart washing cycles to care for your fabrics.</p>
+                    <a class="btn-link" href="washer.html">Learn more</a>
+                </div>
+                <img src="washer_icon.png" alt="Washer" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Washer'">
             </div>
 
             <div class="product-card">
-                <img src="dryer_icon.png" alt="Dryer">
-                <h2>Dryer (烘干机)</h2>
-                <p class="description">热泵式、冷凝式等高效烘干机，保护衣物。</p>
-                <a class="btn-detail" href="dryer.html">查看详情</a>
+                <div class="card-content">
+                    <h2>Dryer</h2>
+                    <p class="description">Heat pump technology for ready-to-wear dryness.</p>
+                    <a class="btn-link" href="dryer.html">Learn more</a>
+                </div>
+                <img src="dryer_icon.png" alt="Dryer" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Dryer'">
             </div>
 
             <div class="product-card">
-                <img src="kitchen_icon.png" alt="Kitchen Appliances">
-                <h2>Kitchen Appliances (厨房电器)</h2>
-                <p class="description">各类灶具、烤箱、微波炉、抽油烟机等厨房必备品。</p>
-                <a class="btn-detail" href="kitchen.html">查看详情</a>
-            </div>
-            
-            <div class="product-card">
-                <img src="hood_icon.png" alt="Hood">
-                <h2>Hood (抽油烟机)</h2>
-                <p class="description">高效吸油烟机，保持厨房清洁。</p>
-                <a class="btn-detail" href="hood.html">查看详情</a>
-            </div>
-            
-            <div class="product-card">
-                <img src="gas_icon.png" alt="Gas">
-                <h2>Gas (燃气灶具)</h2>
-                <p class="description">嵌入式和台式燃气炉，火力强劲稳定。</p>
-                <a class="btn-detail" href="gas.html">查看详情</a>
-            </div>
-            
-            <div class="product-card">
-                <img src="oven_icon.png" alt="Oven">
-                <h2>Oven (烤箱)</h2>
-                <p class="description">嵌入式或独立式烤箱，满足您的烘焙需求。</p>
-                <a class="btn-detail" href="oven.html">查看详情</a>
-            </div>
-            
-            <div class="product-card">
-                <img src="microwave_icon.png" alt="Microwave">
-                <h2>Microwave (微波炉)</h2>
-                <p class="description">多功能微波炉，快速加热和烹饪食物。</p>
-                <a class="btn-detail" href="microwave.html">查看详情</a>
-            </div>
-            
-            <div class="product-card">
-                <img src="air_fryer_icon.png" alt="Air Fryer">
-                <h2>Air Fryer (空气炸锅)</h2>
-                <p class="description">无油烹饪，健康美味的空气炸锅系列。</p>
-                <a class="btn-detail" href="air_fryer.html">查看详情</a>
-            </div>
-            
-            <div class="product-card">
-                <img src="shower_icon.png" alt="Shower">
-                <h2>Shower (热水器/花洒)</h2>
-                <p class="description">即热式热水器及淋浴设备，提供舒适洗浴体验。</p>
-                <a class="btn-detail" href="shower.html">查看详情</a>
-            </div>
-            
-            <div class="product-card">
-                <img src="air_purifier_icon.png" alt="Air Purifier">
-                <h2>Air Purifier (空气净化器)</h2>
-                <p class="description">高效过滤PM2.5，改善室内空气质量。</p>
-                <a class="btn-detail" href="air_purifier.html">查看详情</a>
-            </div>
-            
-            <div class="product-card">
-                <img src="speaker_icon.png" alt="Speaker">
-                <h2>Speaker (音响)</h2>
-                <p class="description">家庭影院和高品质音响系统。</p>
-                <a class="btn-detail" href="speaker.html">查看详情</a>
+                <div class="card-content">
+                    <h2>Kitchen</h2>
+                    <p class="description">Complete solutions for your modern kitchen.</p>
+                    <a class="btn-link" href="kitchen.html">Learn more</a>
+                </div>
+                <img src="kitchen_icon.png" alt="Kitchen" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Kitchen'">
             </div>
 
             <div class="product-card">
-                <img src="small_icon.png" alt="Small Appliances">
-                <h2>Small Appliances (小家电)</h2>
-                <p class="description">各种便捷实用的小型家用电器。</p>
-                <a class="btn-detail" href="small.html">查看详情</a>
+                <div class="card-content">
+                    <h2>Hood</h2>
+                    <p class="description">Powerful suction for a smoke-free kitchen.</p>
+                    <a class="btn-link" href="hood.html">Learn more</a>
+                </div>
+                <img src="hood_icon.png" alt="Hood" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Hood'">
             </div>
 
+            <div class="product-card">
+                <div class="card-content">
+                    <h2>Gas</h2>
+                    <p class="description">High-power burners with precise flame control.</p>
+                    <a class="btn-link" href="gas.html">Learn more</a>
+                </div>
+                <img src="gas_icon.png" alt="Gas" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Gas'">
+            </div>
+
+            <div class="product-card">
+                <div class="card-content">
+                    <h2>Oven</h2>
+                    <p class="description">Professional baking with even heat distribution.</p>
+                    <a class="btn-link" href="oven.html">Learn more</a>
+                </div>
+                <img src="oven_icon.png" alt="Oven" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Oven'">
+            </div>
+
+            <div class="product-card">
+                <div class="card-content">
+                    <h2>Microwave</h2>
+                    <p class="description">Multi-functional for rapid heating and cooking.</p>
+                    <a class="btn-link" href="microwave.html">Learn more</a>
+                </div>
+                <img src="microwave_icon.png" alt="Microwave" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Microwave'">
+            </div>
+
+            <div class="product-card">
+                <div class="card-content">
+                    <h2>Air Fryer</h2>
+                    <p class="description">Oil-free cooking for healthy, delicious meals.</p>
+                    <a class="btn-link" href="air_fryer.html">Learn more</a>
+                </div>
+                <img src="air_fryer_icon.png" alt="Air Fryer" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Air+Fryer'">
+            </div>
+
+            <div class="product-card">
+                <div class="card-content">
+                    <h2>Shower</h2>
+                    <p class="description">Thermostatic showers for a safe and comfortable bath.</p>
+                    <a class="btn-link" href="shower.html">Learn more</a>
+                </div>
+                <img src="shower_icon.png" alt="Shower" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Shower'">
+            </div>
+
+            <div class="product-card">
+                <div class="card-content">
+                    <h2>Air Purifier</h2>
+                    <p class="description">HEPA filtration for pure, healthy air.</p>
+                    <a class="btn-link" href="air_purifier.html">Learn more</a>
+                </div>
+                <img src="air_purifier_icon.png" alt="Air Purifier" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Air+Purifier'">
+            </div>
+
+            <div class="product-card">
+                <div class="card-content">
+                    <h2>Speaker</h2>
+                    <p class="description">Immersive home theater audio systems.</p>
+                    <a class="btn-link" href="speaker.html">Learn more</a>
+                </div>
+                <img src="speaker_icon.png" alt="Speaker" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Speaker'">
+            </div>
+
+            <div class="product-card">
+                <div class="card-content">
+                    <h2>Small Appliances</h2>
+                    <p class="description">Essential gadgets for a refined lifestyle.</p>
+                    <a class="btn-link" href="small.html">Learn more</a>
+                </div>
+                <img src="small_icon.png" alt="Small Appliances" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Small+Appliances'">
+            </div>
         </div>
     </div>
-    
-    <div class="page-footer">
-        <p>© 2025 Siong Cheong Trading. All Rights Reserved.</p>
-    </div>
-</div>
 
-<script>
-    // 侧边栏打开/关闭逻辑
-    window.toggleNav = function() {
-        const sidebar = document.getElementById("mySidebar");
-        const overlay = document.getElementById("overlay");
-        const body = document.body;
-        const mainContent = document.getElementById("main-content"); 
-        
-        // 假设滚动条宽度约为 17px 
-        const scrollBarWidth = '17px'; 
-        
-        const isOpened = sidebar.style.width === '250px';
+    <footer class="page-footer">
+        <p>Copyright © 2025 Siong Cheong Trading. All rights reserved.</p>
+    </footer>
 
-        if (isOpened) {
-            // 关闭菜单
-            sidebar.style.width = '0';
-            overlay.style.display = 'none';
-            body.style.overflow = 'auto'; // 恢复滚动
-            mainContent.style.marginRight = '0'; // 移除补偿边距
-        } else {
-            // 打开菜单
-            mainContent.style.marginRight = scrollBarWidth;
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.querySelector('.menu-icon');
+            const body = document.body;
             
-            body.style.overflow = 'hidden'; // 禁止滚动
-            sidebar.style.width = '250px';
-            overlay.style.display = 'block';
+            menu.classList.toggle('active');
+            icon.classList.toggle('active');
+            
+            if (menu.classList.contains('active')) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = '';
+            }
         }
-    }
 
-    // 子菜单展开/收起逻辑
-    window.toggleSubmenu = function(element) {
-        const submenu = element.nextElementSibling;
-        submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
-    }
-</script>
+        function toggleProductSubmenu(element) {
+            element.classList.toggle('active');
+            const submenu = document.getElementById('productSubmenu');
+            submenu.classList.toggle('open');
+        }
+    </script>
 </body>
 </html>
