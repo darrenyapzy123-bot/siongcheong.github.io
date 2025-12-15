@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Washing Machines | Siong Cheong Trading</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Playfair Display Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- SimpleLightbox CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* ------------------- 核心配色方案 (Midnight Blue) ------------------- */
+        :root {
+            --bg-color: #0f172a; 
+            --card-bg: #1e293b; 
+            --text-primary: #f8fafc; 
+            --text-secondary: #94a3b8; 
+            --accent-blue: #38bdf8; 
+            --hover-blue: #7dd3fc; 
+            --whatsapp-green: #25D366;
+            --nav-bg: rgba(15, 23, 42, 0.90);
+            --font-serif: 'Playfair Display', serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased; 
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ------------------- 顶部导航栏 (保持一致) ------------------- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 100px;
+            background-color: var(--nav-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+        }
+
+        .nav-content {
+            width: 100%;
+            max-width: 1300px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            height: 100%;
+        }
+
+        .nav-left-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-logo-text {
+            color: var(--text-primary);
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            z-index: 10001;
+            font-style: italic;
+            white-space: nowrap;
+        }
+
+        .header-logo-right {
+            width: 250px;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
+            flex-shrink: 0; 
+        }
+
+        .desktop-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .desktop-nav a {
+            color: var(--text-secondary);
+            font-size: 0.95rem; 
+            transition: color 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: 0.02em;
+            font-weight: 500;
+        }
+
+        .desktop-nav a:hover {
+            color: var(--accent-blue); 
+        }
+
+        .menu-icon {
+            display: flex;
+            cursor: pointer;
+            z-index: 10001;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+            width: 24px;
+            height: 24px;
+        }
+
+        .menu-icon span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--text-primary);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* ------------------- 移动端全屏菜单 ------------------- */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg-color); 
+            z-index: 10000;
+            padding-top: 120px;
+            transform: translateY(-100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; 
+        }
+
+        .mobile-menu-overlay.active {
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .menu-icon.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+        .menu-icon.active span:nth-child(2) { opacity: 0; }
+        .menu-icon.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+        .mobile-link-item { width: 100%; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .mobile-link { display: flex; justify-content: space-between; align-items: center; color: var(--text-primary); font-size: 1.5rem; padding: 20px 40px; cursor: pointer; font-weight: 600; font-family: var(--font-serif); transition: background-color 0.2s; }
+        .mobile-link:hover { background-color: rgba(56, 189, 248, 0.1); color: var(--accent-blue); }
+        .mobile-submenu { max-height: 0; overflow: hidden; background-color: #020617; transition: max-height 0.4s ease-out; }
+        .mobile-submenu.open { max-height: 1200px; }
+        .mobile-sublink { display: block; padding: 14px 40px 14px 60px; color: var(--text-secondary); font-size: 1.05rem; font-family: -apple-system, BlinkMacSystemFont, sans-serif; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.03); transition: color 0.3s, padding-left 0.3s; }
+        .mobile-sublink:hover { color: var(--accent-blue); padding-left: 65px; }
+        .chevron { font-size: 0.8em; transition: transform 0.3s; color: var(--accent-blue); }
+        .mobile-link.active .chevron { transform: rotate(180deg); }
+
+        /* ------------------- Hero 区域 ------------------- */
+        .hero-section {
+            padding-top: 180px; 
+            padding-bottom: 60px;
+            text-align: center;
+            background: radial-gradient(circle at center top, #1e293b 0%, #0f172a 70%);
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: 3.5rem; 
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 16px 0;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--accent-blue); 
+            font-weight: 400;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            letter-spacing: 0.5px;
+        }
+
+        /* ------------------- 筛选器样式 (高级暗色版) ------------------- */
+        .filter-section-wrapper {
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+            padding: 0 20px;
+        }
+
+        .filter-toggle-button {
+            width: 100%;
+            max-width: 200px;
+            padding: 12px 20px;
+            background-color: transparent;
+            color: var(--accent-blue);
+            font-size: 1rem;
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 50px; /* 圆角胶囊样式 */
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 0 auto;
+        }
+
+        .filter-toggle-button:hover {
+            background-color: rgba(56, 189, 248, 0.1);
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .filter-controls {
+            max-height: 0;
+            overflow: hidden;
+            background: var(--card-bg);
+            border-radius: 20px;
+            margin-top: 20px;
+            transition: all 0.4s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .filter-controls.active {
+            max-height: 500px;
+            padding: 30px;
+            opacity: 1;
+            transform: translateY(0);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-controls label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-controls select {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: #0f172a; /* 深色输入框 */
+            color: #fff;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s;
+            appearance: none; /* 移除默认箭头 */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        .filter-controls select:focus {
+            border-color: var(--accent-blue);
+        }
+
+        /* ------------------- 分类标题 ------------------- */
+        .section-title {
+            text-align: center;
+            font-family: var(--font-serif);
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 60px;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-blue);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* ------------------- 产品列表 ------------------- */
+        .products-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            padding: 0; /* 重置 padding，内容自己控制 */
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(56, 189, 248, 0.3);
+            z-index: 2;
+        }
+
+        .product-card.hidden {
+            display: none;
+        }
+
+        /* 图片容器：白色背景让产品看起来更清晰 */
+        .card-image-wrapper {
+            width: 100%;
+            height: 250px;
+            background-color: #fff; /* 白底，因为洗衣机图片通常是白底 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .card-image-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .info h3 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin: 0 0 10px 0;
+            line-height: 1.2;
+        }
+
+        .info p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        /* More Details 按钮样式 (替换原 WhatsApp 按钮) */
+        .btn-details {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            /* Blue Gradient Matching Theme */
+            background: linear-gradient(135deg, var(--accent-blue) 0%, #0284c7 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+            box-sizing: border-box;
+        }
+
+        .btn-details:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
+            filter: brightness(1.1);
+        }
+
+        /* ------------------- Footer ------------------- */
+        .page-footer {
+            background-color: #020617; 
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b; 
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 60px;
+        }
+        
+        /* ------------------- 响应式 ------------------- */
+        @media (max-width: 900px) { 
+            .desktop-nav { display: none; }
+            .header-logo-right { width: 180px; }
+            .nav-logo-text { font-size: 1.1rem; }
+            .hero-title { font-size: 2.5rem; padding: 0 10px; }
+            .section-title { font-size: 1.6rem; }
+            .product-grid { grid-template-columns: 1fr; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="nav-left-wrapper">
+                <div class="menu-icon" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <a href="index.html" class="nav-logo-text">Siong Cheong Trading</a>
+            </div>
+
+            <div class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="index.html#products">Products</a> 
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            
+            <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo-right" onerror="this.style.display='none'">
+        </div>
+    </nav>
+
+    <!-- Mobile Fullscreen Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="mobile-link-item"><a href="index.html" class="mobile-link" onclick="toggleMenu()">Home</a></div>
+        <div class="mobile-link-item">
+            <div class="mobile-link" onclick="toggleProductSubmenu(this)">
+                Products <i class="fas fa-chevron-down chevron"></i>
+            </div>
+            <div class="mobile-submenu" id="productSubmenu">
+                <a href="refrigerator.html" class="mobile-sublink">Refrigerator</a>
+                <a href="chiller.html" class="mobile-sublink">Chiller</a>
+                <a href="freezer.html" class="mobile-sublink">Freezer</a>
+                <a href="ac.html" class="mobile-sublink">Air Conditioner</a>
+                <a href="portable_ac.html" class="mobile-sublink">Portable Air Cond</a>
+                <a href="tv.html" class="mobile-sublink">TV</a>
+                <a href="washer.html" class="mobile-sublink">Washer</a>
+                <a href="dryer.html" class="mobile-sublink">Dryer</a>
+                <a href="kitchen.html" class="mobile-sublink">Kitchen Appliances</a>
+                <a href="hood.html" class="mobile-sublink">Hood</a>
+                <a href="gas.html" class="mobile-sublink">Gas</a>
+                <a href="oven.html" class="mobile-sublink">Oven</a>
+                <a href="microwave.html" class="mobile-sublink">Microwave</a>
+                <a href="air_fryer.html" class="mobile-sublink">Air Fryer</a>
+                <a href="shower.html" class="mobile-sublink">Shower</a>
+                <a href="air_purifier.html" class="mobile-sublink">Air Purifier</a>
+                <a href="speaker.html" class="mobile-sublink">Speaker</a>
+                <a href="small.html" class="mobile-sublink">Small Appliances</a>
+            </div>
+        </div>
+        <div class="mobile-link-item"><a href="about.html" class="mobile-link" onclick="toggleMenu()">About Us</a></div>
+        <div class="mobile-link-item"><a href="contact.html" class="mobile-link" onclick="toggleMenu()">Contact</a></div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero-section">
+        <h1 class="hero-title">Washing Machines</h1>
+        <p class="hero-subtitle">Advanced technology for pristine fabric care.</p>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section-wrapper">
+        <button id="toggle-filter" class="filter-toggle-button">
+            <i class="fas fa-filter"></i> Filter Options
+        </button>
+        <div class="filter-controls" id="filter-content">
+            <div class="filter-group">
+                <label for="brand-filter">Brand</label>
+                <select id="brand-filter" onchange="applyFilters()">
+                    <option value="all">All Brands</option>
+                    <option value="sharp">Sharp</option>
+                    <option value="morgan">Morgan</option>
+                    <option value="midea">Midea</option>
+                    <option value="hisense">Hisense</option>
+                    <option value="khind">Khind</option>
+                    <option value="elba">Elba</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="capacity-filter">Capacity</label>
+                <select id="capacity-filter" onchange="applyFilters()">
+                    <option value="all">All Capacities</option>
+                    <option value="6.5">6.5 KG</option>
+                    <option value="7.5">7.5 KG</option>
+                    <option value="8.0">8.0 KG</option>
+                    <option value="9.0">9.0 KG</option>
+                    <option value="9.5">9.5 KG</option>
+                    <option value="10.0">10.0 KG</option>
+                    <option value="10.5">10.5 KG</option>
+                    <option value="11">11 KG</option>
+                    <option value="12">12 KG</option>
+                    <option value="13">13 KG</option>
+                    <option value="15">15 KG</option>
+                    <option value="15.5">15.5 KG</option>
+                    <option value="16.5">16.5 KG</option>
+                    <option value="17.0">17.0 KG</option>
+                    <option value="20">20 KG</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Content -->
+    <div class="products-wrapper">
+        
+        <!-- Section 1: Top Load -->
+        <h2 class="section-title">Top Load Models</h2>
+        <div class="product-grid">
+            
+            <div class="product-card" data-brand="sharp" data-capacity="9.5">
+                <a class="card-image-wrapper gallery-item" href="ESX-921.jpg">
+                    <img src="ESX-921.jpg" alt="SHARP ESX-921">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESX-921 (9.5KG)</h3>
+                    <p>Auto Start After Blackout, Fuzzy Control, Smart Filter, Stainless Steel Drum.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-921" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="sharp" data-capacity="11">
+                <a class="card-image-wrapper gallery-item" href="ESW-1109S.jpg">
+                    <img src="ESW-1109S.jpg" alt="SHARP ESW-1109S">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESW-1109S (11KG)</h3>
+                    <p>W-screw pulsator, Auto Start, Power-Off Memory, Stainless Steel Tub.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESW-1109S" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="sharp" data-capacity="12">
+                <a class="card-image-wrapper gallery-item" href="ESX-1221.jpg">
+                    <img src="ESX-1221.jpg" alt="SHARP ESX-1221">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESX-1221 (12KG)</h3>
+                    <p>Reliable cleaning with Auto Start & Fuzzy Control technology.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-1221" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="sharp" data-capacity="15.5">
+                <a class="card-image-wrapper gallery-item" href="ESX-1521.jpg">
+                    <img src="ESX-1521.jpg" alt="SHARP ESX-1521">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESX-1521 (15.5KG)</h3>
+                    <p>Large capacity for big loads, Auto Start & Smart Filter equipped.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-1521" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="sharp" data-capacity="17.0">
+                <a class="card-image-wrapper gallery-item" href="ESX-1721.jpg">
+                    <img src="ESX-1721.jpg" alt="SHARP ESX-1721">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESX-1721 (17KG)</h3>
+                    <p>Heavy duty washer with Intelligent Fuzzy Control.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESX-1721" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="sharp" data-capacity="20">
+                <a class="card-image-wrapper gallery-item" href="ESW-2009S.jpg">
+                    <img src="ESW-2009S.jpg" alt="SHARP ESW-2009S">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESW-2009S (20KG)</h3>
+                    <p>Massive capacity, W-screw pulsator for powerful washing action.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESW-2009S" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="morgan" data-capacity="9.5">
+                <a class="card-image-wrapper gallery-item" href="MFW-952S.jpg">
+                    <img src="MFW-952S.jpg" alt="MORGAN MFW-952S">
+                </a>
+                <div class="info">
+                    <h3>MORGAN MFW-952S (9.5KG)</h3>
+                    <p>Fuzzy logic, LED Display, Child Lock, Auto Unbalancing Detection.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-952S" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="morgan" data-capacity="13">
+                <a class="card-image-wrapper gallery-item" href="MFW-13000I.jpg">
+                    <img src="MFW-13000I.jpg" alt="MORGAN MFW-13000I">
+                </a>
+                <div class="info">
+                    <h3>MORGAN MFW-13000I (13KG) Inverter</h3>
+                    <p>Energy saving INVERTER model with advanced balancing detection.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-13000I" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="morgan" data-capacity="15">
+                <a class="card-image-wrapper gallery-item" href="MFW-15000I.jpg">
+                    <img src="MFW-15000I.jpg" alt="MORGAN MFW-15000I">
+                </a>
+                <div class="info">
+                    <h3>MORGAN MFW-15000I (15KG) Inverter</h3>
+                    <p>High capacity INVERTER model. Efficient and quiet operation.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-15000I" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="morgan" data-capacity="16.5">
+                <a class="card-image-wrapper gallery-item" href="MFW-1655CV.jpg">
+                    <img src="MFW-1655CV.jpg" alt="MORGAN MFW-1655CV">
+                </a>
+                <div class="info">
+                    <h3>MORGAN MFW-1655CV (16.5KG)</h3>
+                    <p>Inverter technology for large households. Child Lock safety.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about MORGAN MFW-1655CV" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="midea" data-capacity="7.5">
+                <a class="card-image-wrapper gallery-item" href="MA100W75.jpg">
+                    <img src="MA100W75.jpg" alt="MIDEA MA100W75">
+                </a>
+                <div class="info">
+                    <h3>MIDEA MA100W75 (7.5KG)</h3>
+                    <p>One-touch wash, 3D Water Flow, Water Magic Cube technology.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MA100W75" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="midea" data-capacity="9.0">
+                <a class="card-image-wrapper gallery-item" href="MA100W95.jpg">
+                    <img src="MA100W95.jpg" alt="MIDEA MA100W95">
+                </a>
+                <div class="info">
+                    <h3>MIDEA MA100W95 (9.0KG)</h3>
+                    <p>Turbo Mode for faster washing, Auto Clean drum function.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MA100W95" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="midea" data-capacity="10.5">
+                <a class="card-image-wrapper gallery-item" href="MA200W105D.jpg">
+                    <img src="MA200W105D.jpg" alt="MIDEA MA200W105D">
+                </a>
+                <div class="info">
+                    <h3>MIDEA MA200W105D (10.5KG) Inverter</h3>
+                    <p>INVERTER motor for energy saving. 3D Water Flow & Turbo Mode.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MA200W105D" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="hisense" data-capacity="8.0">
+                <a class="card-image-wrapper gallery-item" href="WT80F30.jpg">
+                    <img src="WT80F30.jpg" alt="HISENSE WT80F30">
+                </a>
+                <div class="info">
+                    <h3>HISENSE WT80F30 (8.0KG)</h3>
+                    <p>Reliable Top Load Washer with Soft Close Glass Door.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT80F30" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="hisense" data-capacity="12">
+                <a class="card-image-wrapper gallery-item" href="WTJA1313UB.jpg">
+                    <img src="WTJA1313UB.jpg" alt="HISENSE WTJA1313UB">
+                </a>
+                <div class="info">
+                    <h3>HISENSE WTJA1313UB (12KG)</h3>
+                    <p>Fully Automatic with bubble clean technology.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WTJA1313UB" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="hisense" data-capacity="10.5">
+                <a class="card-image-wrapper gallery-item" href="WT5J1013DT.jpg">
+                    <img src="WT5J1013DT.jpg" alt="HISENSE WT5J1013DT">
+                </a>
+                <div class="info">
+                    <h3>HISENSE WT5J1013DT (10.5KG) Inverter</h3>
+                    <p>Inverter technology with Auto Wash and Delay Start functions.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT5J1013DT" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="hisense" data-capacity="15">
+                <a class="card-image-wrapper gallery-item" href="WT150F50.jpg">
+                    <img src="WT150F50.jpg" alt="HISENSE WT150F50">
+                </a>
+                <div class="info">
+                    <h3>HISENSE WT150F50 (15KG) Inverter</h3>
+                    <p>Massive capacity Inverter model. Long-lasting motor performance.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about HISENSE WT150F50" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="khind" data-capacity="8.0">
+                <a class="card-image-wrapper gallery-item" href="WM80A.jpg">
+                    <img src="WM80A.jpg" alt="KHIND WM80A">
+                </a>
+                <div class="info">
+                    <h3>KHIND WM80A (8KG)</h3>
+                    <p>Durable and affordable fully automatic washer.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about KHIND WM80A" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="khind" data-capacity="10">
+                <a class="card-image-wrapper gallery-item" href="WM100A.jpg">
+                    <img src="WM100A.jpg" alt="KHIND WM100A">
+                </a>
+                <div class="info">
+                    <h3>KHIND WM100A (10KG)</h3>
+                    <p>Larger capacity for everyday washing needs.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about KHIND WM100A" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Front Load -->
+        <h2 class="section-title">Front Load Models</h2>
+        <div class="product-grid">
+            <div class="product-card" data-brand="sharp" data-capacity="8.5">
+                <a class="card-image-wrapper gallery-item" href="ESFK852EMW.jpg">
+                    <img src="ESFK852EMW.jpg" alt="SHARP ESFK852EMW">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESFK852EMW (8.5KG)</h3>
+                    <p>BLDC Inverter Motor (12yr warranty), iF Design Award, Touch Panel.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESFK852EMW" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="sharp" data-capacity="9.0">
+                <a class="card-image-wrapper gallery-item" href="ESFH9BMB.jpg">
+                    <img src="ESFH9BMB.jpg" alt="SHARP ESFH9BMB">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESFH9BMB (9KG)</h3>
+                    <p>Steam Care sterilization, High temp drum clean, Add laundry anytime.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESFH9BMB" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="sharp" data-capacity="10.0">
+                <a class="card-image-wrapper gallery-item" href="ESFH10BMB.jpg">
+                    <img src="ESFH10BMB.jpg" alt="SHARP ESFH10BMB">
+                </a>
+                <div class="info">
+                    <h3>SHARP ESFH10BMB (10KG)</h3>
+                    <p>Steam Care, Inverter Motor, Sleek design with high temp cleaning.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about SHARP ESFH10BMB" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Semi Auto -->
+        <h2 class="section-title">Semi Auto Models</h2>
+        <div class="product-grid">
+            <div class="product-card" data-brand="midea" data-capacity="7">
+                <a class="card-image-wrapper gallery-item" href="MT100W70.jpg">
+                    <img src="MT100W70.jpg" alt="MIDEA MT100W70">
+                </a>
+                <div class="info">
+                    <h3>MIDEA MT100W70 (7.0KG)</h3>
+                    <p>Durable Body, Dual Force Pulsator, Air Fresh, Water Inlet Selection.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MT100W70" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-card" data-brand="midea" data-capacity="7">
+                <a class="card-image-wrapper gallery-item" href="MSW-8008P.jpg">
+                    <img src="MSW-8008P.jpg" alt="MIDEA MSW-8008P">
+                </a>
+                <div class="info">
+                    <h3>MIDEA MSW-8008P (7.0KG)</h3>
+                    <p>Fibre Body, Wash/Spin Selector, 5-Year Motor Warranty.</p>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about MIDEA MSW-8008P" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="page-footer">
+        <p>Copyright © 2025 Siong Cheong Trading. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        // 初始化 Lightbox
+        new SimpleLightbox('.gallery-item');
+
+        // 汉堡菜单逻辑
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.querySelector('.menu-icon');
+            const body = document.body;
+            
+            menu.classList.toggle('active');
+            icon.classList.toggle('active');
+            
+            if (menu.classList.contains('active')) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = '';
+            }
+        }
+
+        function toggleProductSubmenu(element) {
+            element.classList.toggle('active');
+            const submenu = document.getElementById('productSubmenu');
+            submenu.classList.toggle('open');
+        }
+
+        // 筛选器逻辑
+        document.getElementById('toggle-filter').addEventListener('click', function() {
+            document.getElementById('filter-content').classList.toggle('active');
+        });
+
+        function applyFilters() {
+            const brand = document.getElementById('brand-filter').value;
+            const capacity = document.getElementById('capacity-filter').value;
+            const cards = document.querySelectorAll('.product-card');
+
+            cards.forEach(card => {
+                const cardBrand = card.getAttribute('data-brand');
+                const cardCapacity = card.getAttribute('data-capacity');
+
+                const brandMatch = (brand === 'all' || brand === cardBrand);
+                const capacityMatch = (capacity === 'all' || capacity === cardCapacity);
+
+                if (brandMatch && capacityMatch) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+        
+        // 隐藏损坏图片
+        document.querySelectorAll('img').forEach(img => {
+            img.onerror = function() {
+                // 如果是 Logo，隐藏即可
+                if(this.classList.contains('header-logo-right')) {
+                    this.style.display = 'none';
+                    return;
+                }
+                // 如果是产品图，可以使用占位图或者隐藏
+                this.src = 'https://placehold.co/300x300/1e293b/FFF?text=Image+N/A';
+            }
+        });
+    </script>
+</body>
+</html>
