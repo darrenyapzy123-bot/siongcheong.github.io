@@ -3,416 +3,445 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Air Purifier Series (空气净化器系列)</title>
+    <title>Air Purifier Series</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Playfair Display & Lato -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* 通用重置 */
+        /* ------------------- Theme Variables ------------------- */
+        :root {
+            --bg-body: #0b1221;       /* Deep Navy Background */
+            --bg-card: #162030;       /* Card Background */
+            --text-main: #ffffff;     /* White Text */
+            --text-sub: #94a3b8;      /* Slate Grey Text */
+            --accent: #29b6f6;        /* Bright Blue Accent */
+            --btn-bg: #0ea5e9;        /* Button Background */
+            --btn-hover: #0284c7;     /* Button Hover */
+            --border-color: #1e293b;
+            --tag-bg: rgba(14, 165, 233, 0.2); /* Tag Background */
+            --tag-text: #38bdf8;      /* Tag Text */
+        }
+
+        /* ------------------- Reset & Base ------------------- */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            padding-bottom: 70px; /* 为底部的 "返回首页" 按钮留出空间 */
-        }
-        
-        /* ------------------- Menu & Sidebar Styles (Burger Menu) ------------------- */
-        .menu-icon {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            cursor: pointer;
-            padding: 10px;
-            background-color: #3498db; /* 保持主品牌蓝色 */
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        .bar { width: 25px; height: 3px; background-color: white; margin: 5px 0; }
-        .sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 999;
-            top: 0;
-            left: 0;
-            background-color: #2c3e50; /* 侧边栏背景色 */
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding-bottom: 60px;
             overflow-x: hidden;
-            padding-top: 60px;
-            transition: 0.5s;
-            max-width: 250px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* ------------------- Header (Siong Cheong Style) ------------------- */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 80px;
+            position: relative;
+            z-index: 1000;
+        }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .menu-icon { font-size: 24px; cursor: pointer; color: var(--text-main); }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: var(--text-sub); font-size: 16px; font-weight: 400; }
+        .nav-links a:hover { color: var(--text-main); }
+
+        /* ------------------- Sidebar ------------------- */
+        .sidebar {
+            height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0;
+            background-color: #080d16;
+            overflow-x: hidden; padding-top: 60px; transition: 0.4s;
+            border-right: 1px solid #1e293b; white-space: nowrap;
         }
         .sidebar a, .sidebar .submenu-toggle {
-            padding: 15px 25px;
-            text-decoration: none;
-            font-size: 1.2em;
-            color: #ecf0f1;
-            display: block;
-            border-bottom: 1px solid #34495e;
+            padding: 15px 30px; font-size: 16px; color: var(--text-sub);
+            display: block; border-bottom: 1px solid #1e293b; cursor: pointer;
+        }
+        .sidebar a:hover, .sidebar .submenu-toggle:hover {
+            color: var(--accent); background: rgba(255,255,255,0.05);
+        }
+        .sidebar .close-btn {
+            position: absolute; top: 15px; right: 25px; font-size: 30px; cursor: pointer;
+        }
+        .submenu { display: none; background: #0b1221; }
+        .submenu a { padding-left: 50px; font-size: 14px; }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 1500; display: none;
+        }
+
+        /* ------------------- Hero ------------------- */
+        .hero-section { text-align: center; padding: 80px 20px 40px; }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .hero-subtitle {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        /* ------------------- Filter Button ------------------- */
+        .filter-container {
+            display: flex; justify-content: center; margin: 40px 0 60px; position: relative;
+        }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #1e3a8a;
+            border-radius: 50px;
+            padding: 12px 30px;
+            color: var(--accent);
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            display: flex; align-items: center; gap: 10px;
+            transition: 0.3s;
         }
-        .sidebar a:hover, .sidebar .submenu-toggle:hover { background-color: #34495e; }
-        .closebtn { position: absolute; top: 0; right: 25px; font-size: 36px; line-height: 50px; }
-        .submenu { display: none; background-color: #3e566e; padding-left: 20px; }
-        .submenu a { padding: 10px 25px; font-size: 1em; border-bottom: none; }
-        .overlay { 
-            position: fixed; 
-            height: 100%; 
-            width: 100%; 
-            top: 0; 
-            left: 0; 
-            z-index: 998; 
-            background: rgba(0, 0, 0, 0.5); 
-            display: none; 
+        .filter-btn:hover { border-color: var(--accent); background: rgba(41, 182, 246, 0.1); }
+        #filter-panel {
+            display: none; position: absolute; top: 60px;
+            background: #1e293b; border: 1px solid #334155;
+            padding: 20px; border-radius: 8px; z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); min-width: 250px;
         }
-
-        /* ------------------- 顶部导航和筛选控制区样式 ------------------- */
-        header {
-            background-color: #0d47a1; 
-            color: white; 
-            padding: 20px; 
-            text-align: center;
-            padding-left: 80px; /* 为汉堡菜单图标留出空间 */
+        #filter-panel.open { display: block; }
+        .filter-select {
+            width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155;
+            color: white; border-radius: 4px; outline: none; margin-top: 5px;
         }
 
-        header h1 {
-            font-size: 1.8em;
-            margin-bottom: 5px;
+        /* ------------------- Section Title ------------------- */
+        .brand-header { text-align: center; margin-bottom: 50px; }
+        .brand-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        .brand-underline {
+            width: 60px; height: 4px; background-color: var(--accent);
+            margin: 0 auto; border-radius: 2px;
         }
 
-        /* 筛选控制容器 */
-        #filter-controls {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 15px 20px;
-            background-color: #ecf0f1;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        /* 下拉菜单样式 (保持蓝色配色) */
-        #brand-filter-dropdown {
-            padding: 10px 18px;
-            border-radius: 5px;
-            border: 1px solid #3498db; 
-            background-color: #3498db; 
-            color: white; 
-            font-size: 1em;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
+        /* ------------------- Product Card (MATCHING THE IMAGE) ------------------- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-        #brand-filter-dropdown option {
-            color: black;
-            background-color: white;
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            justify-content: center;
         }
 
-        /* ------------------- 产品列表和卡片优化 ------------------- */
-        .products-container {
-            display: flex;
-            flex-wrap: wrap;       
-            justify-content: center; 
-            gap: 25px;             
-            padding: 40px 20px;
-        }
-        
-        .brand-group-title {
-            flex: 0 0 100%; 
-            width: 100%;
-            text-align: left;
-            margin: 30px 0 15px 0;
-            padding-left: 10px;
-            font-size: 1.8em;
-            color: #34495e;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 5px;
-        }
-
-        .product-card {
-            /* 实现响应式多列布局 */
-            flex: 0 0 calc(33.333% - 16.666px); 
-            max-width: 350px; 
-            min-width: 280px;
-            background-color: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
+            text-align: left; /* Text left aligned as per image */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
         }
 
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: var(--accent);
         }
 
-        .product-image-box {
-            background-color: #fcfcfc;
-            padding: 25px;
-            height: 250px; /* 固定图片框高度 */
+        /* Image Container - White background to make product pop, similar to the card preview */
+        .card-img-container {
+            background-color: #ffffff;
+            width: 100%;
+            height: 280px;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px;
+            position: relative;
+            border-bottom: 1px solid #2d3748;
         }
-
-        .product-image {
+        
+        .card-img {
             max-width: 90%;
-            max-height: 100%;
+            max-height: 90%;
             object-fit: contain;
+            transition: transform 0.3s;
         }
+        .card:hover .card-img { transform: scale(1.05); }
 
-        .product-details {
-            padding: 15px;
-            flex-grow: 1; 
+        /* Info Section */
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
-        /* 产品名称颜色标注和字体大小调整 */
-        .product-details h3 {
-            font-size: 1.4em; 
-            color: #c0392b; /* 红色系，用于名称突出 */
-            margin-bottom: 10px; 
-            font-weight: 600;
+        /* Title: Serif, White, Bold */
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
         }
-        
-        /* 介绍文本优化 */
-        .product-details p {
-            font-size: 0.95em;
-            color: #555; 
-            margin-bottom: 20px; 
-            line-height: 1.6; /* 增加行高，减少拥挤感 */
-            text-align: left; /* 左对齐描述文本 */
-            flex-grow: 1;
-        }
-        
-        /* 统一蓝色按钮 */
-        .detail-button {
+
+        /* Tag: Blue Badge */
+        .card-tag {
             display: inline-block;
-            padding: 10px 25px;
-            background-color: #3498db; 
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-            margin-top: auto;
-        }
-        
-        .detail-button:hover {
-            background-color: #2980b9; 
+            background-color: var(--tag-bg);
+            color: var(--tag-text);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            width: fit-content;
         }
 
-        /* ------------------- 底部固定条 ------------------- */
-        #footer-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
+        /* Description: Grey Sans-Serif */
+        .card-desc {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            min-height: 40px; /* Consitent height */
+        }
+        
+        .card-divider {
+            height: 1px;
+            background-color: #2d3748;
+            margin-bottom: 15px;
             width: 100%;
-            background-color: #ffffff; 
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            padding: 10px 20px;
+        }
+        
+        .card-details-text {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        /* Button: Full Width, Bright Blue */
+        .btn-details {
+            display: block;
+            width: 100%;
+            background-color: var(--btn-bg);
+            color: white;
             text-align: center;
-            z-index: 90;
-        }
-
-        #home-btn {
-            display: inline-block;
-            width: 100%;
-            padding: 10px 0;
-            background-color: #2ecc71; /* 绿色按钮 */
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-            font-size: 1em;
-        }
-
-        #home-btn:hover {
-            background-color: #27ae60;
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 1200px) {
-            .product-card {
-                flex: 0 0 calc(50% - 12.5px); 
-            }
+            padding: 12px 0;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background 0.3s;
+            margin-top: auto; /* Push to bottom */
         }
         
+        .btn-details:hover {
+            background-color: var(--btn-hover);
+        }
+        
+        .btn-details i { margin-left: 5px; font-size: 0.9em; }
+
+        /* ------------------- Footer ------------------- */
+        .footer-bar {
+            position: fixed; bottom: 20px; right: 20px; z-index: 100;
+        }
+        .btn-back {
+            background: rgba(30, 41, 59, 0.8); color: white;
+            padding: 12px; border-radius: 50%;
+            backdrop-filter: blur(5px); border: 1px solid #334155;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.3s; font-size: 18px;
+        }
+        .btn-back:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .product-card {
-                flex: 0 0 100%;
-            }
+            header { padding: 0 20px; }
+            .nav-links { display: none; }
+            .hero-title { font-size: 2.5rem; }
+            .brand-title { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
-    
-    <div class="menu-icon" onclick="toggleNav()">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-    </div>
 
-    <div id="mySidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">×</a>
-        
-        <a href="index.html">Home / 首页</a>
-        
-        <div class="submenu-toggle" onclick="toggleSubmenu(this)">
-            Products / 产品
-        </div>
-        <div class="submenu">
-            <a href="refrigerator.html">Refrigerator (冰箱)</a>
-            <a href="chiller.html">Chiller (冷柜)</a>
-            <a href="freezer.html">Freezer (冷冻柜)</a>
-            <a href="ac.html">Air Conditioner (空调)</a>
-            <a href="portable_ac.html">Portable Air Cond (移动式空调)</a>
-            <a href="tv.html">TV (电视)</a>
-            <a href="washer.html">Washer (洗衣机)</a>
-            <a href="dryer.html">Dryer (烘干机)</a>
-            <a href="kitchen.html">Kitchen Appliances (厨房电器)</a>
-            <a href="hood.html">Hood (抽油烟机)</a>
-            <a href="gas.html">Gas (燃气灶具)</a>
-            <a href="oven.html">Oven (烤箱)</a>
-            <a href="microwave.html">Microwave (微波炉)</a>
-            <a href="air_fryer.html">Air Fryer (空气炸锅)</a>
-            <a href="shower.html">Shower (热水器/花洒)</a>
-            <a href="air_purifier.html">Air Purifier (空气净化器)</a>
-            <a href="speaker.html">Speaker (音响)</a>
-            <a href="small.html">Small Appliances (小家电)</a>
-        </div>
-
-        <a href="about.html">About Us / 关于我们</a>
-        <a href="contact.html">Contact Us / 联系我们</a>
-    </div>
-
-    <div id="overlay" class="overlay" onclick="toggleNav()"></div>
+    <!-- Header / Navbar -->
     <header>
-        <h1>Air Purifier Series (空气净化器系列)</h1>
+        <div class="header-left">
+            <div class="menu-icon" onclick="toggleNav()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="logo">Siong Cheong Trading</div>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#">Products</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+        </nav>
     </header>
 
-    <div id="filter-controls">
-        <select id="brand-filter-dropdown" onchange="filterProducts(this.value)">
-            <option value="all">筛选品牌 (Filter Brand)</option>
-            <option value="Sharp">Sharp</option>
+    <!-- Sidebar Navigation -->
+    <div id="mySidebar" class="sidebar">
+        <div class="close-btn" onclick="toggleNav()">&times;</div>
+        <a href="index.html">Home</a>
+        <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
+        <div class="submenu" style="display: block;">
+            <a href="refrigerator.html">Refrigerator</a>
+            <a href="washer.html">Washer</a>
+            <a href="air_fryer.html">Air Fryer</a>
+            <a href="air_purifier.html" class="active" style="color:var(--accent)">Air Purifier</a>
+            <a href="tv.html">TV</a>
+            <!-- Add other links as needed -->
+        </div>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+    </div>
+    <div id="overlay" class="overlay" onclick="toggleNav()"></div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1 class="hero-title">Air Purifier Series</h1>
+        <p class="hero-subtitle">Premium air quality solutions for your home.</p>
+    </section>
+
+    <!-- Filter Button -->
+    <div class="filter-container">
+        <button class="filter-btn" onclick="toggleFilter()">
+            <i class="fas fa-filter"></i> Filter Options
+        </button>
+        
+        <!-- Filter Dropdown -->
+        <div id="filter-panel">
+            <div style="margin-bottom: 10px; color: var(--text-sub); font-size: 0.9em;">Brand</div>
+            <select id="brand-select" class="filter-select" onchange="runFilter()">
+                <option value="all">All Brands</option>
+                <option value="Sharp">Sharp</option>
             </select>
+        </div>
     </div>
 
-    <div class="products-container">
+    <!-- Main Content -->
+    <div class="container">
         
-        <h2 class="brand-group-title" data-brand="Sharp">Sharp 空气净化器系列</h2>
-        <div class="product-card" data-brand="Sharp">
-            <div class="product-image-box">
-                <img src="images/sharp-fpj30.png" alt="Sharp FP-J30 空气净化器" class="product-image">
+        <!-- Sharp Series -->
+        <div class="brand-section" data-brand="Sharp">
+            <div class="brand-header">
+                <h2 class="brand-title">Sharp Series</h2>
+                <div class="brand-underline"></div>
             </div>
-            <div class="product-details">
-                <h3>Sharp FP-J30 (23m²)</h3>
-                <p>
-                    配备高浓度 **Plasmacluster 7000 净离子技术** ，覆盖面积达 23m²。
-                    有效去除霉菌、病毒、过敏原、异味和静电，并拥有强大吸力和 **Haze (雾霾) 模式**。
-                    经研究证实，有效率最高可达 91.3% 抑制冠状病毒 (Novel Coronavirus)。
-                    <br>（注：图片显示价格为 RM 429）
-                </p>
-                <a href="air-purifier-details/sharp-fpj30.html" class="detail-button">查看详情</a>
+
+            <div class="products-grid">
+                <!-- Product Card: Sharp FP-J30 -->
+                <div class="card" data-brand="Sharp">
+                    <div class="card-img-container">
+                        <img src="images/sharp-fpj30.png" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Sharp+FP-J30'; this.style.objectFit='contain';" 
+                             class="card-img" alt="Sharp FP-J30">
+                    </div>
+                    
+                    <div class="card-body">
+                        <!-- Title (Serif, White) -->
+                        <h3 class="card-title">Sharp FP-J30</h3>
+                        
+                        <!-- Tag (Blue Badge) -->
+                        <span class="card-tag">23m² Coverage</span>
+                        
+                        <!-- Description -->
+                        <p class="card-desc">
+                            Plasmacluster 7000 technology with Haze mode. Effectively removes mold, viruses, and allergens.
+                        </p>
+                        
+                        <div class="card-divider"></div>
+                        
+                        <p class="card-details-text">RM 429</p>
+
+                        <!-- Button (Full Width, Blue) -->
+                        <a href="air-purifier-details/sharp-fpj30.html" class="btn-details">
+                            More Details <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-        
+
     </div>
 
-    <div id="footer-bar">
-        <a href="index.html" id="home-btn">返回首页 (Back to Home)</a>
+    <!-- Fixed Back Button -->
+    <div class="footer-bar">
+        <a href="index.html" class="btn-back" title="Back to Home"><i class="fas fa-home"></i></a>
     </div>
-    
+
     <script>
-        // --- Burger Menu & Submenu Logic (Start) ---
+        // Toggle Sidebar
         function toggleNav() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-            const body = document.body;
-            
-            const isOpen = sidebar.offsetWidth > 0;
-
-            if (isOpen) {
-                sidebar.style.width = "0";
-                overlay.style.display = "none";
-                body.style.overflow = "auto";
+            const sb = document.getElementById("mySidebar");
+            const ov = document.getElementById("overlay");
+            if(sb.style.width === "250px") {
+                sb.style.width = "0"; ov.style.display = "none";
             } else {
-                // 确保其他子菜单关闭
-                document.querySelectorAll(".submenu").forEach(s => (s.style.display = "none"));
-                sidebar.style.width = "250px";
-                overlay.style.display = "block";
-                body.style.overflow = "hidden";
+                sb.style.width = "250px"; ov.style.display = "block";
             }
         }
-        window.toggleNav = toggleNav; 
 
-        function toggleSubmenu(element) {
-            const submenu = element.nextElementSibling;
-            const isShown = submenu.style.display === "block";
+        // Toggle Submenu
+        function toggleSubmenu(el) {
+            const sub = el.nextElementSibling;
+            sub.style.display = sub.style.display === "block" ? "none" : "block";
+        }
 
-            // 关闭所有其他打开的子菜单
-            document.querySelectorAll(".submenu").forEach(s => {
-                if (s !== submenu) {
-                    s.style.display = "none";
+        // Toggle Filter Panel
+        function toggleFilter() {
+            document.getElementById("filter-panel").classList.toggle("open");
+        }
+
+        // Filter Logic
+        function runFilter() {
+            const val = document.getElementById("brand-select").value;
+            const sections = document.querySelectorAll(".brand-section");
+            
+            sections.forEach(sec => {
+                const brand = sec.getAttribute("data-brand");
+                if(val === "all" || brand === val) {
+                    sec.style.display = "block";
+                } else {
+                    sec.style.display = "none";
                 }
             });
-
-            // 切换当前子菜单
-            submenu.style.display = isShown ? "none" : "block";
+            // Close panel after selection
+            document.getElementById("filter-panel").classList.remove("open");
         }
-        window.toggleSubmenu = toggleSubmenu; 
-        // --- Burger Menu & Submenu Logic (End) ---
-
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const allProducts = document.querySelectorAll('.product-card');
-            const allTitles = document.querySelectorAll('.brand-group-title');
-
-            // 过滤函数
-            window.filterProducts = function(filter) {
-                let visibleBrands = new Set(); 
-                
-                // 遍历所有产品卡片
-                allProducts.forEach(card => {
-                    const cardBrand = card.getAttribute('data-brand');
-                    
-                    if (filter === 'all' || cardBrand === filter) {
-                        card.style.display = 'flex'; 
-                        visibleBrands.add(cardBrand);
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                // 遍历所有品牌分组标题
-                allTitles.forEach(title => {
-                    const titleBrand = title.getAttribute('data-brand');
-                    
-                    if (filter === 'all' || visibleBrands.has(titleBrand)) {
-                        title.style.display = 'block'; 
-                    } else {
-                        title.style.display = 'none';
-                    }
-                });
-            }
-            
-            // 确保在页面加载时调用一次以应用初始过滤
-            window.filterProducts(document.getElementById('brand-filter-dropdown').value);
-        });
     </script>
 </body>
 </html>
