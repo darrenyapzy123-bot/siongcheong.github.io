@@ -3,555 +3,790 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Commercial Chillers & Display Fridges - Siong Cheong Trading</title>
+    <title>Commercial Chiller Collection</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Playfair Display & Lato -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
-        body {
+        /* ------------------- Theme Variables ------------------- */
+        :root {
+            --bg-body: #0b1221;       /* Deep Navy Background */
+            --bg-card: #162030;       /* Card Background */
+            --text-main: #ffffff;     /* White Text */
+            --text-sub: #94a3b8;      /* Slate Grey Text */
+            --accent: #29b6f6;        /* Bright Blue Accent */
+            --btn-bg: #0ea5e9;        /* Button Background */
+            --btn-hover: #0284c7;     /* Button Hover */
+            --border-color: #1e293b;
+            --tag-bg: rgba(14, 165, 233, 0.2); /* Tag Background */
+            --tag-text: #38bdf8;      /* Tag Text */
+            --whatsapp-green: #25D366; /* Special for WhatsApp buttons if needed, keeping blue for consistency though */
+        }
+
+        /* ------------------- Reset & Base ------------------- */
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
+            padding: 0;
         }
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding-bottom: 60px;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
 
+        /* ------------------- Header (Siong Cheong Style) ------------------- */
         header {
-            /* 原: #2c3e50 (深蓝/灰) -> 现: #3498db (浅蓝色) */
-            background: #3498db; 
-            padding: 20px;
-            color: white;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 80px;
+            position: relative;
+            z-index: 1000;
+        }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .menu-icon { font-size: 24px; cursor: pointer; color: var(--text-main); }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 700;
             font-size: 24px;
-            font-weight: bold;
-            position: relative; 
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: var(--text-sub); font-size: 16px; font-weight: 400; }
+        .nav-links a:hover { color: var(--text-main); }
+
+        /* ------------------- Sidebar ------------------- */
+        .sidebar {
+            height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0;
+            background-color: #080d16;
+            overflow-x: hidden; padding-top: 60px; transition: 0.4s;
+            border-right: 1px solid #1e293b; white-space: nowrap;
+        }
+        .sidebar a, .sidebar .submenu-toggle {
+            padding: 15px 30px; font-size: 16px; color: var(--text-sub);
+            display: block; border-bottom: 1px solid #1e293b; cursor: pointer;
+        }
+        .sidebar a:hover, .sidebar .submenu-toggle:hover {
+            color: var(--accent); background: rgba(255,255,255,0.05);
+        }
+        .sidebar .close-btn {
+            position: absolute; top: 15px; right: 25px; font-size: 30px; cursor: pointer;
+        }
+        .submenu { display: none; background: #0b1221; }
+        .submenu a { padding-left: 50px; font-size: 14px; }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 1500; display: none;
         }
 
-        /* Logo 尺寸 - 250px */
-        .header-logo {
-            position: absolute; 
-            top: 50%; 
-            right: 20px; 
-            transform: translateY(-50%); 
-            width: 250px; 
-            height: auto;
+        /* ------------------- Hero ------------------- */
+        .hero-section { text-align: center; padding: 80px 20px 40px; }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            font-weight: 700;
         }
-        
-        .container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: auto;
+        .hero-subtitle {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
         }
 
-        h2 {
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 25px;
-            color: #333;
+        /* ------------------- Filter Button ------------------- */
+        .filter-container {
+            display: flex; justify-content: center; margin: 40px 0 60px; position: relative;
         }
-        
-        h2::after {
-            content: '';
-            display: block;
-            width: 60px; 
-            height: 3px;
-            /* 原: #3498db (已是浅蓝色) -> 保持不变 */
-            background: #3498db; 
-            margin: 8px auto 0; 
-            border-radius: 2px;
-        }
-        
-        /* --- 筛选器按钮和容器样式 --- */
-        .filter-toggle-button {
-            display: block;
-            width: 150px;
-            padding: 10px;
-            margin: 10px 0 20px 0;
-            /* 原: #5a7d9a (中蓝/灰) -> 现: #3498db (浅蓝色) */
-            background: #3498db; 
-            color: white;
-            font-weight: bold;
-            text-align: center;
-            border: none;
-            border-radius: 5px;
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #1e3a8a;
+            border-radius: 50px;
+            padding: 12px 30px;
+            color: var(--accent);
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            display: flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+        }
+        .filter-btn:hover { border-color: var(--accent); background: rgba(41, 182, 246, 0.1); }
+        #filter-panel {
+            display: none; position: absolute; top: 60px;
+            background: #1e293b; border: 1px solid #334155;
+            padding: 20px; border-radius: 8px; z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); min-width: 250px;
+        }
+        #filter-panel.open { display: block; }
+        .filter-select {
+            width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155;
+            color: white; border-radius: 4px; outline: none; margin-top: 5px;
         }
 
-        .filter-toggle-button:hover {
-            /* 原: #47657a (中蓝/灰) -> 现: #2980b9 (浅蓝的深色版本，用于 hover 效果) */
-            background: #2980b9;
-        }
-
-        .filter-controls {
-            /* 默认隐藏筛选器内容 */
-            display: none; 
-            padding: 15px;
-            margin-bottom: 25px;
-            background: #eef4f7; 
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        /* 筛选器被打开时，显示内容 */
-        .filter-controls.active {
-            display: block;
-        }
-
-        .filter-controls label {
-            display: block; 
-            font-size: 1.1em;
-            font-weight: bold;
-            /* 原: #2c3e50 (深蓝/灰) -> 现: #3498db (浅蓝色) */
-            color: #3498db;
+        /* ------------------- Section Title ------------------- */
+        .brand-header { text-align: center; margin-bottom: 50px; }
+        .brand-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--text-main);
             margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        .brand-underline {
+            width: 60px; height: 4px; background-color: var(--accent);
+            margin: 0 auto; border-radius: 2px;
         }
 
-        .filter-controls select {
-            padding: 10px 12px;
-            width: 100%; 
-            max-width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-            cursor: pointer;
-            background-color: white;
-        }
-        /* --- 筛选器样式结束 --- */
-
-        .product-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+        /* ------------------- Product Card (Standardized) ------------------- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            justify-content: center;
         }
 
-        .product-card {
-            background: white;
-            border-radius: 10px;
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            
-            flex: 1 1 calc(33.333% - 14px); 
-            min-width: 250px;
-            display: flex;
-            flex-direction: column; 
-            
-            transition: all 0.3s ease; 
-        }
-        
-        .product-card:hover {
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
-            transform: translateY(-5px); 
-        }
-        
-        /* 筛选隐藏的卡片 */
-        .product-card.hidden {
-            display: none;
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 300px; 
-            object-fit: cover; 
-            background: #ddd;
-            border-bottom: 1px solid #eee; 
-            cursor: pointer; 
-        }
-
-        /* 针对 SC-170 图片的特定修正 */
-        .product-card-sc170 img {
-            object-fit: contain; 
-            background-color: white; 
-        }
-        
-        /* 强制 Lightbox 关闭按钮可见并定位 */
-        .sl-close {
-            display: block !important;
-            position: fixed !important;
-            top: 20px !important;
-            right: 20px !important;
-            z-index: 999999 !important; 
-            color: #fff !important; 
-            font-size: 40px !important; 
-            opacity: 1 !important;
-            background: rgba(0, 0, 0, 0.6) !important; 
-            border-radius: 50% !important;
-            width: 50px !important; 
-            height: 50px !important;
-            line-height: 50px !important;
-            text-align: center !important;
-            cursor: pointer;
-            text-shadow: 0 0 5px #000; 
-        }
-
-
-        .info {
-            padding: 15px;
-            text-align: center;
-            flex-grow: 1; 
             display: flex;
             flex-direction: column;
-            justify-content: space-between; 
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            height: 100%;
         }
 
-        .info h3 {
-            margin-top: 0;
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: var(--accent);
+        }
+
+        .card-img-container {
+            background-color: #ffffff;
+            width: 100%;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            border-bottom: 1px solid #2d3748;
+        }
+        
+        .card-img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+        .card:hover .card-img { transform: scale(1.05); }
+
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
             margin-bottom: 8px;
-            /* 原: #2c3e50 (深蓝/灰) -> 现: #3498db (浅蓝色) */
-            color: #3498db;
         }
 
-        .info p {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            line-height: 1.4;
-            flex-grow: 1; 
-            display: block; 
-            padding-bottom: 10px;
+        .card-tag {
+            display: inline-block;
+            background-color: var(--tag-bg);
+            color: var(--tag-text);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            width: fit-content;
+        }
+
+        .card-desc {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            min-height: 40px; 
         }
         
-        /* WhatsApp 按钮样式 - 保持绿色不变 */
-        .btn {
+        .card-divider {
+            height: 1px;
+            background-color: #2d3748;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .btn-details {
             display: block;
-            background: #25D366;
-            padding: 12px; 
-            text-align: center;
+            width: 100%;
+            background-color: var(--btn-bg);
             color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 12px;
-            align-self: stretch; 
-            transition: background 0.2s;
-        }
-
-        .btn:hover {
-            background: #1EBE55;
-        }
-
-        .back {
-            margin-top: 40px; 
             text-align: center;
+            padding: 12px 0;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background 0.3s;
+            margin-top: auto; 
         }
+        .btn-details:hover { background-color: var(--btn-hover); }
+        .btn-details i { margin-right: 5px; font-size: 1.1em; }
 
-        .back a {
-            text-decoration: none;
-            /* 原: #2c3e50 (深蓝/灰) -> 现: #3498db (浅蓝色) */
-            color: #3498db;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px 15px;
-            /* 原: #2c3e50 (深蓝/灰) -> 现: #3498db (浅蓝色) */
-            border: 2px solid #3498db;
-            border-radius: 5px;
-            transition: background 0.3s, color 0.3s;
+        /* ------------------- Footer ------------------- */
+        .footer-bar {
+            position: fixed; bottom: 20px; right: 20px; z-index: 100;
         }
+        .btn-back {
+            background: rgba(30, 41, 59, 0.8); color: white;
+            padding: 12px; border-radius: 50%;
+            backdrop-filter: blur(5px); border: 1px solid #334155;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.3s; font-size: 18px;
+        }
+        .btn-back:hover { border-color: var(--accent); color: var(--accent); }
 
-        .back a:hover {
-            /* 原: #2c3e50 (深蓝/灰) -> 现: #3498db (浅蓝色) */
-            background: #3498db;
-            color: white;
-        }
-        
-        /* 媒体查询：在小屏幕上显示两列 */
+        /* Responsive */
         @media (max-width: 768px) {
-            .product-card {
-                flex: 1 1 calc(50% - 10px); 
-            }
+            header { padding: 0 20px; }
+            .nav-links { display: none; }
+            .hero-title { font-size: 2.5rem; }
+            .brand-title { font-size: 2rem; }
         }
     </style>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css" 
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-
 <body>
 
-<header>
-    Commercial Chiller and Display Fridge Models
-    <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
-</header>
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+            <div class="menu-icon" onclick="toggleNav()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="logo">Siong Cheong Trading</div>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#">Products</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
 
-<div class="container">
-
-    <h2>Our Range of Display Chillers</h2>
-
-    <button id="toggle-filter" class="filter-toggle-button">
-        筛选品牌 (Filter)
-    </button>
-
-    <div class="filter-controls" id="filter-content">
-        <label for="brand-filter">选择品牌:</label>
-        <select id="brand-filter">
-            <option value="all">所有品牌</option>
-            <option value="khind">Khind</option>
-            <option value="hsc">Hisense</option> <option value="warehouse">Warehouse</option>
-            <option value="nakama">Nakama</option>
-            <option value="nsc">Narutron</option> <option value="other">其他 / SC</option>
-        </select>
+    <!-- Sidebar -->
+    <div id="mySidebar" class="sidebar">
+        <div class="close-btn" onclick="toggleNav()">&times;</div>
+        <a href="index.html">Home</a>
+        <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
+        <div class="submenu" style="display: block;">
+            <a href="refrigerator.html">Refrigerator</a>
+            <a href="chiller.html" class="active" style="color:var(--accent)">Chiller</a>
+            <a href="freezer.html">Freezer</a>
+            <a href="washer.html">Washer</a>
+            <a href="air_fryer.html">Air Fryer</a>
+            <a href="air_purifier.html">Air Purifier</a>
+            <a href="tv.html">TV</a>
+        </div>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
     </div>
-    <div class="product-grid">
+    <div id="overlay" class="overlay" onclick="toggleNav()"></div>
 
-        <div class="product-card" data-brand="khind">
-            <a class="gallery-item" href="Khind_KDS193.jpg">
-                <img src="Khind_KDS193.jpg" alt="Khind KDS193 Chiller">
-            </a>
-            <div class="info">
-                <h3>Khind KDS193 (193L)</h3>
-                <p>Power: 0.9 kWh/24h · Gross Weight: 55kgs · Box: 550×610×1770mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDS193">WhatsApp Inquiry</a>
-            </div>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1 class="hero-title">Display Chillers</h1>
+        <p class="hero-subtitle">Premium cooling solutions for commercial display.</p>
+    </section>
+
+    <!-- Filter Button -->
+    <div class="filter-container">
+        <button class="filter-btn" onclick="toggleFilter()">
+            <i class="fas fa-filter"></i> Filter Options
+        </button>
+        
+        <!-- Filter Dropdown -->
+        <div id="filter-panel">
+            <div style="margin-bottom: 10px; color: var(--text-sub); font-size: 0.9em;">Brand</div>
+            <select id="brand-select" class="filter-select" onchange="runFilter()">
+                <option value="all">All Brands</option>
+                <option value="khind">Khind</option>
+                <option value="hsc">Hisense</option>
+                <option value="warehouse">Warehouse</option>
+                <option value="nakama">Nakama</option>
+                <option value="nsc">Narutron</option>
+                <option value="other">Other / SC</option>
+            </select>
         </div>
-
-        <div class="product-card" data-brand="khind">
-            <a class="gallery-item" href="Khind_DC228.jpg">
-                <img src="Khind_DC228.jpg" alt="Khind DC228 Chiller">
-            </a>
-            <div class="info">
-                <h3>Khind DC228 (228L)</h3>
-                <p>R134a · Mechanical Temp Control · Key/Lock & LED Light · 530×590×1730mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind DC228">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="khind">
-            <a class="gallery-item" href="Khind_KDS250.jpg">
-                <img src="Khind_KDS250.jpg" alt="Khind KDS250 Chiller">
-            </a>
-            <div class="info">
-                <h3>Khind KDS250 (250L)</h3>
-                <p><strong>5 Years Compressor Warranty</strong> · 585×630×1756mm · 64.85kg</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDS250">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="khind">
-            <a class="gallery-item" href="Khind_KDMC280.jpg">
-                <img src="Khind_KDMC280.jpg" alt="Khind KDMC280 Chiller">
-            </a>
-            <div class="info">
-                <h3>Khind KDMC280 (270L)</h3>
-                <p><strong>5 Years Compressor Warranty</strong> · 585×630×1756mm · Black Color</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDMC280">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="khind">
-            <a class="gallery-item" href="Khind_KDS350.jpg">
-                <img src="Khind_KDS350.jpg" alt="Khind KDS350 Chiller">
-            </a>
-            <div class="info">
-                <h3>Khind KDS350 (350L)</h3>
-                <p><strong>5 Years Compressor Warranty</strong> · 645×675×1916mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDS350">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="khind">
-            <a class="gallery-item" href="Khind_KDS600.jpg">
-                <img src="Khind_KDS600.jpg" alt="Khind KDS600 Chiller">
-            </a>
-            <div class="info">
-                <h3>Khind KDS600 (600L)</h3>
-                <p><strong>Frost Free</strong> (Fan cooling) Showcase Chiller</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Khind KDS600">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="hsc">
-            <a class="gallery-item" href="HSC-192FLB.jpg">
-                <img src="HSC-192FLB.jpg" alt="HSC-192FLB Chiller">
-            </a>
-            <div class="info">
-                <h3>HSC-192FLB (192L)</h3>
-                <p>1 Year General / <strong>5 Years Compressor Warranty</strong> · 540×575×1440mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-192FLB">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="hsc">
-            <a class="gallery-item" href="HSC-191FLB.jpg">
-                <img src="HSC-191FLB.jpg" alt="HSC-191FLB Chiller">
-            </a>
-            <div class="info">
-                <h3>HSC-191FLB (192L)</h3>
-                <p>Display Showcase Model · Dimensions 540×545×1414mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-191FLB">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="hsc">
-            <a class="gallery-item" href="HSC-271FLB.jpg">
-                <img src="HSC-271FLB.jpg" alt="HSC-271FLB Chiller">
-            </a>
-            <div class="info">
-                <h3>HSC-271FLB (251L)</h3>
-                <p>Display Chiller · Dimensions 540×545×1714mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-271FLB">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="hsc">
-            <a class="gallery-item" href="HSC-242FLH.jpg">
-                <img src="HSC-242FLH.jpg" alt="HSC-242FLH Chiller">
-            </a>
-            <div class="info">
-                <h3>HSC-242FLH (242L)</h3>
-                <p>Includes 4 Shelves · <strong>5 Years Compressor Warranty</strong> · Box: 581×657×1888mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-242FLH">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="hsc">
-            <a class="gallery-item" href="HSC-320FL.jpg">
-                <img src="HSC-320FL.jpg" alt="HSC-320FL Chiller">
-            </a>
-            <div class="info">
-                <h3>HSC-320FL (320L)</h3>
-                <p><strong>FROST FREE</strong> · Air Cooled System · <strong>5 Years Compressor Warranty</strong></p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-320FL">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="hsc">
-            <a class="gallery-item" href="HSC-382FLH.jpg">
-                <img src="HSC-382FLH.jpg" alt="HSC-382FLH Chiller">
-            </a>
-            <div class="info">
-                <h3>HSC-382FLH (382L)</h3>
-                <p>Includes 5 Shelves · <strong>5 Years Compressor Warranty</strong> · Box: 661×704×2195mm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about HSC-382FLH">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="warehouse">
-            <a class="gallery-item" href="Warehouse_583L.jpg">
-                <img src="Warehouse_583L.jpg" alt="Warehouse 583L Showcase Chiller">
-            </a>
-            <div class="info">
-                <h3>Warehouse Showcase (583L)</h3>
-                <p>Fan Cooling (<strong>Frost Free</strong>) · <strong>Hot Air System</strong> · W:100cm x D:59cm x H:197cm</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Warehouse Showcase 583L">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="other">
-            <a class="gallery-item" href="SC-1000.jpg">
-                <img src="SC-1000.jpg" alt="SC-1000 Chiller">
-            </a>
-            <div class="info">
-                <h3>SC-1000 (1000L)</h3>
-                <p>Large Warehouse Display Showcase</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SC-1000">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="nakama">
-            <a class="gallery-item" href="Nakama_1400L.jpg">
-                <img src="Nakama_1400L.jpg" alt="Nakama 3 Door Chiller">
-            </a>
-            <div class="info">
-                <h3>Nakama (3 Doors) (1400L)</h3>
-                <p>Extra-Large 3 Doors Chiller. (Dimensions 550×487×1527mm - Please Verify)</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about Nakama 1400L 3-door chiller">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="nsc">
-            <a class="gallery-item" href="NSC198XY.jpg">
-                <img src="NSC198XY.jpg" alt="NSC198XY Chiller">
-            </a>
-            <div class="info">
-                <h3>NSC198XY (190L)</h3>
-                <p>Includes 3 Shelves · Suitable for small convenience stores</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about NSC198XY">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="nsc">
-            <a class="gallery-item" href="NSC228XY.jpg">
-                <img src="NSC228XY.jpg" alt="NSC228XY Chiller">
-            </a>
-            <div class="info">
-                <h3>NSC228XY (220L)</h3>
-                <p>Includes 3 Shelves · Approx. 5ft 8in Height</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about NSC228XY">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card" data-brand="nsc">
-            <a class="gallery-item" href="NSC258XY.jpg">
-                <img src="NSC258XY.jpg" alt="NSC258XY Chiller">
-            </a>
-            <div class="info">
-                <h3>NSC258XY (250L)</h3>
-                <p><strong>Frost Free</strong> · 3 Shelves · Approx. 6ft 7in Height</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about NSC258XY">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
-        <div class="product-card product-card-sc170" data-brand="other">
-            <a class="gallery-item" href="SC-170.jpg">
-                <img src="SC-170.jpg" alt="SC-170 Chiller">
-            </a>
-            <div class="info">
-                <h3>SC-170 (170L)</h3>
-                <p>Compact Display Chiller · Includes 3 Shelves</p>
-                <a class="btn" href="https://wa.me/601110948581?text=I want to inquire about SC-170">WhatsApp Inquiry</a>
-            </div>
-        </div>
-
     </div>
 
-    <div class="back">
-        <a href="index.html">← Back to Home</a>
-    </div>
-
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js" 
-crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<script>
-    // 激活 Lightbox
-    new SimpleLightbox('.product-grid a.gallery-item', { 
-        captions: true, 
-        captionDelay: 100,
-        closeText: 'X',
-        navText: ['←','→'] 
-    });
-
-    // ***筛选器切换和筛选逻辑***
-    const toggleButton = document.querySelector('#toggle-filter'); // 选择按钮
-    const filterContent = document.querySelector('#filter-content'); // 选择容器
-    const filter = document.querySelector('#brand-filter'); // 选择下拉菜单
-    const cards = document.querySelectorAll('.product-card');
-
-    // 1. 切换按钮的点击事件 (显示/隐藏筛选器)
-    if (toggleButton && filterContent) {
-        toggleButton.addEventListener('click', function() {
-            filterContent.classList.toggle('active'); 
-        });
-    }
-
-    // 2. 筛选器下拉菜单的更改事件
-    if (filter && filterContent) {
-        filter.addEventListener('change', function() {
-            const selectedBrand = this.value;
-
-            // 筛选后关闭筛选器内容，保持页面简洁
-            filterContent.classList.remove('active'); 
-
-            cards.forEach(card => {
-                const cardBrand = card.getAttribute('data-brand');
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Khind Series -->
+        <div class="brand-section" data-brand="khind">
+            <div class="brand-header">
+                <h2 class="brand-title">Khind Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
                 
-                // 注意：筛选器使用 value 属性 ("hsc", "nsc")，因此不需要修改 JS 逻辑
-                if (selectedBrand === 'all' || selectedBrand === cardBrand) {
-                    card.classList.remove('hidden'); // 显示匹配的卡片
+                <!-- KDS193 -->
+                <div class="card" data-brand="khind">
+                    <div class="card-img-container">
+                        <img src="Khind_KDS193.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+KDS193'; this.style.objectFit='contain';" 
+                             class="card-img" alt="Khind KDS193">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind KDS193</h3>
+                        <span class="card-tag">193L Capacity</span>
+                        <p class="card-desc">Power: 0.9 kWh/24h. Gross Weight: 55kgs. Box: 550×610×1770mm.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about Khind KDS193" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- DC228 -->
+                <div class="card" data-brand="khind">
+                    <div class="card-img-container">
+                        <img src="Khind_DC228.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+DC228'; this.style.objectFit='contain';" 
+                             class="card-img" alt="Khind DC228">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind DC228</h3>
+                        <span class="card-tag">228L Capacity</span>
+                        <p class="card-desc">R134a. Mechanical Temp Control. Key/Lock & LED Light. 530×590×1730mm.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about Khind DC228" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- KDS250 -->
+                <div class="card" data-brand="khind">
+                    <div class="card-img-container">
+                        <img src="Khind_KDS250.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+KDS250'; this.style.objectFit='contain';" 
+                             class="card-img" alt="Khind KDS250">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind KDS250</h3>
+                        <span class="card-tag">250L Capacity</span>
+                        <p class="card-desc"><strong>5 Years Compressor Warranty</strong>. 585×630×1756mm. 64.85kg.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about Khind KDS250" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- KDMC280 -->
+                <div class="card" data-brand="khind">
+                    <div class="card-img-container">
+                        <img src="Khind_KDMC280.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+KDMC280'; this.style.objectFit='contain';" 
+                             class="card-img" alt="Khind KDMC280">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind KDMC280</h3>
+                        <span class="card-tag">270L Capacity</span>
+                        <p class="card-desc"><strong>5 Years Compressor Warranty</strong>. 585×630×1756mm. Black Color.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about Khind KDMC280" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- KDS350 -->
+                <div class="card" data-brand="khind">
+                    <div class="card-img-container">
+                        <img src="Khind_KDS350.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+KDS350'; this.style.objectFit='contain';" 
+                             class="card-img" alt="Khind KDS350">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind KDS350</h3>
+                        <span class="card-tag">350L Capacity</span>
+                        <p class="card-desc"><strong>5 Years Compressor Warranty</strong>. 645×675×1916mm.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about Khind KDS350" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- KDS600 -->
+                <div class="card" data-brand="khind">
+                    <div class="card-img-container">
+                        <img src="Khind_KDS600.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+KDS600'; this.style.objectFit='contain';" 
+                             class="card-img" alt="Khind KDS600">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind KDS600</h3>
+                        <span class="card-tag">600L Capacity</span>
+                        <p class="card-desc"><strong>Frost Free</strong> (Fan cooling) Showcase Chiller.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about Khind KDS600" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hisense Series -->
+        <div class="brand-section" data-brand="hsc">
+            <div class="brand-header">
+                <h2 class="brand-title">Hisense Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                
+                <!-- HSC-192FLB -->
+                <div class="card" data-brand="hsc">
+                    <div class="card-img-container">
+                        <img src="HSC-192FLB.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=HSC-192FLB'; this.style.objectFit='contain';" 
+                             class="card-img" alt="HSC-192FLB">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">HSC-192FLB</h3>
+                        <span class="card-tag">192L Capacity</span>
+                        <p class="card-desc">1 Year General / <strong>5 Years Compressor Warranty</strong>. 540×575×1440mm.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about HSC-192FLB" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- HSC-191FLB -->
+                <div class="card" data-brand="hsc">
+                    <div class="card-img-container">
+                        <img src="HSC-191FLB.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=HSC-191FLB'; this.style.objectFit='contain';" 
+                             class="card-img" alt="HSC-191FLB">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">HSC-191FLB</h3>
+                        <span class="card-tag">192L Capacity</span>
+                        <p class="card-desc">Display Showcase Model. Dimensions 540×545×1414mm.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about HSC-191FLB" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- HSC-271FLB -->
+                <div class="card" data-brand="hsc">
+                    <div class="card-img-container">
+                        <img src="HSC-271FLB.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=HSC-271FLB'; this.style.objectFit='contain';" 
+                             class="card-img" alt="HSC-271FLB">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">HSC-271FLB</h3>
+                        <span class="card-tag">251L Capacity</span>
+                        <p class="card-desc">Display Chiller. Dimensions 540×545×1714mm.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about HSC-271FLB" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- HSC-242FLH -->
+                <div class="card" data-brand="hsc">
+                    <div class="card-img-container">
+                        <img src="HSC-242FLH.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=HSC-242FLH'; this.style.objectFit='contain';" 
+                             class="card-img" alt="HSC-242FLH">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">HSC-242FLH</h3>
+                        <span class="card-tag">242L Capacity</span>
+                        <p class="card-desc">Includes 4 Shelves. <strong>5 Years Compressor Warranty</strong>. Box: 581×657×1888mm.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about HSC-242FLH" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- HSC-320FL -->
+                <div class="card" data-brand="hsc">
+                    <div class="card-img-container">
+                        <img src="HSC-320FL.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=HSC-320FL'; this.style.objectFit='contain';" 
+                             class="card-img" alt="HSC-320FL">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">HSC-320FL</h3>
+                        <span class="card-tag">320L Capacity</span>
+                        <p class="card-desc"><strong>FROST FREE</strong>. Air Cooled System. <strong>5 Years Compressor Warranty</strong>.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about HSC-320FL" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- HSC-382FLH -->
+                <div class="card" data-brand="hsc">
+                    <div class="card-img-container">
+                        <img src="HSC-382FLH.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=HSC-382FLH'; this.style.objectFit='contain';" 
+                             class="card-img" alt="HSC-382FLH">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">HSC-382FLH</h3>
+                        <span class="card-tag">382L Capacity</span>
+                        <p class="card-desc">Includes 5 Shelves. <strong>5 Years Compressor Warranty</strong>. Box: 661×704×2195mm.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about HSC-382FLH" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warehouse Series -->
+        <div class="brand-section" data-brand="warehouse">
+            <div class="brand-header">
+                <h2 class="brand-title">Warehouse Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                <div class="card" data-brand="warehouse">
+                    <div class="card-img-container">
+                        <img src="Warehouse_583L.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Warehouse+583L'; this.style.objectFit='contain';" 
+                             class="card-img" alt="Warehouse 583L">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Warehouse Showcase</h3>
+                        <span class="card-tag">583L Capacity</span>
+                        <p class="card-desc">Fan Cooling (<strong>Frost Free</strong>). <strong>Hot Air System</strong>. W:100cm x D:59cm x H:197cm.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about Warehouse Showcase 583L" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nakama Series -->
+        <div class="brand-section" data-brand="nakama">
+            <div class="brand-header">
+                <h2 class="brand-title">Nakama Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                <div class="card" data-brand="nakama">
+                    <div class="card-img-container">
+                        <img src="Nakama_1400L.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Nakama+1400L'; this.style.objectFit='contain';" 
+                             class="card-img" alt="Nakama 1400L">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Nakama (3 Doors)</h3>
+                        <span class="card-tag">1400L Capacity</span>
+                        <p class="card-desc">Extra-Large 3 Doors Chiller. (Dimensions 550×487×1527mm - Please Verify).</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about Nakama 1400L 3-door chiller" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Narutron Series -->
+        <div class="brand-section" data-brand="nsc">
+            <div class="brand-header">
+                <h2 class="brand-title">Narutron Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                
+                <!-- NSC198XY -->
+                <div class="card" data-brand="nsc">
+                    <div class="card-img-container">
+                        <img src="NSC198XY.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=NSC198XY'; this.style.objectFit='contain';" 
+                             class="card-img" alt="NSC198XY">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">NSC198XY</h3>
+                        <span class="card-tag">190L Capacity</span>
+                        <p class="card-desc">Includes 3 Shelves. Suitable for small convenience stores.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about NSC198XY" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- NSC228XY -->
+                <div class="card" data-brand="nsc">
+                    <div class="card-img-container">
+                        <img src="NSC228XY.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=NSC228XY'; this.style.objectFit='contain';" 
+                             class="card-img" alt="NSC228XY">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">NSC228XY</h3>
+                        <span class="card-tag">220L Capacity</span>
+                        <p class="card-desc">Includes 3 Shelves. Approx. 5ft 8in Height.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about NSC228XY" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- NSC258XY -->
+                <div class="card" data-brand="nsc">
+                    <div class="card-img-container">
+                        <img src="NSC258XY.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=NSC258XY'; this.style.objectFit='contain';" 
+                             class="card-img" alt="NSC258XY">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">NSC258XY</h3>
+                        <span class="card-tag">250L Capacity</span>
+                        <p class="card-desc"><strong>Frost Free</strong>. 3 Shelves. Approx. 6ft 7in Height.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about NSC258XY" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Series -->
+        <div class="brand-section" data-brand="other">
+            <div class="brand-header">
+                <h2 class="brand-title">Other Series</h2>
+                <div class="brand-underline"></div>
+            </div>
+            <div class="products-grid">
+                
+                <!-- SC-1000 -->
+                <div class="card" data-brand="other">
+                    <div class="card-img-container">
+                        <img src="SC-1000.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=SC-1000'; this.style.objectFit='contain';" 
+                             class="card-img" alt="SC-1000">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">SC-1000</h3>
+                        <span class="card-tag">1000L Capacity</span>
+                        <p class="card-desc">Large Warehouse Display Showcase.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about SC-1000" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- SC-170 -->
+                <div class="card" data-brand="other">
+                    <div class="card-img-container">
+                        <img src="SC-170.jpg" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=SC-170'; this.style.objectFit='contain';" 
+                             class="card-img" alt="SC-170">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">SC-170</h3>
+                        <span class="card-tag">170L Capacity</span>
+                        <p class="card-desc">Compact Display Chiller. Includes 3 Shelves.</p>
+                        <div class="card-divider"></div>
+                        <a href="https://wa.me/601110948581?text=I want to inquire about SC-170" class="btn-details" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Fixed Back Button -->
+    <div class="footer-bar">
+        <a href="index.html" class="btn-back" title="Back to Home"><i class="fas fa-home"></i></a>
+    </div>
+
+    <script>
+        // Toggle Sidebar
+        function toggleNav() {
+            const sb = document.getElementById("mySidebar");
+            const ov = document.getElementById("overlay");
+            if(sb.style.width === "250px") {
+                sb.style.width = "0"; ov.style.display = "none";
+            } else {
+                sb.style.width = "250px"; ov.style.display = "block";
+            }
+        }
+        function toggleSubmenu(el) {
+            const sub = el.nextElementSibling;
+            sub.style.display = sub.style.display === "block" ? "none" : "block";
+        }
+
+        // Toggle Filter
+        function toggleFilter() {
+            document.getElementById("filter-panel").classList.toggle("open");
+        }
+
+        // Filter Logic
+        function runFilter() {
+            const val = document.getElementById("brand-select").value;
+            const sections = document.querySelectorAll(".brand-section");
+            sections.forEach(sec => {
+                const brand = sec.getAttribute("data-brand");
+                if(val === "all" || brand === val) {
+                    sec.style.display = "block";
                 } else {
-                    card.classList.add('hidden'); // 隐藏不匹配的卡片
+                    sec.style.display = "none";
                 }
             });
-        });
-    }
-    // ***筛选器逻辑结束***
-</script>
-
+            document.getElementById("filter-panel").classList.remove("open");
+        }
+    </script>
 </body>
 </html>
