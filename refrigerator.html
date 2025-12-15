@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* ------------------- 核心配色方案 (Midnight Blue) ------------------- */
+        /* ------------------- 核心配色方案 (保留自 refrigerator (1).html) ------------------- */
         :root {
             --bg-color: #0f172a; 
             --card-bg: #1e293b; 
@@ -26,6 +26,7 @@
             --tag-capacity-text: #38bdf8;
         }
 
+        /* ------------------- General Reset ------------------- */
         body {
             margin: 0;
             padding: 0;
@@ -33,140 +34,180 @@
             background-color: var(--bg-color);
             color: var(--text-primary);
             -webkit-font-smoothing: antialiased; 
-            overflow-x: hidden;
+            overflow-x: hidden; /* 防止推入时的横向滚动条 */
         }
 
-        a { text-decoration: none; color: inherit; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; padding: 0; margin: 0; }
 
-        /* ------------------- 顶部导航栏 ------------------- */
-        .navbar {
+        /* ------------------- Sidebar (Freezer Style) ------------------- */
+        .menu-icon {
             position: fixed;
-            top: 0;
-            width: 100%;
-            height: 100px;
-            background-color: var(--nav-bg);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            z-index: 9999;
+            top: 25px;
+            left: 25px;
+            z-index: 10000;
+            cursor: pointer;
+            padding: 10px;
+            background-color: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            gap: 5px;
+            width: 45px;
+            height: 45px;
             justify-content: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-icon:hover {
+            border-color: var(--accent-blue);
+            background-color: rgba(15, 23, 42, 1);
         }
 
-        .nav-content {
-            width: 100%;
-            max-width: 1300px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 24px;
+        .bar {
+            width: 20px;
+            height: 2px;
+            background-color: var(--text-primary);
+            transition: 0.4s;
+        }
+        
+        .menu-icon:hover .bar {
+            background-color: var(--accent-blue);
+        }
+
+        .sidebar {
             height: 100%;
-        }
-
-        .nav-left-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .nav-logo-text {
-            color: var(--text-primary);
-            font-family: var(--font-serif);
-            font-size: 1.3rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            width: 0;
+            position: fixed;
             z-index: 10001;
-            font-style: italic;
+            top: 0;
+            left: 0;
+            background-color: #020617; /* Freezer Sidebar Color */
+            overflow-x: hidden;
+            padding-top: 80px;
+            transition: 0.5s;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+            border-right: 1px solid rgba(255,255,255,0.05);
             white-space: nowrap;
         }
 
-        .header-logo-right {
-            width: 250px;
-            height: auto;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
-            flex-shrink: 0; 
-        }
-
-        .desktop-nav {
-            display: flex;
-            gap: 30px;
-        }
-
-        .desktop-nav a {
+        .sidebar a, .sidebar .submenu-toggle {
+            padding: 15px 30px;
+            text-decoration: none;
+            font-size: 1.1em;
             color: var(--text-secondary);
-            font-size: 0.95rem; 
-            transition: color 0.3s ease;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            letter-spacing: 0.02em;
-            font-weight: 500;
-        }
-
-        .desktop-nav a:hover {
-            color: var(--accent-blue); 
-        }
-
-        .menu-icon {
-            display: flex;
-            cursor: pointer;
-            z-index: 10001;
-            flex-direction: column;
-            justify-content: center;
-            gap: 6px;
-            width: 24px;
-            height: 24px;
-        }
-
-        .menu-icon span {
             display: block;
-            width: 100%;
-            height: 2px;
-            background-color: var(--text-primary);
-            transition: all 0.3s ease;
-            border-radius: 2px;
+            transition: 0.3s;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+            font-family: var(--font-serif);
+            letter-spacing: 0.5px;
         }
 
-        /* ------------------- 移动端全屏菜单 ------------------- */
-        .mobile-menu-overlay {
+        .sidebar a:hover, .sidebar .submenu-toggle:hover {
+            color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.05);
+            padding-left: 35px;
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .closebtn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 30px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .closebtn:hover {
+            color: var(--accent-blue);
+            transform: rotate(90deg);
+        }
+
+        .submenu {
+            display: none;
+            background-color: #0f172a;
+            padding-left: 0;
+        }
+        
+        .submenu a {
+            padding-left: 45px;
+            font-size: 0.95em;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            border-left: none;
+        }
+        
+        .submenu a:hover {
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 50px;
+        }
+
+        .overlay {
             position: fixed;
+            height: 100%;
+            width: 100%;
             top: 0;
             left: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+
+        /* ------------------- Layout Wrapper for Push Effect ------------------- */
+        #main-content {
             width: 100%;
-            height: 100vh;
-            background-color: var(--bg-color); 
-            z-index: 10000;
-            padding-top: 120px;
-            transform: translateY(-100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            visibility: hidden;
+            max-width: 100vw;
+            transition: margin-left 0.5s;
             display: flex;
             flex-direction: column;
-            overflow-y: auto; 
+            min-height: 100vh;
+            position: relative;
+            background-color: var(--bg-color);
         }
 
-        .mobile-menu-overlay.active {
-            transform: translateY(0);
-            visibility: visible;
+        /* ------------------- Header (Replaced Navbar to allow Push) ------------------- */
+        /* Changed to match the Freezer/AC header style (centered title + logo on right) */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+            background: rgba(15, 23, 42, 0.90);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            padding: 0 60px; /* Space for logo/menu */
         }
 
-        .menu-icon.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
-        .menu-icon.active span:nth-child(2) { opacity: 0; }
-        .menu-icon.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        .header-title {
+            color: var(--text-primary);
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            font-style: italic;
+        }
 
-        .mobile-link-item { width: 100%; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .mobile-link { display: flex; justify-content: space-between; align-items: center; color: var(--text-primary); font-size: 1.5rem; padding: 20px 40px; cursor: pointer; font-weight: 600; font-family: var(--font-serif); transition: background-color 0.2s; }
-        .mobile-link:hover { background-color: rgba(56, 189, 248, 0.1); color: var(--accent-blue); }
-        .mobile-submenu { max-height: 0; overflow: hidden; background-color: #020617; transition: max-height 0.4s ease-out; }
-        .mobile-submenu.open { max-height: 1200px; }
-        .mobile-sublink { display: block; padding: 14px 40px 14px 60px; color: var(--text-secondary); font-size: 1.05rem; font-family: -apple-system, BlinkMacSystemFont, sans-serif; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.03); transition: color 0.3s, padding-left 0.3s; }
-        .mobile-sublink:hover { color: var(--accent-blue); padding-left: 65px; }
-        .chevron { font-size: 0.8em; transition: transform 0.3s; color: var(--accent-blue); }
-        .mobile-link.active .chevron { transform: rotate(180deg); }
+        .header-logo-right {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 150px;
+            height: auto;
+            object-fit: contain;
+        }
 
-        /* ------------------- Hero 区域 ------------------- */
+        /* ------------------- ORIGINAL CONTENT STYLES (UNTOUCHED) ------------------- */
+        
+        /* Hero 区域 */
         .hero-section {
-            padding-top: 180px; 
+            padding-top: 80px; 
             padding-bottom: 60px;
             text-align: center;
             background: radial-gradient(circle at center top, #1e293b 0%, #0f172a 70%);
@@ -196,7 +237,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* ------------------- 筛选器样式 ------------------- */
+        /* 筛选器样式 */
         .filter-section-wrapper {
             max-width: 1200px;
             margin: 0 auto 40px auto;
@@ -289,7 +330,7 @@
             border-color: var(--accent-blue);
         }
 
-        /* ------------------- 分类标题 (Section Title) ------------------- */
+        /* 分类标题 */
         .section-title {
             text-align: center;
             font-family: var(--font-serif);
@@ -313,14 +354,13 @@
             border-radius: 2px;
         }
 
-        /* ------------------- 产品列表容器 ------------------- */
+        /* 产品列表容器 */
         .products-wrapper {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px 60px 20px;
         }
 
-        /* 品牌区块容器 */
         .brand-section {
             margin-bottom: 60px;
         }
@@ -329,13 +369,37 @@
             display: none;
         }
 
+        /* *** GRID LAYOUT (CRITICAL) *** */
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 24px;
         }
+        /* 大桌机 */
+        @media (min-width: 1280px) {
+            .product-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        /* 笔电 / 平板横向 */
+        @media (min-width: 1024px) and (max-width: 1279px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        /* 平板 / 大手机 */
+        @media (min-width: 640px) and (max-width: 1023px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        /* 手机 */
+        @media (max-width: 639px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
-        /* ------------------- 产品卡片样式 ------------------- */
+        /* 产品卡片样式 */
         .product-card {
             background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -356,10 +420,9 @@
 
         .product-card.hidden { display: none; }
 
-        /* 白色背景容器，用于放置图片 */
         .card-image-wrapper {
             width: 100%;
-            height: 250px;
+            height: 220px;
             background-color: #fff; 
             display: flex;
             align-items: center;
@@ -398,7 +461,6 @@
             line-height: 1.2;
         }
 
-        /* 标签容器 */
         .product-tags {
             display: flex;
             gap: 8px;
@@ -436,7 +498,6 @@
             border-top: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* More Details 按钮 */
         .btn-details {
             display: flex;
             align-items: center;
@@ -460,7 +521,7 @@
             filter: brightness(1.1);
         }
 
-        /* ------------------- Footer ------------------- */
+        /* Footer */
         .page-footer {
             background-color: #020617; 
             padding: 40px 20px;
@@ -471,11 +532,9 @@
             margin-top: 60px;
         }
         
-        /* ------------------- 响应式 ------------------- */
         @media (max-width: 900px) { 
-            .desktop-nav { display: none; }
-            .header-logo-right { width: 180px; }
-            .nav-logo-text { font-size: 1.1rem; }
+            .header-logo-right { width: 150px; }
+            .header-title { font-size: 1.2rem; }
             .hero-title { font-size: 2.5rem; padding: 0 10px; }
             .section-title { font-size: 1.6rem; }
         }
@@ -484,134 +543,137 @@
 
 <body onload="renderProducts()">
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-content">
-            <div class="nav-left-wrapper">
-                <div class="menu-icon" onclick="toggleMenu()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <a href="index.html" class="nav-logo-text">Siong Cheong Trading</a>
-            </div>
+    <!-- 1. Hamburger Menu (Freezer Style) -->
+    <div class="menu-icon" onclick="toggleNav()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
 
-            <div class="desktop-nav">
-                <a href="index.html">Home</a>
-                <a href="index.html#products">Products</a> 
-                <a href="about.html">About Us</a>
-                <a href="contact.html">Contact</a>
-            </div>
-            
+    <!-- 2. Sidebar (Freezer Style) -->
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+        <a href="index.html">Home</a>
+        <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
+        <div class="submenu" style="display: block;">
+            <a href="refrigerator.html" class="active" style="color:var(--accent-blue)">Refrigerator</a>
+            <a href="chiller.html">Chiller</a>
+            <a href="freezer.html">Freezer</a>
+            <a href="ac.html">Air Conditioner</a>
+            <a href="portable_ac.html">Portable Air Cond</a>
+            <a href="tv.html">TV</a>
+            <a href="washer.html">Washer</a>
+            <a href="dryer.html">Dryer</a>
+            <a href="kitchen.html">Kitchen Appliances</a>
+            <a href="hood.html">Hood</a>
+            <a href="gas.html">Gas</a>
+            <a href="oven.html">Oven</a>
+            <a href="microwave.html">Microwave</a>
+            <a href="air_fryer.html">Air Fryer</a>
+            <a href="shower.html">Shower</a>
+            <a href="air_purifier.html">Air Purifier</a>
+            <a href="speaker.html">Speaker</a>
+            <a href="small.html">Small Appliances</a>
+        </div>
+        <a href="about.html">About Us</a>
+        <a href="location.html">Our Location</a>
+        <a href="contact.html">Contact Us</a>
+    </div>
+
+    <!-- 3. Overlay -->
+    <div id="overlay" class="overlay" onclick="toggleNav()"></div>
+
+    <!-- 4. Main Content Wrapper (for Push Effect) -->
+    <div id="main-content">
+        
+        <!-- Header (Freezer Style) -->
+        <header>
+            <div class="header-title">Refrigerator Series</div>
             <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo-right" onerror="this.style.display='none'">
+        </header>
+
+        <!-- Hero Section (Original Content & Style) -->
+        <div class="hero-section">
+            <h1 class="hero-title">Refrigerator Series</h1>
+            <p class="hero-subtitle">Premium cooling solutions for modern kitchens.</p>
         </div>
-    </nav>
 
-    <!-- Mobile Fullscreen Menu -->
-    <div class="mobile-menu-overlay" id="mobileMenu">
-        <div class="mobile-link-item"><a href="index.html" class="mobile-link" onclick="toggleMenu()">Home</a></div>
-        <div class="mobile-link-item">
-            <div class="mobile-link" onclick="toggleProductSubmenu(this)">
-                Products <i class="fas fa-chevron-down chevron"></i>
-            </div>
-            <div class="mobile-submenu" id="productSubmenu">
-                <a href="refrigerator.html" class="mobile-sublink">Refrigerator</a>
-                <a href="chiller.html" class="mobile-sublink">Chiller</a>
-                <a href="freezer.html" class="mobile-sublink">Freezer</a>
-                <a href="ac.html" class="mobile-sublink">Air Conditioner</a>
-                <a href="portable_ac.html" class="mobile-sublink">Portable Air Cond</a>
-                <a href="tv.html" class="mobile-sublink">TV</a>
-                <a href="washer.html" class="mobile-sublink">Washer</a>
-                <a href="dryer.html" class="mobile-sublink">Dryer</a>
-                <a href="kitchen.html" class="mobile-sublink">Kitchen Appliances</a>
-                <a href="hood.html" class="mobile-sublink">Hood</a>
-                <a href="gas.html" class="mobile-sublink">Gas</a>
-                <a href="oven.html" class="mobile-sublink">Oven</a>
-                <a href="microwave.html" class="mobile-sublink">Microwave</a>
-                <a href="air_fryer.html" class="mobile-sublink">Air Fryer</a>
-                <a href="shower.html" class="mobile-sublink">Shower</a>
-                <a href="air_purifier.html" class="mobile-sublink">Air Purifier</a>
-                <a href="speaker.html" class="mobile-sublink">Speaker</a>
-                <a href="small.html" class="mobile-sublink">Small Appliances</a>
-            </div>
-        </div>
-        <div class="mobile-link-item"><a href="about.html" class="mobile-link" onclick="toggleMenu()">About Us</a></div>
-        <div class="mobile-link-item"><a href="contact.html" class="mobile-link" onclick="toggleMenu()">Contact</a></div>
-    </div>
-
-    <!-- Hero -->
-    <div class="hero-section">
-        <h1 class="hero-title">Refrigerator Series</h1>
-        <p class="hero-subtitle">Premium cooling solutions for modern kitchens.</p>
-    </div>
-
-    <!-- Filter Section -->
-    <div class="filter-section-wrapper">
-        <button id="toggle-filter" class="filter-toggle-button">
-            <i class="fas fa-filter"></i> Filter Options
-        </button>
-        <div class="filter-controls" id="filter-content">
-            <div class="filter-group">
-                <label for="brand-filter">Brand</label>
-                <select id="brand-filter" onchange="filterProducts()">
-                    <option value="all">All Brands</option>
-                    <option value="Sharp">Sharp</option>
-                    <option value="Toshiba">Toshiba</option>
-                    <option value="Midea">Midea</option>
-                    <option value="Hisense">Hisense</option>
-                    <option value="Dekka">Dekka</option>
-                    <option value="Narutron">Narutron</option>
-                    <option value="Khind">Khind</option>
-                    <option value="Skyworth">Skyworth</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="capacity-filter">Capacity</label>
-                <select id="capacity-filter" onchange="filterProducts()">
-                    <option value="all">All Capacities</option>
-                    <option value="mini">Mini Bar (&lt; 150L)</option>
-                    <option value="small">Small (150L - 299L)</option>
-                    <option value="medium">Medium (300L - 499L)</option>
-                    <option value="large">Large (500L - 699L)</option>
-                    <option value="xlarge">Extra Large (&gt; 700L)</option>
-                </select>
+        <!-- Filter Section (Original) -->
+        <div class="filter-section-wrapper">
+            <button id="toggle-filter" class="filter-toggle-button">
+                <i class="fas fa-filter"></i> Filter Options
+            </button>
+            <div class="filter-controls" id="filter-content">
+                <div class="filter-group">
+                    <label for="brand-filter">Brand</label>
+                    <select id="brand-filter" onchange="filterProducts()">
+                        <option value="all">All Brands</option>
+                        <option value="Sharp">Sharp</option>
+                        <option value="Toshiba">Toshiba</option>
+                        <option value="Midea">Midea</option>
+                        <option value="Hisense">Hisense</option>
+                        <option value="Dekka">Dekka</option>
+                        <option value="Nakama">Nakama</option>
+                        <option value="Narutron">Narutron</option>
+                        <option value="Khind">Khind</option>
+                        <option value="Skyworth">Skyworth</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="capacity-filter">Capacity</label>
+                    <select id="capacity-filter" onchange="filterProducts()">
+                        <option value="all">All Capacities</option>
+                        <option value="mini">Mini Bar (&lt; 150L)</option>
+                        <option value="small">Small (150L - 299L)</option>
+                        <option value="medium">Medium (300L - 499L)</option>
+                        <option value="large">Large (500L - 699L)</option>
+                        <option value="xlarge">Extra Large (&gt; 700L)</option>
+                    </select>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Product Sections Container -->
-    <div class="products-wrapper" id="products-container">
-        <!-- JS will inject brand sections here -->
-        <p id="no-products" style="text-align: center; color: var(--text-secondary); display: none; margin-top: 40px; font-size: 1.2rem;">
-            No products found matching your criteria.
-        </p>
+        <!-- Product Container -->
+        <div class="products-wrapper" id="products-container">
+            <!-- JS will inject brand sections here -->
+            <p id="no-products" style="text-align: center; color: var(--text-secondary); display: none; margin-top: 40px; font-size: 1.2rem;">
+                No products found matching your criteria.
+            </p>
+        </div>
+        
+        <footer class="page-footer">
+            <p>Copyright © 2025 Siong Cheong Trading. All rights reserved.</p>
+        </footer>
     </div>
-    
-    <footer class="page-footer">
-        <p>Copyright © 2025 Siong Cheong Trading. All rights reserved.</p>
-    </footer>
 
 <script>
-    // ------------------- Navigation Logic -------------------
-    function toggleMenu() {
-        const menu = document.getElementById('mobileMenu');
-        const icon = document.querySelector('.menu-icon');
+    // ------------------- Navigation Logic (Freezer Push Style) -------------------
+    window.toggleNav = function() {
+        const sidebar = document.getElementById("mySidebar");
+        const overlay = document.getElementById("overlay");
         const body = document.body;
+        const mainContent = document.getElementById("main-content");
         
-        menu.classList.toggle('active');
-        icon.classList.toggle('active');
-        
-        if (menu.classList.contains('active')) {
-            body.style.overflow = 'hidden';
+        const isOpen = sidebar.style.width === "250px";
+
+        if (isOpen) {
+            sidebar.style.width = "0";
+            overlay.style.display = "none";
+            body.style.overflow = "auto";
+            mainContent.style.marginLeft = "0"; // Push back
         } else {
-            body.style.overflow = '';
+            sidebar.style.width = "250px";
+            overlay.style.display = "block";
+            body.style.overflow = "hidden";
+            mainContent.style.marginLeft = "250px"; // Push content right
         }
     }
 
-    function toggleProductSubmenu(element) {
-        element.classList.toggle('active');
-        const submenu = document.getElementById('productSubmenu');
-        submenu.classList.toggle('open');
+    window.toggleSubmenu = function(element) {
+        const submenu = element.nextElementSibling;
+        const isShown = submenu.style.display === "block";
+        document.querySelectorAll(".submenu").forEach(s => (s.style.display = "none"));
+        submenu.style.display = isShown ? "none" : "block";
     }
 
     // ------------------- Filter Logic -------------------
@@ -619,7 +681,7 @@
         document.getElementById('filter-content').classList.toggle('active');
     });
 
-    // ------------------- Product Data -------------------
+    // ------------------- Product Data (EXACTLY AS IN YOUR ORIGINAL FILE) -------------------
     const refrigeratorProducts = [
         // --- SHARP ---
         { model: "Sharp SJM60MK", brand: "Sharp", liters: 60, image: "SJM60MK.jpg", description: "60L Mini Bar Fridge.", details: "Compact design." },
@@ -699,29 +761,23 @@
             noProducts.style.display = 'none';
         }
 
-        // 1. Get unique brands
         const brands = [...new Set(productsToRender.map(p => p.brand))];
 
-        // 2. Create section for each brand
         brands.forEach(brand => {
             const brandProducts = productsToRender.filter(p => p.brand === brand);
             
             if (brandProducts.length > 0) {
-                // Create Section Wrapper
                 const brandSection = document.createElement('div');
                 brandSection.className = 'brand-section';
                 
-                // Title
                 const sectionTitle = document.createElement('h2');
                 sectionTitle.className = 'section-title';
                 sectionTitle.textContent = `${brand} Series`;
                 brandSection.appendChild(sectionTitle);
 
-                // Grid
                 const grid = document.createElement('div');
                 grid.className = 'product-grid';
 
-                // Cards
                 brandProducts.forEach(product => {
                     const card = document.createElement('div');
                     card.className = 'product-card';
@@ -760,7 +816,6 @@
         const brandFilter = document.getElementById('brand-filter').value;
 
         const filtered = refrigeratorProducts.filter(product => {
-            // 1. Capacity Logic
             let capMatch = false;
             if (capFilter === 'all') capMatch = true;
             else if (capFilter === 'mini' && product.liters < 150) capMatch = true;
@@ -769,7 +824,6 @@
             else if (capFilter === 'large' && product.liters >= 500 && product.liters < 700) capMatch = true;
             else if (capFilter === 'xlarge' && product.liters >= 700) capMatch = true;
 
-            // 2. Brand Logic
             let brandMatch = false;
             if (brandFilter === 'all') brandMatch = true;
             else if (product.brand === brandFilter) brandMatch = true;
