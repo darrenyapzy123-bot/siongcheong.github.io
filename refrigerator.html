@@ -1,217 +1,344 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siong Cheong Trading - Refrigerator (冰箱)</title>
+    <title>Refrigerator Series | Siong Cheong Trading</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Playfair Display Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* ------------------- CSS 样式保持不变 ------------------- */
+        /* ------------------- 核心配色方案 (Midnight Blue) ------------------- */
+        :root {
+            --bg-color: #0f172a; 
+            --card-bg: #1e293b; 
+            --text-primary: #f8fafc; 
+            --text-secondary: #94a3b8; 
+            --accent-blue: #38bdf8; 
+            --hover-blue: #7dd3fc; 
+            --nav-bg: rgba(15, 23, 42, 0.90);
+            --font-serif: 'Playfair Display', serif;
+        }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            display: flex;
-            justify-content: center;
-        }
-
-        #main-content {
-            width: 100%;
-            max-width: 100vw;
-            transition: margin-right 0.5s; 
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ------------------- 菜单 & Sidebar ------------------- */
-        .menu-icon {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            cursor: pointer;
-            padding: 10px;
-            background-color: #3498db;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s;
-        }
-
-        .bar {
-            width: 25px;
-            height: 3px;
-            background-color: white;
-            margin: 5px 0;
-            transition: 0.4s;
-        }
-
-        .sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 999;
-            top: 0;
-            left: 0;
-            background-color: #2c3e50;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased; 
             overflow-x: hidden;
-            padding-top: 60px;
-            transition: 0.5s;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-            max-width: 250px;
         }
 
-        .sidebar a, .sidebar .submenu-toggle {
-            padding: 15px 25px;
-            text-decoration: none;
-            font-size: 1.2em;
-            color: #ecf0f1;
-            display: block;
-            transition: 0.3s;
-            border-bottom: 1px solid #34495e;
-            cursor: pointer;
-        }
+        a { text-decoration: none; color: inherit; }
 
-        .closebtn {
-            position: absolute;
-            top: 0;
-            right: 25px;
-            font-size: 36px;
-            line-height: 50px;
-        }
-
-        .submenu {
-            display: none;
-            background-color: #3e566e;
-            padding-left: 20px;
-        }
-        
-        .overlay {
+        /* ------------------- 顶部导航栏 ------------------- */
+        .navbar {
             position: fixed;
-            height: 100%;
-            width: 100%;
             top: 0;
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 998;
-            display: none;
-        }
-        
-        /* ------------------- Header & Container ------------------- */
-        header {
-            background: #2c3e50;
-            padding: 20px;
-            color: white;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            position: relative;
-            padding-left: 60px; 
             width: 100%;
-            box-sizing: border-box; 
+            height: 100px;
+            background-color: var(--nav-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
         }
-        
-        .header-logo {
-            position: absolute;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
+
+        .nav-content {
+            width: 100%;
+            max-width: 1300px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            height: 100%;
+        }
+
+        .nav-left-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-logo-text {
+            color: var(--text-primary);
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            z-index: 10001;
+            font-style: italic;
+            white-space: nowrap;
+        }
+
+        .header-logo-right {
             width: 250px;
             height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
+            flex-shrink: 0; 
         }
 
-        .container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%; 
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 25px;
-            color: #333;
-        }
-        
-        /* ------------------- Filter ------------------- */
-        .filter-section {
+        .desktop-nav {
             display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            margin-bottom: 30px;
-            padding: 15px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-            flex-wrap: wrap;
-            gap: 15px;
+            gap: 30px;
         }
 
-        .filter-group label {
-            font-weight: bold;
-            color: #2c3e50;
-            margin-right: 10px;
+        .desktop-nav a {
+            color: var(--text-secondary);
+            font-size: 0.95rem; 
+            transition: color 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: 0.02em;
+            font-weight: 500;
         }
 
-        .filter-group select {
-            padding: 8px 12px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
+        .desktop-nav a:hover {
+            color: var(--accent-blue); 
+        }
+
+        .menu-icon {
+            display: flex;
             cursor: pointer;
-            transition: border-color 0.2s;
-        }
-        
-        /* ------------------- Footer ------------------- */
-        .page-footer {
-            padding: 30px 20px;
-            text-align: center;
-            background-color: #2c3e50;
-            margin-top: 40px; 
-            color: white;
+            z-index: 10001;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+            width: 24px;
+            height: 24px;
         }
 
-        .page-footer .back-to-home {
-            background-color: #f39c12;
-            color: white;
-            padding: 10px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.2s;
-            display: inline-block;
+        .menu-icon span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--text-primary);
+            transition: all 0.3s ease;
+            border-radius: 2px;
         }
 
-        /* ------------------- Grid & Card ------------------- */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        /* ------------------- 移动端全屏菜单 ------------------- */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg-color); 
+            z-index: 10000;
+            padding-top: 120px;
+            transform: translateY(-100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            visibility: hidden;
             display: flex;
             flex-direction: column;
-            transition: all 0.3s ease;
+            overflow-y: auto; 
         }
 
-        .product-card img {
+        .mobile-menu-overlay.active {
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .menu-icon.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+        .menu-icon.active span:nth-child(2) { opacity: 0; }
+        .menu-icon.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+        .mobile-link-item { width: 100%; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .mobile-link { display: flex; justify-content: space-between; align-items: center; color: var(--text-primary); font-size: 1.5rem; padding: 20px 40px; cursor: pointer; font-weight: 600; font-family: var(--font-serif); transition: background-color 0.2s; }
+        .mobile-link:hover { background-color: rgba(56, 189, 248, 0.1); color: var(--accent-blue); }
+        .mobile-submenu { max-height: 0; overflow: hidden; background-color: #020617; transition: max-height 0.4s ease-out; }
+        .mobile-submenu.open { max-height: 1200px; }
+        .mobile-sublink { display: block; padding: 14px 40px 14px 60px; color: var(--text-secondary); font-size: 1.05rem; font-family: -apple-system, BlinkMacSystemFont, sans-serif; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.03); transition: color 0.3s, padding-left 0.3s; }
+        .mobile-sublink:hover { color: var(--accent-blue); padding-left: 65px; }
+        .chevron { font-size: 0.8em; transition: transform 0.3s; color: var(--accent-blue); }
+        .mobile-link.active .chevron { transform: rotate(180deg); }
+
+        /* ------------------- Hero 区域 ------------------- */
+        .hero-section {
+            padding-top: 180px; 
+            padding-bottom: 60px;
+            text-align: center;
+            background: radial-gradient(circle at center top, #1e293b 0%, #0f172a 70%);
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: 3.5rem; 
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 16px 0;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--accent-blue); 
+            font-weight: 400;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            letter-spacing: 0.5px;
+        }
+
+        /* ------------------- 筛选器样式 ------------------- */
+        .filter-section-wrapper {
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+            padding: 0 20px;
+        }
+
+        .filter-toggle-button {
             width: 100%;
-            height: 250px;
-            object-fit: contain; 
-            background: #fff;
-            border-bottom: 1px solid #ddd;
-            padding: 10px;
-            cursor: pointer; /* Lightbox: Make image look clickable */
+            max-width: 200px;
+            padding: 12px 20px;
+            background-color: transparent;
+            color: var(--accent-blue);
+            font-size: 1rem;
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 0 auto;
+        }
+
+        .filter-toggle-button:hover {
+            background-color: rgba(56, 189, 248, 0.1);
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .filter-controls {
+            max-height: 0;
+            overflow: hidden;
+            background: var(--card-bg);
+            border-radius: 20px;
+            margin-top: 20px;
+            transition: all 0.4s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .filter-controls.active {
+            max-height: 500px;
+            padding: 30px;
+            opacity: 1;
+            transform: translateY(0);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-controls label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-controls select {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: #0f172a;
+            color: #fff;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .filter-controls select:focus {
+            border-color: var(--accent-blue);
+        }
+
+        /* ------------------- 产品列表 Grid ------------------- */
+        .products-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        /* ------------------- 产品卡片样式 ------------------- */
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(56, 189, 248, 0.3);
+            z-index: 2;
+        }
+
+        /* 白色背景容器，用于放置冰箱图片 */
+        .card-image-wrapper {
+            width: 100%;
+            height: 280px;
+            background-color: #fff; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .card-image-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .card-image-wrapper img {
+            transform: scale(1.08);
         }
 
         .product-info {
-            padding: 20px;
-            text-align: center;
+            padding: 25px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -219,44 +346,73 @@
         }
 
         .product-info h3 {
-            margin-top: 0;
-            margin-bottom: 10px;
-            color: #2c3e50;
-            font-size: 1.2em;
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin: 0 0 5px 0;
+            line-height: 1.2;
         }
 
-        .product-info p {
-            font-size: 0.9em;
-            color: #7f8c8d;
+        .product-subtitle {
+            font-size: 0.9rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
             line-height: 1.5;
-            text-align: left;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            flex-grow: 1;
         }
 
-        .btn-detail {
-            display: block;
-            background: #3498db;
-            padding: 12px;
-            text-align: center;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 15px;
-            transition: background 0.2s;
+        .product-specs {
+            font-size: 0.85rem; 
+            color: #64748b; 
+            text-align: left; 
+            border-top: 1px solid rgba(255,255,255,0.05); 
+            padding-top: 10px;
+            margin-bottom: 20px;
         }
-        
-        /* ------------------- Lightbox Styles ------------------- */
+
+        /* More Details 按钮 */
+        .btn-details {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, #0284c7 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+            box-sizing: border-box;
+        }
+
+        .btn-details:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
+            filter: brightness(1.1);
+        }
+
+        /* ------------------- Lightbox (深色主题适配) ------------------- */
         .lightbox-modal {
             display: none; 
             position: fixed;
-            z-index: 1001; 
+            z-index: 10002; 
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.9); 
+            background-color: rgba(0,0,0,0.95); /* 更深的遮罩 */
+            backdrop-filter: blur(5px);
             padding-top: 60px;
         }
 
@@ -264,7 +420,7 @@
             margin: auto;
             display: block;
             width: 90%;
-            max-width: 900px;
+            max-width: 800px;
             position: relative;
             text-align: center;
         }
@@ -274,9 +430,10 @@
             height: auto;
             max-height: 70vh; 
             object-fit: contain;
-            border-radius: 5px;
+            border-radius: 10px;
             background: #fff;
             cursor: default; 
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.1);
         }
 
         #caption {
@@ -285,106 +442,136 @@
             width: 90%;
             max-width: 800px;
             text-align: left;
-            background-color: #2c3e50;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 5px;
-            margin-top: 10px;
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
         }
 
         #caption h3 {
-            color: #f39c12;
-            margin-bottom: 5px;
-            font-size: 1.4em;
+            color: var(--accent-blue);
+            margin: 0 0 10px 0;
+            font-family: var(--font-serif);
         }
         
         #caption p {
-            color: #ecf0f1;
-            font-size: 1em;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
             margin-bottom: 5px;
-            line-height: 1.4;
-            text-align: left;
+            line-height: 1.5;
         }
 
         .close {
             position: absolute;
-            top: 15px;
-            right: 35px;
+            top: 20px;
+            right: 40px;
             color: #f1f1f1;
             font-size: 40px;
             font-weight: bold;
             transition: 0.3s;
-            z-index: 1002;
+            z-index: 10003;
         }
 
-        .close:hover,
-        .close:focus {
-            color: #bbb;
-            text-decoration: none;
+        .close:hover {
+            color: var(--accent-blue);
             cursor: pointer;
         }
-        /* ------------------- Media Queries ------------------- */
-        @media (max-width: 600px) {
-            header { padding-left: 20px; }
-            .filter-section { flex-direction: column; align-items: stretch; }
-            .filter-group select { width: 100%; box-sizing: border-box; }
+
+        /* ------------------- Footer ------------------- */
+        .page-footer {
+            background-color: #020617; 
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b; 
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 60px;
+        }
+        
+        /* ------------------- 响应式 ------------------- */
+        @media (max-width: 900px) { 
+            .desktop-nav { display: none; }
+            .header-logo-right { width: 180px; }
+            .nav-logo-text { font-size: 1.1rem; }
+            .hero-title { font-size: 2.5rem; padding: 0 10px; }
             .lightbox-content { width: 95%; padding-top: 10px; }
-            .lightbox-content img { max-height: 60vh; }
         }
     </style>
 </head>
 
 <body onload="renderProducts()">
 
-<div class="menu-icon" onclick="toggleNav()">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-</div>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="nav-left-wrapper">
+                <div class="menu-icon" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <a href="index.html" class="nav-logo-text">Siong Cheong Trading</a>
+            </div>
 
-<div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-    <a href="index.html">Home</a>
-    <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
-    <div class="submenu" style="display: block;"> 
-        <a href="refrigerator.html">Refrigerator (冰箱)</a>
-        <a href="chiller.html">Chiller (冷柜)</a>
-        <a href="freezer.html">Freezer (冷冻柜)</a>
-        <a href="ac.html">Air Conditioner (空调)</a>
-        <a href="portable_ac.html">Portable Air Cond (移动式空调)</a>
-        <a href="tv.html">TV (电视)</a>
-        <a href="washer.html">Washer (洗衣机)</a>
-        <a href="dryer.html">Dryer (烘干机)</a>
-        <a href="kitchen.html">Kitchen Appliances (厨房电器)</a>
-        <a href="hood.html">Hood (抽油烟机)</a>
-        <a href="gas.html">Gas (燃气灶具)</a>
-        <a href="oven.html">Oven (烤箱)</a>
-        <a href="microwave.html">Microwave (微波炉)</a>
-        <a href="air_fryer.html">Air Fryer (空气炸锅)</a>
-        <a href="shower.html">Shower (热水器/花洒)</a>
-        <a href="air_purifier.html">Air Purifier (空气净化器)</a>
-        <a href="speaker.html">Speaker (音响)</a>
-        <a href="small.html">Small Appliances (小家电)</a>
+            <div class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="index.html#products">Products</a> 
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            
+            <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo-right" onerror="this.style.display='none'">
+        </div>
+    </nav>
+
+    <!-- Mobile Fullscreen Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="mobile-link-item"><a href="index.html" class="mobile-link" onclick="toggleMenu()">Home</a></div>
+        <div class="mobile-link-item">
+            <div class="mobile-link" onclick="toggleProductSubmenu(this)">
+                Products <i class="fas fa-chevron-down chevron"></i>
+            </div>
+            <div class="mobile-submenu" id="productSubmenu">
+                <a href="refrigerator.html" class="mobile-sublink">Refrigerator</a>
+                <a href="chiller.html" class="mobile-sublink">Chiller</a>
+                <a href="freezer.html" class="mobile-sublink">Freezer</a>
+                <a href="ac.html" class="mobile-sublink">Air Conditioner</a>
+                <a href="portable_ac.html" class="mobile-sublink">Portable Air Cond</a>
+                <a href="tv.html" class="mobile-sublink">TV</a>
+                <a href="washer.html" class="mobile-sublink">Washer</a>
+                <a href="dryer.html" class="mobile-sublink">Dryer</a>
+                <a href="kitchen.html" class="mobile-sublink">Kitchen Appliances</a>
+                <a href="hood.html" class="mobile-sublink">Hood</a>
+                <a href="gas.html" class="mobile-sublink">Gas</a>
+                <a href="oven.html" class="mobile-sublink">Oven</a>
+                <a href="microwave.html" class="mobile-sublink">Microwave</a>
+                <a href="air_fryer.html" class="mobile-sublink">Air Fryer</a>
+                <a href="shower.html" class="mobile-sublink">Shower</a>
+                <a href="air_purifier.html" class="mobile-sublink">Air Purifier</a>
+                <a href="speaker.html" class="mobile-sublink">Speaker</a>
+                <a href="small.html" class="mobile-sublink">Small Appliances</a>
+            </div>
+        </div>
+        <div class="mobile-link-item"><a href="about.html" class="mobile-link" onclick="toggleMenu()">About Us</a></div>
+        <div class="mobile-link-item"><a href="contact.html" class="mobile-link" onclick="toggleMenu()">Contact</a></div>
     </div>
-    <a href="about.html">About Us</a>
-    <a href="location.html">Our Location</a>
-    <a href="contact.html">Contact Us</a>
-</div>
 
-<div id="overlay" class="overlay" onclick="toggleNav()"></div>
+    <!-- Hero -->
+    <div class="hero-section">
+        <h1 class="hero-title">Refrigerator Series</h1>
+        <p class="hero-subtitle">Premium cooling solutions for modern kitchens.</p>
+    </div>
 
-<div id="main-content">
-    <header>
-        Siong Cheong Trading
-        <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo">
-    </header>
-
-    <div class="container">
-        <h1>Refrigerator Series (冰箱系列)</h1>
-
-        <div class="filter-section">
+    <!-- Filter Section -->
+    <div class="filter-section-wrapper">
+        <button id="toggle-filter" class="filter-toggle-button">
+            <i class="fas fa-filter"></i> Filter Options
+        </button>
+        <div class="filter-controls" id="filter-content">
             <div class="filter-group">
-                <label for="capacity-filter">Capacity:</label>
+                <label for="capacity-filter">Capacity</label>
                 <select id="capacity-filter" onchange="filterProducts()">
                     <option value="all">All Capacities</option>
                     <option value="mini">Mini Bar (&lt; 150L)</option>
@@ -395,7 +582,7 @@
                 </select>
             </div>
             <div class="filter-group">
-                <label for="brand-filter">Brand:</label>
+                <label for="brand-filter">Brand</label>
                 <select id="brand-filter" onchange="filterProducts()">
                     <option value="all">All Brands</option>
                     <option value="Sharp">Sharp</option>
@@ -409,199 +596,205 @@
                 </select>
             </div>
         </div>
+    </div>
 
+    <!-- Product Grid -->
+    <div class="products-wrapper">
         <div id="product-list" class="product-grid"></div>
-        <p id="no-products" style="text-align: center; color: #888; display: none;">No products found matching your criteria.</p>
+        <p id="no-products" style="text-align: center; color: var(--text-secondary); display: none; margin-top: 40px; font-size: 1.2rem;">
+            No products found matching your criteria.
+        </p>
     </div>
     
-    <div class="page-footer">
-        <a href="index.html" class="back-to-home">Back to Home</a>
-    </div>
-</div>
+    <footer class="page-footer">
+        <p>Copyright © 2025 Siong Cheong Trading. All rights reserved.</p>
+    </footer>
 
-<div id="productLightbox" class="lightbox-modal" onclick="closeLightbox()">
-    <span class="close" onclick="closeLightbox()">&times;</span>
-    
-    <div class="lightbox-content" onclick="event.stopPropagation()">
-        <img id="lightboxImage" style="max-width: 100%; max-height: 100%;">
-        <div id="caption"></div>
+    <!-- Lightbox Modal -->
+    <div id="productLightbox" class="lightbox-modal" onclick="closeLightbox()">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <img id="lightboxImage" alt="Zoomed Product">
+            <div id="caption"></div>
+        </div>
     </div>
-</div>
+
 <script>
-    // 菜单逻辑 (保持不变)
-    window.toggleNav = function() {
-        const sidebar = document.getElementById("mySidebar");
-        const overlay = document.getElementById("overlay");
+    // ------------------- Navigation Logic -------------------
+    function toggleMenu() {
+        const menu = document.getElementById('mobileMenu');
+        const icon = document.querySelector('.menu-icon');
         const body = document.body;
-        const mainContent = document.getElementById("main-content");
-        const isOpened = sidebar.style.width === '250px';
-        if (isOpened) {
-            sidebar.style.width = '0';
-            overlay.style.display = 'none';
-            body.style.overflow = 'auto';
-            mainContent.style.marginRight = '0';
-        } else {
-            mainContent.style.marginRight = '17px';
+        
+        menu.classList.toggle('active');
+        icon.classList.toggle('active');
+        
+        if (menu.classList.contains('active')) {
             body.style.overflow = 'hidden';
-            sidebar.style.width = '250px';
-            overlay.style.display = 'block';
+        } else {
+            body.style.overflow = '';
         }
     }
-    window.toggleSubmenu = function(element) {
-        const submenu = element.nextElementSibling;
-        submenu.style.display = (submenu.style.display === 'block') ? 'none' : 'block';
+
+    function toggleProductSubmenu(element) {
+        element.classList.toggle('active');
+        const submenu = document.getElementById('productSubmenu');
+        submenu.classList.toggle('open');
     }
 
-    // ------------------- 完整产品数据 (保持不变) -------------------
+    // ------------------- Filter Logic -------------------
+    document.getElementById('toggle-filter').addEventListener('click', function() {
+        document.getElementById('filter-content').classList.toggle('active');
+    });
+
+    // ------------------- Product Data -------------------
     const refrigeratorProducts = [
         // --- SHARP ---
         {
             model: "Sharp SJM60MK",
             brand: "Sharp", liters: 60, image: "SJM60MK.jpg",
-            description: "60L Mini Bar Fridge. Compact design with recessed handle, wired shelf, and utility box.",
+            description: "60L Mini Bar Fridge. Compact design.",
             details: "Dim: 449x501x470mm | Adjustable Feet | Bottle Pocket."
         },
         {
             model: "Sharp SJ-189",
             brand: "Sharp", liters: 170, image: "SJ189.jpg",
-            description: "170L 2-Door Inverter Refrigerator. J-Tech Inverter technology.",
-            details: "Dim: 535x1275x595mm | 10yr Compressor Warranty | 1yr General."
+            description: "170L 2-Door Inverter Refrigerator.",
+            details: "Dim: 535x1275x595mm | 10yr Compressor Warranty | J-Tech Inverter."
         },
         {
             model: "Sharp SJ285MSS",
             brand: "Sharp", liters: 280, image: "SJ285MSS.jpg",
-            description: "280L 2-Door Fridge. AG CU Nano Deodoriser keeps food fresh.",
+            description: "280L 2-Door Fridge. AG CU Nano Deodoriser.",
             details: "Dim: 545x1560x588mm | Tempered Glass Shelf | Fresh Case."
         },
         {
             model: "Sharp SJ287MDS",
             brand: "Sharp", liters: 280, image: "SJ287MDS.jpg",
-            description: "280L Refrigerator (Dark Silver). Reliable cooling performance.",
-            details: "Capacity: 280L | Features similar to SJ285MSS series."
+            description: "280L Refrigerator (Dark Silver).",
+            details: "Capacity: 280L | Reliable cooling performance."
         },
         {
             model: "Sharp SJ-2822MSS",
             brand: "Sharp", liters: 280, image: "SJ2822MSS.jpg",
-            description: "280L J-Tech Inverter Refrigerator. Energy efficient cooling.",
-            details: "Dim: 545x1560x586mm | Inverter Compressor."
+            description: "280L J-Tech Inverter Refrigerator.",
+            details: "Dim: 545x1560x586mm | Energy efficient cooling."
         },
         {
             model: "Sharp SJ-327MDS",
             brand: "Sharp", liters: 320, image: "SJ327MDS.jpg",
-            description: "320L 2-Door Fridge. Features 2-Way Fresh Room and AG+ Nano Deodoriser.",
+            description: "320L 2-Door Fridge. 2-Way Fresh Room.",
             details: "Dim: 545x1700x588mm | 10yr Compressor Warranty | LED Lighting."
         },
         {
             model: "Sharp SJ325MSS",
             brand: "Sharp", liters: 320, image: "SJ325MSS.jpg",
-            description: "320L 2-Door Fridge with Twist & Serve Ice Tray and LED Lighting.",
-            details: "Dim: 545x1700x588mm (Approx) | Vegetable Case | Bottle Pocket."
+            description: "320L 2-Door Fridge with Twist & Serve Ice Tray.",
+            details: "Dim: 545x1700x588mm (Approx) | Vegetable Case."
         },
         {
             model: "Sharp SJ-3222MSS",
             brand: "Sharp", liters: 320, image: "SJ3222MSS.jpg",
-            description: "320L J-Tech Inverter Refrigerator. Spacious and energy saving.",
-            details: "Dim: 545x1700x586mm | Inverter Technology."
+            description: "320L J-Tech Inverter Refrigerator.",
+            details: "Dim: 545x1700x586mm | Spacious and energy saving."
         },
         {
             model: "Sharp SJ-3822MSS",
             brand: "Sharp", liters: 380, image: "SJ3822MSS.jpg",
-            description: "380L J-Tech Inverter Refrigerator. Large capacity for families.",
-            details: "Dim: 645x1690x624mm | Inverter Technology."
+            description: "380L J-Tech Inverter Refrigerator.",
+            details: "Dim: 645x1690x624mm | Large capacity for families."
         },
         {
             model: "Sharp SJ-4122MSS",
             brand: "Sharp", liters: 410, image: "SJ4122MSS.jpg",
-            description: "410L J-Tech Inverter Refrigerator. Superior cooling efficiency.",
-            details: "Dim: 645x1690x665mm | Inverter Technology."
+            description: "410L J-Tech Inverter Refrigerator.",
+            details: "Dim: 645x1690x665mm | Superior cooling efficiency."
         },
         {
             model: "Sharp SJ-4422MSS",
             brand: "Sharp", liters: 440, image: "SJ4422MSS.jpg",
-            description: "440L Inverter Fridge. Hybrid Cooling System & Extra Cool feature.",
+            description: "440L Inverter Fridge. Hybrid Cooling System.",
             details: "Dim: 645x1795x665mm | Express Freezing | Ag-Nano Deodorizer."
         },
         {
             model: "Sharp SJ489GK AVANCE",
             brand: "Sharp", liters: 480, image: "SJ489GK.jpg",
-            description: "480L AVANCE Series 4-Door Refrigerator. Premium glass design.",
+            description: "480L AVANCE Series 4-Door. Premium glass design.",
             details: "Dim: 795x1800x692mm | Plasmacluster Ion | Hybrid Cooling."
         },
         {
             model: "Sharp SJP682MFGK",
             brand: "Sharp", liters: 610, image: "SJP682MFGK.jpg",
-            description: "610L Premium Multi-Door Refrigerator with Glass Door.",
+            description: "610L Premium Multi-Door Refrigerator.",
             details: "Dim: 820x1770x740mm | Plasmacluster Ion | Inverter."
         },
         {
             model: "Sharp SJP782MFGK",
             brand: "Sharp", liters: 670, image: "SJP782MFGK.jpg",
-            description: "670L Huge Capacity Multi-Door Fridge. Tempered Glass Door.",
+            description: "670L Huge Capacity Multi-Door Fridge.",
             details: "Dim: 820x1870x740mm | Express Freezing | Extra Cool."
         },
         {
             model: "Sharp SJP882MFGK",
             brand: "Sharp", liters: 720, image: "SJP882MFGK.jpg",
-            description: "720L Extra Large Multi-Door Fridge. Ultimate storage solution.",
+            description: "720L Extra Large Multi-Door Fridge.",
             details: "Dim: 865x1870x740mm | Plasmacluster Ion | Hybrid Cooling."
         },
         {
             model: "Sharp SJX-6322Ms",
             brand: "Sharp", liters: 620, image: "SJX6322Ms.jpg",
-            description: "620L Side-by-Side Inverter Refrigerator. External LED Control.",
-            details: "Dim: 670x1770x910mm | Multi Air Flow | Quick Cooling/Freezing."
+            description: "620L Side-by-Side Inverter Refrigerator.",
+            details: "Dim: 670x1770x910mm | Multi Air Flow | External LED Control."
         },
         {
             model: "Sharp SJF821VMSS",
             brand: "Sharp", liters: 700, image: "SJF821VMSS.jpg",
-            description: "700L 4-Door Inverter Refrigerator. ActiFresh Hybrid Cooling.",
-            details: "Deep Freezing | Extra Cool Plus | Antibacterial Deodorizer."
+            description: "700L 4-Door Inverter Refrigerator.",
+            details: "ActiFresh Hybrid Cooling | Deep Freezing | Antibacterial."
         },
-
         // --- TOSHIBA ---
         {
             model: "Toshiba GR-RT230WE",
             brand: "Toshiba", liters: 220, image: "GRRT230WE.jpg",
-            description: "220L 2-Door Inverter Fridge. Compact and efficient.",
+            description: "220L 2-Door Inverter Fridge.",
             details: "Dim: 545x623x1285mm | 12 Years Compressor Warranty."
         },
         {
             model: "Toshiba GR-RT300WE",
             brand: "Toshiba", liters: 270, image: "GRRT300WE.jpg",
-            description: "270L 2-Door Inverter Fridge. Ideal for medium usage.",
+            description: "270L 2-Door Inverter Fridge.",
             details: "Dim: 545x623x1545mm | 12 Years Compressor Warranty."
         },
         {
             model: "Toshiba GR-RT412WE",
             brand: "Toshiba", liters: 360, image: "GRRT412WE.jpg",
-            description: "360L 2-Door Inverter Fridge. Spacious and durable.",
+            description: "360L 2-Door Inverter Fridge.",
             details: "Dim: 545x623x1545mm | 12 Years Compressor Warranty."
         },
         {
             model: "Toshiba GR-RT466WE",
             brand: "Toshiba", liters: 410, image: "GRRT466WE.jpg",
-            description: "410L 2-Door Inverter Fridge. Large capacity cooling.",
+            description: "410L 2-Door Inverter Fridge.",
             details: "Dim: 595x695x1620mm | 12 Years Compressor Warranty."
         },
         {
             model: "Toshiba SBS-501WPGE",
             brand: "Toshiba", liters: 556, image: "SBS501WPGE.jpg",
-            description: "556L Inverter Side-by-Side Fridge (White Glass Door).",
-            details: "Dim: 833x670x1785mm | Modern design | 12yr Compressor Warranty."
+            description: "556L Inverter Side-by-Side (White Glass).",
+            details: "Dim: 833x670x1785mm | Modern design | 12yr Warranty."
         },
         {
             model: "Toshiba SBS-501WP",
             brand: "Toshiba", liters: 556, image: "SBS501WP.jpg",
-            description: "556L Inverter Side-by-Side Fridge (Black Glass Door).",
-            details: "Dim: 833x670x1785mm | Stylish finish | 12yr Compressor Warranty."
+            description: "556L Inverter Side-by-Side (Black Glass).",
+            details: "Dim: 833x670x1785mm | Stylish finish | 12yr Warranty."
         },
-
         // --- MIDEA ---
         {
             model: "Midea MDRD229FGD",
             brand: "Midea", liters: 157, image: "MDRD229.jpg",
-            description: "157L Single Door Refrigerator. Compact single door design.",
-            details: "Available in Silver/Black."
+            description: "157L Single Door Refrigerator.",
+            details: "Compact design | Available in Silver/Black."
         },
         {
             model: "Midea MDRT267MTB30",
@@ -636,26 +829,26 @@
         {
             model: "Midea MDRT384MTB30",
             brand: "Midea", liters: 330, image: "MDRT384.jpg",
-            description: "330L 2-Door Refrigerator. Spacious interior.",
-            details: "10yr Compressor Warranty."
+            description: "330L 2-Door Refrigerator.",
+            details: "Spacious interior | 10yr Compressor Warranty."
         },
         {
             model: "Midea MDRB431FGG28",
             brand: "Midea", liters: 400, image: "MDRB431.jpg",
-            description: "400L Bottom Mount Refrigerator (Net 325L).",
+            description: "400L Bottom Mount Refrigerator.",
             details: "Dim: 595x695x1724mm | 12yr Compressor Warranty."
         },
         {
             model: "Midea MDRT489MTB28",
             brand: "Midea", liters: 400, image: "MDRT489.jpg",
-            description: "400L 2-Door Inverter Refrigerator (Net 338L).",
+            description: "400L 2-Door Inverter Refrigerator.",
             details: "Dim: 700x670x1723mm | 12yr Compressor Warranty."
         },
         {
             model: "Midea MDRS712FIE61W",
             brand: "Midea", liters: 660, image: "MDRS712.jpg",
-            description: "660L Inverter Side-by-Side Fridge. White/Black Glass Door.",
-            details: "Dim: 1765x706x897mm."
+            description: "660L Inverter Side-by-Side Fridge.",
+            details: "Dim: 1765x706x897mm | White/Black Glass Door."
         },
         {
             model: "Midea MDRF633MIF",
@@ -663,13 +856,12 @@
             description: "570L 4-Glass Door Inverter Refrigerator.",
             details: "Premium 4-door design."
         },
-
         // --- HISENSE ---
         {
             model: "Hisense RR120D4AGN",
             brand: "Hisense", liters: 110, image: "RR120.jpg",
-            description: "110L Single Door Fridge. Compact and simple.",
-            details: "Dim: 84.9x47.5x44.8cm."
+            description: "110L Single Door Fridge.",
+            details: "Dim: 84.9x47.5x44.8cm | Compact and simple."
         },
         {
             model: "Hisense RT208N4ASN",
@@ -704,8 +896,8 @@
         {
             model: "Hisense RT549N4ABU",
             brand: "Hisense", liters: 500, image: "RT549.jpg",
-            description: "500L Inverter Fridge. Glass Door (Black/White).",
-            details: "12yr Compressor Warranty."
+            description: "500L Inverter Fridge. Glass Door.",
+            details: "12yr Compressor Warranty | Black/White available."
         },
         {
             model: "Hisense RS588N4ABNIV",
@@ -722,8 +914,8 @@
         {
             model: "Hisense RS808N4ABU",
             brand: "Hisense", liters: 726, image: "RS808.jpg",
-            description: "726L Side-by-Side Inverter Fridge (Mirror Glass).",
-            details: "Dim: 910x697x1786mm."
+            description: "726L Side-by-Side Inverter (Mirror Glass).",
+            details: "Dim: 910x697x1786mm | Luxurious design."
         },
         {
             model: "Hisense RQ568N4ABU",
@@ -737,13 +929,12 @@
             description: "780L Side-by-Side Inverter Fridge.",
             details: "Dim: 910x717x1795mm | 25yr Compressor Warranty."
         },
-        
-        // --- DEKKA / NARUTRON / NAKAMA ---
+        // --- OTHERS ---
         {
             model: "Dekka RD-50",
             brand: "Dekka", liters: 50, image: "RD50.jpg",
             description: "50L Mini Bar. Very compact.",
-            details: "Dim: 425x445x1008mm (Note: Height seems tall for 50L, check spec)."
+            details: "Dim: 425x445x1008mm."
         },
         {
             model: "Nakama 160L",
@@ -755,58 +946,29 @@
             model: "Narutron NCD-100R",
             brand: "Narutron", liters: 100, image: "NCD100R.jpg",
             description: "100L Refrigerator.",
-            details: "Compact model."
+            details: "Compact model for small spaces."
         },
-        
-        // --- KHIND (Updated with RF165 from Slide 73 info) ---
         {
-            model: "Khind 157L Refrigerator RF165",
+            model: "Khind RF165",
             brand: "Khind", liters: 157, image: "Khind_RF165.jpg", 
-            description: "157L Compact Refrigerator. Ideal for smaller spaces.",
-            details: "Model: RF165 | 2 years general warranty + 5 years compressor warranty."
+            description: "157L Compact Refrigerator.",
+            details: "2 years general + 5 years compressor warranty."
         },
-        
-        // --- SKYWORTH (Updated with 556L SBS details from Slide 71-72 info) ---
         {
-            model: "Skyworth 556L SBS (White Glass)", 
+            model: "Skyworth SBS-501WPGE", 
             brand: "Skyworth", liters: 556, image: "Skyworth_White_SBS.jpg", 
-            description: "556 Liters inverter side by side refrigerator (White Glass Door).",
-            details: "2 years general warranty + 12 years compressor warranty. (Corresponds to SBS-501WPGE specs)."
+            description: "556L Inverter SBS (White Glass).",
+            details: "2yr general + 12yr compressor warranty."
         },
         {
-            model: "Skyworth 556L SBS (Black Glass)",
+            model: "Skyworth SBS-501WP",
             brand: "Skyworth", liters: 556, image: "Skyworth_Black_SBS.jpg", 
-            description: "556 Liters inverter side by side refrigerator (Black Glass Door).",
-            details: "2 years general warranty + 12 years compressor warranty. (Corresponds to SBS-501WP specs)."
+            description: "556L Inverter SBS (Black Glass).",
+            details: "2yr general + 12yr compressor warranty."
         }
     ];
 
-    // ------------------- Lightbox Functions (保持不变) -------------------
-
-    window.openLightbox = function(imgElement) {
-        const modal = document.getElementById("productLightbox");
-        const modalImg = document.getElementById("lightboxImage");
-        const captionText = document.getElementById("caption");
-        
-        modal.style.display = "block";
-        // 防止点击图片时关闭 Lightbox
-        modal.onclick = function(event) {
-            if (event.target === modal) {
-                closeLightbox();
-            }
-        };
-
-        modalImg.src = imgElement.getAttribute("data-full-src");
-        captionText.innerHTML = imgElement.getAttribute("data-caption");
-    }
-
-    window.closeLightbox = function() {
-        const modal = document.getElementById("productLightbox");
-        modal.style.display = "none";
-    }
-
-    // ------------------- 产品渲染和筛选逻辑 (保持不变) -------------------
-
+    // ------------------- Render Function -------------------
     function renderProducts(productsToRender = refrigeratorProducts) {
         const productList = document.getElementById('product-list');
         const noProducts = document.getElementById('no-products');
@@ -822,33 +984,33 @@
             const card = document.createElement('div');
             card.className = 'product-card';
             
-            // 路径指向根目录
-            const imageSrc = product.image ? product.image : 'default_refrigerator.jpg'; 
+            // 使用占位符处理图片加载失败
+            const imageSrc = product.image ? product.image : ''; 
             
-            // 构建 Lightbox 需要的详细信息 HTML
+            // Lightbox 内容
             const fullDetails = `<p><strong>Brand:</strong> ${product.brand}</p><p><strong>Capacity:</strong> ${product.liters}L</p><p>${product.details}</p>`;
-            
-            // 构建 Lightbox 标题
             const captionContent = `<h3>${product.model}</h3><p>${product.description}</p>${fullDetails}`;
 
-
             card.innerHTML = `
-                <img 
-                    src="${imageSrc}" 
-                    alt="${product.model}" 
-                    onerror="this.src='default_refrigerator.jpg'"
-                    onclick="openLightbox(this)"
-                    data-full-src="${imageSrc}"
-                    data-caption="${captionContent.replace(/"/g, '&quot;')}"
-                >
+                <div class="card-image-wrapper" 
+                     onclick="openLightbox(this)"
+                     data-full-src="${imageSrc}"
+                     data-caption="${captionContent.replace(/"/g, '&quot;')}">
+                    <img src="${imageSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/300x300/1e293b/FFF?text=No+Image'">
+                </div>
                 <div class="product-info">
-                    <h3>${product.model}</h3>
-                    <p><strong>${product.liters}L</strong> - ${product.description}</p>
-                    <p style="font-size: 0.85em; color: #555; text-align: left; border-top: 1px dashed #eee; padding-top: 5px;">
-                        Brand: ${product.brand}<br>
-                        ${product.details}
-                    </p>
-                    <a class="btn-detail" href="javascript:void(0)">View Details</a>
+                    <div>
+                        <h3>${product.model}</h3>
+                        <div class="product-subtitle">${product.liters}L Capacity</div>
+                        <p class="product-desc">${product.description}</p>
+                        <div class="product-specs">
+                            Brand: ${product.brand}<br>
+                            ${product.details}
+                        </div>
+                    </div>
+                    <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about ${product.model}" target="_blank">
+                        More Details <i class="fas fa-angle-right"></i>
+                    </a>
                 </div>
             `;
             productList.appendChild(card);
@@ -863,7 +1025,7 @@
         const brandFilter = document.getElementById('brand-filter').value;
 
         const filtered = refrigeratorProducts.filter(product => {
-            // 1. 筛选容量
+            // 1. Capacity Logic
             let capMatch = false;
             if (capFilter === 'all') capMatch = true;
             else if (capFilter === 'mini' && product.liters < 150) capMatch = true;
@@ -872,7 +1034,7 @@
             else if (capFilter === 'large' && product.liters >= 500 && product.liters < 700) capMatch = true;
             else if (capFilter === 'xlarge' && product.liters >= 700) capMatch = true;
 
-            // 2. 筛选品牌
+            // 2. Brand Logic
             let brandMatch = false;
             if (brandFilter === 'all') brandMatch = true;
             else if (product.brand === brandFilter) brandMatch = true;
@@ -881,6 +1043,37 @@
         });
 
         renderProducts(filtered);
+    }
+
+    // ------------------- Lightbox Functions -------------------
+    window.openLightbox = function(wrapperElement) {
+        const modal = document.getElementById("productLightbox");
+        const modalImg = document.getElementById("lightboxImage");
+        const captionText = document.getElementById("caption");
+        
+        // 从 wrapper 的 data 属性获取信息
+        const imgSrc = wrapperElement.getAttribute("data-full-src");
+        const captionHTML = wrapperElement.getAttribute("data-caption");
+
+        modal.style.display = "block";
+        // 点击遮罩关闭
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                closeLightbox();
+            }
+        };
+
+        modalImg.src = imgSrc;
+        // 如果原图加载失败，显示占位图
+        modalImg.onerror = function() {
+             this.src = 'https://placehold.co/600x600/1e293b/FFF?text=No+Image';
+        };
+        captionText.innerHTML = captionHTML;
+    }
+
+    window.closeLightbox = function() {
+        const modal = document.getElementById("productLightbox");
+        modal.style.display = "none";
     }
 </script>
 </body>
