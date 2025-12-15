@@ -6,29 +6,23 @@
     <title>Air Fryer Collection</title>
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <!-- Google Fonts: Roboto (Modern Industrial) -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Playfair Display & Lato -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* ------------------- Unified Theme Variables (Strict Washer Standard) ------------------- */
+        /* ------------------- Theme Variables ------------------- */
         :root {
-            /* Backgrounds */
-            --bg-page: #0f172a;       /* Dark Slate/Navy */
-            --bg-panel: #1e293b;      /* Slightly lighter panel */
-            --bg-card-img: #ffffff;   /* Pure White for Images */
-            --bg-card-info: #1e293b;  /* Dark for text */
-            
-            /* Text & Accents */
-            --text-main: #f8fafc;     /* Almost White */
-            --text-sub: #94a3b8;      /* Muted Grey */
-            --accent: #38bdf8;        /* Electric Blue (Washer Style) */
-            --border: #334155;        /* Subtle Border */
-            
-            /* Dimensions & Spacing */
-            --header-height: 70px;
-            --radius: 4px;            /* Small radius for industrial look */
-            --container-width: 1200px;
+            --bg-body: #0b1221;       /* Deep Navy Background */
+            --bg-card: #162030;       /* Card Background */
+            --text-main: #ffffff;     /* White Text */
+            --text-sub: #94a3b8;      /* Slate Grey Text */
+            --accent: #29b6f6;        /* Bright Blue Accent */
+            --btn-bg: #0ea5e9;        /* Button Background */
+            --btn-hover: #0284c7;     /* Button Hover */
+            --border-color: #1e293b;
+            --tag-bg: rgba(14, 165, 233, 0.2); /* Tag Background */
+            --tag-text: #38bdf8;      /* Tag Text */
         }
 
         /* ------------------- Reset & Base ------------------- */
@@ -38,432 +32,396 @@
             padding: 0;
         }
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--bg-page);
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-body);
             color: var(--text-main);
             padding-bottom: 60px;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
         }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; }
 
-        /* ------------------- Sidebar Navigation ------------------- */
-        .menu-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1200;
-            background: rgba(30, 41, 59, 0.9); /* Slightly more opaque */
-            border: 1px solid var(--border);
-            padding: 12px;
-            border-radius: var(--radius);
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px; height: 45px;
-        }
-        .menu-btn:hover { border-color: var(--accent); background: rgba(30, 41, 59, 1); }
-        .menu-btn .bar {
-            width: 20px; height: 2px; background: var(--text-main); margin: 3px 0; transition: 0.3s;
-        }
-        .menu-btn:hover .bar { background: var(--accent); }
-
-        .sidebar {
-            height: 100%; width: 0; position: fixed; z-index: 1201; top: 0; left: 0;
-            background-color: #020617;
-            overflow-x: hidden; padding-top: 80px; transition: 0.4s;
-            border-right: 1px solid var(--border);
-            white-space: nowrap;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.8);
-        }
-        .sidebar a, .sidebar .submenu-toggle {
-            padding: 15px 30px; font-size: 15px; color: var(--text-sub);
-            display: block; border-bottom: 1px solid #1e293b; cursor: pointer; letter-spacing: 0.5px;
-        }
-        .sidebar a:hover, .sidebar .submenu-toggle:hover, .sidebar a.active {
-            color: var(--accent); background: rgba(56, 189, 248, 0.05); border-left: 3px solid var(--accent); padding-left: 35px;
-        }
-        .submenu { display: none; background: #0f172a; }
-        .submenu a { padding-left: 50px; border-bottom: 1px solid #1e293b; border-left: none; font-size: 14px; }
-        .submenu a:hover { border-left: 3px solid var(--accent); padding-left: 50px; }
-        
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 1100; display: none; backdrop-filter: blur(4px);
-        }
-        
-        /* Close Button in Sidebar */
-        .sidebar .close-icon {
-            position: absolute; top: 25px; right: 25px; font-size: 24px; color: var(--text-sub); cursor: pointer; transition: 0.3s;
-        }
-        .sidebar .close-icon:hover { color: var(--accent); transform: rotate(90deg); }
-
-        /* ------------------- Unified Header ------------------- */
+        /* ------------------- Header (Siong Cheong Style) ------------------- */
         header {
-            background: rgba(15, 23, 42, 0.95);
-            border-bottom: 1px solid var(--border);
-            height: var(--header-height);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
-        header h1 {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--text-main);
-        }
-
-        /* ------------------- Unified Filter Bar (The "Washer" Style) ------------------- */
-        .filter-bar {
-            background-color: var(--bg-panel);
-            border-bottom: 1px solid var(--border);
-            padding: 0 20px;
-            height: 55px; /* Standard height */
             display: flex;
             align-items: center;
             justify-content: space-between;
-            cursor: pointer;
-            transition: 0.3s;
-            max-width: var(--container-width);
-            margin: 0 auto;
-            margin-top: -1px; /* Overlap border */
+            padding: 0 40px;
+            height: 80px;
             position: relative;
-            z-index: 900;
+            z-index: 1000;
         }
-        .filter-bar:hover { background-color: #263345; }
-        
-        .filter-left { display: flex; align-items: center; gap: 10px; }
-        
-        /* THE ICON YOU REQUESTED: fa-filter (Hourglass/Funnel shape) */
-        .filter-title { 
-            font-size: 14px; 
-            font-weight: 500; 
-            color: var(--accent); 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .menu-icon { font-size: 24px; cursor: pointer; color: var(--text-main); }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
         }
-        
-        .filter-arrow { color: var(--text-sub); transition: transform 0.3s; font-size: 14px; }
-        .filter-bar.active .filter-arrow { transform: rotate(180deg); color: var(--accent); }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: var(--text-sub); font-size: 16px; font-weight: 400; }
+        .nav-links a:hover { color: var(--text-main); }
 
-        #filter-panel {
-            max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
-            background-color: #0f172a; 
-            border-bottom: 1px solid var(--border);
-            max-width: var(--container-width);
-            margin: 0 auto;
+        /* ------------------- Sidebar ------------------- */
+        .sidebar {
+            height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0;
+            background-color: #080d16;
+            overflow-x: hidden; padding-top: 60px; transition: 0.4s;
+            border-right: 1px solid #1e293b; white-space: nowrap;
         }
-        #filter-panel.open { max-height: 300px; }
+        .sidebar a, .sidebar .submenu-toggle {
+            padding: 15px 30px; font-size: 16px; color: var(--text-sub);
+            display: block; border-bottom: 1px solid #1e293b; cursor: pointer;
+        }
+        .sidebar a:hover, .sidebar .submenu-toggle:hover {
+            color: var(--accent); background: rgba(255,255,255,0.05);
+        }
+        .sidebar .close-btn {
+            position: absolute; top: 15px; right: 25px; font-size: 30px; cursor: pointer;
+        }
+        .submenu { display: none; background: #0b1221; }
+        .submenu a { padding-left: 50px; font-size: 14px; }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 1500; display: none;
+        }
 
-        .filter-content {
-            padding: 30px; display: flex; gap: 30px; justify-content: center; flex-wrap: wrap;
-            background: #0b1120; /* Darker inner background */
+        /* ------------------- Hero ------------------- */
+        .hero-section { text-align: center; padding: 80px 20px 40px; }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            font-weight: 700;
         }
-        .filter-group { min-width: 220px; }
-        .filter-group label { display: block; font-size: 12px; color: var(--text-sub); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-        .filter-select {
-            width: 100%; padding: 12px; background: var(--bg-panel);
-            border: 1px solid var(--border); color: var(--text-main);
-            border-radius: var(--radius); outline: none; cursor: pointer;
-            font-family: 'Roboto', sans-serif;
+        .hero-subtitle {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        /* ------------------- Filter Button ------------------- */
+        .filter-container {
+            display: flex; justify-content: center; margin: 40px 0 60px; position: relative;
+        }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #1e3a8a;
+            border-radius: 50px;
+            padding: 12px 30px;
+            color: var(--accent);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 10px;
             transition: 0.3s;
         }
-        .filter-select:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.1); }
-
-        /* ------------------- Product Layout ------------------- */
-        .container {
-            max-width: var(--container-width); margin: 0 auto; padding: 40px 20px;
+        .filter-btn:hover { border-color: var(--accent); background: rgba(41, 182, 246, 0.1); }
+        #filter-panel {
+            display: none; position: absolute; top: 60px;
+            background: #1e293b; border: 1px solid #334155;
+            padding: 20px; border-radius: 8px; z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); min-width: 250px;
+        }
+        #filter-panel.open { display: block; }
+        .filter-select {
+            width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155;
+            color: white; border-radius: 4px; outline: none; margin-top: 5px;
         }
 
-        /* Brand Section Headers */
-        .brand-section { margin-bottom: 60px; }
-        .section-header {
-            display: flex; align-items: center; margin-bottom: 30px;
-            border-bottom: 1px solid var(--border); padding-bottom: 15px;
+        /* ------------------- Section Title ------------------- */
+        .brand-header { text-align: center; margin-bottom: 50px; }
+        .brand-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
         }
-        /* Decorative square icon consistent with strict tech theme */
-        .section-icon { 
-            color: var(--accent); margin-right: 15px; font-size: 16px; 
-            display: flex; align-items: center; justify-content: center;
+        .brand-underline {
+            width: 60px; height: 4px; background-color: var(--accent);
+            margin: 0 auto; border-radius: 2px;
         }
-        .section-header h2 {
-            font-size: 22px; font-weight: 700; color: var(--text-main); 
-            letter-spacing: 0.5px; margin: 0;
-        }
-        .section-line { flex-grow: 1; height: 1px; background: transparent; } 
 
-        /* Card Grid */
-        .card-grid {
+        /* ------------------- Product Card (Standardized) ------------------- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
+            justify-content: center;
         }
 
-        /* ------------------- Unified Product Card ------------------- */
         .card {
-            background-color: var(--bg-card-info);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
             display: flex;
             flex-direction: column;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
-            height: 100%;
         }
+
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             border-color: var(--accent);
         }
 
-        /* Image Area - White Background */
-        .card-img-box {
-            background-color: var(--bg-card-img);
-            height: 260px;
-            display: flex; align-items: center; justify-content: center;
-            padding: 30px;
-            border-bottom: 1px solid #e2e8f0;
+        .card-img-container {
+            background-color: #ffffff;
+            width: 100%;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
             position: relative;
-            cursor: zoom-in;
+            border-bottom: 1px solid #2d3748;
         }
+        
         .card-img {
-            max-width: 100%; max-height: 100%; object-fit: contain; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            transition: transform 0.3s;
         }
-        .card:hover .card-img { transform: scale(1.08); }
+        .card:hover .card-img { transform: scale(1.05); }
 
-        /* Info Area - Dark Background */
-        .card-info {
-            padding: 25px;
-            flex-grow: 1; display: flex; flex-direction: column;
-            background: linear-gradient(180deg, var(--bg-card-info) 0%, #162030 100%);
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
+
         .card-title {
-            font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--text-main);
-            line-height: 1.3;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
         }
-        .card-desc {
-            font-size: 14px; color: var(--text-sub); line-height: 1.6; margin-bottom: 25px; flex-grow: 1;
-        }
-        .card-desc strong { color: var(--accent); font-weight: 500; }
 
-        /* The Button */
+        .card-tag {
+            display: inline-block;
+            background-color: var(--tag-bg);
+            color: var(--tag-text);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            width: fit-content;
+        }
+
+        .card-desc {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            min-height: 40px; 
+        }
+        
+        .card-divider {
+            height: 1px;
+            background-color: #2d3748;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        
+        .card-details-text {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
         .btn-details {
-            display: block; text-align: center; padding: 12px 0;
-            border: 1px solid var(--border); color: var(--text-sub);
-            border-radius: var(--radius); font-size: 13px; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 1px;
-            transition: 0.3s;
-            background: rgba(255,255,255,0.02);
+            display: block;
+            width: 100%;
+            background-color: var(--btn-bg);
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background 0.3s;
+            margin-top: auto; 
         }
-        .btn-details:hover {
-            border-color: var(--accent); color: var(--accent);
-            background: rgba(56, 189, 248, 0.05);
-        }
+        .btn-details:hover { background-color: var(--btn-hover); }
+        .btn-details i { margin-left: 5px; font-size: 0.9em; }
 
         /* ------------------- Footer ------------------- */
-        #footer {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: var(--bg-panel); border-top: 1px solid var(--border);
-            padding: 15px 0; display: flex; justify-content: center; z-index: 900;
-            backdrop-filter: blur(5px);
+        .footer-bar {
+            position: fixed; bottom: 20px; right: 20px; z-index: 100;
         }
-        .btn-home {
-            color: var(--text-sub); font-size: 14px; display: flex; align-items: center;
-            padding: 8px 20px; border-radius: 20px; transition: 0.3s;
+        .btn-back {
+            background: rgba(30, 41, 59, 0.8); color: white;
+            padding: 12px; border-radius: 50%;
+            backdrop-filter: blur(5px); border: 1px solid #334155;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.3s; font-size: 18px;
         }
-        .btn-home:hover { color: var(--accent); background: rgba(56, 189, 248, 0.1); }
-        .btn-home i { margin-right: 8px; }
+        .btn-back:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* ------------------- Lightbox ------------------- */
-        #lightbox {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 2000; display: none;
-            align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;
-        }
-        #lightbox.active { display: flex; opacity: 1; }
-        #lightbox img {
-            max-width: 90%; max-height: 85%; border-radius: var(--radius);
-            box-shadow: 0 0 50px rgba(56, 189, 248, 0.15); border: 2px solid var(--accent);
-        }
-        .close-lightbox {
-            position: absolute; top: 30px; right: 40px; font-size: 40px;
-            color: var(--text-sub); cursor: pointer; transition: 0.3s;
-        }
-        .close-lightbox:hover { color: var(--accent); transform: rotate(90deg); }
-
-        /* Mobile */
-        @media(max-width: 768px) {
-            .card-grid { grid-template-columns: 1fr; }
-            .section-header h2 { font-size: 18px; }
-            .menu-btn { top: 15px; left: 15px; }
+        /* Responsive */
+        @media (max-width: 768px) {
+            header { padding: 0 20px; }
+            .nav-links { display: none; }
+            .hero-title { font-size: 2.5rem; }
+            .brand-title { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Nav Button -->
-    <div class="menu-btn" onclick="toggleNav()">
-        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    </div>
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+            <div class="menu-icon" onclick="toggleNav()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="logo">Siong Cheong Trading</div>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#">Products</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
 
     <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-        <i class="fas fa-times close-icon" onclick="toggleNav()"></i>
-        <a href="index.html" style="margin-top: 20px;">Home</a>
-        <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products / 产品</div>
-        <div class="submenu" style="display: block;"> 
+    <div id="mySidebar" class="sidebar">
+        <div class="close-btn" onclick="toggleNav()">&times;</div>
+        <a href="index.html">Home</a>
+        <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
+        <div class="submenu" style="display: block;">
             <a href="refrigerator.html">Refrigerator</a>
-            <a href="chiller.html">Chiller</a>
-            <a href="freezer.html">Freezer</a>
-            <a href="ac.html">Air Conditioner</a>
-            <a href="portable_ac.html">Portable Air Cond</a>
-            <a href="tv.html">TV</a>
             <a href="washer.html">Washer</a>
-            <a href="dryer.html">Dryer</a>
-            <a href="kitchen.html">Kitchen Appliances</a>
-            <a href="hood.html">Hood</a>
-            <a href="gas.html">Gas</a>
-            <a href="oven.html">Oven</a>
-            <a href="microwave.html">Microwave</a>
-            <a href="air_fryer.html" class="active">Air Fryer</a>
-            <a href="shower.html">Shower</a>
+            <a href="air_fryer.html" class="active" style="color:var(--accent)">Air Fryer</a>
             <a href="air_purifier.html">Air Purifier</a>
-            <a href="speaker.html">Speaker</a>
-            <a href="small.html">Small Appliances</a>
+            <a href="tv.html">TV</a>
         </div>
         <a href="about.html">About Us</a>
-        <a href="contact.html">Contact Us</a>
+        <a href="contact.html">Contact</a>
     </div>
     <div id="overlay" class="overlay" onclick="toggleNav()"></div>
 
-    <!-- Header -->
-    <header>
-        <h1>Air Fryer Collection</h1>
-    </header>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1 class="hero-title">Air Fryer Collection</h1>
+        <p class="hero-subtitle">Healthy cooking solutions for modern kitchens.</p>
+    </section>
 
-    <!-- Unified Filter Bar (With the "Hourglass"/Filter Icon) -->
-    <div class="filter-bar" onclick="toggleFilter()">
-        <div class="filter-left">
-            <!-- This is the 'Hourglass' icon you referred to (fa-filter looks like a funnel/hourglass) -->
-            <span class="filter-title"><i class="fas fa-filter"></i> Filter Products</span>
-        </div>
-        <i class="fas fa-chevron-down filter-arrow" id="filter-icon"></i>
-    </div>
-    
-    <div id="filter-panel">
-        <div class="filter-content">
-            <div class="filter-group">
-                <label>Brand Selection</label>
-                <select id="brand-select" class="filter-select" onchange="runFilter()">
-                    <option value="all">All Brands</option>
-                    <option value="Milux">Milux</option>
-                    <option value="Khind">Khind</option>
-                    <option value="Elba">Elba</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Capacity</label>
-                <select id="capacity-select" class="filter-select" onchange="runFilter()">
-                    <option value="all">All Capacities</option>
-                    <option value="small">Small (< 4L)</option>
-                    <option value="medium">Medium (4-6L)</option>
-                    <option value="large">Large (> 6L)</option>
-                </select>
-            </div>
+    <!-- Filter Button -->
+    <div class="filter-container">
+        <button class="filter-btn" onclick="toggleFilter()">
+            <i class="fas fa-filter"></i> Filter Options
+        </button>
+        
+        <!-- Filter Dropdown -->
+        <div id="filter-panel">
+            <div style="margin-bottom: 10px; color: var(--text-sub); font-size: 0.9em;">Brand</div>
+            <select id="brand-select" class="filter-select" onchange="runFilter()">
+                <option value="all">All Brands</option>
+                <option value="Milux">Milux</option>
+                <option value="Khind">Khind</option>
+                <option value="Elba">Elba</option>
+            </select>
         </div>
     </div>
 
     <!-- Main Content -->
     <div class="container">
         
-        <!-- Milux Section -->
+        <!-- Milux Series -->
         <div class="brand-section" data-brand="Milux">
-            <div class="section-header">
-                <div class="section-icon"><i class="fas fa-square"></i></div>
-                <h2>Milux Series</h2>
-                <div class="section-line"></div>
+            <div class="brand-header">
+                <h2 class="brand-title">Milux Series</h2>
+                <div class="brand-underline"></div>
             </div>
-            <div class="card-grid">
-                <div class="card" data-brand="Milux" data-capacity="large">
-                    <div class="card-img-box" onclick="zoomImg(this)">
+            <div class="products-grid">
+                <div class="card" data-brand="Milux">
+                    <div class="card-img-container">
                         <img src="milux-maf-060-air-fryer.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/0f172a/38bdf8?text=Milux+MAF-060'; this.style.objectFit='cover';" 
-                             class="card-img" alt="Milux">
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Milux+MAF-060'; this.style.objectFit='contain';" 
+                             class="card-img" alt="Milux MAF-060">
                     </div>
-                    <div class="card-info">
-                        <div class="card-title">Milux MAF-060</div>
-                        <div class="card-desc">
-                            <strong>7.0L Capacity</strong><br>
-                            1700W Power. Non-stick coating supports healthy oil-free cooking. Ideal for large family meals.
-                        </div>
-                        <a href="air-fryer-details/milux-maf-060.html" class="btn-details">More Details</a>
+                    <div class="card-body">
+                        <h3 class="card-title">Milux MAF-060</h3>
+                        <span class="card-tag">7.0L Capacity</span>
+                        <p class="card-desc">
+                            1700W Power. Non-stick coating supports healthy oil-free cooking. Ideal for family use.
+                        </p>
+                        <div class="card-divider"></div>
+                        <p class="card-details-text">Warranty: 1 Year</p>
+                        <a href="air-fryer-details/milux-maf-060.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Khind Section -->
+        <!-- Khind Series -->
         <div class="brand-section" data-brand="Khind">
-            <div class="section-header">
-                <div class="section-icon"><i class="fas fa-square"></i></div>
-                <h2>Khind Series</h2>
-                <div class="section-line"></div>
+            <div class="brand-header">
+                <h2 class="brand-title">Khind Series</h2>
+                <div class="brand-underline"></div>
             </div>
-            <div class="card-grid">
-                <div class="card" data-brand="Khind" data-capacity="large">
-                    <div class="card-img-box" onclick="zoomImg(this)">
+            <div class="products-grid">
+                <div class="card" data-brand="Khind">
+                    <div class="card-img-container">
                         <img src="khind-arf77-air-fryer.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/0f172a/38bdf8?text=Khind+ARF77'; this.style.objectFit='cover';"
-                             class="card-img" alt="Khind">
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+ARF77'; this.style.objectFit='contain';" 
+                             class="card-img" alt="Khind ARF77">
                     </div>
-                    <div class="card-info">
-                        <div class="card-title">Khind ARF77</div>
-                        <div class="card-desc">
-                            <strong>7.7L Capacity</strong><br>
-                            1800W Power. Digital display with non-stick basket. Modern design with intelligent controls.
-                        </div>
-                        <a href="air-fryer-details/khind-arf77.html" class="btn-details">More Details</a>
+                    <div class="card-body">
+                        <h3 class="card-title">Khind ARF77</h3>
+                        <span class="card-tag">7.7L Capacity</span>
+                        <p class="card-desc">
+                            1800W Power. Digital display and non-stick basket for easy cleaning.
+                        </p>
+                        <div class="card-divider"></div>
+                        <p class="card-details-text">Dim: 378 x 325 x 357mm</p>
+                        <a href="air-fryer-details/khind-arf77.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Elba Section -->
+        <!-- Elba Series -->
         <div class="brand-section" data-brand="Elba">
-            <div class="section-header">
-                <div class="section-icon"><i class="fas fa-square"></i></div>
-                <h2>Elba Series</h2>
-                <div class="section-line"></div>
+            <div class="brand-header">
+                <h2 class="brand-title">Elba Series</h2>
+                <div class="brand-underline"></div>
             </div>
-            <div class="card-grid">
-                <div class="card" data-brand="Elba" data-capacity="small">
-                    <div class="card-img-box" onclick="zoomImg(this)">
+            <div class="products-grid">
+                <div class="card" data-brand="Elba">
+                    <div class="card-img-container">
                         <img src="elba-eaf-h3214-air-fryer.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/0f172a/38bdf8?text=Elba+H3214'; this.style.objectFit='cover';"
-                             class="card-img" alt="Elba">
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Elba+H3214'; this.style.objectFit='contain';" 
+                             class="card-img" alt="Elba EAF-H3214">
                     </div>
-                    <div class="card-info">
-                        <div class="card-title">Elba EAF-H3214</div>
-                        <div class="card-desc">
-                            <strong>3.2L Capacity</strong><br>
+                    <div class="card-body">
+                        <h3 class="card-title">Elba EAF-H3214</h3>
+                        <span class="card-tag">3.2L Capacity</span>
+                        <p class="card-desc">
                             Mechanical Control, 1400W. 80-200℃. Compact design suitable for personal use.
-                        </div>
-                        <a href="air-fryer-details/elba-eaf-h3214.html" class="btn-details">More Details</a>
+                        </p>
+                        <div class="card-divider"></div>
+                        <p class="card-details-text">Perfect for single use</p>
+                        <a href="air-fryer-details/elba-eaf-h3214.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -471,26 +429,20 @@
 
     </div>
 
-    <!-- Footer -->
-    <div id="footer">
-        <a href="index.html" class="btn-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
-    </div>
-
-    <!-- Lightbox -->
-    <div id="lightbox">
-        <div class="close-lightbox" onclick="closeLightbox()">&times;</div>
-        <img id="lightbox-img" src="" alt="Full View">
+    <!-- Fixed Back Button -->
+    <div class="footer-bar">
+        <a href="index.html" class="btn-back" title="Back to Home"><i class="fas fa-home"></i></a>
     </div>
 
     <script>
-        // --- Navigation Logic ---
+        // Toggle Sidebar
         function toggleNav() {
-            const sb = document.getElementById("sidebar");
+            const sb = document.getElementById("mySidebar");
             const ov = document.getElementById("overlay");
-            if(sb.style.width === "280px") {
+            if(sb.style.width === "250px") {
                 sb.style.width = "0"; ov.style.display = "none";
             } else {
-                sb.style.width = "280px"; ov.style.display = "block";
+                sb.style.width = "250px"; ov.style.display = "block";
             }
         }
         function toggleSubmenu(el) {
@@ -498,61 +450,25 @@
             sub.style.display = sub.style.display === "block" ? "none" : "block";
         }
 
-        // --- Filter Panel Logic ---
+        // Toggle Filter
         function toggleFilter() {
             document.getElementById("filter-panel").classList.toggle("open");
-            document.querySelector(".filter-bar").classList.toggle("active");
         }
 
-        // --- Filtering Logic ---
+        // Filter Logic
         function runFilter() {
-            const bVal = document.getElementById("brand-select").value;
-            const cVal = document.getElementById("capacity-select").value;
-            
-            // 1. Filter Cards
-            const cards = document.querySelectorAll(".card");
-            let activeBrands = new Set();
-            
-            cards.forEach(c => {
-                const b = c.getAttribute("data-brand");
-                const cap = c.getAttribute("data-capacity");
-                const matchB = (bVal === "all" || b === bVal);
-                const matchC = (cVal === "all" || cap === cVal);
-                
-                if(matchB && matchC) {
-                    c.parentElement.style.display = "block"; 
-                    c.style.display = "flex";
-                    activeBrands.add(b);
-                } else {
-                    c.style.display = "none";
-                    c.parentElement.style.display = "none"; 
-                }
-            });
-
-            // 2. Hide Empty Sections
+            const val = document.getElementById("brand-select").value;
             const sections = document.querySelectorAll(".brand-section");
             sections.forEach(sec => {
-                const secBrand = sec.getAttribute("data-brand");
-                sec.style.display = activeBrands.has(secBrand) ? "block" : "none";
+                const brand = sec.getAttribute("data-brand");
+                if(val === "all" || brand === val) {
+                    sec.style.display = "block";
+                } else {
+                    sec.style.display = "none";
+                }
             });
+            document.getElementById("filter-panel").classList.remove("open");
         }
-
-        // --- Lightbox Logic ---
-        function zoomImg(el) {
-            const src = el.querySelector("img").src;
-            const lb = document.getElementById("lightbox");
-            document.getElementById("lightbox-img").src = src;
-            lb.classList.add("active");
-        }
-        function closeLightbox() {
-            document.getElementById("lightbox").classList.remove("active");
-        }
-        document.getElementById("lightbox").addEventListener("click", function(e){
-            if(e.target === this) closeLightbox();
-        });
-
-        // Initialize
-        document.addEventListener("DOMContentLoaded", runFilter);
     </script>
 </body>
 </html>
