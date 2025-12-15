@@ -3,664 +3,526 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siong Cheong Trading | Premium Appliances</title>
+    <title>Siong Cheong Trading - Home</title>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Playfair Display Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* ------------------- 核心配色方案 (Midnight Blue) ------------------- */
+        /* ------------------- Theme Variables ------------------- */
         :root {
-            /* 深邃背景 */
-            --bg-color: #0f172a; 
-            /* 卡片背景 - 稍浅的蓝灰 */
-            --card-bg: #1e293b; 
-            /* 主文字 - 接近纯白 */
-            --text-primary: #f8fafc; 
-            /* 次级文字 - 蓝灰色 */
-            --text-secondary: #94a3b8; 
-            /* 强调色 - 亮天蓝 */
-            --accent-blue: #38bdf8; 
-            /* 悬停色 - 更亮的蓝 */
-            --hover-blue: #7dd3fc; 
-            /* 导航栏背景 - 半透明深蓝 */
-            --nav-bg: rgba(15, 23, 42, 0.90); /*稍微增加不透明度以突出Logo*/
-            
-            --font-serif: 'Playfair Display', serif;
+            --bg-body: #0b1221;       /* Deep Navy Background */
+            --bg-card: #162030;       /* Lighter Navy for Cards */
+            --text-main: #ffffff;     /* White Text */
+            --text-sub: #94a3b8;      /* Slate Grey Text */
+            --accent: #29b6f6;        /* Bright Blue Accent */
+            --border-color: #1e293b;
         }
 
+        /* ------------------- General Reset ------------------- */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden; /* Prevent horizontal scroll */
             margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            -webkit-font-smoothing: antialiased; 
-            overflow-x: hidden;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        /* ------------------- 顶部导航栏 ------------------- */
-        .navbar {
-            position: fixed;
-            top: 0;
+        /* Main Content Wrapper for Push Effect */
+        #main-content {
+            transition: margin-left 0.5s; /* Smooth push effect */
             width: 100%;
-            height: 100px; /* 增加高度以容纳更大的 Logo */
-            background-color: var(--nav-bg);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            z-index: 9999;
+            position: relative;
+            min-height: 100vh;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            flex-direction: column;
         }
 
-        .nav-content {
-            width: 100%;
-            max-width: 1300px; /* 加宽容器宽度 */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 24px;
+        /* ------------------- Sidebar (Freezer Style) ------------------- */
+        .sidebar {
             height: 100%;
-        }
-
-        /* 左侧容器：包含汉堡菜单和文字 Logo */
-        .nav-left-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 20px; /* 汉堡菜单和文字之间的间距 */
-        }
-
-        /* 文字 Logo */
-        .nav-logo-text {
-            color: var(--text-primary);
-            font-family: var(--font-serif);
-            font-size: 1.3rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            z-index: 10001;
-            font-style: italic;
+            width: 0;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            background-color: #080d16;
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: 0.5s; /* Matches main-content transition */
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            border-right: 1px solid var(--border-color);
             white-space: nowrap;
         }
 
-        /* 右上角图片 Logo */
-        .header-logo-right {
-            width: 250px; /* 设置宽度为 250px */
-            height: auto; /* 高度自适应 */
-            object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
-            flex-shrink: 0; 
-        }
-
-        .desktop-nav {
-            display: flex;
-            gap: 30px;
-            /* 移除之前的 margin，让 justify-content 处理间距 */
-        }
-
-        .desktop-nav a {
-            color: var(--text-secondary);
-            font-size: 0.95rem; 
-            transition: color 0.3s ease;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            letter-spacing: 0.02em;
-            font-weight: 500;
-        }
-
-        .desktop-nav a:hover {
-            color: var(--accent-blue); 
-        }
-
-        /* ------------------- 汉堡图标 ------------------- */
-        .menu-icon {
-            display: flex; /* 关键改动：始终显示 */
-            cursor: pointer;
-            z-index: 10001;
-            flex-direction: column;
-            justify-content: center;
-            gap: 6px;
-            width: 24px;
-            height: 24px;
-        }
-
-        .menu-icon span {
+        .sidebar a, .sidebar .submenu-toggle {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 1.1em;
+            color: var(--text-sub);
             display: block;
-            width: 100%;
-            height: 2px;
-            background-color: var(--text-primary);
-            transition: all 0.3s ease;
-            border-radius: 2px;
+            transition: 0.3s;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
         }
 
-        /* ------------------- 移动端全屏菜单 ------------------- */
-        .mobile-menu-overlay {
+        .sidebar a:hover, .sidebar .submenu-toggle:hover {
+            color: var(--accent);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            line-height: 50px;
+            color: var(--text-sub);
+            cursor: pointer;
+        }
+
+        .submenu {
+            display: none;
+            background-color: #0b1221;
+            padding-left: 20px;
+        }
+
+        .overlay {
             position: fixed;
+            height: 100%;
+            width: 100%;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: var(--bg-color); 
-            z-index: 10000;
-            padding-top: 120px; /* 避开导航栏 */
-            transform: translateY(-100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1500;
+            display: none;
+        }
+
+        /* ------------------- Header (Matches Image) ------------------- */
+        header {
             display: flex;
-            flex-direction: column;
-            overflow-y: auto; 
-        }
-
-        .mobile-menu-overlay.active {
-            transform: translateY(0);
-            visibility: visible;
-        }
-
-        .menu-icon.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 6px);
-        }
-        .menu-icon.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .menu-icon.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -6px);
-        }
-
-        .mobile-link-item {
-            width: 100%;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .mobile-link {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            padding: 20px 40px;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 80px;
+            background-color: transparent;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu-icon {
+            font-size: 24px;
             cursor: pointer;
-            font-weight: 600;
-            font-family: var(--font-serif);
-            transition: background-color 0.2s;
-        }
-        
-        .mobile-link:hover {
-            background-color: rgba(56, 189, 248, 0.1); 
-            color: var(--accent-blue);
+            color: var(--text-main);
         }
 
-        .mobile-submenu {
-            max-height: 0;
-            overflow: hidden;
-            background-color: #020617; 
-            transition: max-height 0.4s ease-out; 
-        }
-
-        .mobile-submenu.open {
-            max-height: 1200px; 
-        }
-
-        .mobile-sublink {
-            display: block;
-            padding: 14px 40px 14px 60px; 
-            color: var(--text-secondary); 
-            font-size: 1.05rem;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            transition: color 0.3s, padding-left 0.3s;
-        }
-
-        .mobile-sublink:hover {
-            color: var(--accent-blue);
-            padding-left: 65px; 
-        }
-
-        .chevron {
-            font-size: 0.8em;
-            transition: transform 0.3s;
-            color: var(--accent-blue);
-        }
-        .mobile-link.active .chevron {
-            transform: rotate(180deg);
-        }
-
-
-        /* ------------------- Hero 区域 ------------------- */
-        .hero-section {
-            padding-top: 180px; 
-            padding-bottom: 80px;
-            text-align: center;
-            background: radial-gradient(circle at center top, #1e293b 0%, #0f172a 70%);
-        }
-
-        .hero-title {
-            font-family: var(--font-serif);
-            font-size: 4.5rem; 
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
             font-weight: 700;
-            color: var(--text-primary);
-            margin: 0 0 16px 0;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
-            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
-            font-size: 1.4rem;
-            color: var(--accent-blue); 
-            font-weight: 400;
-            margin-bottom: 30px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            font-size: 24px;
+            color: var(--text-main);
             letter-spacing: 0.5px;
         }
 
-        /* ------------------- 产品网格 ------------------- */
-        .products-wrapper {
-            max-width: 1200px;
+        /* Center Navigation Links */
+        .nav-center {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-center a {
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .nav-center a:hover {
+            color: var(--text-main);
+        }
+
+        .header-right img {
+            height: 40px;
+            width: auto;
+        }
+
+        /* ------------------- Hero Section ------------------- */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 40px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            color: var(--accent);
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* ------------------- Categories Grid (The Cards) ------------------- */
+        .categories-container {
+            max-width: 1400px; /* Increased max-width for more cards */
             margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .category-grid {
+            padding: 40px 20px 80px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly wider cards */
+            gap: 30px;
         }
 
-        .product-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            border-radius: 20px;
-            overflow: hidden;
+        .category-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
             padding: 40px 30px;
             text-align: center;
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s, border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: space-between;
-            min-height: 380px;
-            position: relative;
+            min-height: 320px;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
         }
 
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); 
-            border-color: rgba(56, 189, 248, 0.3); 
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: var(--border-color);
+        }
+
+        .cat-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            position: relative;
             z-index: 2;
         }
 
-        .card-content {
+        .cat-desc {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            line-height: 1.6;
             margin-bottom: 30px;
-            width: 100%;
+            position: relative;
+            z-index: 2;
         }
 
-        .product-card h2 {
-            font-size: 1.8rem;
-            margin: 0 0 10px 0;
-            color: var(--text-primary);
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-
-        .description {
-            font-size: 1rem;
-            line-height: 1.5;
-            color: var(--text-secondary);
-            margin: 0 auto 15px auto;
-            max-width: 90%;
-            font-weight: 400;
-        }
-
-        .btn-link {
-            font-size: 1rem;
-            color: var(--accent-blue);
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            transition: all 0.2s;
-        }
-
-        .btn-link:hover {
-            color: var(--hover-blue);
-            transform: translateX(3px); 
-        }
-
-        .btn-link::after {
-            content: '›';
-            font-size: 1.4rem;
-            margin-left: 5px;
-            margin-top: -2px;
-        }
-
-        .product-card img {
-            width: 100%;
-            max-width: 220px;
-            height: 180px;
-            object-fit: contain;
-            background-color: transparent; 
-            transition: transform 0.5s ease;
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3)); 
+        .learn-more {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 2;
+            display: inline-block;
         }
         
-        .product-card:hover img {
-            transform: scale(1.05);
+        .learn-more i {
+            margin-left: 5px;
+            transition: margin-left 0.3s;
+        }
+        
+        .category-card:hover .learn-more i {
+            margin-left: 10px;
         }
 
-        .product-card img[src=""], .product-card img:not([src]){
-            opacity: 0;
+        /* Large faded text at bottom */
+        .bg-text {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5rem; /* Slightly smaller to fit */
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.03); /* Very faint */
+            white-space: nowrap;
+            z-index: 1;
+            pointer-events: none;
+            text-transform: uppercase;
         }
 
         /* ------------------- Footer ------------------- */
-        .page-footer {
-            background-color: #020617; 
-            padding: 40px 20px;
+        .footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding: 20px;
             text-align: center;
-            font-size: 0.85rem;
-            color: #64748b; 
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            margin-top: 80px;
+            color: var(--text-sub);
+            font-size: 0.9em;
         }
 
-        /* ------------------- 响应式 ------------------- */
-        @media (max-width: 900px) { 
-            .desktop-nav { display: none; }
-            
-            /* 在移动端适配大Logo */
-            .header-logo-right { 
-                width: 180px; 
-            }
-            .nav-logo-text { font-size: 1.1rem; }
-            
-            .hero-title { font-size: 3rem; padding: 0 10px; }
-            .hero-subtitle { font-size: 1.1rem; padding: 0 20px; }
-            .category-grid { grid-template-columns: 1fr; padding: 0 10px; }
-            .product-card { min-height: auto; padding: 40px 24px; }
+        /* ------------------- Responsive ------------------- */
+        @media (max-width: 992px) {
+            .nav-center { display: none; } /* Hide top nav on smaller screens, rely on sidebar */
+        }
+        
+        @media (max-width: 768px) {
+            header { padding: 0 20px; }
+            .hero h1 { font-size: 2.5rem; }
+            .categories-container { grid-template-columns: 1fr; max-width: 400px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-content">
-            <!-- 1. 左侧容器：包含汉堡菜单 + 文字 Logo -->
-            <div class="nav-left-wrapper">
-                <div class="menu-icon" onclick="toggleMenu()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <a href="#" class="nav-logo-text">Siong Cheong Trading</a>
-            </div>
+    <!-- Sidebar -->
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+        <a href="index.html" class="active" style="color:var(--accent)">Home</a>
+        <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
+        <div class="submenu">
+            <a href="refrigerator.html">Refrigerator</a>
+            <a href="chiller.html">Chiller</a>
+            <a href="freezer.html">Freezer</a>
+            <a href="ac.html">Air Conditioner</a>
+            <a href="portable_ac.html">Portable Air Cond</a>
+            <a href="tv.html">TV</a>
+            <a href="washer.html">Washer</a>
+            <a href="dryer.html">Dryer</a>
+            <a href="kitchen.html">Kitchen Appliances</a>
+            <a href="hood.html">Hood</a>
+            <a href="gas.html">Gas</a>
+            <a href="oven.html">Oven</a>
+            <a href="microwave.html">Microwave</a>
+            <a href="air_fryer.html">Air Fryer</a>
+            <a href="shower.html">Shower</a>
+            <a href="air_purifier.html">Air Purifier</a>
+            <a href="speaker.html">Speaker</a>
+            <a href="small.html">Small Appliances</a>
+        </div>
+        <a href="about.html">About Us</a>
+        <a href="location.html">Our Location</a>
+        <a href="contact.html">Contact Us</a>
+    </div>
 
-            <!-- 2. 中间：桌面端导航链接 (移动端隐藏) -->
-            <div class="desktop-nav">
-                <a href="index.html">Home</a>
-                <a href="#products">Products</a> 
+    <!-- Overlay -->
+    <div id="overlay" class="overlay" onclick="toggleNav()"></div>
+
+    <!-- Main Content Wrapper -->
+    <div id="main-content">
+        
+        <!-- Header -->
+        <header>
+            <div class="header-left">
+                <div class="menu-icon" onclick="toggleNav()">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="brand-name" style="margin-left: 15px;">Siong Cheong Trading</div>
+            </div>
+            
+            <div class="nav-center">
+                <a href="index.html" style="color: var(--text-main);">Home</a>
+                <a href="javascript:void(0)" onclick="toggleNav()">Products</a>
                 <a href="about.html">About Us</a>
                 <a href="contact.html">Contact</a>
             </div>
+
+            <div class="header-right">
+                <!-- Using a placeholder or text if image is missing, adjusted to match the SCT logo in image -->
+                <img src="SCT_Logo.png" alt="SCT" onerror="this.style.display='none'; document.getElementById('text-logo-right').style.display='block';">
+                <span id="text-logo-right" style="display:none; font-weight:bold; color:var(--accent);">SCT</span>
+            </div>
+        </header>
+
+        <!-- Hero -->
+        <div class="hero">
+            <h1>Siong Cheong Trading</h1>
+            <p>Elevating life with premium quality appliances.</p>
+        </div>
+
+        <!-- Categories Grid -->
+        <div class="categories-container">
             
-            <!-- 3. 右上角：图片 Logo -->
-            <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo-right" onerror="this.style.display='none'">
-        </div>
-    </nav>
+            <!-- Refrigerator Card -->
+            <a href="refrigerator.html" class="category-card">
+                <div>
+                    <div class="cat-title">Refrigerator</div>
+                    <div class="cat-desc">Inverter & No Frost technology for intelligent freshness.</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">Fridge</div>
+            </a>
 
-    <!-- Mobile Fullscreen Menu -->
-    <div class="mobile-menu-overlay" id="mobileMenu">
-        
-        <div class="mobile-link-item">
-            <a href="index.html" class="mobile-link" onclick="toggleMenu()">Home</a>
+            <!-- Chiller Card -->
+            <a href="chiller.html" class="category-card">
+                <div>
+                    <div class="cat-title">Chiller</div>
+                    <div class="cat-desc">High-efficiency display chillers, perfect for commercial use.</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">Chiller</div>
+            </a>
+
+            <!-- Freezer Card -->
+            <a href="freezer.html" class="category-card">
+                <div>
+                    <div class="cat-title">Freezer</div>
+                    <div class="cat-desc">Massive capacity with rapid freezing performance.</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">Freezer</div>
+            </a>
+
+            <!-- AC Card -->
+            <a href="ac.html" class="category-card">
+                <div>
+                    <div class="cat-title">Air Conditioner</div>
+                    <div class="cat-desc">Quiet comfort with smart whole-home temperature control.</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">AC</div>
+            </a>
+
+            <!-- Washer Card -->
+            <a href="washer.html" class="category-card">
+                <div>
+                    <div class="cat-title">Washer</div>
+                    <div class="cat-desc">Top load and front load washing machines for every need.</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">Washer</div>
+            </a>
+
+            <!-- Dryer Card -->
+            <a href="dryer.html" class="category-card">
+                <div>
+                    <div class="cat-title">Dryer</div>
+                    <div class="cat-desc">Efficient clothes dryers to make laundry day easier.</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">Dryer</div>
+            </a>
+
+            <!-- TV Card -->
+            <a href="tv.html" class="category-card">
+                <div>
+                    <div class="cat-title">Television</div>
+                    <div class="cat-desc">Smart 4K & UHD TVs for the ultimate entertainment experience.</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">TV</div>
+            </a>
+
+            <!-- Kitchen Appliances Card -->
+            <a href="kitchen.html" class="category-card">
+                <div>
+                    <div class="cat-title">Kitchen Appliances</div>
+                    <div class="cat-desc">Modern hobs, hoods, and ovens for your dream kitchen.</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">Kitchen</div>
+            </a>
+
+            <!-- Air Fryer Card -->
+            <a href="air_fryer.html" class="category-card">
+                <div>
+                    <div class="cat-title">Air Fryer</div>
+                    <div class="cat-desc">Healthy cooking made simple with less oil.</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">Fryer</div>
+            </a>
+
+            <!-- Air Purifier Card -->
+            <a href="air_purifier.html" class="category-card">
+                <div>
+                    <div class="cat-title">Air Purifier</div>
+                    <div class="cat-desc">Clean and fresh air for a healthier living environment.</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">Purifier</div>
+            </a>
+
+            <!-- Portable AC Card -->
+            <a href="portable_ac.html" class="category-card">
+                <div>
+                    <div class="cat-title">Portable AC</div>
+                    <div class="cat-desc">Cool comfort wherever you need it, anytime.</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">Portable</div>
+            </a>
+
+            <!-- Small Appliances Card -->
+            <a href="small.html" class="category-card">
+                <div>
+                    <div class="cat-title">Small Appliances</div>
+                    <div class="cat-desc">Essential gadgets to simplify your daily life.</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">Small</div>
+            </a>
+
         </div>
 
-        <!-- Products with Toggle Logic -->
-        <div class="mobile-link-item">
-            <div class="mobile-link" onclick="toggleProductSubmenu(this)">
-                Products 
-                <i class="fas fa-chevron-down chevron"></i>
-            </div>
-            <div class="mobile-submenu" id="productSubmenu">
-                <a href="refrigerator.html" class="mobile-sublink">Refrigerator</a>
-                <a href="chiller.html" class="mobile-sublink">Chiller</a>
-                <a href="freezer.html" class="mobile-sublink">Freezer</a>
-                <a href="ac.html" class="mobile-sublink">Air Conditioner</a>
-                <a href="portable_ac.html" class="mobile-sublink">Portable Air Cond</a>
-                <a href="tv.html" class="mobile-sublink">TV</a>
-                <a href="washer.html" class="mobile-sublink">Washer</a>
-                <a href="dryer.html" class="mobile-sublink">Dryer</a>
-                <a href="kitchen.html" class="mobile-sublink">Kitchen Appliances</a>
-                <a href="hood.html" class="mobile-sublink">Hood</a>
-                <a href="gas.html" class="mobile-sublink">Gas</a>
-                <a href="oven.html" class="mobile-sublink">Oven</a>
-                <a href="microwave.html" class="mobile-sublink">Microwave</a>
-                <a href="air_fryer.html" class="mobile-sublink">Air Fryer</a>
-                <a href="shower.html" class="mobile-sublink">Shower</a>
-                <a href="air_purifier.html" class="mobile-sublink">Air Purifier</a>
-                <a href="speaker.html" class="mobile-sublink">Speaker</a>
-                <a href="small.html" class="mobile-sublink">Small Appliances</a>
-            </div>
-        </div>
-
-        <div class="mobile-link-item">
-            <a href="about.html" class="mobile-link" onclick="toggleMenu()">About Us</a>
-        </div>
-        
-        <div class="mobile-link-item">
-            <a href="contact.html" class="mobile-link" onclick="toggleMenu()">Contact</a>
+        <div class="footer">
+            &copy; 2023 Siong Cheong Trading. All Rights Reserved.
         </div>
 
     </div>
-
-    <!-- Hero -->
-    <div class="hero-section">
-        <h1 class="hero-title">Siong Cheong Trading</h1>
-        <p class="hero-subtitle">Elevating life with premium quality appliances.</p>
-    </div>
-
-    <!-- Products Grid -->
-    <div class="products-wrapper" id="products">
-        <div class="category-grid">
-            <!-- Grid Items -->
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Refrigerator</h2>
-                    <p class="description">Inverter & No Frost technology for intelligent freshness.</p>
-                    <a class="btn-link" href="refrigerator.html">Learn more</a>
-                </div>
-                <img src="refrigerator_icon.png" alt="Refrigerator" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Fridge'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Chiller</h2>
-                    <p class="description">High-efficiency display chillers, perfect for commercial use.</p>
-                    <a class="btn-link" href="chiller.html">Learn more</a>
-                </div>
-                <img src="chiller_icon.png" alt="Chiller" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Chiller'">
-            </div>
-            
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Freezer</h2>
-                    <p class="description">Massive capacity with rapid freezing performance.</p>
-                    <a class="btn-link" href="freezer.html">Learn more</a>
-                </div>
-                <img src="freezer_icon.png" alt="Freezer" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Freezer'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Air Conditioner</h2>
-                    <p class="description">Quiet comfort with smart whole-home temperature control.</p>
-                    <a class="btn-link" href="ac.html">Learn more</a>
-                </div>
-                <img src="ac_icon.png" alt="AC" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=AC'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Portable AC</h2>
-                    <p class="description">Cooling on the go, wherever you need it.</p>
-                    <a class="btn-link" href="portable_ac.html">Learn more</a>
-                </div>
-                <img src="portable_ac_icon.png" alt="Portable AC" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Portable+AC'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>TV</h2>
-                    <p class="description">Immersive 4K UHD visual experience.</p>
-                    <a class="btn-link" href="tv.html">Learn more</a>
-                </div>
-                <img src="tv_icon.png" alt="TV" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=TV'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Washer</h2>
-                    <p class="description">Smart washing cycles to care for your fabrics.</p>
-                    <a class="btn-link" href="washer.html">Learn more</a>
-                </div>
-                <img src="washer_icon.png" alt="Washer" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Washer'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Dryer</h2>
-                    <p class="description">Heat pump technology for ready-to-wear dryness.</p>
-                    <a class="btn-link" href="dryer.html">Learn more</a>
-                </div>
-                <img src="dryer_icon.png" alt="Dryer" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Dryer'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Kitchen</h2>
-                    <p class="description">Complete solutions for your modern kitchen.</p>
-                    <a class="btn-link" href="kitchen.html">Learn more</a>
-                </div>
-                <img src="kitchen_icon.png" alt="Kitchen" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Kitchen'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Hood</h2>
-                    <p class="description">Powerful suction for a smoke-free kitchen.</p>
-                    <a class="btn-link" href="hood.html">Learn more</a>
-                </div>
-                <img src="hood_icon.png" alt="Hood" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Hood'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Gas</h2>
-                    <p class="description">High-power burners with precise flame control.</p>
-                    <a class="btn-link" href="gas.html">Learn more</a>
-                </div>
-                <img src="gas_icon.png" alt="Gas" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Gas'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Oven</h2>
-                    <p class="description">Professional baking with even heat distribution.</p>
-                    <a class="btn-link" href="oven.html">Learn more</a>
-                </div>
-                <img src="oven_icon.png" alt="Oven" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Oven'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Microwave</h2>
-                    <p class="description">Multi-functional for rapid heating and cooking.</p>
-                    <a class="btn-link" href="microwave.html">Learn more</a>
-                </div>
-                <img src="microwave_icon.png" alt="Microwave" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Microwave'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Air Fryer</h2>
-                    <p class="description">Oil-free cooking for healthy, delicious meals.</p>
-                    <a class="btn-link" href="air_fryer.html">Learn more</a>
-                </div>
-                <img src="air_fryer_icon.png" alt="Air Fryer" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Air+Fryer'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Shower</h2>
-                    <p class="description">Thermostatic showers for a safe and comfortable bath.</p>
-                    <a class="btn-link" href="shower.html">Learn more</a>
-                </div>
-                <img src="shower_icon.png" alt="Shower" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Shower'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Air Purifier</h2>
-                    <p class="description">HEPA filtration for pure, healthy air.</p>
-                    <a class="btn-link" href="air_purifier.html">Learn more</a>
-                </div>
-                <img src="air_purifier_icon.png" alt="Air Purifier" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Air+Purifier'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Speaker</h2>
-                    <p class="description">Immersive home theater audio systems.</p>
-                    <a class="btn-link" href="speaker.html">Learn more</a>
-                </div>
-                <img src="speaker_icon.png" alt="Speaker" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Speaker'">
-            </div>
-
-            <div class="product-card">
-                <div class="card-content">
-                    <h2>Small Appliances</h2>
-                    <p class="description">Essential gadgets for a refined lifestyle.</p>
-                    <a class="btn-link" href="small.html">Learn more</a>
-                </div>
-                <img src="small_icon.png" alt="Small Appliances" onerror="this.src='https://placehold.co/200x200/1e293b/FFF?text=Small+Appliances'">
-            </div>
-        </div>
-    </div>
-
-    <footer class="page-footer">
-        <p>Copyright © 2025 Siong Cheong Trading. All rights reserved.</p>
-    </footer>
 
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById('mobileMenu');
-            const icon = document.querySelector('.menu-icon');
+        // Sidebar Logic (Push Effect from Freezer Page)
+        function toggleNav() {
+            const sidebar = document.getElementById("mySidebar");
+            const overlay = document.getElementById("overlay");
             const body = document.body;
+            const mainContent = document.getElementById("main-content");
             
-            menu.classList.toggle('active');
-            icon.classList.toggle('active');
-            
-            if (menu.classList.contains('active')) {
-                body.style.overflow = 'hidden';
+            // Width of sidebar
+            const sidebarWidth = "250px";
+
+            // Check if open
+            const isOpened = sidebar.style.width === sidebarWidth;
+
+            if (isOpened) {
+                // Close
+                sidebar.style.width = "0";
+                mainContent.style.marginLeft = "0"; // Push back
+                overlay.style.display = "none";
+                body.style.overflow = "auto";
             } else {
-                body.style.overflow = '';
+                // Open
+                sidebar.style.width = sidebarWidth;
+                mainContent.style.marginLeft = sidebarWidth; // Push content
+                overlay.style.display = "block";
+                body.style.overflow = "hidden"; // Prevent scrolling
             }
         }
 
-        function toggleProductSubmenu(element) {
-            element.classList.toggle('active');
-            const submenu = document.getElementById('productSubmenu');
-            submenu.classList.toggle('open');
+        function toggleSubmenu(element) {
+            const submenu = element.nextElementSibling;
+            if (submenu.style.display === "block") {
+                submenu.style.display = "none";
+            } else {
+                submenu.style.display = "block";
+            }
         }
+        
+        // Ensure layout resets on resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 992) {
+                // Optional: Reset sidebar if moving to desktop view
+            }
+        });
     </script>
 </body>
 </html>
