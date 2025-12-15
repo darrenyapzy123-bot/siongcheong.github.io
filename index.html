@@ -349,128 +349,8 @@
         </div>
 
         <!-- Categories Grid -->
-        <div class="categories-container">
-            
-            <!-- Refrigerator Card -->
-            <a href="refrigerator.html" class="category-card">
-                <div>
-                    <div class="cat-title">Refrigerator</div>
-                    <div class="cat-desc">Inverter & No Frost technology for intelligent freshness.</div>
-                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                </div>
-                <div class="bg-text">Fridge</div>
-            </a>
-
-            <!-- Chiller Card -->
-            <a href="chiller.html" class="category-card">
-                <div>
-                    <div class="cat-title">Chiller</div>
-                    <div class="cat-desc">High-efficiency display chillers, perfect for commercial use.</div>
-                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                </div>
-                <div class="bg-text">Chiller</div>
-            </a>
-
-            <!-- Freezer Card -->
-            <a href="freezer.html" class="category-card">
-                <div>
-                    <div class="cat-title">Freezer</div>
-                    <div class="cat-desc">Massive capacity with rapid freezing performance.</div>
-                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                </div>
-                <div class="bg-text">Freezer</div>
-            </a>
-
-            <!-- AC Card -->
-            <a href="ac.html" class="category-card">
-                <div>
-                    <div class="cat-title">Air Conditioner</div>
-                    <div class="cat-desc">Quiet comfort with smart whole-home temperature control.</div>
-                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                </div>
-                <div class="bg-text">AC</div>
-            </a>
-
-            <!-- Washer Card -->
-            <a href="washer.html" class="category-card">
-                <div>
-                    <div class="cat-title">Washer</div>
-                    <div class="cat-desc">Top load and front load washing machines for every need.</div>
-                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                </div>
-                <div class="bg-text">Washer</div>
-            </a>
-
-            <!-- Dryer Card -->
-            <a href="dryer.html" class="category-card">
-                <div>
-                    <div class="cat-title">Dryer</div>
-                    <div class="cat-desc">Efficient clothes dryers to make laundry day easier.</div>
-                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                </div>
-                <div class="bg-text">Dryer</div>
-            </a>
-
-            <!-- TV Card -->
-            <a href="tv.html" class="category-card">
-                <div>
-                    <div class="cat-title">Television</div>
-                    <div class="cat-desc">Smart 4K & UHD TVs for the ultimate entertainment experience.</div>
-                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                </div>
-                <div class="bg-text">TV</div>
-            </a>
-
-            <!-- Kitchen Appliances Card -->
-            <a href="kitchen.html" class="category-card">
-                <div>
-                    <div class="cat-title">Kitchen Appliances</div>
-                    <div class="cat-desc">Modern hobs, hoods, and ovens for your dream kitchen.</div>
-                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                </div>
-                <div class="bg-text">Kitchen</div>
-            </a>
-
-            <!-- Air Fryer Card -->
-            <a href="air_fryer.html" class="category-card">
-                <div>
-                    <div class="cat-title">Air Fryer</div>
-                    <div class="cat-desc">Healthy cooking made simple with less oil.</div>
-                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                </div>
-                <div class="bg-text">Fryer</div>
-            </a>
-
-            <!-- Air Purifier Card -->
-            <a href="air_purifier.html" class="category-card">
-                <div>
-                    <div class="cat-title">Air Purifier</div>
-                    <div class="cat-desc">Clean and fresh air for a healthier living environment.</div>
-                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                </div>
-                <div class="bg-text">Purifier</div>
-            </a>
-
-            <!-- Portable AC Card -->
-            <a href="portable_ac.html" class="category-card">
-                <div>
-                    <div class="cat-title">Portable AC</div>
-                    <div class="cat-desc">Cool comfort wherever you need it, anytime.</div>
-                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                </div>
-                <div class="bg-text">Portable</div>
-            </a>
-
-            <!-- Small Appliances Card -->
-            <a href="small.html" class="category-card">
-                <div>
-                    <div class="cat-title">Small Appliances</div>
-                    <div class="cat-desc">Essential gadgets to simplify your daily life.</div>
-                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                </div>
-                <div class="bg-text">Small</div>
-            </a>
-
+        <div class="categories-container" id="categories-container">
+            <!-- Categories will be injected here by JS -->
         </div>
 
         <div class="footer">
@@ -523,6 +403,47 @@
                 // Optional: Reset sidebar if moving to desktop view
             }
         });
+
+        // ------------------- Product Categories Data -------------------
+        const productCategories = [
+            { title: "Refrigerator", desc: "Inverter & No Frost technology for intelligent freshness.", link: "refrigerator.html", bgText: "Fridge" },
+            { title: "Chiller", desc: "High-efficiency display chillers, perfect for commercial use.", link: "chiller.html", bgText: "Chiller" },
+            { title: "Freezer", desc: "Massive capacity with rapid freezing performance.", link: "freezer.html", bgText: "Freezer" },
+            { title: "Air Conditioner", desc: "Quiet comfort with smart whole-home temperature control.", link: "ac.html", bgText: "AC" },
+            { title: "Portable AC", desc: "Cool comfort wherever you need it, anytime.", link: "portable_ac.html", bgText: "Portable" },
+            { title: "Television", desc: "Smart 4K & UHD TVs for the ultimate entertainment experience.", link: "tv.html", bgText: "TV" },
+            { title: "Washer", desc: "Top load and front load washing machines for every need.", link: "washer.html", bgText: "Washer" },
+            { title: "Dryer", desc: "Efficient clothes dryers to make laundry day easier.", link: "dryer.html", bgText: "Dryer" },
+            { title: "Kitchen Appliances", desc: "Modern appliances for your dream kitchen.", link: "kitchen.html", bgText: "Kitchen" },
+            { title: "Hood", desc: "Powerful suction for a smoke-free kitchen environment.", link: "hood.html", bgText: "Hood" },
+            { title: "Gas", desc: "Precision flame control for professional cooking results.", link: "gas.html", bgText: "Gas" },
+            { title: "Oven", desc: "Bake, roast, and grill with advanced oven technology.", link: "oven.html", bgText: "Oven" },
+            { title: "Microwave", desc: "Quick and convenient heating and cooking solutions.", link: "microwave.html", bgText: "Microwave" },
+            { title: "Air Fryer", desc: "Healthy cooking made simple with less oil.", link: "air_fryer.html", bgText: "Fryer" },
+            { title: "Shower", desc: "Instant and storage water heaters for a refreshing shower.", link: "shower.html", bgText: "Shower" },
+            { title: "Air Purifier", desc: "Clean and fresh air for a healthier living environment.", link: "air_purifier.html", bgText: "Purifier" },
+            { title: "Speaker", desc: "Immersive sound systems for music and movies.", link: "speaker.html", bgText: "Speaker" },
+            { title: "Small Appliances", desc: "Essential gadgets to simplify your daily life.", link: "small.html", bgText: "Small" }
+        ];
+
+        // ------------------- Render Categories -------------------
+        const categoriesContainer = document.getElementById('categories-container');
+
+        productCategories.forEach(cat => {
+            const card = document.createElement('a');
+            card.href = cat.link;
+            card.className = 'category-card';
+            card.innerHTML = `
+                <div>
+                    <div class="cat-title">${cat.title}</div>
+                    <div class="cat-desc">${cat.desc}</div>
+                    <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="bg-text">${cat.bgText}</div>
+            `;
+            categoriesContainer.appendChild(card);
+        });
+
     </script>
 </body>
 </html>
