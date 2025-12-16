@@ -713,7 +713,7 @@
             try {
                 // ✅ 核心修正：加入排序逻辑 (OrderBy createdAt desc)
                 // 确保你在 Firestore Console 建立了索引（如果控制台报错提示缺索引，点击链接即可）
-                const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
+              const q = collection(db, "products");
                 
                 const querySnapshot = await getDocs(q);
                 
@@ -773,3 +773,4 @@
     </script>
 </body>
 </html>
+
