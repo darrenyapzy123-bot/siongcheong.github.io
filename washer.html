@@ -452,6 +452,10 @@
             line-height: 1.5;
             margin-bottom: 20px;
             flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .btn-details {
@@ -477,6 +481,13 @@
             filter: brightness(1.1);
         }
 
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
         /* Footer */
         .page-footer {
             background-color: #020617; 
@@ -496,7 +507,7 @@
     </style>
 </head>
 
-<body onload="renderProducts()">
+<body>
 
     <!-- Menu Button -->
     <div class="menu-icon" onclick="toggleNav()">
@@ -589,7 +600,12 @@
         </div>
 
         <div class="products-wrapper" id="products-container">
-            <!-- JS will render products here -->
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="loading-container">
+                <i class="fas fa-spinner fa-spin"></i> Loading products...
+            </div>
+            
+            <!-- No Products Message -->
             <p id="no-products" style="text-align: center; color: var(--text-secondary); display: none; margin-top: 40px; font-size: 1.2rem;">
                 No products found matching your criteria.
             </p>
@@ -634,8 +650,9 @@
         document.getElementById('filter-content').classList.toggle('active');
     });
 
-    // ------------------- Product Data (From washer (2).html) -------------------
-    const washerProducts = [
+    // ------------------- 🔴 Legacy Product Data -------------------
+    // 这些是您原本在 washer.html 里的旧产品数据
+    const legacyProducts = [
         // SHARP
         { brand: "Sharp", model: "ESX-921", capacity: 9.5, type: "Top Load", image: "ESX-921.jpg", desc: "Auto Start After Blackout, Fuzzy Control, Smart Filter." },
         { brand: "Sharp", model: "ESW-1109S", capacity: 11, type: "Top Load", image: "ESW-1109S.jpg", desc: "W-screw pulsator, Auto Start, Stainless Steel Tub." },
@@ -671,12 +688,69 @@
         { brand: "Khind", model: "WM100A", capacity: 10, type: "Top Load", image: "WM100A.jpg", desc: "Fully Automatic, 10KG Capacity." }
     ];
 
-    function renderProducts(productsToRender = washerProducts) {
+    // ------------------- Product Data Logic -------------------
+    
+    // 🔴 1. 定义 API URL
+    const API_URL = "https://sheetdb.io/api/v1/twlcwcm7trj58"; 
+    
+    // 🔴 2. 定义图片基础路径 (如果表格里填的是文件名)
+    const IMAGE_BASE_PATH = "./images/"; 
+
+    // 全局变量，用于存储所有数据 (旧数据 + 新数据)
+    let washerProducts = [];
+
+    // 🔴 3. 获取数据的异步函数
+    async function fetchProducts() {
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const container = document.getElementById('products-container');
+
+        // 先把旧数据放进去，防止 API 挂了连旧数据都看不到
+        let fetchedProducts = [];
+
+        try {
+            console.log("正在从 API 获取数据...");
+            // cache: 'no-store' 确保每次都获取最新数据
+            const response = await fetch(API_URL, { cache: 'no-store' });
+            const data = await response.json();
+            
+            console.log("数据获取成功:", data);
+
+            // 格式化新数据
+            fetchedProducts = data.map(item => ({
+                brand: item.brand,
+                model: item.model,      
+                capacity: parseFloat(item.capacity) || 0,
+                type: item.type,
+                image: item.image,
+                desc: item.description, 
+                link: item['html link'] 
+            }));
+
+        } catch (error) {
+            console.error("API 加载失败，仅显示旧产品:", error);
+            // 这里我们不显示红色的错误提示了，因为还有旧产品可以显示
+        }
+
+        // 🟢 关键步骤：合并旧数据和新数据
+        // ...legacyProducts (展开旧数组)
+        // ...fetchedProducts (展开新数组)
+        washerProducts = [...legacyProducts, ...fetchedProducts];
+
+        // 隐藏加载提示
+        loadingIndicator.style.display = 'none';
+
+        // 渲染合并后的所有产品
+        renderProducts(washerProducts);
+    }
+
+    // 渲染函数
+    function renderProducts(productsToRender = []) {
         const container = document.getElementById('products-container');
         const noProducts = document.getElementById('no-products');
         
-        container.innerHTML = '';
-        container.appendChild(noProducts);
+        // 移除旧的 Grid 和 Brand Section
+        const sections = container.querySelectorAll('.brand-section');
+        sections.forEach(section => section.remove());
 
         if (productsToRender.length === 0) {
             noProducts.style.display = 'block';
@@ -685,6 +759,7 @@
             noProducts.style.display = 'none';
         }
 
+        // 获取不重复的品牌列表
         const brands = [...new Set(productsToRender.map(p => p.brand))];
 
         brands.forEach(brand => {
@@ -702,11 +777,25 @@
                 grid.className = 'product-grid';
 
                 brandProducts.forEach(product => {
+                    // 图片处理
+                    let imgSrc = product.image || '';
+                    if (imgSrc && !imgSrc.startsWith('http')) {
+                        imgSrc = IMAGE_BASE_PATH + imgSrc;
+                    }
+
+                    // 链接处理：
+                    // 1. 如果有 html link (新产品)，用它。
+                    // 2. 如果没有 (旧产品)，生成 WhatsApp 链接。
+                    let detailsLink = product.link;
+                    if (!detailsLink) {
+                        detailsLink = `https://wa.me/601110948581?text=I want to inquire about ${product.model}`;
+                    }
+
                     const card = document.createElement('div');
                     card.className = 'product-card';
                     card.innerHTML = `
                         <div class="card-image-wrapper">
-                            <img src="${product.image}" alt="${product.model}" onerror="this.src='https://placehold.co/300x300/1e293b/FFF?text=Washer'">
+                            <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/300x300/1e293b/FFF?text=Washer'">
                         </div>
                         <div class="product-info">
                             <div>
@@ -715,9 +804,9 @@
                                     <span class="tag tag-cap">${product.capacity} KG</span>
                                     <span class="tag tag-type">${product.type}</span>
                                 </div>
-                                <p class="product-desc">${product.desc}</p>
+                                <p class="product-desc">${product.desc || 'No description available.'}</p>
                             </div>
-                            <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about ${product.model}" target="_blank">
+                            <a class="btn-details" href="${detailsLink}" ${!product.link ? 'target="_blank"' : ''}>
                                 More Details <i class="fas fa-angle-right"></i>
                             </a>
                         </div>
@@ -731,6 +820,7 @@
         });
     }
 
+    // 筛选函数
     function filterProducts() {
         const brand = document.getElementById('brand-filter').value;
         const cap = document.getElementById('capacity-filter').value;
@@ -741,6 +831,7 @@
             let typeMatch = (type === 'all' || p.type === type);
             let capMatch = false;
 
+            // 数字比较
             if (cap === 'all') capMatch = true;
             else if (cap === 'small' && p.capacity < 8) capMatch = true;
             else if (cap === 'medium' && p.capacity >= 8 && p.capacity <= 12) capMatch = true;
@@ -750,6 +841,11 @@
         });
 
         renderProducts(filtered);
+    }
+
+    // 页面加载完成后调用 API
+    window.onload = function() {
+        fetchProducts();
     }
 </script>
 </body>
