@@ -406,7 +406,7 @@
         <header>
             <div class="admin-title">SCT Product Manager</div>
             <div class="header-actions">
-                <a href="ac.html" target="_blank" class="btn-view-site"><i class="fas fa-external-link-alt"></i> View AC Page</a>
+                <a href="index.html" target="_blank" class="btn-view-site"><i class="fas fa-external-link-alt"></i> View Site</a>
                 <button class="logout-btn" onclick="logout()">Logout</button>
             </div>
         </header>
@@ -422,7 +422,6 @@
                 <div class="form-row">
                     <div class="form-col">
                         <label class="input-group">Category</label>
-                        <!-- 重要：value 必须全是小写，与页面代码匹配 -->
                         <select id="p-category" class="product-input" onchange="updatePreview()">
                             <option value="ac">Air Conditioner</option>
                             <option value="refrigerator">Refrigerator</option>
@@ -445,28 +444,31 @@
                         <label class="input-group">Model Name</label>
                         <input type="text" id="p-model" class="product-input" placeholder="e.g. SJ-189" oninput="updatePreview()">
                     </div>
-                    <!-- 这里增加了 HP 和 Type 的输入 -->
-                    <div class="form-col">
-                        <label class="input-group">HP (e.g. 1.0)</label>
-                        <select id="p-hp" class="product-input" onchange="updatePreview()">
-                             <option value="1.0">1.0 HP</option>
-                             <option value="1.5">1.5 HP</option>
-                             <option value="2.0">2.0 HP</option>
-                             <option value="2.5">2.5 HP</option>
+                     <!-- Added HP & Type Inputs for AC -->
+                     <div class="form-col">
+                         <label class="input-group">HP / Capacity (e.g. 1.0)</label>
+                         <select id="p-hp" class="product-input" onchange="updatePreview()">
+                            <option value="1.0">1.0 HP</option>
+                            <option value="1.5">1.5 HP</option>
+                            <option value="2.0">2.0 HP</option>
+                            <option value="2.5">2.5 HP</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="form-row">
+                 <div class="form-row">
                     <div class="form-col">
-                        <label class="input-group">Type</label>
+                        <label class="input-group">Type / Technology</label>
                         <select id="p-type" class="product-input" onchange="updatePreview()">
-                             <option value="Inverter">Inverter</option>
-                             <option value="Non-Inverter">Non-Inverter</option>
+                            <option value="Non-Inverter">Non-Inverter</option>
+                            <option value="Inverter">Inverter</option>
                         </select>
                     </div>
+                     <div class="form-col">
+                        <label class="input-group">Tag (Legacy / Other)</label>
+                        <input type="text" id="p-tag" class="product-input" placeholder="e.g. 170L Inverter" oninput="updatePreview()">
+                    </div>
                 </div>
-
 
                 <div class="input-group">
                     <label>Description</label>
@@ -543,9 +545,9 @@
 
     <!-- 1. 引入 Firebase (使用模块化脚本) -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
         // 您的真实 Firebase 配置
         const firebaseConfig = {
@@ -581,27 +583,18 @@
             const errorMsg = document.getElementById('login-error');
 
             try {
-                // 如果您还没在 Firebase Console 添加这个用户，第一次登录会失败。
-                // 为了演示方便，如果检测到是 siongcheong@gmail.com，我们强制允许（仅限无后端环境测试）
-                // 在正式环境请使用 await signInWithEmailAndPassword(auth, email, pass);
-                
-                if(email === "siongcheong@gmail.com" && pass === "sioengcheong_admin") {
-                     // 模拟登录成功，允许进入
-                } else {
-                     // 尝试真实登录
-                     await signInWithEmailAndPassword(auth, email, pass);
-                }
-                
+                // 优先尝试真实 Firebase 登录
+                await signInWithEmailAndPassword(auth, email, pass);
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 loadProducts(); 
             } catch (error) {
-                console.error(error);
-                // 此时为了让您能进后台，如果密码对，直接放行 (Fallback)
-                if(email === "siongcheong@gmail.com" && pass === "sioengcheong_admin") {
-                    document.getElementById('login-screen').style.display = 'none';
-                    document.getElementById('dashboard').style.display = 'block';
-                    loadProducts();
+                console.error("Firebase Login Error:", error);
+                // 备用：如果只是为了演示，且密码匹配我们预设的，允许进入（方便您在没设置好 Authentication 时使用）
+                if (email === "siongcheong@gmail.com" && pass === "sioengcheong_admin") {
+                     document.getElementById('login-screen').style.display = 'none';
+                     document.getElementById('dashboard').style.display = 'block';
+                     loadProducts();
                 } else {
                     errorMsg.textContent = "Login Failed: " + error.message;
                 }
@@ -613,7 +606,7 @@
             location.reload(); 
         }
 
-        // --- Image Logic ---
+        // --- Image Upload Logic ---
         function handleFileSelect(input) {
             const file = input.files[0];
             if (file) {
@@ -642,6 +635,7 @@
             const model = document.getElementById('p-model').value || "Product Model";
             const hp = document.getElementById('p-hp').value || "1.0";
             const type = document.getElementById('p-type').value || "Inverter";
+            const tag = document.getElementById('p-tag').value || "Spec";
             const desc = document.getElementById('p-desc').value || "Product description will appear here...";
 
             document.getElementById('prev-brand').textContent = brand;
@@ -656,8 +650,9 @@
             const category = document.getElementById('p-category').value;
             const brand = document.getElementById('p-brand').value;
             const model = document.getElementById('p-model').value;
-            const hp = document.getElementById('p-hp').value;
-            const type = document.getElementById('p-type').value;
+            const hp = document.getElementById('p-hp').value; // Get HP
+            const type = document.getElementById('p-type').value; // Get Type
+            const tag = document.getElementById('p-tag').value; // Get generic tag
             const desc = document.getElementById('p-desc').value;
 
             if (!brand || !model || !desc) {
@@ -666,13 +661,14 @@
             }
 
             try {
-                // Add to Firestore
+                // Add to Firestore - saving hp and type explicitly for AC page filtering
                 await addDoc(collection(db, "products"), {
                     category,
                     brand,
                     model,
-                    hp,    // Save HP
-                    type,  // Save Type
+                    hp: hp,     // 保存 HP
+                    type: type, // 保存 Type
+                    tag: tag || (hp + " HP " + type), // Use generic tag or construct one
                     description: desc,
                     // 注意：真实项目中应上传到 Firebase Storage 获取 URL，这里演示存储 Base64
                     image: currentImageBase64 || "", 
@@ -684,13 +680,18 @@
                 loadProducts(); // Refresh list
             } catch (e) {
                 console.error("Error adding document: ", e);
-                showToast("Error publishing product.", "error");
+                showToast("Error publishing product: " + e.code, "error");
+                
+                 if(e.code === 'permission-denied') {
+                    alert("Firestore Permission Denied! Please check your Security Rules in Firebase Console.");
+                }
             }
         }
 
         function clearForm() {
             document.getElementById('p-brand').value = "";
             document.getElementById('p-model').value = "";
+            document.getElementById('p-tag').value = "";
             document.getElementById('p-desc').value = "";
             removeImage();
             updatePreview();
@@ -699,7 +700,7 @@
         // --- Firestore: Read & Delete Products ---
         async function loadProducts() {
             const listContainer = document.getElementById('manage-list');
-            listContainer.innerHTML = '<p style="color:var(--text-sub);">Loading...</p>';
+            listContainer.innerHTML = '<p style="color:var(--text-sub);">Loading from Firestore...</p>';
 
             try {
                 const querySnapshot = await getDocs(collection(db, "products"));
