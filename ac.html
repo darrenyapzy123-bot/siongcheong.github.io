@@ -67,19 +67,21 @@
     </style>
 </head>
 
-<body>
+<body onload="renderProducts()">
 
+    <!-- Menu Button -->
     <div class="menu-icon" onclick="toggleNav()">
         <div class="bar"></div>
         <div class="bar"></div>
         <div class="bar"></div>
     </div>
 
+    <!-- Sidebar -->
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
         <a href="index.html">Home</a>
         <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
-        <div class="submenu" style="display: block;"> 
+        <div class="submenu" style="display: block;">
             <a href="refrigerator.html">Refrigerator</a>
             <a href="chiller.html">Chiller</a>
             <a href="freezer.html">Freezer</a>
@@ -104,11 +106,14 @@
         <a href="contact.html">Contact Us</a>
     </div>
 
+    <!-- Overlay -->
     <div id="overlay" class="overlay" onclick="toggleNav()"></div>
 
+    <!-- Main Content Wrapper -->
     <div id="main-content">
+        
         <header>
-            Air Conditioners
+            <div class="header-title">Air Conditioner Series</div>
             <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo-right" onerror="this.style.display='none'">
         </header>
 
@@ -152,8 +157,9 @@
             </div>
         </div>
 
+        <!-- Product Container -->
         <div class="products-wrapper" id="products-container">
-            <!-- Products rendered here -->
+            <!-- JS will render products here -->
             <p id="no-products" style="text-align: center; color: var(--text-secondary); display: none; margin-top: 40px; font-size: 1.2rem;">
                 No products found matching your criteria.
             </p>
@@ -164,11 +170,12 @@
         </footer>
     </div>
 
-    <!-- Firebase Module for Syncing -->
+    <!-- Firebase Integration -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDacu1ZcdR79rlWJju091GqDHdwbwLM9YE",
             authDomain: "siong-cheong-trading-website.firebaseapp.com",
@@ -182,7 +189,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- Original Hardcoded Products (Preserved) ---
+        // --- Static Products (Preserved) ---
         const staticAcProducts = [
             { brand: "Sharp", model: "Sharp AHA-WCD2 Series", hp: "1.0", type: "Non-Inverter", description: "Features Turbo Mode, Self-Clean function." },
             { brand: "Sharp", model: "Sharp AHX-VED2 Inverter", hp: "1.5", type: "Inverter", description: "Highly energy efficient with Plasmacluster Ion technology." },
@@ -198,23 +205,37 @@
             { brand: "Hisense", model: "Hisense Basic Cool (2.5HP)", hp: "2.5", type: "Non-Inverter", description: "Maximum cooling capacity." }
         ];
 
-        let allProducts = [...staticAcProducts]; // Combine static + dynamic
+        let allProducts = [...staticAcProducts];
 
-        // --- Fetch from Firebase ---
+        // --- Fetch Dynamic Products from Firebase ---
         async function fetchDynamicProducts() {
             try {
-                // Query for products where category is 'ac'
+                // IMPORTANT: This queries products where category is 'ac'
                 const q = query(collection(db, "products"), where("category", "==", "ac"));
                 const querySnapshot = await getDocs(q);
                 
                 const dynamicProducts = [];
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
+                    
+                    // Simple parsing logic to adapt Admin data to AC page format
+                    let hpValue = "1.0";
+                    if(data.tag) {
+                         const match = data.tag.match(/(\d+(\.\d+)?)/);
+                         if(match) hpValue = match[0];
+                    }
+
+                    let typeValue = "Non-Inverter";
+                    const descLower = (data.description || "").toLowerCase();
+                    if(descLower.includes("inverter") && !descLower.includes("non-inverter")) {
+                        typeValue = "Inverter";
+                    }
+
                     dynamicProducts.push({
                         brand: data.brand,
                         model: data.model,
-                        hp: data.tag ? data.tag.replace('HP', '').trim() : '1.0', // Basic parsing
-                        type: data.description.toLowerCase().includes('inverter') && !data.description.toLowerCase().includes('non-inverter') ? 'Inverter' : 'Non-Inverter',
+                        hp: hpValue,
+                        type: typeValue,
                         image: data.image || 'placeholder_ac.png',
                         description: data.description
                     });
@@ -225,16 +246,17 @@
                 renderProducts(allProducts);
 
             } catch (e) {
-                console.error("Error fetching ACs:", e);
+                console.error("Error fetching ACs from Firebase:", e);
+                // On error, we still show static products
             }
         }
 
-        // --- Render Logic (Global Scope Wrapper) ---
+        // --- Render Logic (Global) ---
         window.renderProducts = function(products) {
             const container = document.getElementById('products-container');
             const noProducts = document.getElementById('no-products');
             
-            // Clear existing grid items but keep no-products msg
+            // Clear existing grid items
             const existingGrids = container.querySelectorAll('.brand-section');
             existingGrids.forEach(g => g.remove());
 
@@ -265,7 +287,6 @@
                         const card = document.createElement('div');
                         card.className = 'product-card';
                         
-                        // Determine tag style
                         const typeClass = p.type === 'Inverter' ? 'tag-inverter' : 'tag-non-inverter';
                         const imgSrc = p.image && p.image.startsWith('data') ? p.image : 'placeholder_ac.png';
 
@@ -311,12 +332,12 @@
             renderProducts(filtered);
         };
         
-        // Initial Render & Fetch
-        renderProducts(staticAcProducts);
+        // Initial Load
+        renderProducts(staticAcProducts); 
         fetchDynamicProducts(); // Fetch new items from DB
     </script>
 
-    <!-- Sidebar / UI Scripts -->
+    <!-- Sidebar Scripts -->
     <script>
         function toggleNav() {
             const sidebar = document.getElementById("mySidebar");
