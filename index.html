@@ -84,6 +84,7 @@
             cursor: pointer;
         }
 
+        /* 给 Submenu 加了个 ID 方便 JS 操作 */
         .submenu {
             display: none;
             background-color: #0b1221;
@@ -263,8 +264,7 @@
             transition: margin-left 0.3s;
         }
         
-        .category-card:hover .learn-more i,
-        .product-card:hover .learn-more i {
+        .category-card:hover .learn-more i {
             margin-left: 10px;
         }
 
@@ -282,103 +282,15 @@
             text-transform: uppercase;
         }
 
-        /* ------------------- Product List Styles ------------------- */
-        #product-list {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px 20px 80px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-            min-height: 200px; /* Space for loading spinner */
-        }
-
-        /* Updated Product Card to work as an anchor tag */
-        a.product-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 20px;
-            width: 300px;
-            border-radius: 12px;
-            color: var(--text-main);
-            text-decoration: none; /* Remove default link underline */
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        a.product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            border-color: var(--accent);
-        }
-
-        .product-image-container {
-            height: 200px;
+        .loading-card {
+            background-color: transparent;
+            border: 1px dashed var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #fff;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            padding: 10px;
-            overflow: hidden;
-        }
-
-        .product-image-container img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            transition: transform 0.3s;
-        }
-
-        a.product-card:hover .product-image-container img {
-            transform: scale(1.05);
-        }
-
-        .product-title {
-            color: var(--accent);
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .product-tags {
-            font-size: 0.8rem;
             color: var(--text-sub);
-            margin-bottom: 12px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .product-tag {
-            background: rgba(255,255,255,0.08);
-            padding: 3px 8px;
-            border-radius: 4px;
-        }
-
-        .product-desc {
-            font-size: 0.9em;
-            color: var(--text-sub);
-            line-height: 1.5;
-            flex-grow: 1; /* Push bottom content down if needed */
-            margin-bottom: 15px;
-        }
-
-        /* Reuse .learn-more style for product card */
-        .product-card .learn-more {
-            align-self: flex-start; /* Align left */
-            margin-top: auto; /* Push to bottom if flex container has height */
-        }
-
-        .loading-text {
-            color: var(--text-sub);
-            font-size: 1.2rem;
-            text-align: center;
-            width: 100%;
-            padding: 40px;
+            min-height: 320px;
+            border-radius: 12px;
         }
 
         /* ------------------- Footer ------------------- */
@@ -400,8 +312,6 @@
             header { padding: 0 20px; }
             .hero h1 { font-size: 2.5rem; }
             .categories-container { grid-template-columns: 1fr; max-width: 400px; }
-            #product-list { justify-content: center; }
-            a.product-card { width: 100%; max-width: 350px; }
         }
     </style>
 </head>
@@ -412,7 +322,8 @@
         <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
         <a href="index.html" class="active" style="color:var(--accent)">Home</a>
         <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
-        <div class="submenu">
+        <!-- 这里的 ID sidebar-submenu 很重要，用来动态插入新分类 -->
+        <div class="submenu" id="sidebar-submenu">
             <a href="refrigerator.html">Refrigerator</a>
             <a href="chiller.html">Chiller</a>
             <a href="freezer.html">Freezer</a>
@@ -431,6 +342,7 @@
             <a href="air_purifier.html">Air Purifier</a>
             <a href="speaker.html">Speaker</a>
             <a href="small.html">Small Appliances</a>
+            <!-- 动态分类会自动插入到这里 -->
         </div>
         <a href="about.html">About Us</a>
         <a href="location.html">Our Location</a>
@@ -474,16 +386,10 @@
 
         <!-- Categories Section -->
         <div class="section-title">Browse Categories</div>
-        <div class="categories-container" id="categories-container">
-            <!-- Categories will be injected here by JS -->
-        </div>
-
-        <!-- NEW PRODUCT SECTION -->
-        <div class="section-title">Featured Products</div>
         
-        <!-- Product List Container -->
-        <div id="product-list">
-            <p class="loading-text"><i class="fas fa-spinner fa-spin"></i> Loading products from Google Sheets...</p>
+        <!-- 这里包含了静态分类，新分类也会追加到这里 -->
+        <div class="categories-container" id="categories-container">
+            <!-- Static Categories will be injected here by JS -->
         </div>
 
         <div class="footer">
@@ -530,7 +436,7 @@
             }
         });
 
-        // ------------------- 2. Render Categories -------------------
+        // ------------------- 2. Render Static Categories -------------------
         const productCategories = [
             { title: "Refrigerator", desc: "Inverter & No Frost technology.", link: "refrigerator.html", bgText: "Fridge" },
             { title: "Chiller", desc: "High-efficiency display chillers.", link: "chiller.html", bgText: "Chiller" },
@@ -541,7 +447,7 @@
             { title: "Washer", desc: "Top load and front load washers.", link: "washer.html", bgText: "Washer" },
             { title: "Dryer", desc: "Efficient clothes dryers.", link: "dryer.html", bgText: "Dryer" },
             { title: "Kitchen", desc: "Modern appliances for your kitchen.", link: "kitchen.html", bgText: "Kitchen" },
-            // ... truncated for brevity, but you can add the rest back if needed ...
+            // ... truncated for brevity ...
         ];
 
         const categoriesContainer = document.getElementById('categories-container');
@@ -561,82 +467,83 @@
             categoriesContainer.appendChild(card);
         });
 
-        // ------------------- 3. GOOGLE SHEETS API LOGIC (NEW) -------------------
-        
-        // 🔴 配置区：SheetDB API 地址
+        // ------------------- 3. GOOGLE SHEETS API LOGIC (Merged) -------------------
         const API_URL = "https://sheetdb.io/api/v1/hsr2y6r8elmum"; 
-        
-        // 🔴 关键设置：当前页面要显示什么类别？
-        // 空字符串 "" 表示显示表格里的所有产品 (用于首页)
-        const CURRENT_PAGE_CATEGORY = ""; 
 
-        // 图片的基础路径
-        const IMAGE_BASE_PATH = "./images/"; 
-
-        async function loadProducts() {
-            const container = document.getElementById('product-list');
+        async function loadDynamicCategories() {
+            // 我们直接使用同一个容器，这样新内容就会排在后面
+            const container = document.getElementById('categories-container');
+            // 获取侧边栏的容器
+            const sidebarContainer = document.getElementById('sidebar-submenu');
+            
+            // 添加一个临时的加载提示卡片
+            const loadingCard = document.createElement('div');
+            loadingCard.className = 'loading-card';
+            loadingCard.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading more...';
+            container.appendChild(loadingCard);
             
             try {
-                // 1. 获取数据
-                const response = await fetch(API_URL);
+                // 1. 获取数据 (no-store 防止缓存)
+                console.log("正在请求 API:", API_URL);
+                const response = await fetch(API_URL, { cache: 'no-store' });
                 const data = await response.json();
+                
+                // 移除加载提示
+                container.removeChild(loadingCard);
 
-                // 2. 过滤数据
-                const filteredProducts = CURRENT_PAGE_CATEGORY 
-                    ? data.filter(item => item.category && item.category.toLowerCase() === CURRENT_PAGE_CATEGORY.toLowerCase())
-                    : data;
-
-                // 清空 "Loading..."
-                container.innerHTML = ""; 
-
-                if (filteredProducts.length === 0) {
-                    container.innerHTML = "<p class='loading-text'>暂无相关产品 (No products found).</p>";
+                if (data.length === 0) {
+                    console.log("API 返回空数据");
                     return;
                 }
 
-                // 3. 生成卡片 HTML
-                filteredProducts.forEach(product => {
-                    // 处理图片路径
-                    let imgSrc = product.image || ''; // 防止 undefined
-                    if (imgSrc && !imgSrc.startsWith('http')) {
-                        imgSrc = IMAGE_BASE_PATH + imgSrc;
-                    }
-                    // 图片占位符 (Fallback)
-                    const imgPlaceholder = 'https://via.placeholder.com/300x200?text=No+Image';
+                // 2. 生成 HTML 并追加
+                data.forEach(item => {
+                    const title = item['Category name'] || 'Untitled';
+                    const desc = item['description'] || '';
+                    const link = item['html link'] || '#';
+                    const bgText = title; 
 
-                    // 获取链接，如果表格里有 link 这一列就用，否则默认为 #
-                    // ⚠️ 注意：请在你的 Google Sheet 里添加一个名为 "link" 的列，填入文件名 (如 icecream.html)
-                    const targetLink = product.link || '#';
-
-                    // 使用模板字符串生成 HTML
-                    // 注意：这里的 product-card 变成了 <a> 标签
-                    const card = `
-                        <a href="${targetLink}" class="product-card">
-                            <div class="product-image-container">
-                                <img src="${imgSrc || imgPlaceholder}" alt="${product.model}" onerror="this.src='${imgPlaceholder}'">
-                            </div>
-                            <h3 class="product-title">${product.brand} - ${product.model}</h3>
-                            <div class="product-tags">
-                                ${product.hp ? `<span class="product-tag">${product.hp} HP</span>` : ''}
-                                ${product.type ? `<span class="product-tag">${product.type}</span>` : ''}
-                            </div>
-                            <p class="product-desc">${product.description || 'No description available.'}</p>
-                            
-                            <!-- 新增 Learn More 按钮 -->
+                    // --- A. 添加到主页分类列表 ---
+                    const card = document.createElement('a');
+                    card.href = link;
+                    card.className = 'category-card'; // 样式与旧分类完全一致
+                    card.innerHTML = `
+                        <div>
+                            <div class="cat-title">${title}</div>
+                            <div class="cat-desc">${desc}</div>
                             <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
-                        </a>
+                        </div>
+                        <div class="bg-text">${bgText}</div>
                     `;
-                    container.innerHTML += card;
+                    container.appendChild(card);
+
+                    // --- B. 添加到侧边栏菜单 ---
+                    // 检查是否已经存在（防止重复添加），虽然 API 每次刷新页面只跑一次，但作为保险
+                    // 简单的去重逻辑：检查 href 是否已存在
+                    const existingLinks = sidebarContainer.querySelectorAll('a');
+                    let exists = false;
+                    existingLinks.forEach(l => {
+                        if(l.getAttribute('href') === link) exists = true;
+                    });
+
+                    if (!exists) {
+                        const sidebarLink = document.createElement('a');
+                        sidebarLink.href = link;
+                        sidebarLink.textContent = title; // 侧边栏只显示标题
+                        sidebarContainer.appendChild(sidebarLink);
+                    }
                 });
 
             } catch (error) {
                 console.error("加载失败:", error);
-                container.innerHTML = "<p class='loading-text' style='color:#ef4444'>加载失败，请检查 API 限额或网络设置。<br><small>" + error.message + "</small></p>";
+                if(container.contains(loadingCard)) {
+                    loadingCard.innerHTML = "Failed to load extra categories.";
+                }
             }
         }
 
         // 页面加载完立即执行
-        loadProducts();
+        loadDynamicCategories();
 
     </script>
 </body>
