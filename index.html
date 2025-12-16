@@ -263,7 +263,8 @@
             transition: margin-left 0.3s;
         }
         
-        .category-card:hover .learn-more i {
+        .category-card:hover .learn-more i,
+        .product-card:hover .learn-more i {
             margin-left: 10px;
         }
 
@@ -281,7 +282,7 @@
             text-transform: uppercase;
         }
 
-        /* ------------------- Product List Styles (Inserted) ------------------- */
+        /* ------------------- Product List Styles ------------------- */
         #product-list {
             max-width: 1400px;
             margin: 0 auto;
@@ -293,19 +294,21 @@
             min-height: 200px; /* Space for loading spinner */
         }
 
-        .product-card {
+        /* Updated Product Card to work as an anchor tag */
+        a.product-card {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
             padding: 20px;
             width: 300px;
             border-radius: 12px;
             color: var(--text-main);
+            text-decoration: none; /* Remove default link underline */
             transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
         }
 
-        .product-card:hover {
+        a.product-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
             border-color: var(--accent);
@@ -330,7 +333,7 @@
             transition: transform 0.3s;
         }
 
-        .product-card:hover .product-image-container img {
+        a.product-card:hover .product-image-container img {
             transform: scale(1.05);
         }
 
@@ -361,6 +364,13 @@
             color: var(--text-sub);
             line-height: 1.5;
             flex-grow: 1; /* Push bottom content down if needed */
+            margin-bottom: 15px;
+        }
+
+        /* Reuse .learn-more style for product card */
+        .product-card .learn-more {
+            align-self: flex-start; /* Align left */
+            margin-top: auto; /* Push to bottom if flex container has height */
         }
 
         .loading-text {
@@ -391,7 +401,7 @@
             .hero h1 { font-size: 2.5rem; }
             .categories-container { grid-template-columns: 1fr; max-width: 400px; }
             #product-list { justify-content: center; }
-            .product-card { width: 100%; max-width: 350px; }
+            a.product-card { width: 100%; max-width: 350px; }
         }
     </style>
 </head>
@@ -469,7 +479,7 @@
         </div>
 
         <!-- NEW PRODUCT SECTION -->
-        <div class="section-title">Latest Arrivals</div>
+        <div class="section-title">Featured Products</div>
         
         <!-- Product List Container -->
         <div id="product-list">
@@ -554,14 +564,13 @@
         // ------------------- 3. GOOGLE SHEETS API LOGIC (NEW) -------------------
         
         // 🔴 配置区：SheetDB API 地址
-        const API_URL = "https://sheetdb.io/api/v1/twlcwcm7trj58"; 
+        const API_URL = "https://sheetdb.io/api/v1/hsr2y6r8elmum"; 
         
         // 🔴 关键设置：当前页面要显示什么类别？
         // 空字符串 "" 表示显示表格里的所有产品 (用于首页)
         const CURRENT_PAGE_CATEGORY = ""; 
 
-        // 图片的基础路径 (如果你表格里填的是文件名如 "fridge1.jpg")
-        // 如果表格里填的是完整 http 链接，这个变量不会生效
+        // 图片的基础路径
         const IMAGE_BASE_PATH = "./images/"; 
 
         async function loadProducts() {
@@ -595,10 +604,14 @@
                     // 图片占位符 (Fallback)
                     const imgPlaceholder = 'https://via.placeholder.com/300x200?text=No+Image';
 
+                    // 获取链接，如果表格里有 link 这一列就用，否则默认为 #
+                    // ⚠️ 注意：请在你的 Google Sheet 里添加一个名为 "link" 的列，填入文件名 (如 icecream.html)
+                    const targetLink = product.link || '#';
+
                     // 使用模板字符串生成 HTML
-                    // 注意：这里使用了之前定义的 CSS 类 (product-card, product-title 等)
+                    // 注意：这里的 product-card 变成了 <a> 标签
                     const card = `
-                        <div class="product-card">
+                        <a href="${targetLink}" class="product-card">
                             <div class="product-image-container">
                                 <img src="${imgSrc || imgPlaceholder}" alt="${product.model}" onerror="this.src='${imgPlaceholder}'">
                             </div>
@@ -608,7 +621,10 @@
                                 ${product.type ? `<span class="product-tag">${product.type}</span>` : ''}
                             </div>
                             <p class="product-desc">${product.description || 'No description available.'}</p>
-                        </div>
+                            
+                            <!-- 新增 Learn More 按钮 -->
+                            <div class="learn-more">Learn more <i class="fas fa-chevron-right"></i></div>
+                        </a>
                     `;
                     container.innerHTML += card;
                 });
