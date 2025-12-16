@@ -385,7 +385,7 @@
         <div class="login-box">
             <h2>Admin Login</h2>
             <div class="input-group">
-                <label>Email</label>
+                <label>Email (Must create in Firebase Console first)</label>
                 <input type="email" id="email" placeholder="admin@siongcheong.com">
             </div>
             <div class="input-group">
@@ -538,7 +538,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-        // 注意：这里补充引入了 serverTimestamp
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, where, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
         // 您的真实 Firebase 配置
@@ -557,6 +556,7 @@
         const db = getFirestore(app);
 
         let currentImageBase64 = null;
+        let currentUser = null; // Store user state
 
         // 暴露函数给 HTML 按钮使用
         window.login = login;
@@ -569,17 +569,18 @@
         window.deleteProduct = deleteProduct;
 
         // --- Auth Logic: 监听登录状态 ---
-        // 这一步非常关键：防止刷新页面后丢失登录状态
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 // 已登录
-                console.log("User is logged in:", user.email);
+                console.log("✅ User is logged in:", user.email);
+                currentUser = user;
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 loadProducts(); 
             } else {
                 // 未登录
-                console.log("User is logged out");
+                console.log("❌ User is logged out");
+                currentUser = null;
                 document.getElementById('login-screen').style.display = 'flex';
                 document.getElementById('dashboard').style.display = 'none';
             }
@@ -590,25 +591,48 @@
             const pass = document.getElementById('password').value;
             const errorMsg = document.getElementById('login-error');
 
+            if(!email || !pass) {
+                errorMsg.textContent = "Please enter email and password.";
+                return;
+            }
+
             try {
-                // 必须使用真实 Firebase 登录，否则无法获得写入权限
+                console.log("Attempting login...");
                 await signInWithEmailAndPassword(auth, email, pass);
-                // 登录成功后，onAuthStateChanged 会处理 UI 切换
+                console.log("Login successful!");
+                errorMsg.textContent = "";
             } catch (error) {
                 console.error("Firebase Login Error:", error);
-                errorMsg.textContent = "Login Failed: " + error.message;
+                if (error.code === 'auth/invalid-credential') {
+                    errorMsg.textContent = "Incorrect email or password. Did you create this user in Firebase Console?";
+                } else if (error.code === 'auth/user-not-found') {
+                    errorMsg.textContent = "User not found. Please create the user in Firebase Console first.";
+                } else {
+                    errorMsg.textContent = "Login Failed: " + error.message;
+                }
             }
         }
 
         async function logout() {
-            await signOut(auth);
-            // 登出后，onAuthStateChanged 会自动把页面切回登录框
+            try {
+                await signOut(auth);
+                console.log("Logged out successfully");
+            } catch (error) {
+                console.error("Logout Error:", error);
+            }
         }
 
         // --- Image Upload Logic ---
         function handleFileSelect(input) {
             const file = input.files[0];
             if (file) {
+                // Check file size (limit to roughly 800KB to prevent Firestore document size limit of 1MB)
+                if (file.size > 800 * 1024) {
+                    alert("Image is too large! Please use an image smaller than 800KB for Firestore storage.");
+                    input.value = "";
+                    return;
+                }
+
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     currentImageBase64 = e.target.result;
@@ -645,51 +669,61 @@
 
         // --- Firestore: Add Product ---
         async function submitProduct() {
-            console.log("Attempting to submit product..."); // 调试点 1
+            console.log("Submit button clicked.");
+
+            if (!currentUser) {
+                showToast("You are not logged in!", "error");
+                return;
+            }
 
             const category = document.getElementById('p-category').value;
-            const brand = document.getElementById('p-brand').value.trim(); // 加入 .trim()
+            const brand = document.getElementById('p-brand').value.trim();
             const model = document.getElementById('p-model').value.trim();
             const hp = document.getElementById('p-hp').value;
             const type = document.getElementById('p-type').value;
             const tag = document.getElementById('p-tag').value.trim();
             const desc = document.getElementById('p-desc').value.trim();
 
-            // 严谨验证：确保不是空字符串
             if (!brand || !model || !desc) {
                 showToast("Please fill in Brand, Model and Description.", "error");
                 return;
             }
 
             try {
+                showToast("Publishing...", "success"); // Show temp loading state
+
                 const productData = {
                     category,
                     brand,
                     model,
-                    hp: hp,
-                    type: type,
+                    hp,
+                    type,
                     tag: tag || (hp + " HP " + type),
                     description: desc,
                     image: currentImageBase64 || "", 
-                    // ✅ 核心修正：使用 serverTimestamp
                     createdAt: serverTimestamp() 
                 };
 
-                console.log("Data to write:", productData); // 调试点 2
+                console.log("Writing to Firestore...", productData);
 
+                // Try to write
                 await addDoc(collection(db, "products"), productData);
 
-                console.log("Write Success!"); // 调试点 3
+                console.log("✅ Document written successfully!");
                 showToast("Product Published Successfully!", "success");
                 clearForm();
-                // 写入后不需要手动 loadProducts，因为 onSnapshot 或者下次刷新会获取
-                // 这里手动刷新一下列表
-                loadProducts(); 
+                
+                // Reload list
+                setTimeout(loadProducts, 500); 
+
             } catch (e) {
-                console.error("Error adding document: ", e); // 调试点 4
+                console.error("🔥 Error adding document: ", e);
                 
                 if(e.code === 'permission-denied') {
-                    showToast("Permission Denied! You are not logged in properly.", "error");
+                    showToast("PERMISSION DENIED: Check your Firebase Console > Firestore > Rules.", "error");
+                    alert("Error: Permission Denied.\n\nPlease go to Firebase Console > Firestore Database > Rules and allow writes.\n\nExample Rule:\nallow read, write: if request.auth != null;");
+                } else if (e.code === 'resource-exhausted') {
+                    showToast("Error: File too big or quota exceeded.", "error");
                 } else {
                     showToast("Error: " + e.message, "error");
                 }
@@ -711,16 +745,19 @@
             listContainer.innerHTML = '<p style="color:var(--text-sub);">Loading from Firestore...</p>';
 
             try {
-                // ✅ 核心修正：加入排序逻辑 (OrderBy createdAt desc)
-                // 确保你在 Firestore Console 建立了索引（如果控制台报错提示缺索引，点击链接即可）
-              const q = collection(db, "products");
+                // Start with a simple query (no orderBy) to ensure it works without indexes
+                let q = collection(db, "products");
                 
+                // Uncomment this ONLY after you verify simple writing works 
+                // AND after you click the link in console to create the index
+                // q = query(collection(db, "products"), orderBy("createdAt", "desc"));
+
                 const querySnapshot = await getDocs(q);
                 
                 listContainer.innerHTML = ''; 
 
                 if (querySnapshot.empty) {
-                    listContainer.innerHTML = '<p style="color:var(--text-sub);">No products found.</p>';
+                    listContainer.innerHTML = '<p style="color:var(--text-sub);">No products found in database.</p>';
                     return;
                 }
 
@@ -747,11 +784,17 @@
                 });
             } catch (e) {
                 console.error("Error loading products: ", e);
-                listContainer.innerHTML = `<p style="color:var(--error);">Error: ${e.message}</p>`;
+                listContainer.innerHTML = `<p style="color:var(--error);">Error loading: ${e.message}</p>`;
+                
+                if (e.message.includes("requires an index")) {
+                    alert("Sorting requires an index! Check the browser console (F12) for the link to create it.");
+                }
             }
         }
 
         async function deleteProduct(id) {
+            if (!currentUser) return;
+            
             if(confirm("Are you sure you want to delete this product?")) {
                 try {
                     await deleteDoc(doc(db, "products", id));
@@ -759,7 +802,7 @@
                     loadProducts(); 
                 } catch (e) {
                     console.error("Error deleting: ", e);
-                    showToast("Error deleting product.", "error");
+                    showToast("Error deleting: " + e.message, "error");
                 }
             }
         }
@@ -768,9 +811,8 @@
             const toast = document.getElementById("toast");
             toast.className = "show " + type;
             toast.textContent = message;
-            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 5000);
         }
     </script>
 </body>
 </html>
-
