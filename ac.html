@@ -173,13 +173,14 @@
 
         /* ------------------- ORIGINAL STYLES BELOW (UNTOUCHED) ------------------- */
         
+        /* Keeping Header Logic for Logo/Title placement but removing fixed position to allow push */
         .navbar-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             height: 100px;
             padding: 0 40px;
-            background-color: transparent; 
+            background-color: transparent; /* Seamless with hero */
             position: absolute;
             top: 0;
             left: 0;
@@ -386,6 +387,8 @@
             z-index: 2;
         }
 
+        .product-card.hidden { display: none; }
+
         .card-image-wrapper {
             width: 100%;
             height: 220px;
@@ -478,7 +481,6 @@
             filter: brightness(1.1);
         }
 
-        /* Footer */
         .page-footer {
             background-color: #020617; 
             padding: 40px 20px;
@@ -640,9 +642,6 @@
         ];
 
         let allProducts = [...staticAcProducts];
-        
-        // Expose allProducts globally for the filter function
-        window.allProducts = allProducts;
 
         // --- Fetch Dynamic Products from Firebase ---
         async function fetchDynamicProducts() {
@@ -685,6 +684,7 @@
                 });
 
                 // Merge and Re-render
+                // Using window.allProducts to share data with non-module scripts if needed
                 window.allProducts = [...staticAcProducts, ...dynamicProducts];
                 renderProducts(window.allProducts);
 
@@ -697,8 +697,12 @@
 
         // --- Render Logic (Global) ---
         window.renderProducts = function(products) {
-            if (!products) return; // Guard clause
-            
+            // Safety check: ensure products is an array
+            if (!products || !Array.isArray(products)) {
+                console.warn('renderProducts called with invalid data, using static default.');
+                products = staticAcProducts;
+            }
+
             const container = document.getElementById('products-container');
             const noProducts = document.getElementById('no-products');
             
@@ -762,13 +766,37 @@
                 }
             });
         };
+
+        // --- Filter Logic ---
+        window.filterProducts = function() {
+            const brandFilter = document.getElementById('brand-filter').value;
+            const hpFilter = document.getElementById('hp-filter').value;
+            const typeFilter = document.getElementById('type-filter').value;
+
+            // Use the globally accessible product list which might contain dynamic data
+            const sourceProducts = window.allProducts || staticAcProducts;
+
+            const filtered = sourceProducts.filter(p => {
+                let b = (brandFilter === 'all' || p.brand === brandFilter);
+                let h = (hpFilter === 'all' || p.hp === hpFilter);
+                let t = (typeFilter === 'all' || p.type === typeFilter);
+                return b && h && t;
+            });
+            renderProducts(filtered);
+        };
         
-        // Initial Fetch
-        fetchDynamicProducts();
+        // Initial Load: Render static immediately, then fetch dynamic
+        renderProducts(staticAcProducts); 
+        fetchDynamicProducts(); 
     </script>
 
     <!-- Sidebar Scripts -->
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             // 确保初始状态正确
+             // 此时 module script 可能已经在运行了，或者稍后运行
+        });
+
         function toggleNav() {
             const sidebar = document.getElementById("mySidebar");
             const overlay = document.getElementById("overlay");
@@ -799,29 +827,6 @@
         document.getElementById('toggle-filter').addEventListener('click', function() {
             document.getElementById('filter-content').classList.toggle('active');
         });
-        
-        // Filter Logic (Non-Module Script Part)
-        function filterProducts() {
-            const brandFilter = document.getElementById('brand-filter').value;
-            const hpFilter = document.getElementById('hp-filter').value;
-            const typeFilter = document.getElementById('type-filter').value;
-            
-            // Check if window.allProducts is available (loaded by module script)
-            if (!window.allProducts) return;
-
-            const filtered = window.allProducts.filter(p => {
-                let b = (brandFilter === 'all' || p.brand === brandFilter);
-                let h = (hpFilter === 'all' || p.hp === hpFilter);
-                let t = (typeFilter === 'all' || p.type === typeFilter);
-                return b && h && t;
-            });
-            
-            // Call the global render function
-            if (window.renderProducts) {
-                window.renderProducts(filtered);
-            }
-        }
-        window.filterProducts = filterProducts;
     </script>
 </body>
 </html>
