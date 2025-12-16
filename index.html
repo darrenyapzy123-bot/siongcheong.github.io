@@ -489,7 +489,9 @@
                 const data = await response.json();
                 
                 // 移除加载提示
-                container.removeChild(loadingCard);
+                if(container.contains(loadingCard)) {
+                    container.removeChild(loadingCard);
+                }
 
                 if (data.length === 0) {
                     console.log("API 返回空数据");
@@ -518,12 +520,19 @@
                     container.appendChild(card);
 
                     // --- B. 添加到侧边栏菜单 ---
-                    // 检查是否已经存在（防止重复添加），虽然 API 每次刷新页面只跑一次，但作为保险
-                    // 简单的去重逻辑：检查 href 是否已存在
+                    // 修正：主要检查标题是否重复，因为链接可能是暂时为空的 #
+                    // 如果标题已经存在于侧边栏中，就不添加了
                     const existingLinks = sidebarContainer.querySelectorAll('a');
                     let exists = false;
                     existingLinks.forEach(l => {
-                        if(l.getAttribute('href') === link) exists = true;
+                        // 清除空格并转小写进行比较，增加容错率
+                        if(l.textContent.trim().toLowerCase() === title.trim().toLowerCase()) {
+                            exists = true;
+                        }
+                        // 或者如果链接完全一样（且不是 #），也算重复
+                        if(link !== '#' && l.getAttribute('href') === link) {
+                            exists = true;
+                        }
                     });
 
                     if (!exists) {
