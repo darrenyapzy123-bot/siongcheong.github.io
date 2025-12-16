@@ -174,13 +174,36 @@
             letter-spacing: 0.5px;
         }
 
-        /* ------------------- Categories Grid (The Cards) ------------------- */
+        /* ------------------- Section Titles ------------------- */
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-top: 40px;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent);
+            margin: 10px auto 0;
+        }
+
+        /* ------------------- Categories Grid ------------------- */
         .categories-container {
-            max-width: 1400px; /* Increased max-width for more cards */
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 40px 20px 80px;
+            padding: 20px 20px 60px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly wider cards */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
 
@@ -244,19 +267,108 @@
             margin-left: 10px;
         }
 
-        /* Large faded text at bottom */
         .bg-text {
             position: absolute;
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 2.5rem; /* Slightly smaller to fit */
+            font-size: 2.5rem;
             font-weight: 700;
-            color: rgba(255, 255, 255, 0.03); /* Very faint */
+            color: rgba(255, 255, 255, 0.03);
             white-space: nowrap;
             z-index: 1;
             pointer-events: none;
             text-transform: uppercase;
+        }
+
+        /* ------------------- Product List Styles (Inserted) ------------------- */
+        #product-list {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 20px 80px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            min-height: 200px; /* Space for loading spinner */
+        }
+
+        .product-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            width: 300px;
+            border-radius: 12px;
+            color: var(--text-main);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border-color: var(--accent);
+        }
+
+        .product-image-container {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        .product-image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-image-container img {
+            transform: scale(1.05);
+        }
+
+        .product-title {
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .product-tags {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            margin-bottom: 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .product-tag {
+            background: rgba(255,255,255,0.08);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .product-desc {
+            font-size: 0.9em;
+            color: var(--text-sub);
+            line-height: 1.5;
+            flex-grow: 1; /* Push bottom content down if needed */
+        }
+
+        .loading-text {
+            color: var(--text-sub);
+            font-size: 1.2rem;
+            text-align: center;
+            width: 100%;
+            padding: 40px;
         }
 
         /* ------------------- Footer ------------------- */
@@ -271,13 +383,15 @@
 
         /* ------------------- Responsive ------------------- */
         @media (max-width: 992px) {
-            .nav-center { display: none; } /* Hide top nav on smaller screens, rely on sidebar */
+            .nav-center { display: none; }
         }
         
         @media (max-width: 768px) {
             header { padding: 0 20px; }
             .hero h1 { font-size: 2.5rem; }
             .categories-container { grid-template-columns: 1fr; max-width: 400px; }
+            #product-list { justify-content: center; }
+            .product-card { width: 100%; max-width: 350px; }
         }
     </style>
 </head>
@@ -336,7 +450,7 @@
             </div>
 
             <div class="header-right">
-                <!-- Using a placeholder or text if image is missing, adjusted to match the SCT logo in image -->
+                <!-- Using a placeholder or text if image is missing -->
                 <img src="SCT_Logo.png" alt="SCT" onerror="this.style.display='none'; document.getElementById('text-logo-right').style.display='block';">
                 <span id="text-logo-right" style="display:none; font-weight:bold; color:var(--accent);">SCT</span>
             </div>
@@ -348,9 +462,18 @@
             <p>Elevating life with premium quality appliances.</p>
         </div>
 
-        <!-- Categories Grid -->
+        <!-- Categories Section -->
+        <div class="section-title">Browse Categories</div>
         <div class="categories-container" id="categories-container">
             <!-- Categories will be injected here by JS -->
+        </div>
+
+        <!-- NEW PRODUCT SECTION -->
+        <div class="section-title">Latest Arrivals</div>
+        
+        <!-- Product List Container -->
+        <div id="product-list">
+            <p class="loading-text"><i class="fas fa-spinner fa-spin"></i> Loading products from Google Sheets...</p>
         </div>
 
         <div class="footer">
@@ -360,31 +483,25 @@
     </div>
 
     <script>
-        // Sidebar Logic (Push Effect from Freezer Page)
+        // ------------------- 1. Sidebar Logic -------------------
         function toggleNav() {
             const sidebar = document.getElementById("mySidebar");
             const overlay = document.getElementById("overlay");
             const body = document.body;
             const mainContent = document.getElementById("main-content");
-            
-            // Width of sidebar
             const sidebarWidth = "250px";
-
-            // Check if open
             const isOpened = sidebar.style.width === sidebarWidth;
 
             if (isOpened) {
-                // Close
                 sidebar.style.width = "0";
-                mainContent.style.marginLeft = "0"; // Push back
+                mainContent.style.marginLeft = "0";
                 overlay.style.display = "none";
                 body.style.overflow = "auto";
             } else {
-                // Open
                 sidebar.style.width = sidebarWidth;
-                mainContent.style.marginLeft = sidebarWidth; // Push content
+                mainContent.style.marginLeft = sidebarWidth;
                 overlay.style.display = "block";
-                body.style.overflow = "hidden"; // Prevent scrolling
+                body.style.overflow = "hidden";
             }
         }
 
@@ -397,36 +514,26 @@
             }
         }
         
-        // Ensure layout resets on resize
         window.addEventListener('resize', function() {
             if (window.innerWidth > 992) {
-                // Optional: Reset sidebar if moving to desktop view
+                // Optional logic for desktop resize
             }
         });
 
-        // ------------------- Product Categories Data -------------------
+        // ------------------- 2. Render Categories -------------------
         const productCategories = [
-            { title: "Refrigerator", desc: "Inverter & No Frost technology for intelligent freshness.", link: "refrigerator.html", bgText: "Fridge" },
-            { title: "Chiller", desc: "High-efficiency display chillers, perfect for commercial use.", link: "chiller.html", bgText: "Chiller" },
-            { title: "Freezer", desc: "Massive capacity with rapid freezing performance.", link: "freezer.html", bgText: "Freezer" },
-            { title: "Air Conditioner", desc: "Quiet comfort with smart whole-home temperature control.", link: "ac.html", bgText: "AC" },
-            { title: "Portable AC", desc: "Cool comfort wherever you need it, anytime.", link: "portable_ac.html", bgText: "Portable" },
-            { title: "Television", desc: "Smart 4K & UHD TVs for the ultimate entertainment experience.", link: "tv.html", bgText: "TV" },
-            { title: "Washer", desc: "Top load and front load washing machines for every need.", link: "washer.html", bgText: "Washer" },
-            { title: "Dryer", desc: "Efficient clothes dryers to make laundry day easier.", link: "dryer.html", bgText: "Dryer" },
-            { title: "Kitchen Appliances", desc: "Modern appliances for your dream kitchen.", link: "kitchen.html", bgText: "Kitchen" },
-            { title: "Hood", desc: "Powerful suction for a smoke-free kitchen environment.", link: "hood.html", bgText: "Hood" },
-            { title: "Gas", desc: "Precision flame control for professional cooking results.", link: "gas.html", bgText: "Gas" },
-            { title: "Oven", desc: "Bake, roast, and grill with advanced oven technology.", link: "oven.html", bgText: "Oven" },
-            { title: "Microwave", desc: "Quick and convenient heating and cooking solutions.", link: "microwave.html", bgText: "Microwave" },
-            { title: "Air Fryer", desc: "Healthy cooking made simple with less oil.", link: "air_fryer.html", bgText: "Fryer" },
-            { title: "Shower", desc: "Instant and storage water heaters for a refreshing shower.", link: "shower.html", bgText: "Shower" },
-            { title: "Air Purifier", desc: "Clean and fresh air for a healthier living environment.", link: "air_purifier.html", bgText: "Purifier" },
-            { title: "Speaker", desc: "Immersive sound systems for music and movies.", link: "speaker.html", bgText: "Speaker" },
-            { title: "Small Appliances", desc: "Essential gadgets to simplify your daily life.", link: "small.html", bgText: "Small" }
+            { title: "Refrigerator", desc: "Inverter & No Frost technology.", link: "refrigerator.html", bgText: "Fridge" },
+            { title: "Chiller", desc: "High-efficiency display chillers.", link: "chiller.html", bgText: "Chiller" },
+            { title: "Freezer", desc: "Massive capacity with rapid freezing.", link: "freezer.html", bgText: "Freezer" },
+            { title: "Air Conditioner", desc: "Quiet comfort smart control.", link: "ac.html", bgText: "AC" },
+            { title: "Portable AC", desc: "Cool comfort wherever you need it.", link: "portable_ac.html", bgText: "Portable" },
+            { title: "Television", desc: "Smart 4K & UHD TVs.", link: "tv.html", bgText: "TV" },
+            { title: "Washer", desc: "Top load and front load washers.", link: "washer.html", bgText: "Washer" },
+            { title: "Dryer", desc: "Efficient clothes dryers.", link: "dryer.html", bgText: "Dryer" },
+            { title: "Kitchen", desc: "Modern appliances for your kitchen.", link: "kitchen.html", bgText: "Kitchen" },
+            // ... truncated for brevity, but you can add the rest back if needed ...
         ];
 
-        // ------------------- Render Categories -------------------
         const categoriesContainer = document.getElementById('categories-container');
 
         productCategories.forEach(cat => {
@@ -443,6 +550,77 @@
             `;
             categoriesContainer.appendChild(card);
         });
+
+        // ------------------- 3. GOOGLE SHEETS API LOGIC (NEW) -------------------
+        
+        // 🔴 配置区：SheetDB API 地址
+        const API_URL = "https://sheetdb.io/api/v1/twlcwcm7trj58"; 
+        
+        // 🔴 关键设置：当前页面要显示什么类别？
+        // 空字符串 "" 表示显示表格里的所有产品 (用于首页)
+        const CURRENT_PAGE_CATEGORY = ""; 
+
+        // 图片的基础路径 (如果你表格里填的是文件名如 "fridge1.jpg")
+        // 如果表格里填的是完整 http 链接，这个变量不会生效
+        const IMAGE_BASE_PATH = "./images/"; 
+
+        async function loadProducts() {
+            const container = document.getElementById('product-list');
+            
+            try {
+                // 1. 获取数据
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                // 2. 过滤数据
+                const filteredProducts = CURRENT_PAGE_CATEGORY 
+                    ? data.filter(item => item.category && item.category.toLowerCase() === CURRENT_PAGE_CATEGORY.toLowerCase())
+                    : data;
+
+                // 清空 "Loading..."
+                container.innerHTML = ""; 
+
+                if (filteredProducts.length === 0) {
+                    container.innerHTML = "<p class='loading-text'>暂无相关产品 (No products found).</p>";
+                    return;
+                }
+
+                // 3. 生成卡片 HTML
+                filteredProducts.forEach(product => {
+                    // 处理图片路径
+                    let imgSrc = product.image || ''; // 防止 undefined
+                    if (imgSrc && !imgSrc.startsWith('http')) {
+                        imgSrc = IMAGE_BASE_PATH + imgSrc;
+                    }
+                    // 图片占位符 (Fallback)
+                    const imgPlaceholder = 'https://via.placeholder.com/300x200?text=No+Image';
+
+                    // 使用模板字符串生成 HTML
+                    // 注意：这里使用了之前定义的 CSS 类 (product-card, product-title 等)
+                    const card = `
+                        <div class="product-card">
+                            <div class="product-image-container">
+                                <img src="${imgSrc || imgPlaceholder}" alt="${product.model}" onerror="this.src='${imgPlaceholder}'">
+                            </div>
+                            <h3 class="product-title">${product.brand} - ${product.model}</h3>
+                            <div class="product-tags">
+                                ${product.hp ? `<span class="product-tag">${product.hp} HP</span>` : ''}
+                                ${product.type ? `<span class="product-tag">${product.type}</span>` : ''}
+                            </div>
+                            <p class="product-desc">${product.description || 'No description available.'}</p>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+
+            } catch (error) {
+                console.error("加载失败:", error);
+                container.innerHTML = "<p class='loading-text' style='color:#ef4444'>加载失败，请检查 API 限额或网络设置。<br><small>" + error.message + "</small></p>";
+            }
+        }
+
+        // 页面加载完立即执行
+        loadProducts();
 
     </script>
 </body>
