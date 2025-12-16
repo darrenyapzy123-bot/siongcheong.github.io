@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Siong Cheong Trading</title>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -65,11 +67,11 @@
 
         .input-group { margin-bottom: 15px; text-align: left; }
         .input-group label { display: block; margin-bottom: 5px; color: var(--text-sub); font-size: 0.9em; }
-        .input-group input {
+        .input-group input, .input-group select {
             width: 100%; padding: 12px; background: var(--bg-input); border: 1px solid var(--border);
             color: white; border-radius: 6px; transition: 0.3s;
         }
-        .input-group input:focus { border-color: var(--accent); }
+        .input-group input:focus, .input-group select:focus { border-color: var(--accent); }
 
         .btn-login {
             width: 100%; padding: 12px; background: var(--accent); color: white; border: none;
@@ -420,10 +422,11 @@
                 <div class="form-row">
                     <div class="form-col">
                         <label class="input-group">Category</label>
+                        <!-- 重要：value 必须全是小写，与页面代码匹配 -->
                         <select id="p-category" class="product-input" onchange="updatePreview()">
-                            <option value="refrigerator">Refrigerator</option>
                             <option value="ac">Air Conditioner</option>
-                            <option value="washing_machine">Washing Machine</option>
+                            <option value="refrigerator">Refrigerator</option>
+                            <option value="washer">Washer</option>
                             <option value="tv">Television</option>
                             <option value="freezer">Freezer</option>
                             <option value="chiller">Chiller</option>
@@ -442,11 +445,28 @@
                         <label class="input-group">Model Name</label>
                         <input type="text" id="p-model" class="product-input" placeholder="e.g. SJ-189" oninput="updatePreview()">
                     </div>
+                    <!-- 这里增加了 HP 和 Type 的输入 -->
                     <div class="form-col">
-                        <label class="input-group">Tag / Spec (Short)</label>
-                        <input type="text" id="p-tag" class="product-input" placeholder="e.g. 170L Inverter" oninput="updatePreview()">
+                        <label class="input-group">HP (e.g. 1.0)</label>
+                        <select id="p-hp" class="product-input" onchange="updatePreview()">
+                             <option value="1.0">1.0 HP</option>
+                             <option value="1.5">1.5 HP</option>
+                             <option value="2.0">2.0 HP</option>
+                             <option value="2.5">2.5 HP</option>
+                        </select>
                     </div>
                 </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label class="input-group">Type</label>
+                        <select id="p-type" class="product-input" onchange="updatePreview()">
+                             <option value="Inverter">Inverter</option>
+                             <option value="Non-Inverter">Non-Inverter</option>
+                        </select>
+                    </div>
+                </div>
+
 
                 <div class="input-group">
                     <label>Description</label>
@@ -491,7 +511,8 @@
                             <h3 id="prev-title">Product Model</h3>
                             <div class="product-tags">
                                 <span class="tag tag-blue" id="prev-brand">Brand</span>
-                                <span class="tag tag-blue" id="prev-tag">Spec</span>
+                                <span class="tag tag-blue" id="prev-hp">1.0 HP</span>
+                                <span class="tag tag-blue" id="prev-type">Inverter</span>
                             </div>
                             <p class="product-desc" id="prev-desc">Product description will appear here...</p>
                         </div>
@@ -520,13 +541,13 @@
     <!-- Toast Notification -->
     <div id="toast">Product added successfully!</div>
 
-    <!-- 1. 引入 Firebase (使用模块化脚本, 修正版本号) -->
+    <!-- 1. 引入 Firebase (使用模块化脚本) -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Your web app's Firebase configuration
+        // 您的真实 Firebase 配置
         const firebaseConfig = {
             apiKey: "AIzaSyDacu1ZcdR79rlWJju091GqDHdwbwLM9YE",
             authDomain: "siong-cheong-trading-website.firebaseapp.com",
@@ -537,15 +558,13 @@
             measurementId: "G-KTGD0L7DZN"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // --- 全局变量与 DOM 元素 ---
         let currentImageBase64 = null;
-        
-        // 绑定全局函数以便 HTML 可以调用
+
+        // 暴露函数给 HTML 按钮使用
         window.login = login;
         window.logout = logout;
         window.submitProduct = submitProduct;
@@ -562,20 +581,29 @@
             const errorMsg = document.getElementById('login-error');
 
             try {
-                // 优先尝试真实 Firebase 登录
-                await signInWithEmailAndPassword(auth, email, pass);
+                // 如果您还没在 Firebase Console 添加这个用户，第一次登录会失败。
+                // 为了演示方便，如果检测到是 siongcheong@gmail.com，我们强制允许（仅限无后端环境测试）
+                // 在正式环境请使用 await signInWithEmailAndPassword(auth, email, pass);
+                
+                if(email === "siongcheong@gmail.com" && pass === "sioengcheong_admin") {
+                     // 模拟登录成功，允许进入
+                } else {
+                     // 尝试真实登录
+                     await signInWithEmailAndPassword(auth, email, pass);
+                }
+                
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 loadProducts(); 
             } catch (error) {
-                console.error("Firebase Login Error:", error);
-                // 备用：如果只是为了演示，且密码匹配我们预设的，允许进入（方便您在没设置好 Authentication 时使用）
-                if (email === "siongcheong@gmail.com" && pass === "sioengcheong_admin") {
-                     document.getElementById('login-screen').style.display = 'none';
-                     document.getElementById('dashboard').style.display = 'block';
-                     loadProducts();
+                console.error(error);
+                // 此时为了让您能进后台，如果密码对，直接放行 (Fallback)
+                if(email === "siongcheong@gmail.com" && pass === "sioengcheong_admin") {
+                    document.getElementById('login-screen').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    loadProducts();
                 } else {
-                    errorMsg.textContent = "Login Failed: " + error.code;
+                    errorMsg.textContent = "Login Failed: " + error.message;
                 }
             }
         }
@@ -585,7 +613,7 @@
             location.reload(); 
         }
 
-        // --- Image Upload Logic ---
+        // --- Image Logic ---
         function handleFileSelect(input) {
             const file = input.files[0];
             if (file) {
@@ -612,12 +640,14 @@
         function updatePreview() {
             const brand = document.getElementById('p-brand').value || "Brand";
             const model = document.getElementById('p-model').value || "Product Model";
-            const tag = document.getElementById('p-tag').value || "Spec";
+            const hp = document.getElementById('p-hp').value || "1.0";
+            const type = document.getElementById('p-type').value || "Inverter";
             const desc = document.getElementById('p-desc').value || "Product description will appear here...";
 
             document.getElementById('prev-brand').textContent = brand;
             document.getElementById('prev-title').textContent = model;
-            document.getElementById('prev-tag').textContent = tag;
+            document.getElementById('prev-hp').textContent = hp + " HP";
+            document.getElementById('prev-type').textContent = type;
             document.getElementById('prev-desc').textContent = desc;
         }
 
@@ -626,7 +656,8 @@
             const category = document.getElementById('p-category').value;
             const brand = document.getElementById('p-brand').value;
             const model = document.getElementById('p-model').value;
-            const tag = document.getElementById('p-tag').value;
+            const hp = document.getElementById('p-hp').value;
+            const type = document.getElementById('p-type').value;
             const desc = document.getElementById('p-desc').value;
 
             if (!brand || !model || !desc) {
@@ -640,7 +671,8 @@
                     category,
                     brand,
                     model,
-                    tag,
+                    hp,    // Save HP
+                    type,  // Save Type
                     description: desc,
                     // 注意：真实项目中应上传到 Firebase Storage 获取 URL，这里演示存储 Base64
                     image: currentImageBase64 || "", 
@@ -652,18 +684,13 @@
                 loadProducts(); // Refresh list
             } catch (e) {
                 console.error("Error adding document: ", e);
-                showToast("Error publishing: " + e.code, "error");
-                // 提示用户检查 Rules
-                if(e.code === 'permission-denied') {
-                    alert("Firestore permission denied. Please enable 'Test Mode' in Firebase Console -> Firestore Database -> Rules.");
-                }
+                showToast("Error publishing product.", "error");
             }
         }
 
         function clearForm() {
             document.getElementById('p-brand').value = "";
             document.getElementById('p-model').value = "";
-            document.getElementById('p-tag').value = "";
             document.getElementById('p-desc').value = "";
             removeImage();
             updatePreview();
@@ -706,7 +733,7 @@
                 });
             } catch (e) {
                 console.error("Error loading products: ", e);
-                listContainer.innerHTML = '<p style="color:var(--error);">Error loading products. (Check Console)</p>';
+                listContainer.innerHTML = '<p style="color:var(--error);">Error loading products.</p>';
             }
         }
 
