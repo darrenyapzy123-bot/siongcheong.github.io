@@ -9,11 +9,6 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
-
     <style>
         /* ------------------- Theme Variables ------------------- */
         :root {
@@ -49,7 +44,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column; /* Added for back link */
+            flex-direction: column;
         }
 
         .login-box {
@@ -120,7 +115,7 @@
             width: 100%;
         }
 
-        /* ------------------- Upload Form (Facebook Style) ------------------- */
+        /* ------------------- Upload Form ------------------- */
         .upload-section {
             flex: 1;
             min-width: 350px;
@@ -200,7 +195,7 @@
         .preview-section {
             flex: 1;
             min-width: 350px;
-            background: #0f172a; /* Page bg simulation */
+            background: #0f172a;
             padding: 25px;
             border-radius: 12px;
             border: 1px solid var(--border);
@@ -211,7 +206,6 @@
 
         .preview-label { color: var(--text-sub); margin-bottom: 20px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Product Card Styles (Copied from previous designs) */
         .product-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -289,6 +283,75 @@
             font-weight: bold;
         }
 
+        /* ------------------- Manage Products Section ------------------- */
+        .manage-section {
+            width: 100%;
+            background: var(--bg-card);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-top: 30px;
+        }
+        
+        .manage-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .manage-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-input);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 10px;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .item-thumb {
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 4px;
+            object-fit: contain;
+            padding: 5px;
+        }
+
+        .item-details h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
+        
+        .item-details span {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+            border: 1px solid var(--error);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .btn-delete:hover {
+            background: var(--error);
+            color: white;
+        }
+
         /* ------------------- Toast Notification ------------------- */
         #toast {
             visibility: hidden;
@@ -335,7 +398,6 @@
             <button class="btn-login" onclick="login()">Login to Dashboard</button>
             <p id="login-error" style="color: var(--error); margin-top: 10px; font-size: 0.9em;"></p>
         </div>
-        <!-- Added Link Back to Home -->
         <a href="index.html" class="back-link">← Back to Website</a>
     </div>
 
@@ -396,14 +458,12 @@
                 <div class="input-group">
                     <label>Product Image</label>
                     
-                    <!-- Drag & Drop Zone -->
                     <div class="image-drop-zone" id="drop-zone" onclick="document.getElementById('fileInput').click()">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Click to upload or drag image here</p>
                         <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect(this)">
                     </div>
 
-                    <!-- Image Preview Container (Hidden initially) -->
                     <div class="preview-img-container" id="preview-container">
                         <img id="uploaded-image" src="" alt="Preview">
                         <div class="remove-img" onclick="removeImage()">
@@ -424,7 +484,6 @@
             <div class="preview-section">
                 <div class="preview-label">Live Preview Card</div>
                 
-                <!-- The Product Card (Dynamic) -->
                 <div class="product-card">
                     <div class="card-image-wrapper">
                         <img id="prev-img" src="https://placehold.co/300x300/1e293b/FFF?text=Product+Image" alt="Preview">
@@ -446,73 +505,92 @@
 
             </div>
 
+             <!-- Full Width: Manage Products -->
+             <div class="manage-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-list"></i> Manage Products (Firestore)</h3>
+                </div>
+                <div class="manage-list" id="manage-list">
+                    <!-- Items will be injected here -->
+                    <p style="color:var(--text-sub); font-style:italic;">Loading products...</p>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <!-- Toast Notification -->
     <div id="toast">Product added successfully!</div>
 
-    <script>
-        // --- Firebase Configuration (Placeholder - Replace with your actual config) ---
-        // 为了演示，我使用模拟数据。在真实环境中，这里需要您的 Firebase Config
-        const firebaseConfig = JSON.parse(__firebase_config || '{}');
-        let auth, db;
+    <!-- 1. 引入 Firebase (使用模块化脚本) -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDacu1ZcdR79rlWJju091GqDHdwbwLM9YE",
+            authDomain: "siong-cheong-trading-website.firebaseapp.com",
+            projectId: "siong-cheong-trading-website",
+            storageBucket: "siong-cheong-trading-website.firebasestorage.app",
+            messagingSenderId: "7084102902",
+            appId: "1:7084102902:web:5c833ed769d592259848d7",
+            measurementId: "G-KTGD0L7DZN"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- 全局变量与 DOM 元素 ---
+        let currentImageBase64 = null;
         
-        try {
-            const app = firebase.initializeApp(firebaseConfig);
-            auth = firebase.auth();
-            db = firebase.firestore();
-        } catch (e) {
-            console.log("Firebase not initialized (Demo Mode)");
-        }
+        // 绑定全局函数以便 HTML 可以调用
+        window.login = login;
+        window.logout = logout;
+        window.submitProduct = submitProduct;
+        window.clearForm = clearForm;
+        window.handleFileSelect = handleFileSelect;
+        window.removeImage = removeImage;
+        window.updatePreview = updatePreview;
+        window.deleteProduct = deleteProduct; // 暴露删除函数
 
         // --- Auth Logic ---
-        function login() {
+        async function login() {
             const email = document.getElementById('email').value;
             const pass = document.getElementById('password').value;
             const errorMsg = document.getElementById('login-error');
 
-            if (email === "admin@siongcheong.com" && pass === "admin123") {
-                // Demo Login Success
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
-            } else {
-                errorMsg.textContent = "Invalid credentials. (Try: admin@siongcheong.com / admin123)";
-                
-                // Real Firebase Auth (Uncomment to use)
-                /*
-                auth.signInWithEmailAndPassword(email, pass)
-                    .then(() => {
-                        document.getElementById('login-screen').style.display = 'none';
-                        document.getElementById('dashboard').style.display = 'block';
-                    })
-                    .catch((error) => {
-                        errorMsg.textContent = error.message;
-                    });
-                */
+                loadProducts(); // Load products from Firestore
+            } catch (error) {
+                errorMsg.textContent = "Login Failed: " + error.message;
             }
         }
 
-        function logout() {
-            location.reload(); // Simple reload to logout in demo
+        async function logout() {
+            await signOut(auth);
+            location.reload(); 
         }
 
         // --- Image Upload Logic ---
-        let currentImageBase64 = null;
-
         function handleFileSelect(input) {
             const file = input.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     currentImageBase64 = e.target.result;
-                    
-                    // Update UI
                     document.getElementById('drop-zone').style.display = 'none';
                     document.getElementById('preview-container').style.display = 'flex';
                     document.getElementById('uploaded-image').src = currentImageBase64;
-                    
-                    // Update Preview Card
                     document.getElementById('prev-img').src = currentImageBase64;
                 }
                 reader.readAsDataURL(file);
@@ -527,7 +605,6 @@
             document.getElementById('prev-img').src = "https://placehold.co/300x300/1e293b/FFF?text=Product+Image";
         }
 
-        // --- Live Preview Logic ---
         function updatePreview() {
             const brand = document.getElementById('p-brand').value || "Brand";
             const model = document.getElementById('p-model').value || "Product Model";
@@ -540,7 +617,7 @@
             document.getElementById('prev-desc').textContent = desc;
         }
 
-        // --- Submit Logic ---
+        // --- Firestore: Add Product ---
         async function submitProduct() {
             const category = document.getElementById('p-category').value;
             const brand = document.getElementById('p-brand').value;
@@ -553,37 +630,26 @@
                 return;
             }
 
-            const productData = {
-                category,
-                brand,
-                model,
-                tag,
-                description: desc,
-                image: currentImageBase64 || "placeholder.png", // In real app, upload to storage and get URL
-                createdAt: new Date()
-            };
+            try {
+                // Add to Firestore
+                await addDoc(collection(db, "products"), {
+                    category,
+                    brand,
+                    model,
+                    tag,
+                    description: desc,
+                    // 注意：真实项目中应上传到 Firebase Storage 获取 URL，这里演示存储 Base64
+                    image: currentImageBase64 || "", 
+                    createdAt: new Date()
+                });
 
-            // Simulate saving
-            console.log("Saving product:", productData);
-            
-            // Real Firestore Save (Uncomment to use)
-            /*
-            if (db) {
-                try {
-                    await db.collection('products').add(productData);
-                    showToast("Product published successfully!", "success");
-                    clearForm();
-                } catch (e) {
-                    showToast("Error saving product: " + e.message, "error");
-                }
-            } else {
-                 showToast("Demo: Product 'Saved' (Check Console)", "success");
-                 clearForm();
+                showToast("Product Published Successfully!", "success");
+                clearForm();
+                loadProducts(); // Refresh list
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                showToast("Error publishing product.", "error");
             }
-            */
-           
-            showToast("Demo: Product Published Successfully!", "success");
-            clearForm();
         }
 
         function clearForm() {
@@ -593,6 +659,60 @@
             document.getElementById('p-desc').value = "";
             removeImage();
             updatePreview();
+        }
+
+        // --- Firestore: Read & Delete Products ---
+        async function loadProducts() {
+            const listContainer = document.getElementById('manage-list');
+            listContainer.innerHTML = '<p style="color:var(--text-sub);">Loading...</p>';
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "products"));
+                listContainer.innerHTML = ''; // Clear loading text
+
+                if (querySnapshot.empty) {
+                    listContainer.innerHTML = '<p style="color:var(--text-sub);">No products found.</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((docSnap) => {
+                    const product = docSnap.data();
+                    const pid = docSnap.id;
+                    const img = product.image || "https://placehold.co/50x50/333/fff?text=N";
+
+                    const item = document.createElement('div');
+                    item.className = 'manage-item';
+                    item.innerHTML = `
+                        <div class="item-info">
+                            <img src="${img}" class="item-thumb" alt="Thumb">
+                            <div class="item-details">
+                                <h4>${product.brand} - ${product.model}</h4>
+                                <span>${product.category}</span>
+                            </div>
+                        </div>
+                        <button class="btn-delete" onclick="deleteProduct('${pid}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    `;
+                    listContainer.appendChild(item);
+                });
+            } catch (e) {
+                console.error("Error loading products: ", e);
+                listContainer.innerHTML = '<p style="color:var(--error);">Error loading products.</p>';
+            }
+        }
+
+        async function deleteProduct(id) {
+            if(confirm("Are you sure you want to delete this product?")) {
+                try {
+                    await deleteDoc(doc(db, "products", id));
+                    showToast("Product deleted successfully!", "success");
+                    loadProducts(); // Refresh list
+                } catch (e) {
+                    console.error("Error deleting: ", e);
+                    showToast("Error deleting product.", "error");
+                }
+            }
         }
 
         function showToast(message, type) {
