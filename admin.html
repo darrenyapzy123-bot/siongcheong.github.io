@@ -49,6 +49,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column; /* Added for back link */
         }
 
         .login-box {
@@ -60,6 +61,7 @@
             max-width: 400px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
         }
 
         .login-box h2 {
@@ -82,6 +84,9 @@
         }
         .btn-login:hover { filter: brightness(1.1); }
 
+        .back-link { color: var(--text-sub); text-decoration: none; font-size: 0.9em; transition: 0.3s; }
+        .back-link:hover { color: var(--accent); }
+
         /* ------------------- Dashboard Layout ------------------- */
         header {
             background: rgba(22, 32, 48, 0.95);
@@ -93,6 +98,15 @@
         }
 
         .admin-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--accent); }
+        
+        .header-actions { display: flex; gap: 15px; }
+
+        .btn-view-site { 
+            background: transparent; border: 1px solid var(--accent); color: var(--accent); 
+            padding: 8px 15px; border-radius: 4px; cursor: pointer; text-decoration: none; font-size: 0.9em; display: flex; align-items: center; gap: 5px;
+        }
+        .btn-view-site:hover { background: rgba(41, 182, 246, 0.1); }
+
         .logout-btn { background: transparent; border: 1px solid var(--error); color: var(--error); padding: 8px 15px; border-radius: 4px; cursor: pointer; }
         .logout-btn:hover { background: var(--error); color: white; }
 
@@ -321,13 +335,18 @@
             <button class="btn-login" onclick="login()">Login to Dashboard</button>
             <p id="login-error" style="color: var(--error); margin-top: 10px; font-size: 0.9em;"></p>
         </div>
+        <!-- Added Link Back to Home -->
+        <a href="index.html" class="back-link">← Back to Website</a>
     </div>
 
     <!-- Admin Dashboard (Hidden by default) -->
     <div id="dashboard" style="display: none;">
         <header>
             <div class="admin-title">SCT Product Manager</div>
-            <button class="logout-btn" onclick="logout()">Logout</button>
+            <div class="header-actions">
+                <a href="index.html" target="_blank" class="btn-view-site"><i class="fas fa-external-link-alt"></i> View Site</a>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
         </header>
 
         <div class="dashboard-container">
