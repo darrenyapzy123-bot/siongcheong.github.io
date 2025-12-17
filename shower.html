@@ -520,7 +520,7 @@
     </style>
 </head>
 
-<body onload="fetchProducts()"> <!-- Changed to fetchProducts on load -->
+<body onload="fetchProducts()">
 
     <!-- Menu Button -->
     <div class="menu-icon" onclick="toggleNav()">
@@ -706,8 +706,18 @@
                 const image = getValueByFuzzyKey(item, 'image') || '';
                 const desc = getValueByFuzzyKey(item, 'desc') || getValueByFuzzyKey(item, 'description') || '';
                 
-                // Try to find category or type
-                const category = getValueByFuzzyKey(item, 'category') || getValueByFuzzyKey(item, 'type') || '';
+                // Try to find category or pump type
+                // Look for "Pump" or "Type" or "Category"
+                let category = getValueByFuzzyKey(item, 'pump') || getValueByFuzzyKey(item, 'category') || getValueByFuzzyKey(item, 'type') || '';
+
+                // 🔴 Fix: Normalize pump type (e.g. "NON" -> "Non-Pump")
+                if (category.toLowerCase() === 'non') {
+                    category = 'Non-Pump';
+                } else if (category.toLowerCase() === 'ac') {
+                    category = 'AC Pump';
+                } else if (category.toLowerCase() === 'dc') {
+                    category = 'DC Pump';
+                }
 
                 // Link Logic
                 let detailsUrl = '';
