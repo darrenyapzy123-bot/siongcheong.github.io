@@ -500,6 +500,21 @@
             margin-top: 60px;
         }
         
+        .back-to-home {
+            background-color: #2ecc71; 
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            display: inline-block;
+        }
+
+        .back-to-home:hover {
+            background-color: #27ae60;
+        }
+        
         @media (max-width: 900px) { 
             .header-logo-right { width: 150px; }
             .hero-title { font-size: 2.5rem; padding: 0 10px; }
@@ -508,7 +523,7 @@
     </style>
 </head>
 
-<body>
+<body onload="fetchProducts()">
 
     <!-- Menu Button -->
     <div class="menu-icon" onclick="toggleNav()">
@@ -613,7 +628,8 @@
         </div>
         
         <footer class="page-footer">
-            <p>Copyright © 2025 Siong Cheong Trading. All rights reserved.</p>
+            <a href="index.html" class="back-to-home">Back to Home</a>
+            <p style="margin-top: 20px; font-size: 0.8em; opacity: 0.7;">Copyright © 2025 Siong Cheong Trading. All rights reserved.</p>
         </footer>
     </div>
 
@@ -700,7 +716,6 @@
     let washerProducts = [];
 
     // Helper: 模糊搜索对象的键
-    // 例如：keyword="capacity"，它会找到 "Washing Capacity" 或 "Capacity (KG)" 的值
     function getValueByFuzzyKey(item, keyword) {
         if (!item) return undefined;
         const keys = Object.keys(item);
@@ -708,12 +723,15 @@
         return foundKey ? item[foundKey] : undefined;
     }
 
+    // Helper: Normalize Brand Name (Capitalize First Letter)
+    function normalizeBrand(brand) {
+        if (!brand) return 'Unknown';
+        return brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase();
+    }
+
     // 🔴 3. 获取数据的异步函数
     async function fetchProducts() {
         const loadingIndicator = document.getElementById('loading-indicator');
-        const container = document.getElementById('products-container');
-
-        // 先把旧数据放进去，防止 API 挂了连旧数据都看不到
         let fetchedProducts = [];
 
         try {
@@ -724,28 +742,31 @@
             
             console.log("数据获取成功:", data);
 
-            // 格式化新数据 (使用模糊搜索)
+            // 格式化新数据 (使用模糊搜索 & 智能转换)
             fetchedProducts = data.map(item => {
-                // Brand (模糊匹配 'brand')
-                const brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
-                // Model (模糊匹配 'model')
+                // Brand
+                let brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
+                brand = normalizeBrand(brand);
+
+                // Model
                 const model = getValueByFuzzyKey(item, 'model') || 'Unknown';
                 
-                // Capacity: 寻找包含 'capacity' 的列，并转为数字
+                // Capacity
                 const rawCap = getValueByFuzzyKey(item, 'capacity');
                 const capacity = parseFloat(rawCap) || 0;
 
-                // Type: 寻找包含 'type' 的列
+                // Type
                 const type = getValueByFuzzyKey(item, 'type') || '';
 
-                // Image: 寻找包含 'image' 的列
-                const image = getValueByFuzzyKey(item, 'image') || '';
+                // Image: 智能处理
+                let image = getValueByFuzzyKey(item, 'image') || '';
+                // 🔴 关键修复：去除前后空格
+                image = image.trim();
 
-                // Desc: 寻找包含 'desc' 或 'description' 的列
+                // Desc
                 const desc = getValueByFuzzyKey(item, 'desc') || getValueByFuzzyKey(item, 'description') || '';
 
-                // Link: 寻找包含 'html link' 或 'link' 的列
-                // 优先找 'html link'，避免找到 'image link'
+                // Link
                 let link = '';
                 const linkKey = Object.keys(item).find(k => k.toLowerCase().includes('html link'));
                 if (linkKey) {
@@ -759,7 +780,6 @@
 
         } catch (error) {
             console.error("API 加载失败，仅显示旧产品:", error);
-            // 这里我们不显示红色的错误提示了，因为还有旧产品可以显示
         }
 
         // 🟢 关键步骤：合并旧数据和新数据
@@ -789,10 +809,10 @@
         }
 
         // 获取不重复的品牌列表
-        const brands = [...new Set(productsToRender.map(p => p.brand))];
+        const brands = [...new Set(productsToRender.map(p => normalizeBrand(p.brand)))];
 
         brands.forEach(brand => {
-            const brandProducts = productsToRender.filter(p => p.brand === brand);
+            const brandProducts = productsToRender.filter(p => normalizeBrand(p.brand) === brand);
             if (brandProducts.length > 0) {
                 const brandSection = document.createElement('div');
                 brandSection.className = 'brand-section';
@@ -806,10 +826,14 @@
                 grid.className = 'product-grid';
 
                 brandProducts.forEach(product => {
-                    // 图片处理
+                    // 图片处理：如果不是 http 开头，自动加上前缀
                     let imgSrc = product.image || '';
                     if (imgSrc && !imgSrc.startsWith('http')) {
                         imgSrc = IMAGE_BASE_PATH + imgSrc;
+                    }
+                    // 如果图片为空，使用默认占位图
+                    if (!imgSrc) {
+                        imgSrc = 'https://placehold.co/300x300/1e293b/FFF?text=Washer';
                     }
 
                     // 链接处理
@@ -824,11 +848,9 @@
                     // Generate tags HTML only if data exists
                     let tagsHtml = '';
                     if (product.capacity > 0) {
-                        // 容量: 自动加上 KG
                         tagsHtml += `<span class="tag tag-cap">${product.capacity} KG</span>`;
                     }
                     if (product.type) {
-                        // 类型: CSS 会自动处理首字母大写
                         tagsHtml += `<span class="tag tag-type">${product.type}</span>`;
                     }
 
@@ -865,8 +887,7 @@
         const type = document.getElementById('type-filter').value;
 
         const filtered = washerProducts.filter(p => {
-            // 转换为小写并去除空格进行比较 (Case-insensitive comparison)
-            const pBrand = (p.brand || '').toString().trim().toLowerCase();
+            const pBrand = normalizeBrand(p.brand || '').trim().toLowerCase();
             const fBrand = brand.trim().toLowerCase();
             let brandMatch = (brand === 'all' || pBrand === fBrand);
 
@@ -886,11 +907,6 @@
         });
 
         renderProducts(filtered);
-    }
-
-    // 页面加载完成后调用 API
-    window.onload = function() {
-        fetchProducts();
     }
 </script>
 </body>
