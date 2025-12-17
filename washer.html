@@ -865,8 +865,15 @@
         const type = document.getElementById('type-filter').value;
 
         const filtered = washerProducts.filter(p => {
-            let brandMatch = (brand === 'all' || p.brand === brand);
-            let typeMatch = (type === 'all' || p.type === type);
+            // 转换为小写并去除空格进行比较 (Case-insensitive comparison)
+            const pBrand = (p.brand || '').toString().trim().toLowerCase();
+            const fBrand = brand.trim().toLowerCase();
+            let brandMatch = (brand === 'all' || pBrand === fBrand);
+
+            const pType = (p.type || '').toString().trim().toLowerCase();
+            const fType = type.trim().toLowerCase();
+            let typeMatch = (type === 'all' || pType === fType);
+
             let capMatch = false;
 
             // 数字比较
