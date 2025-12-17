@@ -439,7 +439,7 @@
             padding: 4px 10px;
             border-radius: 6px;
             font-weight: 600;
-            /* 关键修改：从 uppercase 改为 capitalize */
+            /* CSS 自动处理首字母大写 */
             text-transform: capitalize; 
             letter-spacing: 0.5px;
         }
@@ -699,6 +699,15 @@
     // 全局变量，用于存储所有数据 (旧数据 + 新数据)
     let washerProducts = [];
 
+    // Helper: 模糊搜索对象的键
+    // 例如：keyword="capacity"，它会找到 "Washing Capacity" 或 "Capacity (KG)" 的值
+    function getValueByFuzzyKey(item, keyword) {
+        if (!item) return undefined;
+        const keys = Object.keys(item);
+        const foundKey = keys.find(k => k.toLowerCase().includes(keyword.toLowerCase()));
+        return foundKey ? item[foundKey] : undefined;
+    }
+
     // 🔴 3. 获取数据的异步函数
     async function fetchProducts() {
         const loadingIndicator = document.getElementById('loading-indicator');
@@ -715,17 +724,38 @@
             
             console.log("数据获取成功:", data);
 
-            // 格式化新数据 (Added support for capitalized keys)
-            fetchedProducts = data.map(item => ({
-                brand: item.brand || item.Brand,
-                model: item.model || item.Model,      
-                // Try lowercase first, then capitalized
-                capacity: parseFloat(item.capacity || item.Capacity) || 0,
-                type: item.type || item.Type || '', 
-                image: item.image || item.Image,
-                desc: item.description || item.Description || item.desc || '', 
-                link: item['html link'] || item['Html Link'] || item['link'] 
-            }));
+            // 格式化新数据 (使用模糊搜索)
+            fetchedProducts = data.map(item => {
+                // Brand (模糊匹配 'brand')
+                const brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
+                // Model (模糊匹配 'model')
+                const model = getValueByFuzzyKey(item, 'model') || 'Unknown';
+                
+                // Capacity: 寻找包含 'capacity' 的列，并转为数字
+                const rawCap = getValueByFuzzyKey(item, 'capacity');
+                const capacity = parseFloat(rawCap) || 0;
+
+                // Type: 寻找包含 'type' 的列
+                const type = getValueByFuzzyKey(item, 'type') || '';
+
+                // Image: 寻找包含 'image' 的列
+                const image = getValueByFuzzyKey(item, 'image') || '';
+
+                // Desc: 寻找包含 'desc' 或 'description' 的列
+                const desc = getValueByFuzzyKey(item, 'desc') || getValueByFuzzyKey(item, 'description') || '';
+
+                // Link: 寻找包含 'html link' 或 'link' 的列
+                // 优先找 'html link'，避免找到 'image link'
+                let link = '';
+                const linkKey = Object.keys(item).find(k => k.toLowerCase().includes('html link'));
+                if (linkKey) {
+                    link = item[linkKey];
+                } else {
+                    link = getValueByFuzzyKey(item, 'link') || '';
+                }
+
+                return { brand, model, capacity, type, image, desc, link };
+            });
 
         } catch (error) {
             console.error("API 加载失败，仅显示旧产品:", error);
