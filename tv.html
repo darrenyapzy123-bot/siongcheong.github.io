@@ -366,7 +366,7 @@
             gap: 24px;
         }
 
-        /* ------------------- Product Card (Standardized) ------------------- */
+        /* ------------------- Product Card ------------------- */
         .product-card {
             background: var(--bg-card);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -440,7 +440,7 @@
             padding: 4px 10px;
             border-radius: 6px;
             font-weight: 600;
-            text-transform: uppercase;
+            text-transform: capitalize; /* 关键：自动首字母大写 */
             letter-spacing: 0.5px;
         }
 
@@ -452,6 +452,10 @@
             line-height: 1.5;
             margin-bottom: 20px;
             flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .btn-details {
@@ -475,6 +479,13 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
             filter: brightness(1.1);
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-sub);
+            font-size: 1.2rem;
         }
 
         /* ------------------- Footer ------------------- */
@@ -512,7 +523,7 @@
     </style>
 </head>
 
-<body onload="renderProducts()">
+<body>
 
     <!-- Menu Button -->
     <div class="menu-icon" onclick="toggleNav()">
@@ -611,6 +622,11 @@
         </div>
 
         <div class="products-wrapper" id="products-container">
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="loading-container">
+                <i class="fas fa-spinner fa-spin"></i> Loading TV products...
+            </div>
+
             <!-- JS will render products here -->
             <p id="no-products" style="text-align: center; color: var(--text-sub); display: none; margin-top: 40px; font-size: 1.2rem;">
                 No products found matching your criteria.
@@ -657,8 +673,8 @@
         document.getElementById('filter-content').classList.toggle('active');
     });
 
-    // ------------------- Product Data -------------------
-    const tvProducts = [
+    // ------------------- 🔴 Legacy Product Data (From your original file) -------------------
+    const legacyProducts = [
         // HISENSE
         { brand: "Hisense", model: "32A5200F", size: "32", resolution: "FHD", image: "tv_32A5200F.png", desc: "Digital TV. Full HD resolution, 2 years warranty.", detailsUrl: "tv-details/hisense-32A5200F.html" },
         { brand: "Hisense", model: "32A4000G", size: "32", resolution: "FHD", image: "tv_32A4000G.png", desc: "VIDAA Smart TV. Smart OS for streaming apps, 2 years warranty.", detailsUrl: "tv-details/hisense-32A4000G.html" },
@@ -700,13 +716,75 @@
         { brand: "Sagasonic", model: "65\" 4K Android", size: "65", resolution: "4K", image: "tv_SAGA_65.png", desc: "65\" 4K UHD Android TV. Large screen viewing. 1 Year Warranty.", detailsUrl: "tv-details/sagasonic-65.html" }
     ];
 
+    // ------------------- 🔴 API & Data Logic -------------------
+    
+    const API_URL = "https://opensheet.elk.sh/1jX4ubu1SCcMa81ZC8Nk73FLhazNgo5HKaxSG_b0UmH4/Sheet1"; 
+    
+    // Global array for ALL products
+    let tvProducts = [];
+
+    // Helper: Fuzzy matching for keys
+    function getValueByFuzzyKey(item, keyword) {
+        if (!item) return undefined;
+        const keys = Object.keys(item);
+        const foundKey = keys.find(k => k.toLowerCase().includes(keyword.toLowerCase()));
+        return foundKey ? item[foundKey] : undefined;
+    }
+
+    // Fetch and merge
+    async function fetchProducts() {
+        const loadingIndicator = document.getElementById('loading-indicator');
+        let fetchedProducts = [];
+
+        try {
+            console.log("Fetching TV data from API...");
+            const response = await fetch(API_URL, { cache: 'no-store' });
+            const data = await response.json();
+            
+            console.log("TV Data fetched:", data);
+
+            // Map data
+            fetchedProducts = data.map(item => {
+                const brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
+                const model = getValueByFuzzyKey(item, 'model') || 'Unknown';
+                const size = getValueByFuzzyKey(item, 'size') || ''; // String is fine for TV
+                const resolution = getValueByFuzzyKey(item, 'resolution') || '';
+                const image = getValueByFuzzyKey(item, 'image') || '';
+                const desc = getValueByFuzzyKey(item, 'desc') || getValueByFuzzyKey(item, 'description') || '';
+                
+                // Link Logic
+                let detailsUrl = '';
+                const linkKey = Object.keys(item).find(k => k.toLowerCase().includes('html link'));
+                if (linkKey) {
+                    detailsUrl = item[linkKey];
+                } else {
+                    detailsUrl = getValueByFuzzyKey(item, 'link') || '';
+                }
+
+                return { brand, model, size, resolution, image, desc, detailsUrl };
+            });
+
+        } catch (error) {
+            console.error("API Fetch Failed, showing legacy only:", error);
+        }
+
+        // Merge: Legacy + Fetched
+        tvProducts = [...legacyProducts, ...fetchedProducts];
+
+        // Hide loading, show content
+        loadingIndicator.style.display = 'none';
+        renderProducts(tvProducts);
+    }
+
     // ------------------- Render Function -------------------
-    function renderProducts(productsToRender = tvProducts) {
+    function renderProducts(productsToRender = []) {
         const container = document.getElementById('products-container');
         const noProducts = document.getElementById('no-products');
         
-        container.innerHTML = '';
-        container.appendChild(noProducts);
+        // Clear previous sections but keep the no-products message element
+        // (We rebuild the grid, but preserve the helper text element logic)
+        const sections = container.querySelectorAll('.brand-section');
+        sections.forEach(section => section.remove());
 
         if (productsToRender.length === 0) {
             noProducts.style.display = 'block';
@@ -733,22 +811,35 @@
                 grid.className = 'product-grid';
 
                 brandProducts.forEach(product => {
+                    // Image Fallback
+                    const imgSrc = product.image || 'https://placehold.co/300x250/1e293b/FFF?text=TV';
+
+                    // Link Logic: Use provided link OR generate WhatsApp
+                    let finalLink = product.detailsUrl;
+                    if (!finalLink || finalLink === '#') {
+                        finalLink = `https://wa.me/601110948581?text=I want to inquire about ${product.model} (${product.size}")`;
+                    }
+
+                    // Tags Logic
+                    let tagsHtml = '';
+                    if (product.size) tagsHtml += `<span class="tag tag-info">${product.size}"</span>`;
+                    if (product.resolution) tagsHtml += `<span class="tag tag-info">${product.resolution}</span>`;
+
                     const card = document.createElement('div');
                     card.className = 'product-card';
                     card.innerHTML = `
                         <div class="card-image-wrapper">
-                            <img src="${product.image}" alt="${product.model}" onerror="this.src='https://placehold.co/300x300/1e293b/FFF?text=TV'">
+                            <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/300x250/1e293b/FFF?text=TV'">
                         </div>
                         <div class="product-info">
                             <div>
                                 <h3>${product.model}</h3>
                                 <div class="product-tags">
-                                    <span class="tag tag-info">${product.size}"</span>
-                                    <span class="tag tag-info">${product.resolution}</span>
+                                    ${tagsHtml}
                                 </div>
                                 <p class="product-desc">${product.desc}</p>
                             </div>
-                            <a class="btn-details" href="${product.detailsUrl}">
+                            <a class="btn-details" href="${finalLink}" target="_blank">
                                 View Details <i class="fas fa-angle-right"></i>
                             </a>
                         </div>
@@ -762,20 +853,37 @@
         });
     }
 
+    // ------------------- Filter Logic (Smart Fuzzy) -------------------
     function filterProducts() {
         const brandFilter = document.getElementById('brand-filter').value;
         const sizeFilter = document.getElementById('size-filter').value;
         const resolutionFilter = document.getElementById('resolution-filter').value;
 
         const filtered = tvProducts.filter(p => {
-            let brandMatch = (brandFilter === 'all' || p.brand === brandFilter);
-            let sizeMatch = (sizeFilter === 'all' || p.size === sizeFilter);
-            let resolutionMatch = (resolutionFilter === 'all' || p.resolution === resolutionFilter);
+            // Normalize data for comparison (remove spaces, lowercase)
+            const pBrand = (p.brand || '').toString().trim().toLowerCase();
+            const fBrand = brandFilter.trim().toLowerCase();
+            let brandMatch = (brandFilter === 'all' || pBrand === fBrand);
+
+            const pSize = (p.size || '').toString().trim();
+            const fSize = sizeFilter.trim();
+            // Size comparison: exact string match ("32" vs "32")
+            let sizeMatch = (sizeFilter === 'all' || pSize === fSize);
+
+            const pRes = (p.resolution || '').toString().trim().toLowerCase();
+            const fRes = resolutionFilter.trim().toLowerCase();
+            // Resolution comparison: "4k" vs "4k"
+            let resolutionMatch = (resolutionFilter === 'all' || pRes === fRes);
 
             return brandMatch && sizeMatch && resolutionMatch;
         });
 
         renderProducts(filtered);
+    }
+
+    // Init
+    window.onload = function() {
+        fetchProducts();
     }
 </script>
 </body>
