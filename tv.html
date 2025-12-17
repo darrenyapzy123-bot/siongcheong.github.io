@@ -452,10 +452,6 @@
             line-height: 1.5;
             margin-bottom: 20px;
             flex-grow: 1;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
 
         .btn-details {
@@ -731,6 +727,12 @@
         return foundKey ? item[foundKey] : undefined;
     }
 
+    // Helper: Normalize Brand Name (Capitalize First Letter)
+    function normalizeBrand(brand) {
+        if (!brand) return 'Unknown';
+        return brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase();
+    }
+
     // Fetch and merge
     async function fetchProducts() {
         const loadingIndicator = document.getElementById('loading-indicator');
@@ -745,10 +747,21 @@
 
             // Map data
             fetchedProducts = data.map(item => {
-                const brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
+                let brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
+                // 🔴 Fix: Normalize brand to prevent duplicates (e.g., "hisense" -> "Hisense")
+                brand = normalizeBrand(brand);
+
                 const model = getValueByFuzzyKey(item, 'model') || 'Unknown';
                 const size = getValueByFuzzyKey(item, 'size') || ''; // String is fine for TV
-                const resolution = getValueByFuzzyKey(item, 'resolution') || '';
+                
+                let resolution = getValueByFuzzyKey(item, 'resolution') || '';
+                // 🔴 Fix: Normalize resolution for better filtering (e.g. "4k" -> "4K")
+                if (resolution.toLowerCase().includes('4k') || resolution.toLowerCase().includes('uhd')) {
+                    resolution = '4K';
+                } else if (resolution.toLowerCase().includes('fhd') || resolution.toLowerCase().includes('hd')) {
+                    resolution = 'FHD';
+                }
+
                 const image = getValueByFuzzyKey(item, 'image') || '';
                 const desc = getValueByFuzzyKey(item, 'desc') || getValueByFuzzyKey(item, 'description') || '';
                 
@@ -782,7 +795,6 @@
         const noProducts = document.getElementById('no-products');
         
         // Clear previous sections but keep the no-products message element
-        // (We rebuild the grid, but preserve the helper text element logic)
         const sections = container.querySelectorAll('.brand-section');
         sections.forEach(section => section.remove());
 
@@ -793,10 +805,13 @@
             noProducts.style.display = 'none';
         }
 
-        const brands = [...new Set(productsToRender.map(p => p.brand))];
+        // 🔴 Fix: Ensure brands are normalized here too just in case legacy data varies, though legacy is usually clean.
+        // We use a Set to get unique brands.
+        const brands = [...new Set(productsToRender.map(p => normalizeBrand(p.brand)))];
 
         brands.forEach(brand => {
-            const brandProducts = productsToRender.filter(p => p.brand === brand);
+            // Filter using normalized brand check
+            const brandProducts = productsToRender.filter(p => normalizeBrand(p.brand) === brand);
             
             if (brandProducts.length > 0) {
                 const brandSection = document.createElement('div');
@@ -861,7 +876,7 @@
 
         const filtered = tvProducts.filter(p => {
             // Normalize data for comparison (remove spaces, lowercase)
-            const pBrand = (p.brand || '').toString().trim().toLowerCase();
+            const pBrand = normalizeBrand(p.brand || '').trim().toLowerCase();
             const fBrand = brandFilter.trim().toLowerCase();
             let brandMatch = (brandFilter === 'all' || pBrand === fBrand);
 
@@ -870,10 +885,16 @@
             // Size comparison: exact string match ("32" vs "32")
             let sizeMatch = (sizeFilter === 'all' || pSize === fSize);
 
-            const pRes = (p.resolution || '').toString().trim().toLowerCase();
+            // 🔴 Fix: Normalize resolution for filtering check as well
+            let pResRaw = (p.resolution || '').toString().trim().toLowerCase();
+            let pResNormalized = '';
+            if (pResRaw.includes('4k') || pResRaw.includes('uhd')) pResNormalized = '4k';
+            else if (pResRaw.includes('fhd') || pResRaw.includes('hd')) pResNormalized = 'fhd';
+            else pResNormalized = pResRaw; // fallback
+
             const fRes = resolutionFilter.trim().toLowerCase();
             // Resolution comparison: "4k" vs "4k"
-            let resolutionMatch = (resolutionFilter === 'all' || pRes === fRes);
+            let resolutionMatch = (resolutionFilter === 'all' || pResNormalized === fRes);
 
             return brandMatch && sizeMatch && resolutionMatch;
         });
