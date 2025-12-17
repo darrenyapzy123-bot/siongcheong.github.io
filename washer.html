@@ -439,7 +439,8 @@
             padding: 4px 10px;
             border-radius: 6px;
             font-weight: 600;
-            text-transform: uppercase;
+            /* 关键修改：从 uppercase 改为 capitalize */
+            text-transform: capitalize; 
             letter-spacing: 0.5px;
         }
 
@@ -651,7 +652,6 @@
     });
 
     // ------------------- 🔴 Legacy Product Data -------------------
-    // 这些是您原本在 washer.html 里的旧产品数据
     const legacyProducts = [
         // SHARP
         { brand: "Sharp", model: "ESX-921", capacity: 9.5, type: "Top Load", image: "ESX-921.jpg", desc: "Auto Start After Blackout, Fuzzy Control, Smart Filter." },
@@ -715,15 +715,16 @@
             
             console.log("数据获取成功:", data);
 
-            // 格式化新数据
+            // 格式化新数据 (Added support for capitalized keys)
             fetchedProducts = data.map(item => ({
-                brand: item.brand,
-                model: item.model,      
-                capacity: parseFloat(item.capacity) || 0,
-                type: item.type,
-                image: item.image,
-                desc: item.description, 
-                link: item['html link'] 
+                brand: item.brand || item.Brand,
+                model: item.model || item.Model,      
+                // Try lowercase first, then capitalized
+                capacity: parseFloat(item.capacity || item.Capacity) || 0,
+                type: item.type || item.Type || '', 
+                image: item.image || item.Image,
+                desc: item.description || item.Description || item.desc || '', 
+                link: item['html link'] || item['Html Link'] || item['link'] 
             }));
 
         } catch (error) {
@@ -732,8 +733,6 @@
         }
 
         // 🟢 关键步骤：合并旧数据和新数据
-        // ...legacyProducts (展开旧数组)
-        // ...fetchedProducts (展开新数组)
         washerProducts = [...legacyProducts, ...fetchedProducts];
 
         // 隐藏加载提示
@@ -783,9 +782,7 @@
                         imgSrc = IMAGE_BASE_PATH + imgSrc;
                     }
 
-                    // 链接处理：
-                    // 1. 如果有 html link (新产品)，用它。
-                    // 2. 如果没有 (旧产品)，生成 WhatsApp 链接。
+                    // 链接处理
                     let detailsLink = product.link;
                     if (!detailsLink) {
                         detailsLink = `https://wa.me/601110948581?text=I want to inquire about ${product.model}`;
@@ -793,6 +790,18 @@
 
                     const card = document.createElement('div');
                     card.className = 'product-card';
+                    
+                    // Generate tags HTML only if data exists
+                    let tagsHtml = '';
+                    if (product.capacity > 0) {
+                        // 容量: 自动加上 KG
+                        tagsHtml += `<span class="tag tag-cap">${product.capacity} KG</span>`;
+                    }
+                    if (product.type) {
+                        // 类型: CSS 会自动处理首字母大写
+                        tagsHtml += `<span class="tag tag-type">${product.type}</span>`;
+                    }
+
                     card.innerHTML = `
                         <div class="card-image-wrapper">
                             <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/300x300/1e293b/FFF?text=Washer'">
@@ -801,8 +810,7 @@
                             <div>
                                 <h3>${product.model}</h3>
                                 <div class="product-tags">
-                                    <span class="tag tag-cap">${product.capacity} KG</span>
-                                    <span class="tag tag-type">${product.type}</span>
+                                    ${tagsHtml}
                                 </div>
                                 <p class="product-desc">${product.desc || 'No description available.'}</p>
                             </div>
