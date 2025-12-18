@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Air Purifier Series</title>
+    <title>Air Purifier Series | Siong Cheong Trading</title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -45,13 +45,20 @@
         header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             padding: 0 40px;
             height: 80px;
             position: relative;
             z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .header-left { display: flex; align-items: center; gap: 20px; }
+        .header-left {
+            position: absolute;
+            left: 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
         .menu-icon { font-size: 24px; cursor: pointer; color: var(--text-main); }
         .logo {
             font-family: 'Playfair Display', serif;
@@ -61,10 +68,7 @@
             color: var(--text-main);
             letter-spacing: 0.5px;
         }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { color: var(--text-sub); font-size: 16px; font-weight: 400; }
-        .nav-links a:hover { color: var(--text-main); }
-
+        
         /* ------------------- Sidebar ------------------- */
         .sidebar {
             height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0;
@@ -135,6 +139,9 @@
         }
 
         /* ------------------- Section Title ------------------- */
+        .brand-section {
+            margin-bottom: 60px;
+        }
         .brand-header { text-align: center; margin-bottom: 50px; }
         .brand-title {
             font-family: 'Playfair Display', serif;
@@ -169,6 +176,7 @@
             text-align: left; /* Text left aligned as per image */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
+            height: 100%;
         }
 
         .card:hover {
@@ -235,7 +243,7 @@
             font-size: 0.95rem;
             line-height: 1.5;
             margin-bottom: 15px;
-            min-height: 40px; /* Consitent height */
+            flex-grow: 1;
         }
         
         .card-divider {
@@ -264,13 +272,25 @@
             font-size: 1rem;
             transition: background 0.3s;
             margin-top: auto; /* Push to bottom */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
         .btn-details:hover {
             background-color: var(--btn-hover);
         }
         
-        .btn-details i { margin-left: 5px; font-size: 0.9em; }
+        .btn-details i { font-size: 0.9em; }
+
+        /* Loading */
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-sub);
+            font-size: 1.2rem;
+        }
 
         /* ------------------- Footer ------------------- */
         .footer-bar {
@@ -288,13 +308,13 @@
         /* Responsive */
         @media (max-width: 768px) {
             header { padding: 0 20px; }
-            .nav-links { display: none; }
+            .header-left { left: 20px; }
             .hero-title { font-size: 2.5rem; }
             .brand-title { font-size: 2rem; }
         }
     </style>
 </head>
-<body>
+<body onload="fetchProducts()">
 
     <!-- Header / Navbar -->
     <header>
@@ -302,14 +322,8 @@
             <div class="menu-icon" onclick="toggleNav()">
                 <i class="fas fa-bars"></i>
             </div>
-            <div class="logo">Siong Cheong Trading</div>
+            <div class="logo">Air Purifiers</div>
         </div>
-        <nav class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="#">Products</a>
-            <a href="about.html">About Us</a>
-            <a href="contact.html">Contact</a>
-        </nav>
     </header>
 
     <!-- Sidebar Navigation -->
@@ -319,11 +333,23 @@
         <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
         <div class="submenu" style="display: block;">
             <a href="refrigerator.html">Refrigerator</a>
-            <a href="washer.html">Washer</a>
-            <a href="air_fryer.html">Air Fryer</a>
-            <a href="air_purifier.html" class="active" style="color:var(--accent)">Air Purifier</a>
+            <a href="chiller.html">Chiller</a>
+            <a href="freezer.html">Freezer</a>
+            <a href="ac.html">Air Conditioner</a>
+            <a href="portable_ac.html">Portable Air Cond</a>
             <a href="tv.html">TV</a>
-            <!-- Add other links as needed -->
+            <a href="washer.html">Washer</a>
+            <a href="dryer.html">Dryer</a>
+            <a href="kitchen.html">Kitchen Appliances</a>
+            <a href="hood.html">Hood</a>
+            <a href="gas.html">Gas</a>
+            <a href="oven.html">Oven</a>
+            <a href="microwave.html">Microwave</a>
+            <a href="air_fryer.html">Air Fryer</a>
+            <a href="shower.html">Shower</a>
+            <a href="air_purifier.html" class="active" style="color:var(--accent)">Air Purifier</a>
+            <a href="speaker.html">Speaker</a>
+            <a href="small.html">Small Appliances</a>
         </div>
         <a href="about.html">About Us</a>
         <a href="contact.html">Contact</a>
@@ -345,57 +371,24 @@
         <!-- Filter Dropdown -->
         <div id="filter-panel">
             <div style="margin-bottom: 10px; color: var(--text-sub); font-size: 0.9em;">Brand</div>
-            <select id="brand-select" class="filter-select" onchange="runFilter()">
+            <select id="brand-select" class="filter-select" onchange="filterProducts()">
                 <option value="all">All Brands</option>
-                <option value="Sharp">Sharp</option>
+                <!-- Dynamically Populated -->
             </select>
         </div>
     </div>
 
     <!-- Main Content -->
-    <div class="container">
-        
-        <!-- Sharp Series -->
-        <div class="brand-section" data-brand="Sharp">
-            <div class="brand-header">
-                <h2 class="brand-title">Sharp Series</h2>
-                <div class="brand-underline"></div>
-            </div>
-
-            <div class="products-grid">
-                <!-- Product Card: Sharp FP-J30 -->
-                <div class="card" data-brand="Sharp">
-                    <div class="card-img-container">
-                        <img src="images/sharp-fpj30.png" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Sharp+FP-J30'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Sharp FP-J30">
-                    </div>
-                    
-                    <div class="card-body">
-                        <!-- Title (Serif, White) -->
-                        <h3 class="card-title">Sharp FP-J30</h3>
-                        
-                        <!-- Tag (Blue Badge) -->
-                        <span class="card-tag">23m² Coverage</span>
-                        
-                        <!-- Description -->
-                        <p class="card-desc">
-                            Plasmacluster 7000 technology with Haze mode. Effectively removes mold, viruses, and allergens.
-                        </p>
-                        
-                        <div class="card-divider"></div>
-                        
-                        <p class="card-details-text">RM 429</p>
-
-                        <!-- Button (Full Width, Blue) -->
-                        <a href="air-purifier-details/sharp-fpj30.html" class="btn-details">
-                            More Details <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <div class="container" id="products-container">
+         <!-- Loading Indicator -->
+         <div id="loading-indicator" class="loading-container">
+            <i class="fas fa-spinner fa-spin"></i> Loading Air Purifiers...
         </div>
-
+        
+         <!-- JS will inject brand sections here -->
+         <p id="no-products" style="text-align: center; color: var(--text-sub); display: none; margin-top: 40px; font-size: 1.2rem;">
+            No products found matching your criteria.
+        </p>
     </div>
 
     <!-- Fixed Back Button -->
@@ -408,10 +401,14 @@
         function toggleNav() {
             const sb = document.getElementById("mySidebar");
             const ov = document.getElementById("overlay");
+            const mainContent = document.getElementById("main-content"); // Attempt to push content if exists
+            
             if(sb.style.width === "250px") {
                 sb.style.width = "0"; ov.style.display = "none";
+                if(mainContent) mainContent.style.marginLeft = "0";
             } else {
                 sb.style.width = "250px"; ov.style.display = "block";
+                if(mainContent) mainContent.style.marginLeft = "250px";
             }
         }
 
@@ -426,20 +423,260 @@
             document.getElementById("filter-panel").classList.toggle("open");
         }
 
-        // Filter Logic
-        function runFilter() {
-            const val = document.getElementById("brand-select").value;
-            const sections = document.querySelectorAll(".brand-section");
+        // ------------------- 🔴 Legacy Product Data -------------------
+        // Hardcoded product preserved from original file
+        const legacyProducts = [
+            { 
+                brand: "Sharp", 
+                model: "Sharp FP-J30", 
+                coverage: "23m²", 
+                price: "RM 429",
+                image: "images/sharp-fpj30.png", 
+                desc: "Plasmacluster 7000 technology with Haze mode. Effectively removes mold, viruses, and allergens.", 
+                detailsUrl: "air-purifier-details/sharp-fpj30.html" 
+            }
+        ];
+
+        // ------------------- 🔴 API & Data Logic -------------------
+        
+        // Google Sheets OpenSheet API
+        const API_URL = "https://opensheet.elk.sh/1Rylp_N5CULLt5BbWLQkYcy_c04SaPwcmHxfcrpJ9-YM/Sheet1"; 
+        
+        // Global array for ALL products
+        let apProductsAll = [...legacyProducts];
+
+        // Helper: Smart Fuzzy Matching for Keys
+        function getValueByFuzzyKey(item, keyword) {
+            if (!item) return undefined;
+            const keys = Object.keys(item);
+            const foundKey = keys.find(k => k.toLowerCase().includes(keyword.toLowerCase()));
+            return foundKey ? item[foundKey] : undefined;
+        }
+
+        // Helper: Normalize Brand Name
+        function normalizeBrand(brand) {
+            if (!brand) return 'Other';
+            const b = brand.toLowerCase().trim();
+            if (b === 'sharp') return 'Sharp';
+            if (b === 'panasonic') return 'Panasonic';
+            if (b === 'xiaomi') return 'Xiaomi';
+            if (b === 'dyson') return 'Dyson';
+            return brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase();
+        }
+
+        // 🔴 3. Fetch Data Function
+        async function fetchProducts() {
+            const loadingIndicator = document.getElementById('loading-indicator');
+            let fetchedProducts = [];
+
+            try {
+                console.log("Fetching Air Purifier data from API...");
+                const response = await fetch(API_URL, { cache: 'no-store' });
+                const data = await response.json();
+                
+                console.log("AP Data fetched:", data);
+
+                // Format new data
+                fetchedProducts = data.map(item => {
+                    // Brand
+                    let rawBrand = getValueByFuzzyKey(item, 'brand') || 'Other';
+                    let brand = normalizeBrand(rawBrand);
+
+                    // Model
+                    const model = getValueByFuzzyKey(item, 'model') || 'Unknown Model';
+                    
+                    // Coverage/Size/Area Logic
+                    let rawCov = getValueByFuzzyKey(item, 'coverage') || 
+                                 getValueByFuzzyKey(item, 'area') || 
+                                 getValueByFuzzyKey(item, 'size') || '';
+                    
+                    // Auto Unit Logic: Add 'm²' if it's just a number
+                    let coverage = rawCov.trim();
+                    if (coverage && /^\d+$/.test(coverage)) {
+                        coverage += "m²"; // Auto-add unit
+                    }
+
+                    // Price (Smart Search)
+                    let price = getValueByFuzzyKey(item, 'price') || 
+                                getValueByFuzzyKey(item, 'rm') || '';
+                    if (price && /^\d+$/.test(price)) {
+                         price = "RM " + price;
+                    }
+
+                    // Image
+                    let image = getValueByFuzzyKey(item, 'image') || '';
+                    image = image.trim(); 
+
+                    // Description
+                    const desc = getValueByFuzzyKey(item, 'desc') || getValueByFuzzyKey(item, 'description') || '';
+
+                    // [Link Logic]
+                    let detailsUrl = '';
+                    const keys = Object.keys(item);
+                    // Priority 1: Check for "html" or "link"
+                    let linkKey = keys.find(k => k.toLowerCase().includes('html')); 
+                    if (!linkKey) {
+                        linkKey = keys.find(k => k.toLowerCase().includes('link') && !k.toLowerCase().includes('image')); 
+                    }
+                    if (linkKey) {
+                        detailsUrl = item[linkKey];
+                    }
+
+                    return { brand, model, coverage, price, image, desc, detailsUrl };
+                });
+
+            } catch (error) {
+                console.error("API Fetch Failed, relying on legacy only:", error);
+            }
+
+            // Merge: Legacy + Fetched
+            // Filter duplicates if model name matches exactly
+            if (fetchedProducts.length > 0) {
+                 const legacyModels = new Set(legacyProducts.map(p => p.model.toLowerCase()));
+                 const newUniqueProducts = fetchedProducts.filter(p => !legacyModels.has(p.model.toLowerCase()));
+                 apProductsAll = [...legacyProducts, ...newUniqueProducts];
+            } else {
+                 apProductsAll = legacyProducts;
+            }
+
+            // Hide loading
+            loadingIndicator.style.display = 'none';
+
+            // Refresh Filter Dropdown
+            updateFilterDropdown(apProductsAll);
+
+            // Render
+            renderProducts(apProductsAll);
+        }
+
+        // ------------------- Filter Dropdown Updater -------------------
+        function updateFilterDropdown(products) {
+            const select = document.getElementById('brand-select');
+            const brands = [...new Set(products.map(p => normalizeBrand(p.brand)))].sort();
             
-            sections.forEach(sec => {
-                const brand = sec.getAttribute("data-brand");
-                if(val === "all" || brand === val) {
-                    sec.style.display = "block";
-                } else {
-                    sec.style.display = "none";
+            // Keep "All Brands"
+            select.innerHTML = '<option value="all">All Brands</option>';
+            
+            brands.forEach(b => {
+                const option = document.createElement('option');
+                option.value = b;
+                option.textContent = b;
+                select.appendChild(option);
+            });
+        }
+
+        // ------------------- Render Function -------------------
+        function renderProducts(productsToRender = []) {
+            const container = document.getElementById('products-container');
+            const noProducts = document.getElementById('no-products');
+
+            // Clear previous sections
+            const sections = container.querySelectorAll('.brand-section');
+            sections.forEach(section => section.remove());
+
+            if (productsToRender.length === 0) {
+                noProducts.style.display = 'block';
+                return;
+            } else {
+                noProducts.style.display = 'none';
+            }
+
+            // Get unique normalized brands
+            const brands = [...new Set(productsToRender.map(p => normalizeBrand(p.brand)))];
+
+            brands.forEach(brand => {
+                const brandProducts = productsToRender.filter(p => normalizeBrand(p.brand) === brand);
+                
+                if (brandProducts.length > 0) {
+                    const brandSection = document.createElement('div');
+                    brandSection.className = 'brand-section';
+                    brandSection.setAttribute('data-brand', brand); 
+                    
+                    const brandHeader = document.createElement('div');
+                    brandHeader.className = 'brand-header';
+                    brandHeader.innerHTML = `<h2 class="brand-title">${brand} Series</h2><div class="brand-underline"></div>`;
+                    brandSection.appendChild(brandHeader);
+
+                    const grid = document.createElement('div');
+                    grid.className = 'products-grid';
+
+                    brandProducts.forEach(product => {
+                        // Image Fallback
+                        let imgSrc = product.image || '';
+                        if (!imgSrc) {
+                            imgSrc = 'https://placehold.co/400x400/1e293b/FFF?text=Air+Purifier';
+                        }
+
+                        // Unified Link Logic: "More Details"
+                        let finalLink = product.detailsUrl;
+                        if (!finalLink || finalLink.trim() === '' || finalLink === '#') {
+                            finalLink = `https://wa.me/601110948581?text=I want to inquire about ${product.model}`;
+                        }
+
+                        let linkHtml = `
+                                <a href="${finalLink}" class="btn-details" target="_blank">
+                                    More Details <i class="fas fa-chevron-right"></i>
+                                </a>
+                            `;
+
+                        // Tag logic (Coverage)
+                        let tagsHtml = '';
+                        if (product.coverage) {
+                            // If it doesn't already have 'coverage' or 'area' word, maybe append 'Coverage' for UI clarity, 
+                            // but user logic said "auto add unit". We did that. 
+                            // Let's just display the unit string.
+                            let displayTag = product.coverage;
+                            if(!displayTag.toLowerCase().includes('coverage')) {
+                                displayTag += " Coverage";
+                            }
+                            tagsHtml += `<span class="card-tag">${displayTag}</span>`;
+                        }
+
+                        // Price logic (Optional, based on user card design)
+                        let priceHtml = '';
+                        if (product.price) {
+                            priceHtml = `<p class="card-details-text">${product.price}</p>`;
+                        }
+
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <div class="card-img-container">
+                                <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/400x400/1e293b/FFF?text=Air+Purifier'" class="card-img">
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title">${product.model}</h3>
+                                ${tagsHtml}
+                                <p class="card-desc">${product.desc}</p>
+                                <div class="card-divider"></div>
+                                ${priceHtml}
+                                ${linkHtml}
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+
+                    brandSection.appendChild(grid);
+                    container.appendChild(brandSection);
                 }
             });
-            // Close panel after selection
+        }
+
+        // ------------------- Filter Logic -------------------
+        function filterProducts() {
+            const brandFilter = document.getElementById('brand-select').value;
+            
+            const filtered = apProductsAll.filter(p => {
+                const pBrand = normalizeBrand(p.brand);
+                return (brandFilter === 'all' || pBrand === brandFilter);
+            });
+
+            renderProducts(filtered);
+        }
+        
+        // Alias 
+        function runFilter() {
+            filterProducts();
             document.getElementById("filter-panel").classList.remove("open");
         }
     </script>
