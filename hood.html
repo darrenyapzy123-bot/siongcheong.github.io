@@ -440,7 +440,7 @@
             padding: 4px 10px;
             border-radius: 6px;
             font-weight: 600;
-            text-transform: uppercase;
+            text-transform: capitalize;
             letter-spacing: 0.5px;
         }
 
@@ -475,6 +475,14 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
             filter: brightness(1.1);
+        }
+
+        /* ------------------- Loading Container ------------------- */
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-sub);
+            font-size: 1.2rem;
         }
 
         /* ------------------- Footer ------------------- */
@@ -512,7 +520,7 @@
     </style>
 </head>
 
-<body onload="renderProducts()">
+<body onload="fetchProducts()">
 
     <!-- Menu Button -->
     <div class="menu-icon" onclick="toggleNav()">
@@ -605,6 +613,11 @@
         </div>
 
         <div class="products-wrapper" id="products-container">
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="loading-container">
+                <i class="fas fa-spinner fa-spin"></i> Loading Hood products...
+            </div>
+
             <!-- JS will render products here -->
             <p id="no-products" style="text-align: center; color: var(--text-sub); display: none; margin-top: 40px; font-size: 1.2rem;">
                 No products found matching your criteria.
@@ -651,37 +664,126 @@
         document.getElementById('filter-content').classList.toggle('active');
     });
 
-    // ------------------- Product Data (From hood (1).html) -------------------
-    const hoodProducts = [
+    // ------------------- 🔴 Legacy Product Data -------------------
+    const legacyProducts = [
         // ELBA
-        { brand: "Elba", model: "ECH-E9022ST", power: 1000, length: 90, image: "hood_ECH-E9022ST.png", desc: "Chimney Hood. 1000m³/hr extraction. Tempered glass panel, sensor touch control, time delay function." },
+        { brand: "Elba", model: "ECH-E9022ST", power: 1000, length: 90, image: "hood_ECH-E9022ST.png", desc: "Chimney Hood. 1000m³/hr extraction. Tempered glass panel, sensor touch control, time delay function.", detailsUrl: "hood-details/elba-ech-e9022st.html" },
 
         // MIDEA
-        { brand: "Midea", model: "MCH-76MSS", power: 900, length: 76, image: "hood_MCH-76MSS.png", desc: "Slim Hood. 900m³/hr. Stainless Steel, LED Lamp, Push Button, Twin Motor. Duct Out or Recirculating." },
-        { brand: "Midea", model: "MCH-90F49SS", power: 900, length: 90, image: "hood_MCH-90F49SS.png", desc: "90cm Stainless Steel Hood. 900m³/hr. LED button control, Twin motor. Duct Out or Recirculating." },
-        { brand: "Midea", model: "MCH-90F49BK", power: 900, length: 90, image: "hood_MCH-90F49BK.png", desc: "90cm Black Hood. 900m³/hr. LED button control, Twin motor. Duct Out or Recirculating." },
-        { brand: "Midea", model: "MCH-90MV3", power: 1200, length: 90, image: "hood_MCH-90MV3.png", desc: "1200m³/hr. Stainless Steel & Tempered Glass. 3-Speed, Push Button. Washable 5-Layers Grease Filters." },
-        { brand: "Midea", model: "MCH-90V71", power: 1400, length: 90, image: "hood_MCH-90V71.png", desc: "1400m³/hr. Tempered Glass design. Push button, 3-Speed. Duct out or recirculation." },
-        { brand: "Midea", model: "MCH-90J82", power: 1400, length: 90, image: "hood_MCH-90J82.png", desc: "1400m³/hr. Touch Control, 2-Speed with Turbo. Concealed oil cup. Duct Out Only." },
-        { brand: "Midea", model: "MCH-90B68AT", power: 1800, length: 90, image: "hood_MCH-90B68AT.png", desc: "Premium 1800m³/hr. Gesture Control, Turbo, Smart Auto Steam Wash. Duct Out Only. 5 Years Motor Warranty." },
-        { brand: "Midea", model: "MCH-90B65", power: 1800, length: 90, image: "hood_MCH-90B65.png", desc: "1800m³/hr. Auto-Steam Wash, Touch & Gesture Control. Easy clean oil cup. Duct out mode." },
-        { brand: "Midea", model: "MCH-90M80AT", power: 2000, length: 90, image: "hood_MCH-90M80AT.png", desc: "2000m³/hr Powerful Suction. Duct Out Only. Touch Control, 2-speed, LED Lamp." },
-        { brand: "Midea", model: "MCH-90B82", power: 1500, length: 90, image: "hood_MCH-90B82.png", desc: "1500m³/hr. Gesture Control, 2-speed, LED Lamp. Easy clean oil cup. Duct Out Only." },
-        { brand: "Midea", model: "MCH-90J52", power: 1500, length: 90, image: "hood_MCH-90J52.png", desc: "1500m³/hr. Touch & Gesture Control. 2-speed. Duct Out Only." },
-        { brand: "Midea", model: "MCH-90J15", power: 1500, length: 90, image: "hood_MCH-90J15.png", desc: "1500m³/hr. Touch & Gesture Control. 2-speed. Easy clean oil cup. Duct Out Only." },
-        { brand: "Midea", model: "MCH-90TM1", power: 1200, length: 90, image: "hood_MCH-90TM1.png", desc: "1200m³/hr. Touch Control & Digital Display. 3-Speed. Charcoal Filter Included." },
-        { brand: "Midea", model: "MCH-90B88-BK", power: 1500, length: 90, image: "hood_MCH-90B88-BK.png", desc: "1500m³/hr. Gesture Control (Hand Wave On/Off) for easy operation." },
-        { brand: "Midea", model: "MCH-90X99", power: 1600, length: 90, image: "hood_MCH-90X99.png", desc: "Slim Profile. 1600m³/hr. Oil collector, 3-speed Touch Control, LED lighting." },
-        { brand: "Midea", model: "MCH-90V65", power: 1200, length: 90, image: "hood_MCH-90V65.png", desc: "1200m³/hr. Modern sloped design, LED lighting, and touch controls." }
+        { brand: "Midea", model: "MCH-76MSS", power: 900, length: 76, image: "hood_MCH-76MSS.png", desc: "Slim Hood. 900m³/hr. Stainless Steel, LED Lamp, Push Button, Twin Motor. Duct Out or Recirculating.", detailsUrl: "hood-details/midea-mch-76mss.html" },
+        { brand: "Midea", model: "MCH-90F49SS", power: 900, length: 90, image: "hood_MCH-90F49SS.png", desc: "90cm Stainless Steel Hood. 900m³/hr. LED button control, Twin motor. Duct Out or Recirculating.", detailsUrl: "hood-details/midea-mch-90f49ss.html" },
+        { brand: "Midea", model: "MCH-90F49BK", power: 900, length: 90, image: "hood_MCH-90F49BK.png", desc: "90cm Black Hood. 900m³/hr. LED button control, Twin motor. Duct Out or Recirculating.", detailsUrl: "hood-details/midea-mch-90f49bk.html" },
+        { brand: "Midea", model: "MCH-90MV3", power: 1200, length: 90, image: "hood_MCH-90MV3.png", desc: "1200m³/hr. Stainless Steel & Tempered Glass. 3-Speed, Push Button. Washable 5-Layers Grease Filters.", detailsUrl: "hood-details/midea-mch-90mv3.html" },
+        { brand: "Midea", model: "MCH-90V71", power: 1400, length: 90, image: "hood_MCH-90V71.png", desc: "1400m³/hr. Tempered Glass design. Push button, 3-Speed. Duct out or recirculation.", detailsUrl: "hood-details/midea-mch-90v71.html" },
+        { brand: "Midea", model: "MCH-90J82", power: 1400, length: 90, image: "hood_MCH-90J82.png", desc: "1400m³/hr. Touch Control, 2-Speed with Turbo. Concealed oil cup. Duct Out Only.", detailsUrl: "hood-details/midea-mch-90j82.html" },
+        { brand: "Midea", model: "MCH-90B68AT", power: 1800, length: 90, image: "hood_MCH-90B68AT.png", desc: "Premium 1800m³/hr. Gesture Control, Turbo, Smart Auto Steam Wash. Duct Out Only. 5 Years Motor Warranty.", detailsUrl: "hood-details/midea-mch-90b68at.html" },
+        { brand: "Midea", model: "MCH-90B65", power: 1800, length: 90, image: "hood_MCH-90B65.png", desc: "1800m³/hr. Auto-Steam Wash, Touch & Gesture Control. Easy clean oil cup. Duct out mode.", detailsUrl: "hood-details/midea-mch-90b65.html" },
+        { brand: "Midea", model: "MCH-90M80AT", power: 2000, length: 90, image: "hood_MCH-90M80AT.png", desc: "2000m³/hr Powerful Suction. Duct Out Only. Touch Control, 2-speed, LED Lamp.", detailsUrl: "hood-details/midea-mch-90m80at.html" },
+        { brand: "Midea", model: "MCH-90B82", power: 1500, length: 90, image: "hood_MCH-90B82.png", desc: "1500m³/hr. Gesture Control, 2-speed, LED Lamp. Easy clean oil cup. Duct Out Only.", detailsUrl: "hood-details/midea-mch-90b82.html" },
+        { brand: "Midea", model: "MCH-90J52", power: 1500, length: 90, image: "hood_MCH-90J52.png", desc: "1500m³/hr. Touch & Gesture Control. 2-speed. Duct Out Only.", detailsUrl: "hood-details/midea-mch-90j52.html" },
+        { brand: "Midea", model: "MCH-90J15", power: 1500, length: 90, image: "hood_MCH-90J15.png", desc: "1500m³/hr. Touch & Gesture Control. 2-speed. Easy clean oil cup. Duct Out Only.", detailsUrl: "hood-details/midea-mch-90j15.html" },
+        { brand: "Midea", model: "MCH-90TM1", power: 1200, length: 90, image: "hood_MCH-90TM1.png", desc: "1200m³/hr. Touch Control & Digital Display. 3-Speed. Charcoal Filter Included.", detailsUrl: "hood-details/midea-mch-90tm1.html" },
+        { brand: "Midea", model: "MCH-90B88-BK", power: 1500, length: 90, image: "hood_MCH-90B88-BK.png", desc: "1500m³/hr. Gesture Control (Hand Wave On/Off) for easy operation.", detailsUrl: "hood-details/midea-mch-90b88-bk.html" },
+        { brand: "Midea", model: "MCH-90X99", power: 1600, length: 90, image: "hood_MCH-90X99.png", desc: "Slim Profile. 1600m³/hr. Oil collector, 3-speed Touch Control, LED lighting.", detailsUrl: "hood-details/midea-mch-90x99.html" },
+        { brand: "Midea", model: "MCH-90V65", power: 1200, length: 90, image: "hood_MCH-90V65.png", desc: "1200m³/hr. Modern sloped design, LED lighting, and touch controls.", detailsUrl: "hood-details/midea-mch-90v65.html" }
     ];
 
+    // ------------------- 🔴 API & Data Logic -------------------
+    
+    // Google Sheets OpenSheet API
+    const API_URL = "https://opensheet.elk.sh/1M-JZYdkBVhPe7x-Voh9StFUaOuE8wpq8zhEEI7_qE0g/Sheet1"; 
+    
+    // 图片基础路径
+    const IMAGE_BASE_PATH = ""; 
+
+    // Global array for ALL products
+    let hoodProductsAll = [];
+
+    // Helper: 模糊搜索对象的键
+    function getValueByFuzzyKey(item, keyword) {
+        if (!item) return undefined;
+        const keys = Object.keys(item);
+        const foundKey = keys.find(k => k.toLowerCase().includes(keyword.toLowerCase()));
+        return foundKey ? item[foundKey] : undefined;
+    }
+
+    // Helper: Normalize Brand Name (Capitalize First Letter)
+    function normalizeBrand(brand) {
+        if (!brand) return 'Unknown';
+        return brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase();
+    }
+
+    // 🔴 3. Fetch Data Function
+    async function fetchProducts() {
+        const loadingIndicator = document.getElementById('loading-indicator');
+        let fetchedProducts = [];
+
+        try {
+            console.log("Fetching Hood data from API...");
+            // cache: 'no-store' ensures fresh data
+            const response = await fetch(API_URL, { cache: 'no-store' });
+            const data = await response.json();
+            
+            console.log("Hood Data fetched:", data);
+
+            // Format new data
+            fetchedProducts = data.map(item => {
+                // Brand
+                let brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
+                brand = normalizeBrand(brand);
+
+                // Model
+                const model = getValueByFuzzyKey(item, 'model') || 'Unknown';
+                
+                // Power (Suction Power) - usually numeric
+                const rawPower = getValueByFuzzyKey(item, 'power') || getValueByFuzzyKey(item, 'suction') || "0";
+                const power = parseInt(rawPower) || 0;
+
+                // Length - usually numeric
+                const rawLength = getValueByFuzzyKey(item, 'length') || getValueByFuzzyKey(item, 'len') || "0";
+                const length = parseInt(rawLength) || 0;
+
+                // Image
+                let image = getValueByFuzzyKey(item, 'image') || '';
+                image = image.trim(); // Remove spaces
+
+                // Description
+                const desc = getValueByFuzzyKey(item, 'desc') || getValueByFuzzyKey(item, 'description') || '';
+
+                // Link
+                let detailsUrl = '';
+                const linkKey = Object.keys(item).find(k => k.toLowerCase().includes('html link'));
+                if (linkKey) {
+                    detailsUrl = item[linkKey];
+                } else {
+                    detailsUrl = getValueByFuzzyKey(item, 'link') || '';
+                }
+
+                return { brand, model, power, length, image, desc, detailsUrl };
+            });
+
+        } catch (error) {
+            console.error("API Fetch Failed, showing legacy only:", error);
+        }
+
+        // Merge: Legacy + Fetched
+        hoodProductsAll = [...legacyProducts, ...fetchedProducts];
+
+        // Hide loading
+        loadingIndicator.style.display = 'none';
+
+        // Render
+        renderProducts(hoodProductsAll);
+    }
+
     // ------------------- Render Function -------------------
-    function renderProducts(productsToRender = hoodProducts) {
+    function renderProducts(productsToRender = []) {
         const container = document.getElementById('products-container');
         const noProducts = document.getElementById('no-products');
         
-        container.innerHTML = '';
-        container.appendChild(noProducts);
+        // Clear previous sections but keep no-products msg
+        const sections = container.querySelectorAll('.brand-section');
+        sections.forEach(section => section.remove());
 
         if (productsToRender.length === 0) {
             noProducts.style.display = 'block';
@@ -690,10 +792,11 @@
             noProducts.style.display = 'none';
         }
 
-        const brands = [...new Set(productsToRender.map(p => p.brand))];
+        // Get unique normalized brands
+        const brands = [...new Set(productsToRender.map(p => normalizeBrand(p.brand)))];
 
         brands.forEach(brand => {
-            const brandProducts = productsToRender.filter(p => p.brand === brand);
+            const brandProducts = productsToRender.filter(p => normalizeBrand(p.brand) === brand);
             
             if (brandProducts.length > 0) {
                 const brandSection = document.createElement('div');
@@ -708,11 +811,26 @@
                 grid.className = 'product-grid';
 
                 brandProducts.forEach(product => {
+                    // Image Fallback
+                    let imgSrc = product.image || '';
+                    if (imgSrc && !imgSrc.startsWith('http')) {
+                        imgSrc = IMAGE_BASE_PATH + imgSrc;
+                    }
+                    if (!imgSrc) {
+                        imgSrc = 'https://placehold.co/300x300/1e293b/FFF?text=Hood';
+                    }
+
+                    // Link Logic: Use provided link OR generate WhatsApp
+                    let finalLink = product.detailsUrl;
+                    if (!finalLink || finalLink === '#') {
+                        finalLink = `https://wa.me/601110948581?text=I want to inquire about ${product.model}`;
+                    }
+
                     const card = document.createElement('div');
                     card.className = 'product-card';
                     card.innerHTML = `
                         <div class="card-image-wrapper">
-                            <img src="${product.image}" alt="${product.model}" onerror="this.src='https://placehold.co/300x300/1e293b/FFF?text=Hood'">
+                            <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/300x300/1e293b/FFF?text=Hood'">
                         </div>
                         <div class="product-info">
                             <div>
@@ -723,7 +841,7 @@
                                 </div>
                                 <p class="product-desc">${product.desc}</p>
                             </div>
-                            <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about ${product.model}" target="_blank">
+                            <a class="btn-details" href="${finalLink}" target="_blank">
                                 View Details <i class="fas fa-angle-right"></i>
                             </a>
                         </div>
@@ -737,15 +855,25 @@
         });
     }
 
+    // ------------------- Filter Logic -------------------
     function filterProducts() {
-        const brand = document.getElementById('brand-filter').value;
-        const power = document.getElementById('power-filter').value;
-        const length = document.getElementById('length-filter').value;
+        const brandFilter = document.getElementById('brand-filter').value;
+        const powerFilter = document.getElementById('power-filter').value;
+        const lengthFilter = document.getElementById('length-filter').value;
 
-        const filtered = hoodProducts.filter(p => {
-            let brandMatch = (brand === 'all' || p.brand === brand);
-            let powerMatch = (power === 'all' || p.power == power); // Use == for loose equality (string/number)
-            let lengthMatch = (length === 'all' || p.length == length);
+        const filtered = hoodProductsAll.filter(p => {
+            const pBrand = normalizeBrand(p.brand || '').trim().toLowerCase();
+            const fBrand = brandFilter.trim().toLowerCase();
+            let brandMatch = (brandFilter === 'all' || pBrand === fBrand);
+
+            let powerMatch = false;
+            // Exact match for numbers in legacy/API
+            if (powerFilter === 'all') powerMatch = true;
+            else if (p.power == powerFilter) powerMatch = true; // loose equality for string/number match
+
+            let lengthMatch = false;
+            if (lengthFilter === 'all') lengthMatch = true;
+            else if (p.length == lengthFilter) lengthMatch = true;
 
             return brandMatch && powerMatch && lengthMatch;
         });
