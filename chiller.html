@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Commercial Chiller Collection</title>
+    <title>Commercial Chiller Collection | Siong Cheong Trading</title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -23,7 +23,7 @@
             --border-color: #1e293b;
             --tag-bg: rgba(14, 165, 233, 0.2); /* Tag Background */
             --tag-text: #38bdf8;      /* Tag Text */
-            --whatsapp-green: #25D366; /* Special for WhatsApp buttons if needed, keeping blue for consistency though */
+            --whatsapp-green: #25D366; /* WhatsApp Green */
         }
 
         /* ------------------- Reset & Base ------------------- */
@@ -46,13 +46,20 @@
         header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             padding: 0 40px;
             height: 80px;
             position: relative;
             z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .header-left { display: flex; align-items: center; gap: 20px; }
+        .header-left {
+            position: absolute;
+            left: 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
         .menu-icon { font-size: 24px; cursor: pointer; color: var(--text-main); }
         .logo {
             font-family: 'Playfair Display', serif;
@@ -62,10 +69,7 @@
             color: var(--text-main);
             letter-spacing: 0.5px;
         }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { color: var(--text-sub); font-size: 16px; font-weight: 400; }
-        .nav-links a:hover { color: var(--text-main); }
-
+        
         /* ------------------- Sidebar ------------------- */
         .sidebar {
             height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0;
@@ -90,6 +94,18 @@
             background: rgba(0,0,0,0.7); z-index: 1500; display: none;
         }
 
+        /* ------------------- Layout Wrapper for Push Effect ------------------- */
+        #main-content {
+            width: 100%;
+            max-width: 100vw;
+            transition: margin-left 0.5s;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            background-color: var(--bg-body);
+        }
+
         /* ------------------- Hero ------------------- */
         .hero-section { text-align: center; padding: 80px 20px 40px; }
         .hero-title {
@@ -108,7 +124,7 @@
 
         /* ------------------- Filter Button ------------------- */
         .filter-container {
-            display: flex; justify-content: center; margin: 40px 0 60px; position: relative;
+            display: flex; justify-content: center; margin: 20px 0 40px; position: relative;
         }
         .filter-btn {
             background: transparent;
@@ -124,18 +140,24 @@
         }
         .filter-btn:hover { border-color: var(--accent); background: rgba(41, 182, 246, 0.1); }
         #filter-panel {
-            display: none; position: absolute; top: 60px;
+            display: none; position: absolute; top: 50px;
             background: #1e293b; border: 1px solid #334155;
             padding: 20px; border-radius: 8px; z-index: 100;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5); min-width: 250px;
         }
         #filter-panel.open { display: block; }
+        
+        .filter-group { margin-bottom: 15px; }
+        .filter-label { display: block; margin-bottom: 5px; color: var(--text-sub); font-size: 0.9em; }
         .filter-select {
             width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155;
-            color: white; border-radius: 4px; outline: none; margin-top: 5px;
+            color: white; border-radius: 4px; outline: none;
         }
 
         /* ------------------- Section Title ------------------- */
+        .brand-section {
+            margin-bottom: 60px;
+        }
         .brand-header { text-align: center; margin-bottom: 50px; }
         .brand-title {
             font-family: 'Playfair Display', serif;
@@ -150,7 +172,7 @@
             margin: 0 auto; border-radius: 2px;
         }
 
-        /* ------------------- Product Card (Standardized) ------------------- */
+        /* ------------------- Product Card ------------------- */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
         .products-grid {
@@ -214,6 +236,13 @@
             margin-bottom: 8px;
         }
 
+        .tags-container {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
         .card-tag {
             display: inline-block;
             background-color: var(--tag-bg);
@@ -222,9 +251,7 @@
             font-weight: 700;
             padding: 4px 10px;
             border-radius: 4px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            width: fit-content;
+            text-transform: capitalize;
         }
 
         .card-desc {
@@ -232,7 +259,7 @@
             font-size: 0.95rem;
             line-height: 1.5;
             margin-bottom: 15px;
-            min-height: 40px; 
+            flex-grow: 1;
         }
         
         .card-divider {
@@ -254,9 +281,21 @@
             font-size: 1rem;
             transition: background 0.3s;
             margin-top: auto; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         .btn-details:hover { background-color: var(--btn-hover); }
-        .btn-details i { margin-right: 5px; font-size: 1.1em; }
+        .btn-details i { font-size: 0.9em; }
+
+        /* Loading */
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-sub);
+            font-size: 1.2rem;
+        }
 
         /* ------------------- Footer ------------------- */
         .footer-bar {
@@ -274,475 +313,92 @@
         /* Responsive */
         @media (max-width: 768px) {
             header { padding: 0 20px; }
-            .nav-links { display: none; }
+            .header-left { left: 20px; }
             .hero-title { font-size: 2.5rem; }
             .brand-title { font-size: 2rem; }
         }
     </style>
 </head>
-<body>
+<body onload="fetchProducts()">
 
-    <!-- Header -->
-    <header>
-        <div class="header-left">
-            <div class="menu-icon" onclick="toggleNav()">
-                <i class="fas fa-bars"></i>
+    <!-- Main Content Wrapper -->
+    <div id="main-content">
+
+        <!-- Header -->
+        <header>
+            <div class="header-left">
+                <div class="menu-icon" onclick="toggleNav()">
+                    <i class="fas fa-bars"></i>
+                </div>
             </div>
-            <div class="logo">Siong Cheong Trading</div>
-        </div>
-        <nav class="nav-links">
+            <div class="logo">Commercial Chillers</div>
+        </header>
+
+        <!-- Sidebar -->
+        <div id="mySidebar" class="sidebar">
+            <div class="close-btn" onclick="toggleNav()">&times;</div>
             <a href="index.html">Home</a>
-            <a href="#">Products</a>
+            <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
+            <div class="submenu" style="display: block;">
+                <a href="refrigerator.html">Refrigerator</a>
+                <a href="chiller.html" class="active" style="color:var(--accent)">Chiller</a>
+                <a href="freezer.html">Freezer</a>
+                <a href="ac.html">Air Conditioner</a>
+                <a href="portable_ac.html">Portable Air Cond</a>
+                <a href="tv.html">TV</a>
+                <a href="washer.html">Washer</a>
+                <a href="dryer.html">Dryer</a>
+                <a href="kitchen.html">Kitchen Appliances</a>
+                <a href="hood.html">Hood</a>
+                <a href="gas.html">Gas</a>
+                <a href="oven.html">Oven</a>
+                <a href="microwave.html">Microwave</a>
+                <a href="air_fryer.html">Air Fryer</a>
+                <a href="shower.html">Shower</a>
+                <a href="air_purifier.html">Air Purifier</a>
+                <a href="speaker.html">Speaker</a>
+                <a href="small.html">Small Appliances</a>
+            </div>
             <a href="about.html">About Us</a>
             <a href="contact.html">Contact</a>
-        </nav>
-    </header>
-
-    <!-- Sidebar -->
-    <div id="mySidebar" class="sidebar">
-        <div class="close-btn" onclick="toggleNav()">&times;</div>
-        <a href="index.html">Home</a>
-        <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
-        <div class="submenu" style="display: block;">
-            <a href="refrigerator.html">Refrigerator</a>
-            <a href="chiller.html" class="active" style="color:var(--accent)">Chiller</a>
-            <a href="freezer.html">Freezer</a>
-            <a href="washer.html">Washer</a>
-            <a href="air_fryer.html">Air Fryer</a>
-            <a href="air_purifier.html">Air Purifier</a>
-            <a href="tv.html">TV</a>
         </div>
-        <a href="about.html">About Us</a>
-        <a href="contact.html">Contact</a>
-    </div>
-    <div id="overlay" class="overlay" onclick="toggleNav()"></div>
+        <div id="overlay" class="overlay" onclick="toggleNav()"></div>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <h1 class="hero-title">Display Chillers</h1>
-        <p class="hero-subtitle">Premium cooling solutions for commercial display.</p>
-    </section>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">Display Chillers</h1>
+            <p class="hero-subtitle">Premium cooling solutions for commercial display.</p>
+        </section>
 
-    <!-- Filter Button -->
-    <div class="filter-container">
-        <button class="filter-btn" onclick="toggleFilter()">
-            <i class="fas fa-filter"></i> Filter Options
-        </button>
-        
-        <!-- Filter Dropdown -->
-        <div id="filter-panel">
-            <div style="margin-bottom: 10px; color: var(--text-sub); font-size: 0.9em;">Brand</div>
-            <select id="brand-select" class="filter-select" onchange="runFilter()">
-                <option value="all">All Brands</option>
-                <option value="khind">Khind</option>
-                <option value="hsc">Hisense</option>
-                <option value="warehouse">Warehouse</option>
-                <option value="nakama">Nakama</option>
-                <option value="nsc">Narutron</option>
-                <option value="other">Other / SC</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container">
-        
-        <!-- Khind Series -->
-        <div class="brand-section" data-brand="khind">
-            <div class="brand-header">
-                <h2 class="brand-title">Khind Series</h2>
-                <div class="brand-underline"></div>
-            </div>
-            <div class="products-grid">
-                
-                <!-- KDS193 -->
-                <div class="card" data-brand="khind">
-                    <div class="card-img-container">
-                        <img src="Khind_KDS193.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+KDS193'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Khind KDS193">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Khind KDS193</h3>
-                        <span class="card-tag">193L Capacity</span>
-                        <p class="card-desc">Power: 0.9 kWh/24h. Gross Weight: 55kgs. Box: 550×610×1770mm.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about Khind KDS193" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- DC228 -->
-                <div class="card" data-brand="khind">
-                    <div class="card-img-container">
-                        <img src="Khind_DC228.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+DC228'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Khind DC228">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Khind DC228</h3>
-                        <span class="card-tag">228L Capacity</span>
-                        <p class="card-desc">R134a. Mechanical Temp Control. Key/Lock & LED Light. 530×590×1730mm.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about Khind DC228" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- KDS250 -->
-                <div class="card" data-brand="khind">
-                    <div class="card-img-container">
-                        <img src="Khind_KDS250.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+KDS250'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Khind KDS250">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Khind KDS250</h3>
-                        <span class="card-tag">250L Capacity</span>
-                        <p class="card-desc"><strong>5 Years Compressor Warranty</strong>. 585×630×1756mm. 64.85kg.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about Khind KDS250" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- KDMC280 -->
-                <div class="card" data-brand="khind">
-                    <div class="card-img-container">
-                        <img src="Khind_KDMC280.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+KDMC280'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Khind KDMC280">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Khind KDMC280</h3>
-                        <span class="card-tag">270L Capacity</span>
-                        <p class="card-desc"><strong>5 Years Compressor Warranty</strong>. 585×630×1756mm. Black Color.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about Khind KDMC280" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- KDS350 -->
-                <div class="card" data-brand="khind">
-                    <div class="card-img-container">
-                        <img src="Khind_KDS350.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+KDS350'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Khind KDS350">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Khind KDS350</h3>
-                        <span class="card-tag">350L Capacity</span>
-                        <p class="card-desc"><strong>5 Years Compressor Warranty</strong>. 645×675×1916mm.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about Khind KDS350" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- KDS600 -->
-                <div class="card" data-brand="khind">
-                    <div class="card-img-container">
-                        <img src="Khind_KDS600.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+KDS600'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Khind KDS600">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Khind KDS600</h3>
-                        <span class="card-tag">600L Capacity</span>
-                        <p class="card-desc"><strong>Frost Free</strong> (Fan cooling) Showcase Chiller.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about Khind KDS600" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
+        <!-- Filter Button -->
+        <div class="filter-container">
+            <button class="filter-btn" onclick="toggleFilter()">
+                <i class="fas fa-filter"></i> Filter Options
+            </button>
+            
+            <!-- Filter Dropdown -->
+            <div id="filter-panel">
+                <div class="filter-group">
+                    <label class="filter-label">Brand</label>
+                    <select id="brand-select" class="filter-select" onchange="filterProducts()">
+                        <option value="all">All Brands</option>
+                        <!-- Brands will be dynamically populated -->
+                    </select>
                 </div>
             </div>
         </div>
 
-        <!-- Hisense Series -->
-        <div class="brand-section" data-brand="hsc">
-            <div class="brand-header">
-                <h2 class="brand-title">Hisense Series</h2>
-                <div class="brand-underline"></div>
+        <!-- Main Content -->
+        <div class="container" id="products-container">
+             <!-- Loading Indicator -->
+             <div id="loading-indicator" class="loading-container">
+                <i class="fas fa-spinner fa-spin"></i> Loading Chiller products...
             </div>
-            <div class="products-grid">
-                
-                <!-- HSC-192FLB -->
-                <div class="card" data-brand="hsc">
-                    <div class="card-img-container">
-                        <img src="HSC-192FLB.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=HSC-192FLB'; this.style.objectFit='contain';" 
-                             class="card-img" alt="HSC-192FLB">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">HSC-192FLB</h3>
-                        <span class="card-tag">192L Capacity</span>
-                        <p class="card-desc">1 Year General / <strong>5 Years Compressor Warranty</strong>. 540×575×1440mm.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about HSC-192FLB" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- HSC-191FLB -->
-                <div class="card" data-brand="hsc">
-                    <div class="card-img-container">
-                        <img src="HSC-191FLB.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=HSC-191FLB'; this.style.objectFit='contain';" 
-                             class="card-img" alt="HSC-191FLB">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">HSC-191FLB</h3>
-                        <span class="card-tag">192L Capacity</span>
-                        <p class="card-desc">Display Showcase Model. Dimensions 540×545×1414mm.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about HSC-191FLB" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- HSC-271FLB -->
-                <div class="card" data-brand="hsc">
-                    <div class="card-img-container">
-                        <img src="HSC-271FLB.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=HSC-271FLB'; this.style.objectFit='contain';" 
-                             class="card-img" alt="HSC-271FLB">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">HSC-271FLB</h3>
-                        <span class="card-tag">251L Capacity</span>
-                        <p class="card-desc">Display Chiller. Dimensions 540×545×1714mm.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about HSC-271FLB" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- HSC-242FLH -->
-                <div class="card" data-brand="hsc">
-                    <div class="card-img-container">
-                        <img src="HSC-242FLH.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=HSC-242FLH'; this.style.objectFit='contain';" 
-                             class="card-img" alt="HSC-242FLH">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">HSC-242FLH</h3>
-                        <span class="card-tag">242L Capacity</span>
-                        <p class="card-desc">Includes 4 Shelves. <strong>5 Years Compressor Warranty</strong>. Box: 581×657×1888mm.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about HSC-242FLH" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- HSC-320FL -->
-                <div class="card" data-brand="hsc">
-                    <div class="card-img-container">
-                        <img src="HSC-320FL.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=HSC-320FL'; this.style.objectFit='contain';" 
-                             class="card-img" alt="HSC-320FL">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">HSC-320FL</h3>
-                        <span class="card-tag">320L Capacity</span>
-                        <p class="card-desc"><strong>FROST FREE</strong>. Air Cooled System. <strong>5 Years Compressor Warranty</strong>.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about HSC-320FL" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- HSC-382FLH -->
-                <div class="card" data-brand="hsc">
-                    <div class="card-img-container">
-                        <img src="HSC-382FLH.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=HSC-382FLH'; this.style.objectFit='contain';" 
-                             class="card-img" alt="HSC-382FLH">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">HSC-382FLH</h3>
-                        <span class="card-tag">382L Capacity</span>
-                        <p class="card-desc">Includes 5 Shelves. <strong>5 Years Compressor Warranty</strong>. Box: 661×704×2195mm.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about HSC-382FLH" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Warehouse Series -->
-        <div class="brand-section" data-brand="warehouse">
-            <div class="brand-header">
-                <h2 class="brand-title">Warehouse Series</h2>
-                <div class="brand-underline"></div>
-            </div>
-            <div class="products-grid">
-                <div class="card" data-brand="warehouse">
-                    <div class="card-img-container">
-                        <img src="Warehouse_583L.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Warehouse+583L'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Warehouse 583L">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Warehouse Showcase</h3>
-                        <span class="card-tag">583L Capacity</span>
-                        <p class="card-desc">Fan Cooling (<strong>Frost Free</strong>). <strong>Hot Air System</strong>. W:100cm x D:59cm x H:197cm.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about Warehouse Showcase 583L" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Nakama Series -->
-        <div class="brand-section" data-brand="nakama">
-            <div class="brand-header">
-                <h2 class="brand-title">Nakama Series</h2>
-                <div class="brand-underline"></div>
-            </div>
-            <div class="products-grid">
-                <div class="card" data-brand="nakama">
-                    <div class="card-img-container">
-                        <img src="Nakama_1400L.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Nakama+1400L'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Nakama 1400L">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Nakama (3 Doors)</h3>
-                        <span class="card-tag">1400L Capacity</span>
-                        <p class="card-desc">Extra-Large 3 Doors Chiller. (Dimensions 550×487×1527mm - Please Verify).</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about Nakama 1400L 3-door chiller" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Narutron Series -->
-        <div class="brand-section" data-brand="nsc">
-            <div class="brand-header">
-                <h2 class="brand-title">Narutron Series</h2>
-                <div class="brand-underline"></div>
-            </div>
-            <div class="products-grid">
-                
-                <!-- NSC198XY -->
-                <div class="card" data-brand="nsc">
-                    <div class="card-img-container">
-                        <img src="NSC198XY.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=NSC198XY'; this.style.objectFit='contain';" 
-                             class="card-img" alt="NSC198XY">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">NSC198XY</h3>
-                        <span class="card-tag">190L Capacity</span>
-                        <p class="card-desc">Includes 3 Shelves. Suitable for small convenience stores.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about NSC198XY" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- NSC228XY -->
-                <div class="card" data-brand="nsc">
-                    <div class="card-img-container">
-                        <img src="NSC228XY.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=NSC228XY'; this.style.objectFit='contain';" 
-                             class="card-img" alt="NSC228XY">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">NSC228XY</h3>
-                        <span class="card-tag">220L Capacity</span>
-                        <p class="card-desc">Includes 3 Shelves. Approx. 5ft 8in Height.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about NSC228XY" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- NSC258XY -->
-                <div class="card" data-brand="nsc">
-                    <div class="card-img-container">
-                        <img src="NSC258XY.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=NSC258XY'; this.style.objectFit='contain';" 
-                             class="card-img" alt="NSC258XY">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">NSC258XY</h3>
-                        <span class="card-tag">250L Capacity</span>
-                        <p class="card-desc"><strong>Frost Free</strong>. 3 Shelves. Approx. 6ft 7in Height.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about NSC258XY" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Other Series -->
-        <div class="brand-section" data-brand="other">
-            <div class="brand-header">
-                <h2 class="brand-title">Other Series</h2>
-                <div class="brand-underline"></div>
-            </div>
-            <div class="products-grid">
-                
-                <!-- SC-1000 -->
-                <div class="card" data-brand="other">
-                    <div class="card-img-container">
-                        <img src="SC-1000.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=SC-1000'; this.style.objectFit='contain';" 
-                             class="card-img" alt="SC-1000">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">SC-1000</h3>
-                        <span class="card-tag">1000L Capacity</span>
-                        <p class="card-desc">Large Warehouse Display Showcase.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about SC-1000" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-
-                <!-- SC-170 -->
-                <div class="card" data-brand="other">
-                    <div class="card-img-container">
-                        <img src="SC-170.jpg" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=SC-170'; this.style.objectFit='contain';" 
-                             class="card-img" alt="SC-170">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">SC-170</h3>
-                        <span class="card-tag">170L Capacity</span>
-                        <p class="card-desc">Compact Display Chiller. Includes 3 Shelves.</p>
-                        <div class="card-divider"></div>
-                        <a href="https://wa.me/601110948581?text=I want to inquire about SC-170" class="btn-details" target="_blank">
-                            <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                        </a>
-                    </div>
-                </div>
-            </div>
+            
+             <!-- JS will inject brand sections here, merging with legacy data -->
+             <p id="no-products" style="text-align: center; color: var(--text-sub); display: none; margin-top: 40px; font-size: 1.2rem;">
+                No products found matching your criteria.
+            </p>
         </div>
 
     </div>
@@ -757,10 +413,13 @@
         function toggleNav() {
             const sb = document.getElementById("mySidebar");
             const ov = document.getElementById("overlay");
+            const mainContent = document.getElementById("main-content");
             if(sb.style.width === "250px") {
                 sb.style.width = "0"; ov.style.display = "none";
+                mainContent.style.marginLeft = "0";
             } else {
                 sb.style.width = "250px"; ov.style.display = "block";
+                mainContent.style.marginLeft = "250px";
             }
         }
         function toggleSubmenu(el) {
@@ -773,18 +432,272 @@
             document.getElementById("filter-panel").classList.toggle("open");
         }
 
-        // Filter Logic
-        function runFilter() {
-            const val = document.getElementById("brand-select").value;
-            const sections = document.querySelectorAll(".brand-section");
-            sections.forEach(sec => {
-                const brand = sec.getAttribute("data-brand");
-                if(val === "all" || brand === val) {
-                    sec.style.display = "block";
-                } else {
-                    sec.style.display = "none";
+        // ------------------- 🔴 Legacy Product Data -------------------
+        // [UPDATE] Preserved legacy data with detailsUrl pointing to HTML pages
+        const legacyProducts = [
+            // Khind
+            { brand: "Khind", model: "Khind KDS193", capacity: "193L", image: "Khind_KDS193.jpg", desc: "Power: 0.9 kWh/24h. Gross Weight: 55kgs. Box: 550×610×1770mm.", detailsUrl: "chiller-details/khind-kds193.html" },
+            { brand: "Khind", model: "Khind DC228", capacity: "228L", image: "Khind_DC228.jpg", desc: "R134a. Mechanical Temp Control. Key/Lock & LED Light. 530×590×1730mm.", detailsUrl: "chiller-details/khind-dc228.html" },
+            { brand: "Khind", model: "Khind KDS250", capacity: "250L", image: "Khind_KDS250.jpg", desc: "<strong>5 Years Compressor Warranty</strong>. 585×630×1756mm. 64.85kg.", detailsUrl: "chiller-details/khind-kds250.html" },
+            { brand: "Khind", model: "Khind KDMC280", capacity: "270L", image: "Khind_KDMC280.jpg", desc: "<strong>5 Years Compressor Warranty</strong>. 585×630×1756mm. Black Color.", detailsUrl: "chiller-details/khind-kdmc280.html" },
+            { brand: "Khind", model: "Khind KDS350", capacity: "350L", image: "Khind_KDS350.jpg", desc: "<strong>5 Years Compressor Warranty</strong>. 645×675×1916mm.", detailsUrl: "chiller-details/khind-kds350.html" },
+            { brand: "Khind", model: "Khind KDS600", capacity: "600L", image: "Khind_KDS600.jpg", desc: "<strong>Frost Free</strong> (Fan cooling) Showcase Chiller.", detailsUrl: "chiller-details/khind-kds600.html" },
+            
+            // Hisense
+            { brand: "Hisense", model: "HSC-192FLB", capacity: "192L", image: "HSC-192FLB.jpg", desc: "1 Year General / <strong>5 Years Compressor Warranty</strong>. 540×575×1440mm.", detailsUrl: "chiller-details/hsc-192flb.html" },
+            { brand: "Hisense", model: "HSC-191FLB", capacity: "192L", image: "HSC-191FLB.jpg", desc: "Display Showcase Model. Dimensions 540×545×1414mm.", detailsUrl: "chiller-details/hsc-191flb.html" },
+            { brand: "Hisense", model: "HSC-271FLB", capacity: "251L", image: "HSC-271FLB.jpg", desc: "Display Chiller. Dimensions 540×545×1714mm.", detailsUrl: "chiller-details/hsc-271flb.html" },
+            { brand: "Hisense", model: "HSC-242FLH", capacity: "242L", image: "HSC-242FLH.jpg", desc: "Includes 4 Shelves. <strong>5 Years Compressor Warranty</strong>. Box: 581×657×1888mm.", detailsUrl: "chiller-details/hsc-242flh.html" },
+            { brand: "Hisense", model: "HSC-320FL", capacity: "320L", image: "HSC-320FL.jpg", desc: "<strong>FROST FREE</strong>. Air Cooled System. <strong>5 Years Compressor Warranty</strong>.", detailsUrl: "chiller-details/hsc-320fl.html" },
+            { brand: "Hisense", model: "HSC-382FLH", capacity: "382L", image: "HSC-382FLH.jpg", desc: "Includes 5 Shelves. <strong>5 Years Compressor Warranty</strong>. Box: 661×704×2195mm.", detailsUrl: "chiller-details/hsc-382flh.html" },
+
+            // Warehouse
+            { brand: "Warehouse", model: "Warehouse Showcase", capacity: "583L", image: "Warehouse_583L.jpg", desc: "Fan Cooling (<strong>Frost Free</strong>). <strong>Hot Air System</strong>. W:100cm x D:59cm x H:197cm.", detailsUrl: "chiller-details/warehouse-583l.html" },
+
+            // Nakama
+            { brand: "Nakama", model: "Nakama (3 Doors)", capacity: "1400L", image: "Nakama_1400L.jpg", desc: "Extra-Large 3 Doors Chiller. (Dimensions 550×487×1527mm - Please Verify).", detailsUrl: "chiller-details/nakama-1400l.html" },
+
+            // Narutron (nsc)
+            { brand: "Narutron", model: "NSC198XY", capacity: "190L", image: "NSC198XY.jpg", desc: "Includes 3 Shelves. Suitable for small convenience stores.", detailsUrl: "chiller-details/nsc198xy.html" },
+            { brand: "Narutron", model: "NSC228XY", capacity: "220L", image: "NSC228XY.jpg", desc: "Includes 3 Shelves. Approx. 5ft 8in Height.", detailsUrl: "chiller-details/nsc228xy.html" },
+            { brand: "Narutron", model: "NSC258XY", capacity: "250L", image: "NSC258XY.jpg", desc: "<strong>Frost Free</strong>. 3 Shelves. Approx. 6ft 7in Height.", detailsUrl: "chiller-details/nsc258xy.html" },
+
+            // Other
+            { brand: "Other", model: "SC-1000", capacity: "1000L", image: "SC-1000.jpg", desc: "Large Warehouse Display Showcase.", detailsUrl: "chiller-details/sc-1000.html" },
+            { brand: "Other", model: "SC-170", capacity: "170L", image: "SC-170.jpg", desc: "Compact Display Chiller. Includes 3 Shelves.", detailsUrl: "chiller-details/sc-170.html" }
+        ];
+
+        // ------------------- 🔴 API & Data Logic -------------------
+        
+        // Google Sheets OpenSheet API
+        const API_URL = "https://opensheet.elk.sh/1D4Mdf4mAjbzGJp1y06RdyoOIjd4vThAV3qA_6cC8308/Sheet1"; 
+        
+        // Global array for ALL products
+        let chillerProductsAll = [...legacyProducts];
+
+        // Helper: Smart Fuzzy Matching for Keys
+        function getValueByFuzzyKey(item, keyword) {
+            if (!item) return undefined;
+            const keys = Object.keys(item);
+            // Find key that includes keyword (case-insensitive)
+            const foundKey = keys.find(k => k.toLowerCase().includes(keyword.toLowerCase()));
+            return foundKey ? item[foundKey] : undefined;
+        }
+
+        // Helper: Normalize Brand Name (Capitalize First Letter)
+        function normalizeBrand(brand) {
+            if (!brand) return 'Other';
+            
+            // Map known abbreviations
+            const b = brand.toLowerCase().trim();
+            if (b === 'hsc' || b === 'hisense') return 'Hisense';
+            if (b === 'nsc' || b === 'narutron') return 'Narutron';
+            if (b === 'khind') return 'Khind';
+            if (b === 'nakama') return 'Nakama';
+            if (b === 'warehouse') return 'Warehouse';
+            if (b === 'midea') return 'Midea';
+            
+            return brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase();
+        }
+
+        // 🔴 3. Fetch Data Function
+        async function fetchProducts() {
+            const loadingIndicator = document.getElementById('loading-indicator');
+            let fetchedProducts = [];
+
+            try {
+                console.log("Fetching Chiller data from API...");
+                const response = await fetch(API_URL, { cache: 'no-store' });
+                const data = await response.json();
+                
+                console.log("Chiller Data fetched:", data);
+
+                // Format new data
+                fetchedProducts = data.map(item => {
+                    // Brand
+                    let rawBrand = getValueByFuzzyKey(item, 'brand') || 'Other';
+                    let brand = normalizeBrand(rawBrand);
+
+                    // Model
+                    const model = getValueByFuzzyKey(item, 'model') || 'Unknown Model';
+                    
+                    // Capacity (Smart Search: looks for 'capacity', 'liter', 'size', 'vol')
+                    let rawCap = getValueByFuzzyKey(item, 'capacity') || 
+                                 getValueByFuzzyKey(item, 'liter') || 
+                                 getValueByFuzzyKey(item, 'size') || 
+                                 getValueByFuzzyKey(item, 'vol') || '';
+                    
+                    // Auto Unit Logic: Add 'L' if it's just a number
+                    let capacity = rawCap.trim();
+                    if (capacity && /^\d+$/.test(capacity)) {
+                        capacity += "L";
+                    }
+
+                    // Image
+                    let image = getValueByFuzzyKey(item, 'image') || '';
+                    image = image.trim(); 
+
+                    // Description
+                    const desc = getValueByFuzzyKey(item, 'desc') || getValueByFuzzyKey(item, 'description') || '';
+
+                    // [UPDATE] Link / HTML Link Logic (Smart Search)
+                    let detailsUrl = '';
+                    const keys = Object.keys(item);
+                    
+                    // Priority 1: Check for "html" or "link" specific keys
+                    // Avoid "Image Link" which is common
+                    let linkKey = keys.find(k => k.toLowerCase().includes('html')); 
+                    if (!linkKey) {
+                        linkKey = keys.find(k => k.toLowerCase().includes('link') && !k.toLowerCase().includes('image')); 
+                    }
+                    
+                    if (linkKey) {
+                        detailsUrl = item[linkKey];
+                    }
+
+                    return { brand, model, capacity, image, desc, detailsUrl };
+                });
+
+            } catch (error) {
+                console.error("API Fetch Failed, relying on legacy only:", error);
+            }
+
+            // Merge: Legacy + Fetched
+            // Filter duplicates if model name matches exactly
+            if (fetchedProducts.length > 0) {
+                 const legacyModels = new Set(legacyProducts.map(p => p.model.toLowerCase()));
+                 const newUniqueProducts = fetchedProducts.filter(p => !legacyModels.has(p.model.toLowerCase()));
+                 chillerProductsAll = [...legacyProducts, ...newUniqueProducts];
+            } else {
+                 chillerProductsAll = legacyProducts;
+            }
+
+            // Hide loading
+            loadingIndicator.style.display = 'none';
+
+            // Refresh Filter Dropdown
+            updateFilterDropdown(chillerProductsAll);
+
+            // Render
+            renderProducts(chillerProductsAll);
+        }
+
+        // ------------------- Filter Dropdown Updater -------------------
+        function updateFilterDropdown(products) {
+            const select = document.getElementById('brand-select');
+            const brands = [...new Set(products.map(p => normalizeBrand(p.brand)))].sort();
+            
+            // Keep "All Brands"
+            select.innerHTML = '<option value="all">All Brands</option>';
+            
+            brands.forEach(b => {
+                const option = document.createElement('option');
+                option.value = b;
+                option.textContent = b;
+                select.appendChild(option);
+            });
+        }
+
+        // ------------------- Render Function -------------------
+        function renderProducts(productsToRender = []) {
+            const container = document.getElementById('products-container');
+            const noProducts = document.getElementById('no-products');
+
+            // Clear previous sections
+            const sections = container.querySelectorAll('.brand-section');
+            sections.forEach(section => section.remove());
+
+            if (productsToRender.length === 0) {
+                noProducts.style.display = 'block';
+                return;
+            } else {
+                noProducts.style.display = 'none';
+            }
+
+            // Get unique normalized brands
+            const brands = [...new Set(productsToRender.map(p => normalizeBrand(p.brand)))];
+
+            brands.forEach(brand => {
+                const brandProducts = productsToRender.filter(p => normalizeBrand(p.brand) === brand);
+                
+                if (brandProducts.length > 0) {
+                    const brandSection = document.createElement('div');
+                    brandSection.className = 'brand-section';
+                    brandSection.setAttribute('data-brand', brand); 
+                    
+                    const brandHeader = document.createElement('div');
+                    brandHeader.className = 'brand-header';
+                    brandHeader.innerHTML = `<h2 class="brand-title">${brand} Series</h2><div class="brand-underline"></div>`;
+                    brandSection.appendChild(brandHeader);
+
+                    const grid = document.createElement('div');
+                    grid.className = 'products-grid';
+
+                    brandProducts.forEach(product => {
+                        // Image Fallback
+                        let imgSrc = product.image || '';
+                        if (!imgSrc) {
+                            imgSrc = 'https://placehold.co/400x400/1e293b/FFF?text=Chiller';
+                        }
+
+                        // Link Logic: UNIFIED TO "More Details"
+                        let finalLink = product.detailsUrl;
+                        if (!finalLink || finalLink.trim() === '' || finalLink === '#') {
+                            finalLink = `https://wa.me/601110948581?text=I want to inquire about ${product.model}`;
+                        }
+
+                        let linkHtml = `
+                                <a href="${finalLink}" class="btn-details" target="_blank">
+                                    More Details <i class="fas fa-chevron-right"></i>
+                                </a>
+                            `;
+
+                        // Tags
+                        let tagsHtml = '';
+                        if (product.capacity) {
+                            tagsHtml += `<span class="card-tag">${product.capacity}</span>`;
+                        }
+
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <div class="card-img-container">
+                                <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/400x400/1e293b/FFF?text=Chiller'" class="card-img">
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title">${product.model}</h3>
+                                <div class="tags-container">
+                                    ${tagsHtml}
+                                </div>
+                                <p class="card-desc">${product.desc}</p>
+                                <div class="card-divider"></div>
+                                ${linkHtml}
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+
+                    brandSection.appendChild(grid);
+                    container.appendChild(brandSection);
                 }
             });
+        }
+
+        // ------------------- Filter Logic -------------------
+        function filterProducts() {
+            const brandFilter = document.getElementById('brand-select').value;
+            
+            const filtered = chillerProductsAll.filter(p => {
+                const pBrand = normalizeBrand(p.brand);
+                return (brandFilter === 'all' || pBrand === brandFilter);
+            });
+
+            renderProducts(filtered);
+        }
+        
+        // Alias 
+        function runFilter() {
+            filterProducts();
             document.getElementById("filter-panel").classList.remove("open");
         }
     </script>
