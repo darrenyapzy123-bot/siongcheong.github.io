@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dryer Collection</title>
+    <title>Dryer Collection | Siong Cheong Trading</title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -23,6 +23,10 @@
             --border-color: #1e293b;
             --tag-bg: rgba(14, 165, 233, 0.2); /* Tag Background */
             --tag-text: #38bdf8;      /* Tag Text */
+            --tag-inv-bg: rgba(16, 185, 129, 0.2); /* Green tint for Inverter */
+            --tag-inv-text: #34d399;   /* Green text */
+            --tag-non-bg: rgba(148, 163, 184, 0.2); /* Grey tint for Non-Inverter */
+            --tag-non-text: #cbd5e1;   /* Grey text */
         }
 
         /* ------------------- Reset & Base ------------------- */
@@ -45,13 +49,20 @@
         header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             padding: 0 40px;
             height: 80px;
             position: relative;
             z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .header-left { display: flex; align-items: center; gap: 20px; }
+        .header-left {
+            position: absolute;
+            left: 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
         .menu-icon { font-size: 24px; cursor: pointer; color: var(--text-main); }
         .logo {
             font-family: 'Playfair Display', serif;
@@ -61,10 +72,7 @@
             color: var(--text-main);
             letter-spacing: 0.5px;
         }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { color: var(--text-sub); font-size: 16px; font-weight: 400; }
-        .nav-links a:hover { color: var(--text-main); }
-
+        
         /* ------------------- Sidebar ------------------- */
         .sidebar {
             height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0;
@@ -89,6 +97,18 @@
             background: rgba(0,0,0,0.7); z-index: 1500; display: none;
         }
 
+        /* ------------------- Layout Wrapper for Push Effect ------------------- */
+        #main-content {
+            width: 100%;
+            max-width: 100vw;
+            transition: margin-left 0.5s;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            background-color: var(--bg-body);
+        }
+
         /* ------------------- Hero ------------------- */
         .hero-section { text-align: center; padding: 80px 20px 40px; }
         .hero-title {
@@ -107,7 +127,7 @@
 
         /* ------------------- Filter Button ------------------- */
         .filter-container {
-            display: flex; justify-content: center; margin: 40px 0 60px; position: relative;
+            display: flex; justify-content: center; margin: 20px 0 40px; position: relative;
         }
         .filter-btn {
             background: transparent;
@@ -123,7 +143,7 @@
         }
         .filter-btn:hover { border-color: var(--accent); background: rgba(41, 182, 246, 0.1); }
         #filter-panel {
-            display: none; position: absolute; top: 60px;
+            display: none; position: absolute; top: 50px;
             background: #1e293b; border: 1px solid #334155;
             padding: 20px; border-radius: 8px; z-index: 100;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5); min-width: 250px;
@@ -138,6 +158,9 @@
         }
 
         /* ------------------- Section Title ------------------- */
+        .brand-section {
+            margin-bottom: 60px;
+        }
         .brand-header { text-align: center; margin-bottom: 50px; }
         .brand-title {
             font-family: 'Playfair Display', serif;
@@ -216,6 +239,13 @@
             margin-bottom: 8px;
         }
 
+        .tags-container {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
         .card-tag {
             display: inline-block;
             background-color: var(--tag-bg);
@@ -224,9 +254,17 @@
             font-weight: 700;
             padding: 4px 10px;
             border-radius: 4px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            width: fit-content;
+            text-transform: capitalize;
+        }
+
+        .card-tag.inverter {
+            background-color: var(--tag-inv-bg);
+            color: var(--tag-inv-text);
+        }
+
+        .card-tag.non-inverter {
+            background-color: var(--tag-non-bg);
+            color: var(--tag-non-text);
         }
 
         .card-desc {
@@ -234,7 +272,7 @@
             font-size: 0.95rem;
             line-height: 1.5;
             margin-bottom: 15px;
-            min-height: 40px; 
+            flex-grow: 1;
         }
         
         .card-divider {
@@ -266,6 +304,14 @@
         .btn-details:hover { background-color: var(--btn-hover); }
         .btn-details i { margin-left: 5px; font-size: 0.9em; }
 
+        /* Loading */
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-sub);
+            font-size: 1.2rem;
+        }
+
         /* ------------------- Footer ------------------- */
         .footer-bar {
             position: fixed; bottom: 20px; right: 20px; z-index: 100;
@@ -282,319 +328,105 @@
         /* Responsive */
         @media (max-width: 768px) {
             header { padding: 0 20px; }
-            .nav-links { display: none; }
+            .header-left { left: 20px; }
             .hero-title { font-size: 2.5rem; }
             .brand-title { font-size: 2rem; }
         }
     </style>
 </head>
-<body>
+<body onload="fetchProducts()">
 
-    <!-- Header -->
-    <header>
-        <div class="header-left">
-            <div class="menu-icon" onclick="toggleNav()">
-                <i class="fas fa-bars"></i>
+    <!-- Main Content Wrapper -->
+    <div id="main-content">
+
+        <!-- Header -->
+        <header>
+            <div class="header-left">
+                <div class="menu-icon" onclick="toggleNav()">
+                    <i class="fas fa-bars"></i>
+                </div>
             </div>
-            <div class="logo">Siong Cheong Trading</div>
-        </div>
-        <nav class="nav-links">
+            <div class="logo">Commercial Dryers</div>
+        </header>
+
+        <!-- Sidebar -->
+        <div id="mySidebar" class="sidebar">
+            <div class="close-btn" onclick="toggleNav()">&times;</div>
             <a href="index.html">Home</a>
-            <a href="#">Products</a>
+            <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
+            <div class="submenu" style="display: block;">
+                <a href="refrigerator.html">Refrigerator</a>
+                <a href="chiller.html">Chiller</a>
+                <a href="freezer.html">Freezer</a>
+                <a href="ac.html">Air Conditioner</a>
+                <a href="portable_ac.html">Portable Air Cond</a>
+                <a href="tv.html">TV</a>
+                <a href="washer.html">Washer</a>
+                <a href="dryer.html" class="active" style="color:var(--accent)">Dryer</a>
+                <a href="kitchen.html">Kitchen Appliances</a>
+                <a href="hood.html">Hood</a>
+                <a href="gas.html">Gas</a>
+                <a href="oven.html">Oven</a>
+                <a href="microwave.html">Microwave</a>
+                <a href="air_fryer.html">Air Fryer</a>
+                <a href="shower.html">Shower</a>
+                <a href="air_purifier.html">Air Purifier</a>
+                <a href="speaker.html">Speaker</a>
+                <a href="small.html">Small Appliances</a>
+            </div>
             <a href="about.html">About Us</a>
             <a href="contact.html">Contact</a>
-        </nav>
-    </header>
-
-    <!-- Sidebar -->
-    <div id="mySidebar" class="sidebar">
-        <div class="close-btn" onclick="toggleNav()">&times;</div>
-        <a href="index.html">Home</a>
-        <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
-        <div class="submenu" style="display: block;">
-            <a href="refrigerator.html">Refrigerator</a>
-            <a href="chiller.html">Chiller</a>
-            <a href="freezer.html">Freezer</a>
-            <a href="ac.html">Air Conditioner</a>
-            <a href="portable_ac.html">Portable Air Cond</a>
-            <a href="tv.html">TV</a>
-            <a href="washer.html">Washer</a>
-            <a href="dryer.html" class="active" style="color:var(--accent)">Dryer</a>
-            <a href="kitchen.html">Kitchen Appliances</a>
-            <a href="hood.html">Hood</a>
-            <a href="gas.html">Gas</a>
-            <a href="oven.html">Oven</a>
-            <a href="microwave.html">Microwave</a>
-            <a href="air_fryer.html">Air Fryer</a>
-            <a href="shower.html">Shower</a>
-            <a href="air_purifier.html">Air Purifier</a>
-            <a href="speaker.html">Speaker</a>
-            <a href="small.html">Small Appliances</a>
         </div>
-        <a href="about.html">About Us</a>
-        <a href="location.html">Our Location</a>
-        <a href="contact.html">Contact</a>
-    </div>
-    <div id="overlay" class="overlay" onclick="toggleNav()"></div>
+        <div id="overlay" class="overlay" onclick="toggleNav()"></div>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <h1 class="hero-title">Dryer Series</h1>
-        <p class="hero-subtitle">Efficient drying solutions for every household.</p>
-    </section>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">Dryer Series</h1>
+            <p class="hero-subtitle">Efficient drying solutions for every household.</p>
+        </section>
 
-    <!-- Filter Button -->
-    <div class="filter-container">
-        <button class="filter-btn" onclick="toggleFilter()">
-            <i class="fas fa-filter"></i> Filter Options
-        </button>
-        
-        <!-- Filter Dropdown -->
-        <div id="filter-panel">
-            <div class="filter-group">
-                <label class="filter-label">Brand</label>
-                <select id="brand-select" class="filter-select" onchange="runFilter()">
-                    <option value="all">All Brands</option>
-                    <option value="Midea">Midea</option>
-                    <option value="Khind">Khind</option>
-                    <option value="Hisense">Hisense</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label class="filter-label">Capacity</label>
-                <select id="capacity-select" class="filter-select" onchange="runFilter()">
-                    <option value="all">All Capacities</option>
-                    <option value="6kg">6 KG</option>
-                    <option value="7kg">7 KG</option>
-                    <option value="8kg">8 KG</option>
-                    <option value="10kg">10 KG</option>
-                    <option value="combo">Combo (Washer+Dryer)</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container">
-        
-        <!-- Midea Series -->
-        <div class="brand-section" data-brand="Midea">
-            <div class="brand-header">
-                <h2 class="brand-title">Midea Series</h2>
-                <div class="brand-underline"></div>
-            </div>
-            <div class="products-grid">
-                
-                <!-- MD-7388 -->
-                <div class="card" data-brand="Midea" data-capacity="7kg">
-                    <div class="card-img-container">
-                        <img src="dryer_MD-7388.png" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Midea+MD-7388'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Midea MD-7388">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Midea MD-7388</h3>
-                        <span class="card-tag">7kg Vented</span>
-                        <p class="card-desc">
-                            Vented Dryer with Temp Sensor, Child Lock, Anti Crease & Front Lint Filter.
-                        </p>
-                        <div class="card-divider"></div>
-                        <p class="card-details-text">Warranty: 2 (Full) + 3 (Panel) + 5 (Motor)</p>
-                        <a href="dryer-details/midea-7388.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
-                    </div>
+        <!-- Filter Button -->
+        <div class="filter-container">
+            <button class="filter-btn" onclick="toggleFilter()">
+                <i class="fas fa-filter"></i> Filter Options
+            </button>
+            
+            <!-- Filter Dropdown -->
+            <div id="filter-panel">
+                <div class="filter-group">
+                    <label class="filter-label">Brand</label>
+                    <select id="brand-select" class="filter-select" onchange="filterProducts()">
+                        <option value="all">All Brands</option>
+                        <option value="Midea">Midea</option>
+                        <option value="Khind">Khind</option>
+                        <option value="Hisense">Hisense</option>
+                    </select>
                 </div>
-
-                <!-- MDC80-CH01 -->
-                <div class="card" data-brand="Midea" data-capacity="8kg">
-                    <div class="card-img-container">
-                        <img src="dryer_MDC80-CH01.png" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Midea+8kg+Condensing'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Midea Condensing">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Midea Condensing Dryer</h3>
-                        <span class="card-tag">8kg Condensing</span>
-                        <p class="card-desc">
-                            Condensing Technology with Anti-Wrinkle & Temp Sensor. Electronic Control.
-                        </p>
-                        <div class="card-divider"></div>
-                        <p class="card-details-text">Warranty: 2 (Full) + 3 (Panel) + 10 (Motor)</p>
-                        <a href="dryer-details/midea-condensing-8kg.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
-                    </div>
-                </div>
-
-                <!-- MD-K1088HP -->
-                <div class="card" data-brand="Midea" data-capacity="10kg">
-                    <div class="card-img-container">
-                        <img src="dryer_MD-K1088HP.png" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Midea+Heat+Pump'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Midea Heat Pump">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Midea Heat Pump Dryer</h3>
-                        <span class="card-tag">10kg Heat Pump</span>
-                        <p class="card-desc">
-                            Heat Pump Condensing Drying. 5 Star Energy Efficiency. 14 Programmes.
-                        </p>
-                        <div class="card-divider"></div>
-                        <p class="card-details-text">Warranty: 2+3+10 Years</p>
-                        <a href="dryer-details/midea-hp-10kg.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
-                    </div>
-                </div>
-
-                <!-- MF200D85B -->
-                <div class="card" data-brand="Midea" data-capacity="combo">
-                    <div class="card-img-container">
-                        <img src="dryer_MF200D85B.png" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Midea+Combo+8.5kg'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Midea Combo">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Midea Combo 8.5/6kg</h3>
-                        <span class="card-tag">Washer & Dryer</span>
-                        <p class="card-desc">
-                            Inverter Motor with Auto Clean and Steam Care. Lunar Dial control.
-                        </p>
-                        <div class="card-divider"></div>
-                        <p class="card-details-text">Warranty: 2+3+10 Years</p>
-                        <a href="dryer-details/midea-combo-8.5.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
-                    </div>
-                </div>
-
-                <!-- MF200D100WB -->
-                <div class="card" data-brand="Midea" data-capacity="combo">
-                    <div class="card-img-container">
-                        <img src="dryer_MF200D100WB.png" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Midea+Combo+10kg'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Midea Combo Big">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Midea Combo 10/7kg</h3>
-                        <span class="card-tag">Big Capacity</span>
-                        <p class="card-desc">
-                            10kg Wash / 7kg Dry. HealthGuard & Steam Care. Big Capacity Inverter.
-                        </p>
-                        <div class="card-divider"></div>
-                        <p class="card-details-text">Warranty: 2 (Full) + 10 (Motor)</p>
-                        <a href="dryer-details/midea-combo-10.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
-                    </div>
+                <div class="filter-group">
+                    <label class="filter-label">Capacity</label>
+                    <select id="capacity-select" class="filter-select" onchange="filterProducts()">
+                        <option value="all">All Capacities</option>
+                        <option value="6kg">6 KG</option>
+                        <option value="7kg">7 KG</option>
+                        <option value="8kg">8 KG</option>
+                        <option value="10kg">10 KG</option>
+                        <option value="combo">Combo (Washer+Dryer)</option>
+                    </select>
                 </div>
             </div>
         </div>
 
-        <!-- Khind Series -->
-        <div class="brand-section" data-brand="Khind">
-            <div class="brand-header">
-                <h2 class="brand-title">Khind Series</h2>
-                <div class="brand-underline"></div>
+        <!-- Main Content -->
+        <div class="container" id="products-container">
+             <!-- Loading Indicator -->
+             <div id="loading-indicator" class="loading-container">
+                <i class="fas fa-spinner fa-spin"></i> Loading new products...
             </div>
-            <div class="products-grid">
-                
-                <!-- KCD60 -->
-                <div class="card" data-brand="Khind" data-capacity="6kg">
-                    <div class="card-img-container">
-                        <img src="dryer_KCD60.png" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+KCD60'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Khind KCD60">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Khind KCD60</h3>
-                        <span class="card-tag">6kg Vented</span>
-                        <p class="card-desc">
-                            5 Drying Programmes. PTC Heating Element. Includes Wall mounting kits.
-                        </p>
-                        <div class="card-divider"></div>
-                        <p class="card-details-text">Warranty: 1 (General) + 5 (Motor)</p>
-                        <a href="dryer-details/khind-kcd60.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
-                    </div>
-                </div>
-
-                <!-- KCD80 -->
-                <div class="card" data-brand="Khind" data-capacity="8kg">
-                    <div class="card-img-container">
-                        <img src="dryer_KCD80.png" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Khind+KCD80'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Khind KCD80">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Khind KCD80</h3>
-                        <span class="card-tag">8kg Condensing</span>
-                        <p class="card-desc">
-                            LED display, Crease Resist, Sterilization & Super Dry modes.
-                        </p>
-                        <div class="card-divider"></div>
-                        <p class="card-details-text">Warranty: 2+3+5 Years</p>
-                        <a href="dryer-details/khind-kcd80.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Hisense Series -->
-        <div class="brand-section" data-brand="Hisense">
-            <div class="brand-header">
-                <h2 class="brand-title">Hisense Series</h2>
-                <div class="brand-underline"></div>
-            </div>
-            <div class="products-grid">
-                
-                <!-- WDQY1014EVJMT -->
-                <div class="card" data-brand="Hisense" data-capacity="combo">
-                    <div class="card-img-container">
-                        <img src="dryer_WDQY1014EVJMT.png" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Hisense+Combo+10kg'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Hisense 10kg">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Hisense Combo 10/6kg</h3>
-                        <span class="card-tag">Pure Steam</span>
-                        <p class="card-desc">
-                            Pure Jet Wash & 5 Star Energy Rating. Inverter Motor technology.
-                        </p>
-                        <div class="card-divider"></div>
-                        <p class="card-details-text">Warranty: 2 (General) + 12 (Motor)</p>
-                        <a href="dryer-details/hisense-combo-10.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
-                    </div>
-                </div>
-
-                <!-- WDQY8014EVJMT -->
-                <div class="card" data-brand="Hisense" data-capacity="combo">
-                    <div class="card-img-container">
-                        <img src="dryer_WDQY8014EVJMT.png" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Hisense+Combo+8kg'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Hisense 8kg">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Hisense Combo 8/5kg</h3>
-                        <span class="card-tag">Inverter Combo</span>
-                        <p class="card-desc">
-                            Pure Steam to remove bacteria and reduce creases. Efficient drying.
-                        </p>
-                        <div class="card-divider"></div>
-                        <p class="card-details-text">Warranty: 2 (General) + 12 (Motor)</p>
-                        <a href="dryer-details/hisense-combo-8.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
-                    </div>
-                </div>
-
-                <!-- WD3Q8543BW -->
-                <div class="card" data-brand="Hisense" data-capacity="combo">
-                    <div class="card-img-container">
-                        <img src="dryer_WD3Q8543BW.png" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/400x400/ffffff/0b1221?text=Hisense+Combo+8.5kg'; this.style.objectFit='contain';" 
-                             class="card-img" alt="Hisense 8.5kg">
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">Hisense Combo 8.5/6kg</h3>
-                        <span class="card-tag">New Design</span>
-                        <p class="card-desc">
-                            Features Steam and Allergy Care modes. Modern aesthetic.
-                        </p>
-                        <div class="card-divider"></div>
-                        <p class="card-details-text">Warranty: 25 Years Motor (Promo)</p>
-                        <a href="dryer-details/hisense-combo-8.5.html" class="btn-details">More Details <i class="fas fa-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div>
+            
+             <!-- JS will inject brand sections here, merging with legacy data -->
+             <p id="no-products" style="text-align: center; color: var(--text-sub); display: none; margin-top: 40px; font-size: 1.2rem;">
+                No products found matching your criteria.
+            </p>
         </div>
 
     </div>
@@ -609,10 +441,13 @@
         function toggleNav() {
             const sb = document.getElementById("mySidebar");
             const ov = document.getElementById("overlay");
+            const mainContent = document.getElementById("main-content");
             if(sb.style.width === "250px") {
                 sb.style.width = "0"; ov.style.display = "none";
+                mainContent.style.marginLeft = "0";
             } else {
                 sb.style.width = "250px"; ov.style.display = "block";
+                mainContent.style.marginLeft = "250px";
             }
         }
         function toggleSubmenu(el) {
@@ -625,41 +460,288 @@
             document.getElementById("filter-panel").classList.toggle("open");
         }
 
-        // Filter Logic
-        function runFilter() {
-            const bVal = document.getElementById("brand-select").value;
-            const cVal = document.getElementById("capacity-select").value;
-            
-            // 1. Filter Cards
-            const cards = document.querySelectorAll(".card");
-            let activeBrands = new Set();
-            
-            cards.forEach(c => {
-                const b = c.getAttribute("data-brand");
-                const cap = c.getAttribute("data-capacity");
+        // ------------------- 🔴 Legacy Product Data (Preserved) -------------------
+        // This array contains the original hardcoded items from your previous file.
+        // We will append fetched data to this list.
+        const legacyProducts = [
+            // Midea
+            { brand: "Midea", model: "Midea MD-7388", capacity: "7kg", type: "dryer", inverter: "Non Inverter", image: "dryer_MD-7388.png", desc: "Vented Dryer with Temp Sensor, Child Lock, Anti Crease & Front Lint Filter.", detailsUrl: "dryer-details/midea-7388.html" },
+            { brand: "Midea", model: "Midea Condensing", capacity: "8kg", type: "dryer", inverter: "Non Inverter", image: "dryer_MDC80-CH01.png", desc: "Condensing Technology with Anti-Wrinkle & Temp Sensor. Electronic Control.", detailsUrl: "dryer-details/midea-condensing-8kg.html" },
+            { brand: "Midea", model: "Midea Heat Pump", capacity: "10kg", type: "dryer", inverter: "Inverter", image: "dryer_MD-K1088HP.png", desc: "Heat Pump Condensing Drying. 5 Star Energy Efficiency. 14 Programmes.", detailsUrl: "dryer-details/midea-hp-10kg.html" },
+            { brand: "Midea", model: "Midea Combo 8.5/6kg", capacity: "Washer & Dryer", type: "combo", inverter: "Inverter", image: "dryer_MF200D85B.png", desc: "Inverter Motor with Auto Clean and Steam Care. Lunar Dial control.", detailsUrl: "dryer-details/midea-combo-8.5.html" },
+            { brand: "Midea", model: "Midea Combo 10/7kg", capacity: "Washer & Dryer", type: "combo", inverter: "Inverter", image: "dryer_MF200D100WB.png", desc: "10kg Wash / 7kg Dry. HealthGuard & Steam Care. Big Capacity Inverter.", detailsUrl: "dryer-details/midea-combo-10.html" },
+
+            // Khind
+            { brand: "Khind", model: "Khind KCD60", capacity: "6kg", type: "dryer", inverter: "Non Inverter", image: "dryer_KCD60.png", desc: "5 Drying Programmes. PTC Heating Element. Includes Wall mounting kits.", detailsUrl: "dryer-details/khind-kcd60.html" },
+            { brand: "Khind", model: "Khind KCD80", capacity: "8kg", type: "dryer", inverter: "Non Inverter", image: "dryer_KCD80.png", desc: "LED display, Crease Resist, Sterilization & Super Dry modes.", detailsUrl: "dryer-details/khind-kcd80.html" },
+
+            // Hisense
+            { brand: "Hisense", model: "Hisense Combo 10/6kg", capacity: "Washer & Dryer", type: "combo", inverter: "Inverter", image: "dryer_WDQY1014EVJMT.png", desc: "Pure Jet Wash & 5 Star Energy Rating. Inverter Motor technology.", detailsUrl: "dryer-details/hisense-combo-10.html" },
+            { brand: "Hisense", model: "Hisense Combo 8/5kg", capacity: "Washer & Dryer", type: "combo", inverter: "Inverter", image: "dryer_WDQY8014EVJMT.png", desc: "Pure Steam to remove bacteria and reduce creases. Efficient drying.", detailsUrl: "dryer-details/hisense-combo-8.html" },
+            { brand: "Hisense", model: "Hisense Combo 8.5/6kg", capacity: "Washer & Dryer", type: "combo", inverter: "Inverter", image: "dryer_WD3Q8543BW.png", desc: "Features Steam and Allergy Care modes. Modern aesthetic.", detailsUrl: "dryer-details/hisense-combo-8.5.html" }
+        ];
+
+        // ------------------- 🔴 API & Data Logic -------------------
+        
+        // Google Sheets OpenSheet API
+        const API_URL = "https://opensheet.elk.sh/13hDI2ZDHjNgJKIydq8bmQ4d8Dxruu1fK3e0cCAb6p08/Sheet1"; 
+        
+        // Base Path
+        const IMAGE_BASE_PATH = ""; 
+
+        // Global array for ALL products (initialized with legacy)
+        let dryerProductsAll = [...legacyProducts];
+
+        // Helper: Fuzzy matching for keys
+        function getValueByFuzzyKey(item, keyword) {
+            if (!item) return undefined;
+            const keys = Object.keys(item);
+            const foundKey = keys.find(k => k.toLowerCase().includes(keyword.toLowerCase()));
+            return foundKey ? item[foundKey] : undefined;
+        }
+
+        // Helper: Normalize Brand Name (Capitalize First Letter)
+        function normalizeBrand(brand) {
+            if (!brand) return 'Unknown';
+            return brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase();
+        }
+
+        // 🔴 3. Fetch Data Function
+        async function fetchProducts() {
+            const loadingIndicator = document.getElementById('loading-indicator');
+            let fetchedProducts = [];
+
+            try {
+                console.log("Fetching Dryer data from API...");
+                // cache: 'no-store' ensures fresh data
+                const response = await fetch(API_URL, { cache: 'no-store' });
+                const data = await response.json();
                 
-                const matchB = (bVal === "all" || b === bVal);
-                const matchC = (cVal === "all" || cap === cVal);
+                console.log("Dryer Data fetched:", data);
+
+                // Format new data
+                fetchedProducts = data.map(item => {
+                    // Brand
+                    let brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
+                    brand = normalizeBrand(brand);
+
+                    // Model
+                    const model = getValueByFuzzyKey(item, 'model') || 'Unknown';
+                    
+                    // Capacity / Combo Logic
+                    // User Rule: If "combo", show washer and dryer. If number, show number + kg
+                    let rawCap = getValueByFuzzyKey(item, 'capacity') || getValueByFuzzyKey(item, 'size') || '';
+                    let capacity = "";
+                    let type = "dryer"; // Default
+
+                    // Clean the string
+                    const rawCapLower = rawCap.toLowerCase();
+
+                    if (rawCapLower.includes('combo')) {
+                        capacity = "Washer & Dryer";
+                        type = "combo";
+                    } else if (rawCap) {
+                        // Check if it already has kg
+                        capacity = rawCapLower.includes('kg') ? rawCap : rawCap + 'kg';
+                        type = "dryer";
+                    } else {
+                        capacity = "Unknown Capacity";
+                    }
+
+                    // Inverter Logic
+                    // User Rule: Show Inverter or Non Inverter tags
+                    // Search for an 'Inverter' column or fuzzy match
+                    let invVal = getValueByFuzzyKey(item, 'inverter');
+                    let inverterStatus = "Non Inverter"; // Default assumption
+
+                    if (invVal) {
+                        const v = invVal.toLowerCase();
+                        if (v === 'yes' || (v.includes('inverter') && !v.includes('non'))) {
+                            inverterStatus = "Inverter";
+                        } else if (v === 'no' || v.includes('non')) {
+                            inverterStatus = "Non Inverter";
+                        }
+                    } else {
+                        // Fallback: Check description for keywords
+                        const d = (getValueByFuzzyKey(item, 'desc') || '').toLowerCase();
+                        if (d.includes('inverter') && !d.includes('non-inverter') && !d.includes('non inverter')) {
+                            inverterStatus = "Inverter";
+                        }
+                    }
+
+                    // Image
+                    let image = getValueByFuzzyKey(item, 'image') || '';
+                    image = image.trim(); 
+
+                    // Description
+                    const desc = getValueByFuzzyKey(item, 'desc') || getValueByFuzzyKey(item, 'description') || '';
+
+                    // Link
+                    let detailsUrl = '';
+                    const linkKey = Object.keys(item).find(k => k.toLowerCase().includes('html link'));
+                    if (linkKey) {
+                        detailsUrl = item[linkKey];
+                    } else {
+                        detailsUrl = getValueByFuzzyKey(item, 'link') || '';
+                    }
+
+                    return { brand, model, capacity, type, inverter: inverterStatus, image, desc, detailsUrl };
+                });
+
+            } catch (error) {
+                console.error("API Fetch Failed, relying on legacy only:", error);
+            }
+
+            // Merge: Legacy + Fetched (APPENDING to ensure legacy stays)
+            if (fetchedProducts.length > 0) {
+                 // Remove duplicates based on Model name if necessary? 
+                 // For now, we simply append as requested. 
+                 // To avoid total duplicates if the sheet has the EXACT same items, you might want filtering, 
+                 // but "don't remove previous" usually implies safety first.
+                 
+                 // Let's filter out items from fetched that have the exact same model name as legacy to avoid double showing
+                 const legacyModels = new Set(legacyProducts.map(p => p.model.toLowerCase()));
+                 const newUniqueProducts = fetchedProducts.filter(p => !legacyModels.has(p.model.toLowerCase()));
+                 
+                 dryerProductsAll = [...legacyProducts, ...newUniqueProducts];
+            } else {
+                 dryerProductsAll = legacyProducts;
+            }
+
+            // Hide loading
+            loadingIndicator.style.display = 'none';
+
+            // Render
+            renderProducts(dryerProductsAll);
+        }
+
+        // ------------------- Render Function -------------------
+        function renderProducts(productsToRender = []) {
+            const container = document.getElementById('products-container');
+            const noProducts = document.getElementById('no-products');
+            const loadingIndicator = document.getElementById('loading-indicator');
+
+            // Clear previous sections (except loading & no-products msg)
+            // We rebuild the DOM to ensure correct ordering and filtering
+            const sections = container.querySelectorAll('.brand-section');
+            sections.forEach(section => section.remove());
+
+            if (productsToRender.length === 0) {
+                noProducts.style.display = 'block';
+                return;
+            } else {
+                noProducts.style.display = 'none';
+            }
+
+            // Get unique normalized brands
+            const brands = [...new Set(productsToRender.map(p => normalizeBrand(p.brand)))];
+
+            brands.forEach(brand => {
+                const brandProducts = productsToRender.filter(p => normalizeBrand(p.brand) === brand);
                 
-                if(matchB && matchC) {
-                    c.parentElement.style.display = "block"; // Reset grid item visibility
-                    c.style.display = "flex";
-                    activeBrands.add(b);
-                } else {
-                    c.style.display = "none";
-                    c.parentElement.style.display = "none"; // Hide grid slot if empty
+                if (brandProducts.length > 0) {
+                    const brandSection = document.createElement('div');
+                    brandSection.className = 'brand-section';
+                    brandSection.setAttribute('data-brand', brand); 
+                    
+                    const brandHeader = document.createElement('div');
+                    brandHeader.className = 'brand-header';
+                    brandHeader.innerHTML = `<h2 class="brand-title">${brand} Series</h2><div class="brand-underline"></div>`;
+                    brandSection.appendChild(brandHeader);
+
+                    const grid = document.createElement('div');
+                    grid.className = 'products-grid';
+
+                    brandProducts.forEach(product => {
+                        // Image Fallback
+                        let imgSrc = product.image || '';
+                        if (imgSrc && !imgSrc.startsWith('http') && !imgSrc.startsWith('data:')) {
+                            // If it's a local filename, prepend base path if needed, 
+                            // but usually for these static files it's just the filename
+                            imgSrc = imgSrc; 
+                        }
+                        if (!imgSrc) {
+                            imgSrc = 'https://placehold.co/400x400/1e293b/FFF?text=Dryer';
+                        }
+
+                        // Link Logic
+                        let finalLink = product.detailsUrl;
+                        if (!finalLink || finalLink === '#' || finalLink.trim() === '') {
+                            finalLink = `https://wa.me/601110948581?text=I want to inquire about ${product.model}`;
+                        }
+
+                        // Tags Logic
+                        let tagsHtml = '';
+                        // 1. Capacity / Combo Tag
+                        if (product.capacity) {
+                            tagsHtml += `<span class="card-tag">${product.capacity}</span>`;
+                        }
+                        // 2. Inverter Tag
+                        if (product.inverter) {
+                            const invClass = product.inverter === 'Inverter' ? 'inverter' : 'non-inverter';
+                            tagsHtml += `<span class="card-tag ${invClass}">${product.inverter}</span>`;
+                        }
+
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <div class="card-img-container">
+                                <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/400x400/1e293b/FFF?text=Dryer'" class="card-img">
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title">${product.model}</h3>
+                                <div class="tags-container">
+                                    ${tagsHtml}
+                                </div>
+                                <p class="card-desc">${product.desc}</p>
+                                <div class="card-divider"></div>
+                                <a href="${finalLink}" class="btn-details" target="_blank">
+                                    More Details <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+
+                    brandSection.appendChild(grid);
+                    container.appendChild(brandSection);
                 }
             });
+        }
 
-            // 2. Hide Empty Sections
-            const sections = document.querySelectorAll(".brand-section");
-            sections.forEach(sec => {
-                const secBrand = sec.getAttribute("data-brand");
-                sec.style.display = activeBrands.has(secBrand) ? "block" : "none";
+        // ------------------- Filter Logic -------------------
+        function filterProducts() {
+            const brandFilter = document.getElementById('brand-select').value;
+            const capacityFilter = document.getElementById('capacity-select').value;
+
+            const filtered = dryerProductsAll.filter(p => {
+                // 1. Brand Match
+                const pBrand = normalizeBrand(p.brand || '').trim().toLowerCase();
+                const fBrand = brandFilter.trim().toLowerCase();
+                let brandMatch = (brandFilter === 'all' || pBrand === fBrand);
+                
+                // 2. Capacity Match
+                let capMatch = false;
+                if (capacityFilter === 'all') {
+                    capMatch = true;
+                } else if (capacityFilter === 'combo') {
+                    // Check if type is combo OR capacity string contains 'washer' (e.g. Washer & Dryer)
+                    capMatch = (p.type === 'combo' || p.capacity.toLowerCase().includes('washer'));
+                } else {
+                    // e.g. filter "7kg", product "7kg" -> match
+                    capMatch = p.capacity.toLowerCase().includes(capacityFilter.toLowerCase());
+                }
+
+                return brandMatch && capMatch;
             });
-            
-            // Auto close filter panel on selection (optional)
-            // document.getElementById("filter-panel").classList.remove("open");
+
+            renderProducts(filtered);
+        }
+        
+        // Alias for the HTML onclick
+        function runFilter() {
+            filterProducts();
+            document.getElementById("filter-panel").classList.remove("open");
         }
     </script>
 </body>
