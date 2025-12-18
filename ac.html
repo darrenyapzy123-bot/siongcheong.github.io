@@ -44,7 +44,7 @@
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; padding: 0; margin: 0; }
 
-        /* ------------------- Layout Wrapper for Push Effect (Added) ------------------- */
+        /* ------------------- Layout Wrapper for Push Effect ------------------- */
         #main-content {
             width: 100%;
             max-width: 100vw;
@@ -460,6 +460,14 @@
             filter: brightness(1.1);
         }
 
+        /* Loading */
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
         /* ------------------- Footer ------------------- */
         .page-footer {
             background-color: #020617; 
@@ -480,7 +488,7 @@
     </style>
 </head>
 
-<body onload="renderProducts()">
+<body onload="fetchProducts()">
 
     <!-- Menu Button -->
     <div class="menu-icon" onclick="toggleNav()">
@@ -571,6 +579,11 @@
         </div>
 
         <div class="products-wrapper" id="products-container">
+             <!-- Loading Indicator -->
+             <div id="loading-indicator" class="loading-container">
+                <i class="fas fa-spinner fa-spin"></i> Loading AC Units...
+            </div>
+
             <!-- JS will render products here -->
             <p id="no-products" style="text-align: center; color: var(--text-secondary); display: none; margin-top: 40px; font-size: 1.2rem;">
                 No products found matching your criteria.
@@ -617,80 +630,239 @@
         document.getElementById('filter-content').classList.toggle('active');
     });
 
-    // ------------------- Product Data (EXACTLY AS IN YOUR ORIGINAL FILE) -------------------
-    const acProducts = [
+    // ------------------- 🔴 Legacy Product Data -------------------
+    const legacyProducts = [
         // --- SHARP ---
         {
             model: "Sharp AHA-WCD2 Series",
             brand: "Sharp", hp: "1.0", type: "Non-Inverter", image: "placeholder_ac.png",
-            description: "Features Turbo Mode, Self-Clean function, and 24-hour ON/OFF Timer for basic, reliable cooling."
+            description: "Features Turbo Mode, Self-Clean function, and 24-hour ON/OFF Timer for basic, reliable cooling.",
+            detailsUrl: ""
         },
         {
             model: "Sharp AHX-VED2 Inverter",
             brand: "Sharp", hp: "1.5", type: "Inverter", image: "placeholder_ac.png",
-            description: "Highly energy efficient with Plasmacluster Ion technology and advanced Self-Clean feature."
+            description: "Highly energy efficient with Plasmacluster Ion technology and advanced Self-Clean feature.",
+            detailsUrl: ""
         },
         {
             model: "Sharp AHA-WCD2 Series (2.0HP)",
             brand: "Sharp", hp: "2.0", type: "Non-Inverter", image: "placeholder_ac.png",
-            description: "Ideal for larger rooms, offering powerful and rapid cooling with Anti-Bacterial remote control."
+            description: "Ideal for larger rooms, offering powerful and rapid cooling with Anti-Bacterial remote control.",
+            detailsUrl: ""
         },
         // --- MIDEA ---
         {
             model: "Midea Xtreme Inverter (1.0HP)",
             brand: "Midea", hp: "1.0", type: "Inverter", image: "placeholder_ac.png",
-            description: "Uses R32 refrigerant, offering excellent cooling performance and quiet operation. (RM1188)"
+            description: "Uses R32 refrigerant, offering excellent cooling performance and quiet operation. (RM1188)",
+            detailsUrl: ""
         },
         {
             model: "Midea Xtreme Inverter (1.5HP)",
             brand: "Midea", hp: "1.5", type: "Inverter", image: "placeholder_ac.png",
-            description: "Energy-saving model with high-density filter and rapid cooling function. (RM1390)"
+            description: "Energy-saving model with high-density filter and rapid cooling function. (RM1390)",
+            detailsUrl: ""
         },
         // --- HISENSE ---
         {
             model: "Hisense Smart Inverter (1.0HP)",
             brand: "Hisense", hp: "1.0", type: "Inverter", image: "placeholder_ac.png",
-            description: "\"Save Energy\" model with a wide operating range and 5-year compressor warranty. (RM939)"
+            description: "\"Save Energy\" model with a wide operating range and 5-year compressor warranty. (RM939)",
+            detailsUrl: ""
         },
         {
             model: "Hisense Smart Inverter (1.5HP)",
             brand: "Hisense", hp: "1.5", type: "Inverter", image: "placeholder_ac.png",
-            description: "Excellent energy efficiency, fast cooling, and long-lasting durability."
+            description: "Excellent energy efficiency, fast cooling, and long-lasting durability.",
+            detailsUrl: ""
         },
         {
             model: "Hisense Smart Inverter (2.0HP)",
             brand: "Hisense", hp: "2.0", type: "Inverter", image: "placeholder_ac.png",
-            description: "Provides consistent temperature control and significant energy cost reduction for large spaces."
+            description: "Provides consistent temperature control and significant energy cost reduction for large spaces.",
+            detailsUrl: ""
         },
         {
             model: "Hisense Basic Cool (1.0HP)",
             brand: "Hisense", hp: "1.0", type: "Non-Inverter", image: "placeholder_ac.png",
-            description: "Reliable performance, simple operation, and strong dehumidification function."
+            description: "Reliable performance, simple operation, and strong dehumidification function.",
+            detailsUrl: ""
         },
         {
             model: "Hisense Basic Cool (1.5HP)",
             brand: "Hisense", hp: "1.5", type: "Non-Inverter", image: "placeholder_ac.png",
-            description: "Robust compressor built for tropical climates, ensuring long-term cooling comfort."
+            description: "Robust compressor built for tropical climates, ensuring long-term cooling comfort.",
+            detailsUrl: ""
         },
         {
             model: "Hisense Basic Cool (2.0HP)",
             brand: "Hisense", hp: "2.0", type: "Non-Inverter", image: "placeholder_ac.png",
-            description: "Powerful airflow for large living areas, featuring Auto-Restart function."
+            description: "Powerful airflow for large living areas, featuring Auto-Restart function.",
+            detailsUrl: ""
         },
         {
             model: "Hisense Basic Cool (2.5HP)",
             brand: "Hisense", hp: "2.5", type: "Non-Inverter", image: "placeholder_ac.png",
-            description: "Maximum cooling capacity for commercial or extremely large residential spaces."
+            description: "Maximum cooling capacity for commercial or extremely large residential spaces.",
+            detailsUrl: ""
         }
     ];
 
+    // ------------------- 🔴 API & Data Logic -------------------
+    
+    // Google Sheets OpenSheet API
+    const API_URL = "https://opensheet.elk.sh/1bb2D8lO5ANLeq1fvb7Eyu8k9WzuyiisUgnjCiegMhsQ/Sheet1"; 
+    
+    // Global array for ALL products
+    let acProductsAll = [...legacyProducts];
+
+    // Helper: Smart Fuzzy Matching for Keys
+    function getValueByFuzzyKey(item, keyword) {
+        if (!item) return undefined;
+        const keys = Object.keys(item);
+        const foundKey = keys.find(k => k.toLowerCase().includes(keyword.toLowerCase()));
+        return foundKey ? item[foundKey] : undefined;
+    }
+
+    // Helper: Normalize Brand Name
+    function normalizeBrand(brand) {
+        if (!brand) return 'Other';
+        const b = brand.toLowerCase().trim();
+        if (b === 'sharp') return 'Sharp';
+        if (b === 'midea') return 'Midea';
+        if (b === 'hisense') return 'Hisense';
+        if (b === 'daikin') return 'Daikin';
+        if (b === 'york') return 'York';
+        if (b === 'panasonic') return 'Panasonic';
+        return brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase();
+    }
+
+    // 🔴 3. Fetch Data Function
+    async function fetchProducts() {
+        const loadingIndicator = document.getElementById('loading-indicator');
+        let fetchedProducts = [];
+
+        try {
+            console.log("Fetching AC data from API...");
+            const response = await fetch(API_URL, { cache: 'no-store' });
+            const data = await response.json();
+            
+            console.log("AC Data fetched:", data);
+
+            // Format new data
+            fetchedProducts = data.map(item => {
+                // Brand
+                let rawBrand = getValueByFuzzyKey(item, 'brand') || 'Other';
+                let brand = normalizeBrand(rawBrand);
+
+                // Model
+                const model = getValueByFuzzyKey(item, 'model') || 'Unknown Model';
+                
+                // HP / Capacity
+                let rawHp = getValueByFuzzyKey(item, 'hp') || 
+                            getValueByFuzzyKey(item, 'horsepower') || 
+                            getValueByFuzzyKey(item, 'capacity') || '';
+                
+                // Clean HP string (extract number 1.0, 1.5, 2.0 etc)
+                // If it's just "1.0", we keep it. If it's "1.0HP", strip "HP".
+                let hp = rawHp.replace(/[^\d.]/g, '').trim(); 
+                if (hp.endsWith('.')) hp = hp.slice(0, -1);
+
+                // Type / Technology
+                let rawType = getValueByFuzzyKey(item, 'type') || 
+                              getValueByFuzzyKey(item, 'technology') || 
+                              getValueByFuzzyKey(item, 'inverter') || 'Non-Inverter';
+                
+                let type = "Non-Inverter";
+                if (rawType.toLowerCase().includes('non')) {
+                    type = "Non-Inverter";
+                } else if (rawType.toLowerCase().includes('inverter')) {
+                    type = "Inverter";
+                }
+
+                // Image
+                let image = getValueByFuzzyKey(item, 'image') || '';
+                image = image.trim(); 
+
+                // Description
+                const description = getValueByFuzzyKey(item, 'desc') || getValueByFuzzyKey(item, 'description') || '';
+
+                // [Link Logic]
+                let detailsUrl = '';
+                const keys = Object.keys(item);
+                // Priority 1: Check for "html" or "link"
+                let linkKey = keys.find(k => k.toLowerCase().includes('html')); 
+                if (!linkKey) {
+                    linkKey = keys.find(k => k.toLowerCase().includes('link') && !k.toLowerCase().includes('image')); 
+                }
+                if (linkKey) {
+                    detailsUrl = item[linkKey];
+                }
+
+                return { brand, model, hp, type, image, description, detailsUrl };
+            });
+
+        } catch (error) {
+            console.error("API Fetch Failed, relying on legacy only:", error);
+        }
+
+        // Merge: Legacy + Fetched
+        if (fetchedProducts.length > 0) {
+             const legacyModels = new Set(legacyProducts.map(p => p.model.toLowerCase()));
+             const newUniqueProducts = fetchedProducts.filter(p => !legacyModels.has(p.model.toLowerCase()));
+             acProductsAll = [...legacyProducts, ...newUniqueProducts];
+        } else {
+             acProductsAll = legacyProducts;
+        }
+
+        // Hide loading
+        loadingIndicator.style.display = 'none';
+
+        // Refresh Filter Dropdown
+        updateFilterDropdown(acProductsAll);
+
+        // Render
+        renderProducts(acProductsAll);
+    }
+
+    // ------------------- Filter Dropdown Updater -------------------
+    function updateFilterDropdown(products) {
+        const select = document.getElementById('brand-filter');
+        const brands = [...new Set(products.map(p => normalizeBrand(p.brand)))].sort();
+        
+        // Keep "All Brands"
+        select.innerHTML = '<option value="all">All Brands</option>';
+        
+        brands.forEach(b => {
+            const option = document.createElement('option');
+            option.value = b;
+            option.textContent = b;
+            select.appendChild(option);
+        });
+    }
+
     // ------------------- Render Function -------------------
-    function renderProducts(productsToRender = acProducts) {
+    function renderProducts(productsToRender = []) {
         const container = document.getElementById('products-container');
         const noProducts = document.getElementById('no-products');
         
-        container.innerHTML = '';
-        container.appendChild(noProducts);
+        // Clear previous grid items but keep the loading indicator and no-products message div
+        // We can just set innerHTML to blank and re-append noProducts, 
+        // OR better: target the actual grid or just clean logic.
+        // Current logic in previous files was: remove .brand-section.
+        
+        // Let's stick to the previous pattern: Clear container except specific elements?
+        // Actually, this file has a flat list of products inside 'container' (products-wrapper), NOT sections per brand.
+        // Wait, the legacy render function in ac.html grouped by brand. Let's maintain that structure.
+        
+        // Reset container content (keep noProducts hidden element ref first if needed, but easier to just clear and rebuild)
+        // Note: The loading-indicator is also in there.
+        const loadingIndicator = document.getElementById('loading-indicator');
+        
+        // Remove old sections
+        const oldSections = container.querySelectorAll('.brand-section');
+        oldSections.forEach(el => el.remove());
 
         if (productsToRender.length === 0) {
             noProducts.style.display = 'block';
@@ -699,10 +871,10 @@
             noProducts.style.display = 'none';
         }
 
-        const brands = [...new Set(productsToRender.map(p => p.brand))];
+        const brands = [...new Set(productsToRender.map(p => normalizeBrand(p.brand)))];
 
         brands.forEach(brand => {
-            const brandProducts = productsToRender.filter(p => p.brand === brand);
+            const brandProducts = productsToRender.filter(p => normalizeBrand(p.brand) === brand);
             
             if (brandProducts.length > 0) {
                 const brandSection = document.createElement('div');
@@ -720,8 +892,19 @@
                     const card = document.createElement('div');
                     card.className = 'product-card';
                     
-                    const imageSrc = product.image ? product.image : ''; 
+                    // Image fallback
+                    let imageSrc = product.image || '';
+                    if (!imageSrc) {
+                        imageSrc = 'https://placehold.co/300x300/1e293b/FFF?text=AC+Unit';
+                    }
+
                     const typeClass = product.type === 'Inverter' ? 'tag-inverter' : 'tag-non-inverter';
+                    
+                    // Unified Link Logic: "More Details"
+                    let finalLink = product.detailsUrl;
+                    if (!finalLink || finalLink.trim() === '' || finalLink === '#') {
+                        finalLink = `https://wa.me/601110948581?text=I want to inquire about ${product.model}`;
+                    }
 
                     card.innerHTML = `
                         <div class="card-image-wrapper">
@@ -738,7 +921,7 @@
 
                                 <p class="product-desc">${product.description}</p>
                             </div>
-                            <a class="btn-details" href="https://wa.me/601110948581?text=I want to inquire about ${product.model}" target="_blank">
+                            <a class="btn-details" href="${finalLink}" target="_blank">
                                 More Details <i class="fas fa-angle-right"></i>
                             </a>
                         </div>
@@ -757,10 +940,17 @@
         const hpFilter = document.getElementById('hp-filter').value;
         const typeFilter = document.getElementById('type-filter').value;
 
-        const filtered = acProducts.filter(product => {
-            let brandMatch = (brandFilter === 'all') || (product.brand === brandFilter);
-            let hpMatch = (hpFilter === 'all') || (product.hp === hpFilter);
+        const filtered = acProductsAll.filter(product => {
+            let pBrand = normalizeBrand(product.brand);
+            let brandMatch = (brandFilter === 'all') || (pBrand === brandFilter);
+            
+            // HP Match logic (Loose match for "1.0", "1", etc)
+            let pHp = product.hp ? String(product.hp) : '';
+            let hpMatch = (hpFilter === 'all') || (pHp === hpFilter);
+            
+            // Type Match
             let typeMatch = (typeFilter === 'all') || (product.type === typeFilter);
+            
             return brandMatch && hpMatch && typeMatch;
         });
 
