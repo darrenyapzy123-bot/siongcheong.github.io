@@ -440,7 +440,7 @@
             padding: 4px 10px;
             border-radius: 6px;
             font-weight: 600;
-            text-transform: uppercase;
+            text-transform: capitalize;
             letter-spacing: 0.5px;
         }
 
@@ -475,6 +475,14 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
             filter: brightness(1.1);
+        }
+
+        /* ------------------- Loading Container ------------------- */
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-sub);
+            font-size: 1.2rem;
         }
 
         /* ------------------- Footer ------------------- */
@@ -512,7 +520,7 @@
     </style>
 </head>
 
-<body onload="renderProducts()">
+<body onload="fetchProducts()">
 
     <!-- Menu Button -->
     <div class="menu-icon" onclick="toggleNav()">
@@ -592,6 +600,11 @@
         </div>
 
         <div class="products-wrapper" id="products-container">
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="loading-container">
+                <i class="fas fa-spinner fa-spin"></i> Loading Portable AC products...
+            </div>
+
             <!-- JS will render products here -->
             <p id="no-products" style="text-align: center; color: var(--text-sub); display: none; margin-top: 40px; font-size: 1.2rem;">
                 No products found matching your criteria.
@@ -605,7 +618,7 @@
     </div>
 
 <script>
-    // ------------------- Navigation Logic (Push Effect) -------------------
+    // ------------------- Navigation Logic -------------------
     window.toggleNav = function() {
         const sidebar = document.getElementById("mySidebar");
         const overlay = document.getElementById("overlay");
@@ -638,8 +651,8 @@
         document.getElementById('filter-content').classList.toggle('active');
     });
 
-    // ------------------- Product Data (From portable_ac.html) -------------------
-    const portableACProducts = [
+    // ------------------- 🔴 Legacy Product Data -------------------
+    const legacyProducts = [
         // Sharp
         { brand: "Sharp", model: "PA-J12B", hp: "1.5", image: "sharp-paj12b.jpg", desc: "12,000 BTU/h, Self-Evaporative System, Auto Swing, 24-Hour Timer, Washable Filter.", detailsUrl: "portable-ac-details/sharp-paj12b.html" },
 
@@ -649,13 +662,100 @@
         { brand: "Midea", model: "AP-12NXG", hp: "1.5", image: "midea-ap12nxg.jpg", desc: "12,000 BTU/h, Latest model, features high cooling capacity and energy efficiency. Suitable for medium to large rooms.", detailsUrl: "portable-ac-details/midea-ap12nxg.html" }
     ];
 
+    // ------------------- 🔴 API & Data Logic -------------------
+    
+    // Google Sheets OpenSheet API
+    const API_URL = "https://opensheet.elk.sh/19CvQKVmhoEQrNeNpjaWxUDqDqNyGEYL-BKzKb7Hvwpc/Sheet1"; 
+    
+    // 图片基础路径 (空字符串表示直接在根目录查找，或者使用完整 HTTP 链接)
+    const IMAGE_BASE_PATH = ""; 
+
+    // Global array for ALL products
+    let portableACProductsAll = [];
+
+    // Helper: 模糊搜索对象的键
+    function getValueByFuzzyKey(item, keyword) {
+        if (!item) return undefined;
+        const keys = Object.keys(item);
+        const foundKey = keys.find(k => k.toLowerCase().includes(keyword.toLowerCase()));
+        return foundKey ? item[foundKey] : undefined;
+    }
+
+    // Helper: Normalize Brand Name (Capitalize First Letter)
+    function normalizeBrand(brand) {
+        if (!brand) return 'Unknown';
+        return brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase();
+    }
+
+    // 🔴 3. Fetch Data Function
+    async function fetchProducts() {
+        const loadingIndicator = document.getElementById('loading-indicator');
+        let fetchedProducts = [];
+
+        try {
+            console.log("Fetching Portable AC data from API...");
+            // cache: 'no-store' ensures fresh data
+            const response = await fetch(API_URL, { cache: 'no-store' });
+            const data = await response.json();
+            
+            console.log("Data fetched:", data);
+
+            // Format new data
+            fetchedProducts = data.map(item => {
+                // Brand
+                let brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
+                brand = normalizeBrand(brand);
+
+                // Model
+                const model = getValueByFuzzyKey(item, 'model') || 'Unknown';
+                
+                // HP (Horsepower)
+                let hp = getValueByFuzzyKey(item, 'hp') || getValueByFuzzyKey(item, 'horse') || "0";
+                // Normalize HP (e.g., "1.0HP" -> "1.0") - keeping simple logic for now
+                hp = hp.toString().replace(/[^0-9.]/g, ''); // Extract numbers and dot only if needed
+                if (!hp) hp = "0";
+
+                // Image
+                let image = getValueByFuzzyKey(item, 'image') || '';
+                image = image.trim(); // Remove spaces
+
+                // Description
+                const desc = getValueByFuzzyKey(item, 'description') || getValueByFuzzyKey(item, 'desc') || '';
+
+                // Link
+                let detailsUrl = '';
+                const linkKey = Object.keys(item).find(k => k.toLowerCase().includes('html link'));
+                if (linkKey) {
+                    detailsUrl = item[linkKey];
+                } else {
+                    detailsUrl = getValueByFuzzyKey(item, 'link') || '';
+                }
+
+                return { brand, model, hp, image, desc, detailsUrl };
+            });
+
+        } catch (error) {
+            console.error("API Fetch Failed, showing legacy only:", error);
+        }
+
+        // Merge: Legacy + Fetched
+        portableACProductsAll = [...legacyProducts, ...fetchedProducts];
+
+        // Hide loading
+        loadingIndicator.style.display = 'none';
+
+        // Render
+        renderProducts(portableACProductsAll);
+    }
+
     // ------------------- Render Function -------------------
-    function renderProducts(productsToRender = portableACProducts) {
+    function renderProducts(productsToRender = []) {
         const container = document.getElementById('products-container');
         const noProducts = document.getElementById('no-products');
         
-        container.innerHTML = '';
-        container.appendChild(noProducts);
+        // Clear previous sections
+        const sections = container.querySelectorAll('.brand-section');
+        sections.forEach(section => section.remove());
 
         if (productsToRender.length === 0) {
             noProducts.style.display = 'block';
@@ -664,10 +764,10 @@
             noProducts.style.display = 'none';
         }
 
-        const brands = [...new Set(productsToRender.map(p => p.brand))];
+        const brands = [...new Set(productsToRender.map(p => normalizeBrand(p.brand)))];
 
         brands.forEach(brand => {
-            const brandProducts = productsToRender.filter(p => p.brand === brand);
+            const brandProducts = productsToRender.filter(p => normalizeBrand(p.brand) === brand);
             
             if (brandProducts.length > 0) {
                 const brandSection = document.createElement('div');
@@ -682,21 +782,43 @@
                 grid.className = 'product-grid';
 
                 brandProducts.forEach(product => {
+                    // Image Logic
+                    let imgSrc = product.image || '';
+                    if (imgSrc && !imgSrc.startsWith('http')) {
+                        imgSrc = IMAGE_BASE_PATH + imgSrc;
+                    }
+                    if (!imgSrc) {
+                        imgSrc = 'https://placehold.co/300x300/1e293b/FFF?text=Portable+AC';
+                    }
+
+                    // Link Logic
+                    let finalLink = product.detailsUrl;
+                    if (!finalLink || finalLink === '#') {
+                        finalLink = `https://wa.me/601110948581?text=I want to inquire about ${product.model}`;
+                    }
+
                     const card = document.createElement('div');
                     card.className = 'product-card';
+                    
+                    // Tags logic
+                    let tagsHtml = '';
+                    if (product.hp && product.hp !== "0") {
+                        tagsHtml = `<span class="tag tag-info">${product.hp} HP</span>`;
+                    }
+
                     card.innerHTML = `
                         <div class="card-image-wrapper">
-                            <img src="${product.image}" alt="${product.model}" onerror="this.src='https://placehold.co/300x300/1e293b/FFF?text=Portable+AC'">
+                            <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/300x300/1e293b/FFF?text=Portable+AC'">
                         </div>
                         <div class="product-info">
                             <div>
                                 <h3>${product.model}</h3>
                                 <div class="product-tags">
-                                    <span class="tag tag-info">${product.hp} HP</span>
+                                    ${tagsHtml}
                                 </div>
-                                <p class="product-desc">${product.desc}</p>
+                                <p class="product-desc">${product.desc || ''}</p>
                             </div>
-                            <a class="btn-details" href="${product.detailsUrl}">
+                            <a class="btn-details" href="${finalLink}" target="_blank">
                                 View Details <i class="fas fa-angle-right"></i>
                             </a>
                         </div>
@@ -710,13 +832,25 @@
         });
     }
 
+    // ------------------- Filter Logic -------------------
     function filterProducts() {
         const brandFilter = document.getElementById('brand-filter').value;
         const hpFilter = document.getElementById('hp-filter').value;
 
-        const filtered = portableACProducts.filter(p => {
-            let brandMatch = (brandFilter === 'all' || p.brand === brandFilter);
-            let hpMatch = (hpFilter === 'all' || p.hp === hpFilter);
+        const filtered = portableACProductsAll.filter(p => {
+            const pBrand = normalizeBrand(p.brand || '').trim().toLowerCase();
+            const fBrand = brandFilter.trim().toLowerCase();
+            let brandMatch = (brandFilter === 'all' || pBrand === fBrand);
+
+            // HP Filter logic
+            let hpMatch = false;
+            if (hpFilter === 'all') {
+                hpMatch = true;
+            } else {
+                // Exact string match for now since legacy data is "1.0", "1.5"
+                const pHp = (p.hp || "").toString();
+                if (pHp === hpFilter) hpMatch = true;
+            }
 
             return brandMatch && hpMatch;
         });
