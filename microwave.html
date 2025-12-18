@@ -440,7 +440,7 @@
             padding: 4px 10px;
             border-radius: 6px;
             font-weight: 600;
-            text-transform: uppercase;
+            text-transform: capitalize;
             letter-spacing: 0.5px;
         }
 
@@ -475,6 +475,14 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
             filter: brightness(1.1);
+        }
+
+        /* ------------------- Loading Container ------------------- */
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-sub);
+            font-size: 1.2rem;
         }
 
         /* ------------------- Footer ------------------- */
@@ -512,7 +520,7 @@
     </style>
 </head>
 
-<body onload="renderProducts()">
+<body onload="fetchProducts()">
 
     <!-- Menu Button -->
     <div class="menu-icon" onclick="toggleNav()">
@@ -579,12 +587,18 @@
                         <option value="Midea">Midea</option>
                         <option value="Sharp">Sharp</option>
                         <option value="Khind">Khind</option>
+                        <!-- New brands will appear here dynamically if you add logic, or stay static -->
                     </select>
                 </div>
             </div>
         </div>
 
         <div class="products-wrapper" id="products-container">
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="loading-container">
+                <i class="fas fa-spinner fa-spin"></i> Loading Microwave products...
+            </div>
+
             <!-- JS will render products here -->
             <p id="no-products" style="text-align: center; color: var(--text-sub); display: none; margin-top: 40px; font-size: 1.2rem;">
                 No products found matching your criteria.
@@ -598,7 +612,7 @@
     </div>
 
 <script>
-    // ------------------- Navigation Logic (Push Effect) -------------------
+    // ------------------- Navigation Logic -------------------
     window.toggleNav = function() {
         const sidebar = document.getElementById("mySidebar");
         const overlay = document.getElementById("overlay");
@@ -631,8 +645,8 @@
         document.getElementById('filter-content').classList.toggle('active');
     });
 
-    // ------------------- Product Data (From microwave (1).html) -------------------
-    const microwaveProducts = [
+    // ------------------- 🔴 Legacy Product Data -------------------
+    const legacyProducts = [
         // Midea
         {
             model: "Midea MM720CGE (20L Rotary)",
@@ -640,7 +654,7 @@
             image: "midea-mm720cge.jpg",
             desc: "20L Capacity, 700W Power, 35 minutes Timer, Knob Control. Supports Defrost by Time. Basic model, simple to operate.",
             detailsUrl: "microwave-details/midea-mm720cge.html",
-            category: "Basic"
+            tag: "Basic"
         },
         // Sharp
         {
@@ -649,7 +663,7 @@
             image: "sharp-r219ek-microwave.jpg",
             desc: "20L Capacity, Rotary Control. Features: 2-Way Defrost, Energy-Saving Mode, Easy-Push Door. Supports Steam, Reheat, Defrost, and Cooking.",
             detailsUrl: "microwave-details/sharp-r219ek.html",
-            category: "Basic"
+            tag: "Basic"
         },
         // Khind
         {
@@ -658,17 +672,99 @@
             image: "khind-m020g.jpg",
             desc: "20L Capacity, 700W Microwave Power, 1000W Grill Power. Features combination cooking for crispy results. 6 power levels, defrost function.",
             detailsUrl: "microwave-details/khind-m020g.html",
-            category: "Grill"
+            tag: "Grill"
         }
     ];
 
+    // ------------------- 🔴 API & Data Logic -------------------
+    
+    // Google Sheets OpenSheet API
+    const API_URL = "https://opensheet.elk.sh/10h6_p5GA1NzH9zFv-ZKUZgC3k0cMF_KHor-qumWRHB0/Sheet1"; 
+    
+    // 图片基础路径 (空字符串表示直接在根目录查找，或者使用完整 HTTP 链接)
+    const IMAGE_BASE_PATH = ""; 
+
+    // Global array for ALL products
+    let microwaveProducts = [];
+
+    // Helper: 模糊搜索对象的键
+    function getValueByFuzzyKey(item, keyword) {
+        if (!item) return undefined;
+        const keys = Object.keys(item);
+        const foundKey = keys.find(k => k.toLowerCase().includes(keyword.toLowerCase()));
+        return foundKey ? item[foundKey] : undefined;
+    }
+
+    // Helper: Normalize Brand Name (Capitalize First Letter)
+    function normalizeBrand(brand) {
+        if (!brand) return 'Unknown';
+        return brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase();
+    }
+
+    // 🔴 3. Fetch Data Function
+    async function fetchProducts() {
+        const loadingIndicator = document.getElementById('loading-indicator');
+        let fetchedProducts = [];
+
+        try {
+            console.log("Fetching Microwave data from API...");
+            // cache: 'no-store' ensures fresh data
+            const response = await fetch(API_URL, { cache: 'no-store' });
+            const data = await response.json();
+            
+            console.log("Microwave Data fetched:", data);
+
+            // Format new data
+            fetchedProducts = data.map(item => {
+                // Brand
+                let brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
+                brand = normalizeBrand(brand);
+
+                // Model
+                const model = getValueByFuzzyKey(item, 'model') || 'Unknown';
+                
+                // Tag (Grill/Basic)
+                const tag = getValueByFuzzyKey(item, 'tag') || getValueByFuzzyKey(item, 'type') || getValueByFuzzyKey(item, 'category') || '';
+
+                // Image
+                let image = getValueByFuzzyKey(item, 'image') || '';
+                image = image.trim(); // Remove spaces
+
+                // Description
+                const desc = getValueByFuzzyKey(item, 'description') || getValueByFuzzyKey(item, 'desc') || '';
+
+                // Link
+                let detailsUrl = '';
+                const linkKey = Object.keys(item).find(k => k.toLowerCase().includes('html link'));
+                if (linkKey) {
+                    detailsUrl = item[linkKey];
+                } else {
+                    detailsUrl = getValueByFuzzyKey(item, 'link') || '';
+                }
+
+                return { brand, model, image, desc, detailsUrl, tag };
+            });
+
+        } catch (error) {
+            console.error("API Fetch Failed, showing legacy only:", error);
+        }
+
+        // Merge: Legacy + Fetched
+        microwaveProducts = [...legacyProducts, ...fetchedProducts];
+
+        // Hide loading, show content
+        loadingIndicator.style.display = 'none';
+        renderProducts(microwaveProducts);
+    }
+
     // ------------------- Render Function -------------------
-    function renderProducts(productsToRender = microwaveProducts) {
+    function renderProducts(productsToRender = []) {
         const container = document.getElementById('products-container');
         const noProducts = document.getElementById('no-products');
         
-        container.innerHTML = '';
-        container.appendChild(noProducts);
+        // Clear previous sections but keep no-products msg
+        const sections = container.querySelectorAll('.brand-section');
+        sections.forEach(section => section.remove());
 
         if (productsToRender.length === 0) {
             noProducts.style.display = 'block';
@@ -677,10 +773,11 @@
             noProducts.style.display = 'none';
         }
 
-        const brands = [...new Set(productsToRender.map(p => p.brand))];
+        // Get unique normalized brands
+        const brands = [...new Set(productsToRender.map(p => normalizeBrand(p.brand)))];
 
         brands.forEach(brand => {
-            const brandProducts = productsToRender.filter(p => p.brand === brand);
+            const brandProducts = productsToRender.filter(p => normalizeBrand(p.brand) === brand);
             
             if (brandProducts.length > 0) {
                 const brandSection = document.createElement('div');
@@ -695,21 +792,40 @@
                 grid.className = 'product-grid';
 
                 brandProducts.forEach(product => {
+                    // Image Fallback
+                    let imgSrc = product.image || '';
+                    if (imgSrc && !imgSrc.startsWith('http')) {
+                        imgSrc = IMAGE_BASE_PATH + imgSrc;
+                    }
+                    if (!imgSrc) {
+                        imgSrc = 'https://placehold.co/300x300/1e293b/FFF?text=Microwave';
+                    }
+
+                    // Link Logic: Use provided link OR generate WhatsApp
+                    let finalLink = product.detailsUrl;
+                    if (!finalLink || finalLink === '#') {
+                        finalLink = `https://wa.me/601110948581?text=I want to inquire about ${product.model}`;
+                    }
+
+                    // Tags Logic
+                    let tagsHtml = '';
+                    if (product.tag) tagsHtml += `<span class="tag tag-info">${product.tag}</span>`;
+
                     const card = document.createElement('div');
                     card.className = 'product-card';
                     card.innerHTML = `
                         <div class="card-image-wrapper">
-                            <img src="${product.image}" alt="${product.model}" onerror="this.src='https://placehold.co/300x300/1e293b/FFF?text=Microwave'">
+                            <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/300x300/1e293b/FFF?text=Microwave'">
                         </div>
                         <div class="product-info">
                             <div>
                                 <h3>${product.model}</h3>
                                 <div class="product-tags">
-                                    <span class="tag tag-info">${product.category}</span>
+                                    ${tagsHtml}
                                 </div>
                                 <p class="product-desc">${product.desc}</p>
                             </div>
-                            <a class="btn-details" href="${product.detailsUrl}">
+                            <a class="btn-details" href="${finalLink}" target="_blank">
                                 View Details <i class="fas fa-angle-right"></i>
                             </a>
                         </div>
@@ -723,11 +839,15 @@
         });
     }
 
+    // ------------------- Filter Logic -------------------
     function filterProducts() {
         const brandFilter = document.getElementById('brand-filter').value;
 
         const filtered = microwaveProducts.filter(p => {
-            let brandMatch = (brandFilter === 'all' || p.brand === brandFilter);
+            const pBrand = normalizeBrand(p.brand || '').trim().toLowerCase();
+            const fBrand = brandFilter.trim().toLowerCase();
+            let brandMatch = (brandFilter === 'all' || pBrand === fBrand);
+            
             return brandMatch;
         });
 
