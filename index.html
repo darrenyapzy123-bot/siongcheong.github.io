@@ -108,8 +108,11 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 40px;
-            height: 80px;
+            /* [UPDATED] Increased height to accommodate larger logo */
+            height: 120px; 
             background-color: transparent;
+            position: relative;
+            z-index: 100; /* Ensure header is above hero images */
         }
 
         .header-left {
@@ -152,13 +155,19 @@
 
         .header-right img {
             height: auto;
-            width: 250px; /* Modified to 250px */
+            /* [UPDATED] Increased Logo Width */
+            width: 380px; 
+            max-width: 50vw; /* Responsive constraint */
         }
 
-        /* ------------------- Hero Section ------------------- */
+        /* ------------------- Hero Section with Rotating Images ------------------- */
         .hero {
             text-align: center;
-            padding: 80px 20px 40px;
+            padding: 100px 20px 80px;
+            position: relative; 
+            overflow: hidden; 
+            /* To allow 3D depth perception for children */
+            perspective: 1200px;
         }
 
         .hero h1 {
@@ -167,13 +176,109 @@
             color: var(--text-main);
             margin-bottom: 15px;
             font-weight: 700;
+            position: relative;
+            z-index: 20; /* High z-index to stay above floating images */
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8); /* Stronger shadow for readability */
         }
 
         .hero p {
             color: var(--accent);
             font-size: 1.2rem;
             letter-spacing: 0.5px;
+            position: relative;
+            z-index: 20; /* High z-index */
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
         }
+
+        /* Container for the background floating images */
+        .floating-shapes {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 400px; /* Constrain height */
+            transform: translate(-50%, -50%);
+            z-index: 10; /* Behind text (20) */
+            pointer-events: none;
+            transform-style: preserve-3d;
+        }
+
+        .shape {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            /* [UPDATE] Larger Size for visibility */
+            width: 240px;
+            height: 240px;
+            margin-left: -120px; /* Center horizontally */
+            margin-top: -120px; /* Center vertically */
+            
+            border-radius: 24px; 
+            object-fit: cover;
+            
+            /* Visual Style */
+            background-color: var(--bg-card); /* Fallback */
+            border: 2px solid rgba(41, 182, 246, 0.3);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5); 
+            
+            /* Animation Setting */
+            opacity: 0; /* Start hidden until animation kicks in */
+            animation: orbit-cycle 15s infinite linear;
+            will-change: transform, opacity;
+        }
+
+        /* Stagger the animation so they are evenly spaced */
+        .s1 {
+            animation-delay: 0s;
+        }
+        
+        .s2 {
+            animation-delay: -5s; /* 1/3 of 15s */
+        }
+        
+        .s3 {
+            animation-delay: -10s; /* 2/3 of 15s */
+        }
+
+        /* [NEW ANIMATION] Orbit Cycle with Dynamic Rotation
+           - Moves from Back (Small) to Front (Big)
+           - ROTATES to face direction (Left/Right)
+        */
+        @keyframes orbit-cycle {
+            0% {
+                /* Back Center: Faces Front (neutral) */
+                transform: translate3d(0, 0, -300px) rotateY(0deg) scale(0.6); 
+                opacity: 0.3;
+                z-index: 1;
+            }
+            25% {
+                /* Right Side: Faces Right (Outward) */
+                /* rotateY(-45deg) makes the left edge come forward, facing Right */
+                transform: translate3d(350px, 0, -150px) rotateY(-45deg) scale(0.8); 
+                opacity: 0.6;
+                z-index: 2;
+            }
+            50% {
+                /* Front Center: Faces Front */
+                transform: translate3d(0, 0, 0px) rotateY(0deg) scale(1.1); 
+                opacity: 1; 
+                z-index: 5;
+            }
+            75% {
+                /* Left Side: Faces Left (Outward) */
+                /* rotateY(45deg) makes the right edge come forward, facing Left */
+                transform: translate3d(-350px, 0, -150px) rotateY(45deg) scale(0.8); 
+                opacity: 0.6;
+                z-index: 2;
+            }
+            100% {
+                /* Back Center: Faces Front */
+                transform: translate3d(0, 0, -300px) rotateY(0deg) scale(0.6); 
+                opacity: 0.3;
+                z-index: 1;
+            }
+        }
+
 
         /* ------------------- Section Titles ------------------- */
         .section-title {
@@ -309,9 +414,21 @@
         }
         
         @media (max-width: 768px) {
-            header { padding: 0 20px; }
+            header { padding: 0 20px; height: 100px; } /* Slightly smaller header on mobile */
             .hero h1 { font-size: 2.5rem; }
             .categories-container { grid-template-columns: 1fr; max-width: 400px; }
+            
+            /* Adjust floating images for mobile */
+            .shape { width: 150px; height: 150px; margin-left: -75px; margin-top: -75px; }
+            
+            /* Reduce orbit width and rotation on mobile */
+            @keyframes orbit-cycle {
+                0% { transform: translate3d(0, 0, -200px) rotateY(0deg) scale(0.6); opacity: 0.3; z-index: 1; }
+                25% { transform: translate3d(120px, 0, -100px) rotateY(-30deg) scale(0.8); opacity: 0.6; z-index: 2; }
+                50% { transform: translate3d(0, 0, 0px) rotateY(0deg) scale(1.1); opacity: 1; z-index: 5; }
+                75% { transform: translate3d(-120px, 0, -100px) rotateY(30deg) scale(0.8); opacity: 0.6; z-index: 2; }
+                100% { transform: translate3d(0, 0, -200px) rotateY(0deg) scale(0.6); opacity: 0.3; z-index: 1; }
+            }
         }
     </style>
 </head>
@@ -380,6 +497,17 @@
 
         <!-- Hero -->
         <div class="hero">
+            <!-- Background Floating Images -->
+            <div class="floating-shapes">
+                <!-- 
+                   Using placeholder logic again for preview safety.
+                   Ensure sct1.jpg, sct2.jpg, sct3.jpg are in your folder.
+                -->
+                <img src="sct1.jpg" class="shape s1" alt="Decor 1">
+                <img src="sct2.jpg" class="shape s2" alt="Decor 2">
+                <img src="sct3.jpg" class="shape s3" alt="Decor 3">
+            </div>
+
             <h1>Siong Cheong Trading</h1>
             <p>Elevating life with premium quality appliances.</p>
         </div>
