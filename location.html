@@ -54,7 +54,7 @@
         /* ------------------- Sidebar (Freezer Style) ------------------- */
         .menu-icon {
             position: fixed;
-            top: 25px;
+            top: 35px; /* Adjusted for larger header */
             left: 25px;
             z-index: 10000;
             cursor: pointer;
@@ -168,17 +168,22 @@
         /* ------------------- Header ------------------- */
         header {
             background: rgba(15, 23, 42, 0.90);
-            padding: 20px;
+            padding: 0 40px; /* Consistent padding */
             color: white;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
+            display: flex; /* Flex layout to align items */
+            align-items: center;
+            justify-content: center; /* Center content */
+            height: 120px; /* Increased height */
             position: relative;
-            padding-left: 60px; 
-            width: 100%;
             box-sizing: border-box; 
             font-family: 'Playfair Display', serif;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .header-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .header-logo-right {
@@ -186,7 +191,7 @@
             right: 20px;
             top: 50%;
             transform: translateY(-50%);
-            width: 250px;
+            width: 380px; /* Increased Size */
             height: auto;
             object-fit: contain;
         }
@@ -259,14 +264,14 @@
 
         .location-info h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.5rem; /* Bigger Title */
+            font-size: 2.2rem; /* Adjusted Title Size */
             color: var(--text-main);
             margin-bottom: 20px;
             line-height: 1.2;
         }
 
         .location-info p {
-            font-size: 1.3rem; /* Bigger Text */
+            font-size: 1.2rem; /* Adjusted Text Size */
             color: var(--text-sub);
             line-height: 1.8;
             margin-bottom: 40px;
@@ -332,7 +337,7 @@
             .map-container {
                 flex: 1.5; /* Map takes more space */
                 height: auto; /* Stretch to fill height */
-                min-height: 600px; /* Ensure it's tall/big */
+                min-height: 500px; /* Ensure it's tall/big */
             }
         }
 
@@ -364,12 +369,14 @@
         }
 
         /* Responsive Text */
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
+            header { height: 100px; padding: 0 20px; }
+            .header-logo-right { width: 150px; } /* Mobile size */
             .hero-title { font-size: 2.5rem; }
-            .header-logo-right { width: 120px; }
-            .location-info h2 { font-size: 2rem; }
-            .location-info p { font-size: 1.1rem; }
+            .location-info h2 { font-size: 1.8rem; }
+            .location-info p { font-size: 1rem; }
             .map-container { height: 350px; }
+            .menu-icon { top: 25px; }
         }
     </style>
 </head>
@@ -387,6 +394,8 @@
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
         <a href="index.html">Home</a>
+        <a href="support.html" style="color:var(--accent); font-weight:bold;"><i class="fas fa-robot"></i> Smart Assistant</a>
+        
         <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
         <div class="submenu" style="display: block;">
             <a href="refrigerator.html">Refrigerator</a>
@@ -420,40 +429,66 @@
     <div id="main-content">
         
         <header>
-            Our Location
+            <div class="header-title">Our Locations</div>
             <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo-right" onerror="this.style.display='none'">
         </header>
 
         <div class="hero-section">
             <h1 class="hero-title">Visit Us</h1>
-            <p class="hero-subtitle">Find our showroom and service center easily.</p>
+            <p class="hero-subtitle">Find our showrooms and service centers easily.</p>
         </div>
 
         <div class="container">
             
+            <!-- Location 1: Kota Sentosa -->
             <div class="location-card">
                 <div class="location-info">
-                    <h2>SIONG CHEONG TRADING SB（B）</h2>
+                    <h2>SIONG CHEONG TRADING (HQ)</h2>
                     <p>
                         No. 13, Lot 3184, Sentosa Central,<br>
                         Jalan Penrissen, Kota Sentosa,<br>
                         93250 Kuching, Sarawak
                     </p>
                     
-                    <!-- Direct Link Button -->
                     <a href="https://maps.app.goo.gl/QwziW8derXDtCiGr8" target="_blank" class="btn-map">
                         <i class="fas fa-location-arrow"></i> Navigate Now
                     </a>
                 </div>
 
                 <div class="map-container">
-                    <!-- Embedded Google Map -->
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.455243886477!2d110.3298!3d1.4984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31fba0b000000001%3A0x1234567890abcdef!2sSiong%20Cheong%20Trading!5e0!3m2!1sen!2smy!4v1700000000000!5m2!1sen!2smy" 
                         allowfullscreen="" 
                         loading="lazy" 
                         referrerpolicy="no-referrer-when-downgrade"
-                        title="Siong Cheong Trading Location Map">
+                        title="Siong Cheong Sentosa Map">
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- Location 2: Aeroville Mall -->
+            <div class="location-card">
+                <div class="location-info">
+                    <h2>SIONG CHEONG TRADING (Aeroville)</h2>
+                    <p>
+                        Aeroville Mall,<br>
+                        Jalan Stutong Baru,<br>
+                        93350 Kuching, Sarawak
+                    </p>
+                    
+                    <a href="https://www.google.com/maps/search/Siong+Cheong+Trading+Aeroville+Mall" target="_blank" class="btn-map">
+                        <i class="fas fa-location-arrow"></i> Navigate Now
+                    </a>
+                </div>
+
+                <div class="map-container">
+                    <!-- Using a general embedded map for Aeroville Mall area since exact CID isn't provided -->
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.385759714856!2d110.3758!3d1.5305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31fba761a660c41f%3A0x9597255755500000!2sAeroville%20Mall!5e0!3m2!1sen!2smy!4v1700000000001!5m2!1sen!2smy" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Siong Cheong Aeroville Map">
                     </iframe>
                 </div>
             </div>
@@ -499,4 +534,3 @@
     </script>
 </body>
 </html>
-
