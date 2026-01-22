@@ -108,7 +108,6 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 40px;
-            /* [UPDATED] Increased height to accommodate larger logo */
             height: 120px; 
             background-color: transparent;
             position: relative;
@@ -153,9 +152,22 @@
             color: var(--text-main);
         }
 
+        /* Highlight for the new link */
+        .smart-link {
+            color: var(--accent) !important;
+            font-weight: bold;
+            border: 1px solid var(--accent);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+        
+        .smart-link:hover {
+            background-color: var(--accent);
+            color: var(--bg-body) !important;
+        }
+
         .header-right img {
             height: auto;
-            /* [UPDATED] Increased Logo Width */
             width: 380px; 
             max-width: 50vw; /* Responsive constraint */
         }
@@ -207,7 +219,6 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            /* [UPDATE] Larger Size for visibility */
             width: 240px;
             height: 240px;
             margin-left: -120px; /* Center horizontally */
@@ -240,39 +251,29 @@
             animation-delay: -10s; /* 2/3 of 15s */
         }
 
-        /* [NEW ANIMATION] Orbit Cycle with Dynamic Rotation
-           - Moves from Back (Small) to Front (Big)
-           - ROTATES to face direction (Left/Right)
-        */
+        /* [NEW ANIMATION] Orbit Cycle with Dynamic Rotation */
         @keyframes orbit-cycle {
             0% {
-                /* Back Center: Faces Front (neutral) */
                 transform: translate3d(0, 0, -300px) rotateY(0deg) scale(0.6); 
                 opacity: 0.3;
                 z-index: 1;
             }
             25% {
-                /* Right Side: Faces Right (Outward) */
-                /* rotateY(-45deg) makes the left edge come forward, facing Right */
                 transform: translate3d(350px, 0, -150px) rotateY(-45deg) scale(0.8); 
                 opacity: 0.6;
                 z-index: 2;
             }
             50% {
-                /* Front Center: Faces Front */
                 transform: translate3d(0, 0, 0px) rotateY(0deg) scale(1.1); 
                 opacity: 1; 
                 z-index: 5;
             }
             75% {
-                /* Left Side: Faces Left (Outward) */
-                /* rotateY(45deg) makes the right edge come forward, facing Left */
                 transform: translate3d(-350px, 0, -150px) rotateY(45deg) scale(0.8); 
                 opacity: 0.6;
                 z-index: 2;
             }
             100% {
-                /* Back Center: Faces Front */
                 transform: translate3d(0, 0, -300px) rotateY(0deg) scale(0.6); 
                 opacity: 0.3;
                 z-index: 1;
@@ -414,14 +415,12 @@
         }
         
         @media (max-width: 768px) {
-            header { padding: 0 20px; height: 100px; } /* Slightly smaller header on mobile */
+            header { padding: 0 20px; height: 100px; } 
             .hero h1 { font-size: 2.5rem; }
             .categories-container { grid-template-columns: 1fr; max-width: 400px; }
             
-            /* Adjust floating images for mobile */
             .shape { width: 150px; height: 150px; margin-left: -75px; margin-top: -75px; }
             
-            /* Reduce orbit width and rotation on mobile */
             @keyframes orbit-cycle {
                 0% { transform: translate3d(0, 0, -200px) rotateY(0deg) scale(0.6); opacity: 0.3; z-index: 1; }
                 25% { transform: translate3d(120px, 0, -100px) rotateY(-30deg) scale(0.8); opacity: 0.6; z-index: 2; }
@@ -438,8 +437,10 @@
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
         <a href="index.html" class="active" style="color:var(--accent)">Home</a>
+        <!-- NEW LINK IN SIDEBAR -->
+        <a href="support.html" style="color:#29b6f6; font-weight:bold;"><i class="fas fa-robot"></i> Smart Assistant</a>
+        
         <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
-        <!-- 这里的 ID sidebar-submenu 很重要，用来动态插入新分类 -->
         <div class="submenu" id="sidebar-submenu">
             <a href="refrigerator.html">Refrigerator</a>
             <a href="chiller.html">Chiller</a>
@@ -459,7 +460,6 @@
             <a href="air_purifier.html">Air Purifier</a>
             <a href="speaker.html">Speaker</a>
             <a href="small.html">Small Appliances</a>
-            <!-- 动态分类会自动插入到这里 -->
         </div>
         <a href="about.html">About Us</a>
         <a href="location.html">Our Location</a>
@@ -485,11 +485,12 @@
                 <a href="index.html" style="color: var(--text-main);">Home</a>
                 <a href="javascript:void(0)" onclick="toggleNav()">Products</a>
                 <a href="about.html">About Us</a>
+                <!-- NEW LINK IN HEADER -->
+                <a href="support.html" class="smart-link"><i class="fas fa-robot"></i> Smart Assistant</a>
                 <a href="contact.html">Contact</a>
             </div>
 
             <div class="header-right">
-                <!-- Using a placeholder or text if image is missing -->
                 <img src="SCT_Logo.png" alt="SCT" onerror="this.style.display='none'; document.getElementById('text-logo-right').style.display='block';">
                 <span id="text-logo-right" style="display:none; font-weight:bold; color:var(--accent);">SCT</span>
             </div>
@@ -497,12 +498,7 @@
 
         <!-- Hero -->
         <div class="hero">
-            <!-- Background Floating Images -->
             <div class="floating-shapes">
-                <!-- 
-                   Using placeholder logic again for preview safety.
-                   Ensure sct1.jpg, sct2.jpg, sct3.jpg are in your folder.
-                -->
                 <img src="sct1.jpg" class="shape s1" alt="Decor 1">
                 <img src="sct2.jpg" class="shape s2" alt="Decor 2">
                 <img src="sct3.jpg" class="shape s3" alt="Decor 3">
@@ -515,7 +511,6 @@
         <!-- Categories Section -->
         <div class="section-title">Browse Categories</div>
         
-        <!-- 这里包含了静态分类，新分类也会追加到这里 -->
         <div class="categories-container" id="categories-container">
             <!-- Static Categories will be injected here by JS -->
         </div>
@@ -575,7 +570,6 @@
             { title: "Washer", desc: "Top load and front load washers.", link: "washer.html", bgText: "Washer" },
             { title: "Dryer", desc: "Efficient clothes dryers.", link: "dryer.html", bgText: "Dryer" },
             { title: "Kitchen", desc: "Modern appliances for your kitchen.", link: "kitchen.html", bgText: "Kitchen" },
-            // ... truncated for brevity ...
         ];
 
         const categoriesContainer = document.getElementById('categories-container');
@@ -599,24 +593,19 @@
         const API_URL = "https://sheetdb.io/api/v1/hsr2y6r8elmum"; 
 
         async function loadDynamicCategories() {
-            // 我们直接使用同一个容器，这样新内容就会排在后面
             const container = document.getElementById('categories-container');
-            // 获取侧边栏的容器
             const sidebarContainer = document.getElementById('sidebar-submenu');
             
-            // 添加一个临时的加载提示卡片
             const loadingCard = document.createElement('div');
             loadingCard.className = 'loading-card';
             loadingCard.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading more...';
             container.appendChild(loadingCard);
             
             try {
-                // 1. 获取数据 (no-store 防止缓存)
                 console.log("正在请求 API:", API_URL);
                 const response = await fetch(API_URL, { cache: 'no-store' });
                 const data = await response.json();
                 
-                // 移除加载提示
                 if(container.contains(loadingCard)) {
                     container.removeChild(loadingCard);
                 }
@@ -626,7 +615,6 @@
                     return;
                 }
 
-                // 2. 生成 HTML 并追加
                 data.forEach(item => {
                     const title = item['Category name'] || 'Untitled';
                     const desc = item['description'] || '';
@@ -636,7 +624,7 @@
                     // --- A. 添加到主页分类列表 ---
                     const card = document.createElement('a');
                     card.href = link;
-                    card.className = 'category-card'; // 样式与旧分类完全一致
+                    card.className = 'category-card'; 
                     card.innerHTML = `
                         <div>
                             <div class="cat-title">${title}</div>
@@ -648,16 +636,12 @@
                     container.appendChild(card);
 
                     // --- B. 添加到侧边栏菜单 ---
-                    // 修正：主要检查标题是否重复，因为链接可能是暂时为空的 #
-                    // 如果标题已经存在于侧边栏中，就不添加了
                     const existingLinks = sidebarContainer.querySelectorAll('a');
                     let exists = false;
                     existingLinks.forEach(l => {
-                        // 清除空格并转小写进行比较，增加容错率
                         if(l.textContent.trim().toLowerCase() === title.trim().toLowerCase()) {
                             exists = true;
                         }
-                        // 或者如果链接完全一样（且不是 #），也算重复
                         if(link !== '#' && l.getAttribute('href') === link) {
                             exists = true;
                         }
@@ -666,7 +650,7 @@
                     if (!exists) {
                         const sidebarLink = document.createElement('a');
                         sidebarLink.href = link;
-                        sidebarLink.textContent = title; // 侧边栏只显示标题
+                        sidebarLink.textContent = title; 
                         sidebarContainer.appendChild(sidebarLink);
                     }
                 });
@@ -678,10 +662,7 @@
                 }
             }
         }
-
-        // 页面加载完立即执行
         loadDynamicCategories();
-
     </script>
 </body>
 </html>
