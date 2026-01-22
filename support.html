@@ -29,10 +29,10 @@
             display: flex;
             flex-direction: column;
             margin: 0;
-            overflow-x: hidden; /* Prevent horizontal scroll when sidebar opens */
+            overflow-x: hidden;
         }
 
-        /* ------------------- Sidebar Styles (Copied from Index) ------------------- */
+        /* ------------------- Sidebar Styles ------------------- */
         .sidebar {
             height: 100%;
             width: 0;
@@ -92,7 +92,6 @@
             display: none;
         }
 
-        /* Main Content Wrapper for Push Effect */
         #main-content {
             transition: margin-left 0.5s;
             width: 100%;
@@ -108,7 +107,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 40px;
-            height: 100px;
+            height: 120px;
             background-color: transparent;
             border-bottom: 1px solid var(--border-color);
         }
@@ -139,7 +138,7 @@
             color: var(--text-sub);
             text-decoration: none;
             transition: 0.3s;
-            display: flex; /* Ensure icon aligns */
+            display: flex;
             align-items: center;
             gap: 8px;
         }
@@ -164,6 +163,37 @@
             color: var(--text-sub);
             font-size: 1.1rem;
             margin-bottom: 40px;
+        }
+
+        /* Language Selector Styles */
+        .language-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .lang-btn {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-sub);
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--text-main);
+        }
+
+        .lang-btn.active {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: #000; /* Dark text for contrast */
+            font-weight: bold;
         }
 
         /* Search Box Styles */
@@ -224,12 +254,14 @@
         .result-body {
             color: var(--text-sub);
             line-height: 1.6;
+            font-size: 1.05rem;
         }
 
         .error-message {
             color: #ef5350;
             margin-top: 20px;
             display: none;
+            line-height: 1.6;
         }
 
         @keyframes fadeIn {
@@ -272,17 +304,19 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            header { padding: 0 20px; }
+            header { padding: 0 20px; height: 100px; }
             .assistant-title { font-size: 2rem; }
             .search-input { font-size: 1rem; padding: 15px 45px 15px 20px; }
-            .brand-name { font-size: 16px; } /* Smaller font on mobile to fit */
+            .brand-name { font-size: 16px; }
             .header-left { gap: 10px; }
+            .language-selector { gap: 10px; }
+            .lang-btn { padding: 6px 12px; font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar (Identical to Index) -->
+    <!-- Sidebar -->
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
         <a href="index.html">Home</a>
@@ -322,7 +356,7 @@
 
         <header>
             <div class="header-left">
-                <!-- Menu Icon added here -->
+                <!-- Menu Icon -->
                 <div class="menu-icon" onclick="toggleNav()">
                     <i class="fas fa-bars"></i>
                 </div>
@@ -333,24 +367,32 @@
         </header>
 
         <div class="assistant-container">
-            <div class="assistant-title">How can we help?</div>
-            <div class="assistant-desc">Ask about our appliance features, warranty, or services.</div>
+            <div class="assistant-title">Smart Assistant</div>
+            <div class="assistant-desc" id="assistDesc">Choose your language and ask about our products.</div>
 
+            <!-- Language Selector -->
+            <div class="language-selector">
+                <button class="lang-btn active" onclick="setLanguage('en', this)">English</button>
+                <button class="lang-btn" onclick="setLanguage('ms', this)">Bahasa Melayu</button>
+                <button class="lang-btn" onclick="setLanguage('zh', this)">中文</button>
+            </div>
+
+            <!-- Suggestions Tags -->
             <div class="suggestions">
-                <div class="tag" onclick="fillInput('fridge inverter')">Inverter Fridge</div>
-                <div class="tag" onclick="fillInput('ac quiet')">Quiet AC</div>
-                <div class="tag" onclick="fillInput('warranty')">Warranty</div>
-                <div class="tag" onclick="fillInput('delivery')">Delivery</div>
+                <div class="tag" onclick="fillInput('fridge')">Fridge / Peti Sejuk</div>
+                <div class="tag" onclick="fillInput('aircond')">Aircond / 冷气</div>
+                <div class="tag" onclick="fillInput('payment')">Payment / Bayaran</div>
+                <div class="tag" onclick="fillInput('warranty')">Warranty / 保修</div>
             </div>
 
             <div class="search-box-wrapper">
-                <input type="text" id="userQuestion" class="search-input" placeholder="Type your question here (e.g., 'Does the freezer have no frost?')..." onkeypress="handleKeyPress(event)">
+                <input type="text" id="userQuestion" class="search-input" placeholder="Type your question here..." onkeypress="handleKeyPress(event)">
                 <i class="fas fa-search search-icon" onclick="findAnswer()"></i>
             </div>
 
             <div id="resultCard" class="result-card">
                 <div class="result-title">
-                    <i class="fas fa-lightbulb"></i> Answer
+                    <i class="fas fa-lightbulb"></i> <span id="answerLabel">Answer</span>
                 </div>
                 <div id="resultBody" class="result-body">
                     <!-- Answer goes here -->
@@ -358,7 +400,7 @@
             </div>
 
             <div id="errorMessage" class="error-message">
-                Sorry, I couldn't find an answer for that. Please try using keywords like "fridge", "warranty", or "payment".
+                <!-- Dynamic Error Message -->
             </div>
         </div>
 
@@ -368,77 +410,47 @@
 
     </div>
 
+    <!-- 1. 引入外部数据库文件 -->
+    <script src="knowledge-base.js"></script>
+
     <script>
-        // ------------------- Sidebar Logic -------------------
-        function toggleNav() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-            const body = document.body;
-            const mainContent = document.getElementById("main-content");
-            const sidebarWidth = "250px";
-            const isOpened = sidebar.style.width === sidebarWidth;
+        // Default Language
+        let currentLang = 'en';
 
-            if (isOpened) {
-                sidebar.style.width = "0";
-                mainContent.style.marginLeft = "0";
-                overlay.style.display = "none";
-                body.style.overflow = "auto";
+        // ------------------- Language Logic -------------------
+        function setLanguage(lang, btnElement) {
+            currentLang = lang;
+
+            // 1. Update Button Styles
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+
+            // 2. Update Interface Text
+            const input = document.getElementById('userQuestion');
+            const desc = document.getElementById('assistDesc');
+            const answerLabel = document.getElementById('answerLabel');
+            
+            if(lang === 'zh') {
+                input.placeholder = "请输入问题 (例如：空调，保修)...";
+                desc.textContent = "请选择语言并询问有关我们产品的问题。";
+                answerLabel.textContent = "回答";
+            } else if(lang === 'ms') {
+                input.placeholder = "Taip soalan anda (Contoh: Aircond, Waranti)...";
+                desc.textContent = "Pilih bahasa anda dan tanya tentang produk kami.";
+                answerLabel.textContent = "Jawapan";
             } else {
-                sidebar.style.width = sidebarWidth;
-                mainContent.style.marginLeft = sidebarWidth;
-                overlay.style.display = "block";
-                body.style.overflow = "hidden";
+                input.placeholder = "Type your question here (e.g., Fridge, Warranty)...";
+                desc.textContent = "Choose your language and ask about our products.";
+                answerLabel.textContent = "Answer";
+            }
+
+            // 3. If there is already an answer shown, update it immediately to new language
+            const resultCard = document.getElementById('resultCard');
+            if (resultCard.style.display === 'block') {
+                findAnswer(); // Re-run search to fetch new language answer
             }
         }
-
-        function toggleSubmenu(element) {
-            const submenu = element.nextElementSibling;
-            if (submenu.style.display === "block") {
-                submenu.style.display = "none";
-            } else {
-                submenu.style.display = "block";
-            }
-        }
-
-        // ------------------- JS Database (Knowledge Base) -------------------
-        const knowledgeBase = [
-            {
-                keywords: ["fridge", "refrigerator", "cold", "food", "inverter"],
-                answer: "Our refrigerators are equipped with advanced **Inverter Technology** which saves up to 40% energy. They also feature **No-Frost** systems, so you never have to manually defrost them. Ideal for keeping vegetables fresh for longer."
-            },
-            {
-                keywords: ["freezer", "ice", "frozen"],
-                answer: "Our Chest Freezers offer massive storage capacity with **Dual Cooling** modes (can be used as fridge or freezer). They feature rapid freezing to lock in nutrients."
-            },
-            {
-                keywords: ["ac", "air conditioner", "cool", "hot", "quiet"],
-                answer: "Our Air Conditioners operate at an ultra-quiet **21dB**. They come with **Smart Wi-Fi Control** allowing you to cool your room before you arrive home using your phone."
-            },
-            {
-                keywords: ["washer", "washing", "laundry", "clean", "clothes"],
-                answer: "We offer Top Load and Front Load washers. Key features include **Steam Hygiene** (removes 99.9% bacteria) and **Water Magic Cube** technology for less tangling."
-            },
-            {
-                keywords: ["tv", "television", "screen", "4k", "smart"],
-                answer: "Our Smart TVs feature **4K UHD resolution** with Android TV systems built-in. You can easily access Netflix, YouTube, and cast from your phone."
-            },
-            {
-                keywords: ["delivery", "shipping", "ship", "arrive"],
-                answer: "We provide delivery within **3-5 working days**. For large appliances like Fridges and Washing Machines, we also offer basic installation services."
-            },
-            {
-                keywords: ["payment", "pay", "card", "cash", "installment"],
-                answer: "We accept Visa, Mastercard, Online Transfer, and E-Wallets. **0% Installment Plans** are available for purchases above RM500 (Terms Apply)."
-            },
-            {
-                keywords: ["warranty", "repair", "broken", "guarantee"],
-                answer: "All Siong Cheong Trading appliances come with a minimum **1-Year General Warranty**. Compressors and Motors typically have a **5-10 Year Warranty**. Please keep your receipt!"
-            },
-            {
-                keywords: ["contact", "phone", "email", "address", "location"],
-                answer: "You can find us at our showroom. Or call us at +60-12-345-6789. Click 'Contact Us' in the menu for the map location."
-            }
-        ];
 
         // ------------------- Search Logic -------------------
         function findAnswer() {
@@ -453,14 +465,19 @@
             resultCard.style.display = 'none';
             errorMessage.style.display = 'none';
 
-            // Simple Keyword Matching Algorithm
             let bestMatch = null;
             let maxKeywordsFound = 0;
+
+            if (typeof knowledgeBase === 'undefined') {
+                console.error("Database (knowledge-base.js) not loaded!");
+                alert("Error: Database file not loaded.");
+                return;
+            }
 
             knowledgeBase.forEach(item => {
                 let keywordsFound = 0;
                 item.keywords.forEach(keyword => {
-                    if (input.includes(keyword)) {
+                    if (input.includes(keyword.toLowerCase())) {
                         keywordsFound++;
                     }
                 });
@@ -471,26 +488,60 @@
                 }
             });
 
-            // Display Result
+            // Display Result based on current Language
             if (bestMatch) {
-                resultBody.innerHTML = bestMatch.answer;
+                // Get answer in current language, fallback to English if missing
+                const answerText = bestMatch.answers[currentLang] || bestMatch.answers['en'];
+                resultBody.innerHTML = answerText;
                 resultCard.style.display = 'block';
             } else {
+                // Show error message in current language
+                if(currentLang === 'zh') {
+                    errorMessage.innerHTML = "抱歉，找不到相关答案。<br>请尝试使用简单的关键词，如“空调”、“冰箱”或“付款”。";
+                } else if(currentLang === 'ms') {
+                    errorMessage.innerHTML = "Maaf, saya tidak dapat mencari jawapan untuk itu.<br>Sila cuba kata kunci mudah seperti \"Aircond\", \"Peti Sejuk\" atau \"Bayaran\".";
+                } else {
+                    errorMessage.innerHTML = "Sorry, I couldn't find an answer for that.<br>Please try simple keywords like \"AC\", \"Fridge\" or \"Payment\".";
+                }
                 errorMessage.style.display = 'block';
             }
         }
 
-        // Helper: Allow pressing 'Enter' to search
         function handleKeyPress(e) {
             if (e.key === 'Enter') {
                 findAnswer();
             }
         }
 
-        // Helper: Click suggestion tag to fill input
         function fillInput(text) {
             document.getElementById('userQuestion').value = text;
             findAnswer();
+        }
+
+        // ------------------- Sidebar Logic -------------------
+        function toggleNav() {
+            const sidebar = document.getElementById("mySidebar");
+            const overlay = document.getElementById("overlay");
+            const body = document.body;
+            const sidebarWidth = "250px";
+            const isOpened = sidebar.style.width === sidebarWidth;
+
+            if (isOpened) {
+                sidebar.style.width = "0";
+                document.getElementById("main-content").style.marginLeft = "0";
+                overlay.style.display = "none";
+                body.style.overflow = "auto";
+            } else {
+                sidebar.style.width = sidebarWidth;
+                document.getElementById("main-content").style.marginLeft = sidebarWidth;
+                overlay.style.display = "block";
+                body.style.overflow = "hidden";
+            }
+        }
+
+        function toggleSubmenu(element) {
+            const submenu = element.nextElementSibling;
+            submenu.style.display = submenu.style.display === "block" ? "none" : "block";
         }
     </script>
 </body>
