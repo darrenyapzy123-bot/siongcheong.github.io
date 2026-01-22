@@ -194,19 +194,22 @@
             padding-bottom: 50px;
         }
 
-        /* Slide Styles */
+        /* Slide Styles - Performance Optimized */
         .swiper-slide {
             background-position: center;
             background-size: cover;
             width: 280px;
-            height: 350px; /* Taller card aspect ratio like a phone */
+            height: 350px; 
             border-radius: 15px;
             background-color: var(--bg-card);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             overflow: hidden;
-            /* Reflection gives depth */
-            -webkit-box-reflect: below 1px linear-gradient(transparent, transparent, #0006);
+            /* Performance Boosters */
+            transform: translate3d(0,0,0);
+            will-change: transform; 
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .swiper-slide img {
@@ -215,6 +218,12 @@
             object-fit: cover;
             border-radius: 15px;
             display: block;
+            pointer-events: none; /* Prevent image drag interfering with swipe */
+        }
+
+        /* Adjust easing for continuous autoplay */
+        .swiper-wrapper {
+            transition-timing-function: linear !important;
         }
 
         /* ------------------- Footer ------------------- */
@@ -348,7 +357,6 @@
 
     <script>
         // ------------------- 🔴 API CONFIGURATION -------------------
-        // [UPDATED] Your actual Google Sheet API Link
         const API_URL = "https://opensheet.elk.sh/1xNrKZJfz8FJvVxNBciWpHqUSceaesn2oofho_jzYubs/Sheet1"; 
 
         // ------------------- Data Fetching Logic -------------------
@@ -358,12 +366,11 @@
                 const data = await response.json();
 
                 if (data.length === 0) {
-                    console.log("Sheet is empty, loading placeholders.");
                     loadPlaceholders(); 
                     return;
                 }
 
-                // Filter data into categories (Case Insensitive)
+                // Filter data
                 const showroomImages = data.filter(item => item.category && item.category.toLowerCase().includes('showroom'));
                 const displayImages = data.filter(item => item.category && item.category.toLowerCase().includes('display'));
                 const customerImages = data.filter(item => item.category && item.category.toLowerCase().includes('customer'));
@@ -373,12 +380,12 @@
                 renderSlides('wrapper-display', displayImages, 'swiper-2', 'load-2', 'Display');
                 renderSlides('wrapper-customer', customerImages, 'swiper-3', 'load-3', 'Customer');
 
-                // Initialize Swipers after DOM is updated
+                // Initialize Swipers after DOM update
                 initSwipers();
 
             } catch (error) {
                 console.error("Error loading gallery:", error);
-                loadPlaceholders(); // Fallback on error
+                loadPlaceholders(); 
             }
         }
 
@@ -387,14 +394,17 @@
             const swiperContainer = document.getElementById(swiperId);
             const loader = document.getElementById(loaderId);
 
+            let displayImages = images;
+
             if (images.length === 0) {
-                // If no images found for this category, load placeholders so the row isn't empty
+                // If empty, create placeholders
                 wrapper.innerHTML = createPlaceholderHTML(fallbackTitle);
             } else {
-                // Duplicate images if too few to ensure smooth loop
-                let displayImages = images;
-                if(images.length < 6) {
-                    displayImages = [...images, ...images, ...images]; // Triple them up
+                // [FIX] Duplicate images to ensure smooth looping without gaps
+                // Swiper loop mode needs enough slides to cover the view + buffer
+                // We ensure at least 12 slides for safety
+                while (displayImages.length < 12) {
+                    displayImages = [...displayImages, ...images];
                 }
 
                 wrapper.innerHTML = displayImages.map(item => `
@@ -409,9 +419,9 @@
         }
 
         function createPlaceholderHTML(text) {
-            // Colors for placeholders
             const bg = text === 'Display' ? '29b6f6' : (text === 'Customer' ? '0f172a' : '1e293b');
-            return Array(8).fill(0).map((_, i) => 
+            // Ensure plenty of placeholders for smooth loop
+            return Array(12).fill(0).map((_, i) => 
                 `<div class="swiper-slide"><img src="https://via.placeholder.com/600x600/${bg}/fff?text=${text}+${i+1}" alt="Demo"></div>`
             ).join('');
         }
@@ -427,27 +437,34 @@
             initSwipers();
         }
 
-        // ------------------- Swiper Logic (3D Coverflow Loop) -------------------
+        // ------------------- Swiper Logic (Optimized for Performance) -------------------
         function initSwipers() {
             const commonSwiperConfig = {
                 effect: "coverflow",
                 grabCursor: true,
                 centeredSlides: true,
                 slidesPerView: "auto",
-                coverflowEffect: {
-                    rotate: 30, // Angle of rotation
-                    stretch: 0,
-                    depth: 100, // Depth perspective
-                    modifier: 1,
-                    slideShadows: true,
-                },
+                // [FIX] Important for looping with auto slides
+                loopedSlides: 10, 
                 loop: true,
-                speed: 1000,
-                autoplay: {
-                    delay: 2000,
-                    disableOnInteraction: false,
-                    pauseOnMouseEnter: true, // Stops when user hovers to look closer
+                // [FIX] Performance: Disable expensive shadows and reduce depth
+                coverflowEffect: {
+                    rotate: 30,
+                    stretch: 0,
+                    depth: 50, // Reduced from 100 for better performance
+                    modifier: 1,
+                    slideShadows: false, // DISABLED to fix lag
                 },
+                speed: 3000, // Slower for smoother linear feel
+                autoplay: {
+                    delay: 0, // Continuous flow
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                },
+                // [FIX] Optimization settings
+                watchSlidesProgress: true,
+                observer: true,
+                observeParents: true,
             };
 
             // Row 1 & 3 (Normal Direction - Left)
@@ -459,7 +476,7 @@
             new Swiper(".mySwiper2", {
                 ...commonSwiperConfig,
                 autoplay: {
-                    delay: 2000,
+                    delay: 0,
                     disableOnInteraction: false,
                     reverseDirection: true, 
                 },
