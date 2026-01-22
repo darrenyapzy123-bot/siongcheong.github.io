@@ -479,6 +479,17 @@
         // Initialize
         window.onload = function() {
             setLanguage('en', document.querySelector('.lang-btn.active'));
+
+            // [NEW] Check for URL parameter 'ask' from Product Page
+            const urlParams = new URLSearchParams(window.location.search);
+            const askQuery = urlParams.get('ask');
+            
+            if (askQuery) {
+                // Wait a bit for the welcome message to appear, then send the query
+                setTimeout(() => {
+                    handleSend(askQuery);
+                }, 800);
+            }
         };
 
         // ------------------- Language Logic -------------------
