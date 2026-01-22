@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Refrigerator Series | Siong Cheong Trading</title>
+    <title>Refrigerator Series | SIONG CHEONG TRADING SDN.BHD</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Playfair Display Font -->
@@ -52,10 +52,10 @@
             background-color: var(--bg-color);
         }
 
-        /* ------------------- Sidebar (Freezer Style) ------------------- */
+        /* ------------------- Sidebar (Updated with Smart Assistant) ------------------- */
         .menu-icon {
             position: fixed;
-            top: 25px;
+            top: 35px; /* Adjusted for larger header */
             left: 25px;
             z-index: 10000;
             cursor: pointer;
@@ -171,12 +171,13 @@
             backdrop-filter: blur(4px);
         }
 
-        /* ------------------- Header ------------------- */
+        /* ------------------- Header (Updated Size) ------------------- */
         header {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 80px;
+            /* [UPDATED] Height increased to 120px to match Index */
+            height: 120px;
             background: rgba(15, 23, 42, 0.90);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             position: relative;
@@ -197,14 +198,15 @@
             right: 20px;
             top: 50%;
             transform: translateY(-50%);
-            width: 150px;
+            /* [UPDATED] Width increased to 380px to match Index */
+            width: 380px;
             height: auto;
             object-fit: contain;
         }
 
         /* ------------------- Hero & Filter ------------------- */
         .hero-section {
-            padding-top: 80px; 
+            padding-top: 60px; 
             padding-bottom: 60px;
             text-align: center;
             background: radial-gradient(circle at center top, #1e293b 0%, #0f172a 70%);
@@ -337,10 +339,6 @@
             margin-bottom: 60px;
         }
 
-        .brand-section.hidden {
-            display: none;
-        }
-
         .section-title {
             text-align: center;
             font-family: var(--font-serif);
@@ -396,12 +394,14 @@
 
         .card-image-wrapper {
             width: 100%;
-            height: 220px;
+            /* [UPDATED] Aspect Ratio 1:1 for 1200x1200px images */
+            aspect-ratio: 1 / 1; 
+            height: auto; /* Allow height to adjust based on width */
             background-color: #fff; 
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 10px; /* Reduced padding for larger image */
             box-sizing: border-box;
             position: relative;
             overflow: hidden;
@@ -409,14 +409,14 @@
         }
 
         .card-image-wrapper img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures the whole 1200x1200px image is visible */
             transition: transform 0.5s ease;
         }
 
         .product-card:hover .card-image-wrapper img {
-            transform: scale(1.08);
+            transform: scale(1.05);
         }
 
         .product-info {
@@ -487,6 +487,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
             box-sizing: border-box;
+            cursor: pointer;
         }
 
         .btn-details:hover {
@@ -530,9 +531,11 @@
 
         /* Responsive */
         @media (max-width: 900px) { 
-            .header-logo-right { width: 150px; }
+            header { height: 100px; padding: 0 20px; }
+            .header-logo-right { width: 150px; } /* Mobile size */
             .hero-title { font-size: 2.5rem; padding: 0 10px; }
             .section-title { font-size: 1.6rem; }
+            .menu-icon { top: 25px; }
         }
     </style>
 </head>
@@ -550,6 +553,9 @@
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
         <a href="index.html">Home</a>
+        <!-- [UPDATED] Smart Assistant Link Added -->
+        <a href="support.html" style="color:var(--accent-blue); font-weight:bold;"><i class="fas fa-robot"></i> Smart Assistant</a>
+        
         <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
         <div class="submenu" style="display: block;">
             <a href="refrigerator.html" class="active" style="color:var(--accent-blue)">Refrigerator</a>
@@ -605,11 +611,7 @@
                         <option value="Toshiba">Toshiba</option>
                         <option value="Midea">Midea</option>
                         <option value="Hisense">Hisense</option>
-                        <option value="Dekka">Dekka</option>
-                        <option value="Nakama">Nakama</option>
-                        <option value="Narutron">Narutron</option>
-                        <option value="Khind">Khind</option>
-                        <option value="Skyworth">Skyworth</option>
+                        <!-- Add more brands dynamically or manually if needed -->
                     </select>
                 </div>
                 <div class="filter-group">
@@ -629,12 +631,11 @@
         <div class="products-wrapper" id="products-container">
             <!-- Loading Indicator -->
             <div id="loading-indicator" class="loading-container">
-                <i class="fas fa-spinner fa-spin"></i> Loading Refrigerator products...
+                <i class="fas fa-spinner fa-spin"></i> Loading Refrigerator products from database...
             </div>
 
-            <!-- JS will inject brand sections here -->
             <p id="no-products" style="text-align: center; color: var(--text-secondary); display: none; margin-top: 40px; font-size: 1.2rem;">
-                No products found matching your criteria.
+                No products found. Please check your Google Sheet connection.
             </p>
         </div>
         
@@ -678,77 +679,13 @@
         document.getElementById('filter-content').classList.toggle('active');
     });
 
-    // ------------------- 🔴 Legacy Product Data (ORIGINAL) -------------------
-    const legacyProducts = [
-        // --- SHARP ---
-        { model: "Sharp SJM60MK", brand: "Sharp", liters: 60, image: "SJM60MK.jpg", description: "60L Mini Bar Fridge.", details: "Compact design." },
-        { model: "Sharp SJ-189", brand: "Sharp", liters: 170, image: "SJ189.jpg", description: "170L 2-Door Inverter.", details: "J-Tech Inverter." },
-        { model: "Sharp SJ285MSS", brand: "Sharp", liters: 280, image: "SJ285MSS.jpg", description: "280L 2-Door Fridge.", details: "AG CU Nano Deodoriser." },
-        { model: "Sharp SJ287MDS", brand: "Sharp", liters: 280, image: "SJ287MDS.jpg", description: "280L Refrigerator (Dark Silver).", details: "Reliable cooling." },
-        { model: "Sharp SJ-2822MSS", brand: "Sharp", liters: 280, image: "SJ2822MSS.jpg", description: "280L J-Tech Inverter.", details: "Energy efficient." },
-        { model: "Sharp SJ-327MDS", brand: "Sharp", liters: 320, image: "SJ327MDS.jpg", description: "320L 2-Door Fridge.", details: "2-Way Fresh Room." },
-        { model: "Sharp SJ325MSS", brand: "Sharp", liters: 320, image: "SJ325MSS.jpg", description: "320L 2-Door Fridge.", details: "Twist & Serve Ice Tray." },
-        { model: "Sharp SJ-3222MSS", brand: "Sharp", liters: 320, image: "SJ3222MSS.jpg", description: "320L J-Tech Inverter.", details: "Spacious design." },
-        { model: "Sharp SJ-3822MSS", brand: "Sharp", liters: 380, image: "SJ3822MSS.jpg", description: "380L J-Tech Inverter.", details: "Large capacity." },
-        { model: "Sharp SJ-4122MSS", brand: "Sharp", liters: 410, image: "SJ4122MSS.jpg", description: "410L J-Tech Inverter.", details: "Superior cooling." },
-        { model: "Sharp SJ-4422MSS", brand: "Sharp", liters: 440, image: "SJ4422MSS.jpg", description: "440L Inverter Fridge.", details: "Hybrid Cooling System." },
-        { model: "Sharp SJ489GK AVANCE", brand: "Sharp", liters: 480, image: "SJ489GK.jpg", description: "480L AVANCE Series 4-Door.", details: "Premium glass design." },
-        { model: "Sharp SJP682MFGK", brand: "Sharp", liters: 610, image: "SJP682MFGK.jpg", description: "610L Premium Multi-Door.", details: "Plasmacluster Ion." },
-        { model: "Sharp SJP782MFGK", brand: "Sharp", liters: 670, image: "SJP782MFGK.jpg", description: "670L Huge Capacity.", details: "Express Freezing." },
-        { model: "Sharp SJP882MFGK", brand: "Sharp", liters: 720, image: "SJP882MFGK.jpg", description: "720L Extra Large Multi-Door.", details: "Hybrid Cooling." },
-        { model: "Sharp SJX-6322Ms", brand: "Sharp", liters: 620, image: "SJX6322Ms.jpg", description: "620L Side-by-Side Inverter.", details: "External LED Control." },
-        { model: "Sharp SJF821VMSS", brand: "Sharp", liters: 700, image: "SJF821VMSS.jpg", description: "700L 4-Door Inverter.", details: "ActiFresh Hybrid Cooling." },
-
-        // --- TOSHIBA ---
-        { model: "Toshiba GR-RT230WE", brand: "Toshiba", liters: 220, image: "GRRT230WE.jpg", description: "220L 2-Door Inverter.", details: "12 Years Warranty." },
-        { model: "Toshiba GR-RT300WE", brand: "Toshiba", liters: 270, image: "GRRT300WE.jpg", description: "270L 2-Door Inverter.", details: "12 Years Warranty." },
-        { model: "Toshiba GR-RT412WE", brand: "Toshiba", liters: 360, image: "GRRT412WE.jpg", description: "360L 2-Door Inverter.", details: "12 Years Warranty." },
-        { model: "Toshiba GR-RT466WE", brand: "Toshiba", liters: 410, image: "GRRT466WE.jpg", description: "410L 2-Door Inverter.", details: "12 Years Warranty." },
-        { model: "Toshiba SBS-501WPGE", brand: "Toshiba", liters: 556, image: "SBS501WPGE.jpg", description: "556L Inverter Side-by-Side.", details: "White Glass Door." },
-        { model: "Toshiba SBS-501WP", brand: "Toshiba", liters: 556, image: "SBS501WP.jpg", description: "556L Inverter Side-by-Side.", details: "Black Glass Door." },
-
-        // --- MIDEA ---
-        { model: "Midea MDRD229FGD", brand: "Midea", liters: 157, image: "MDRD229.jpg", description: "157L Single Door.", details: "Compact design." },
-        { model: "Midea MDRT267MTB30", brand: "Midea", liters: 200, image: "MDRT267.jpg", description: "200L 2-Door.", details: "10yr Compressor Warranty." },
-        { model: "Midea MDRT306MTB30", brand: "Midea", liters: 240, image: "MDRT306.jpg", description: "240L 2-Door.", details: "10yr Compressor Warranty." },
-        { model: "Midea MDRT307MTB28", brand: "Midea", liters: 240, image: "MDRT307.jpg", description: "240L 2-Door Inverter.", details: "12yr Compressor Warranty." },
-        { model: "Midea MDRT345MTB30", brand: "Midea", liters: 280, image: "MDRT345.jpg", description: "280L 2-Door.", details: "Spacious interior." },
-        { model: "Midea MDRT346MTB28", brand: "Midea", liters: 280, image: "MDRT346.jpg", description: "280L 2-Door Inverter.", details: "12yr Compressor Warranty." },
-        { model: "Midea MDRT384MTB30", brand: "Midea", liters: 330, image: "MDRT384.jpg", description: "330L 2-Door.", details: "10yr Compressor Warranty." },
-        { model: "Midea MDRB431FGG28", brand: "Midea", liters: 400, image: "MDRB431.jpg", description: "400L Bottom Mount.", details: "12yr Compressor Warranty." },
-        { model: "Midea MDRT489MTB28", brand: "Midea", liters: 400, image: "MDRT489.jpg", description: "400L 2-Door Inverter.", details: "12yr Compressor Warranty." },
-        { model: "Midea MDRS712FIE61W", brand: "Midea", liters: 660, image: "MDRS712.jpg", description: "660L Inverter SBS.", details: "White/Black Glass." },
-        { model: "Midea MDRF633MIF", brand: "Midea", liters: 570, image: "MDRF633.jpg", description: "570L 4-Glass Door.", details: "Premium design." },
-
-        // --- HISENSE ---
-        { model: "Hisense RR120D4AGN", brand: "Hisense", liters: 110, image: "RR120.jpg", description: "110L Single Door.", details: "Compact and simple." },
-        { model: "Hisense RT208N4ASN", brand: "Hisense", liters: 200, image: "RT208.jpg", description: "200L 2-Door Frost Free.", details: "12yr Compressor Warranty." },
-        { model: "Hisense RT220N4ABN", brand: "Hisense", liters: 206, image: "RT220.jpg", description: "206L 2-Door Inverter.", details: "25yr Compressor Warranty." },
-        { model: "Hisense RT328N4ABN", brand: "Hisense", liters: 320, image: "RT328.jpg", description: "320L 2-Door Inverter.", details: "12yr Compressor Warranty." },
-        { model: "Hisense RT439N4ABN", brand: "Hisense", liters: 420, image: "RT439.jpg", description: "420L 2-Door Inverter.", details: "25yr Compressor Warranty." },
-        { model: "Hisense RT469N4AW", brand: "Hisense", liters: 420, image: "RT469.jpg", description: "420L 2-Glass Door Inverter.", details: "25yr Compressor Warranty." },
-        { model: "Hisense RT549N4ABU", brand: "Hisense", liters: 500, image: "RT549.jpg", description: "500L Inverter Glass Door.", details: "12yr Compressor Warranty." },
-        { model: "Hisense RS588N4ABNIV", brand: "Hisense", liters: 510, image: "RS588.jpg", description: "510L Side-by-Side Inverter.", details: "25yr Compressor Warranty." },
-        { model: "Hisense RQ556N4ABU", brand: "Hisense", liters: 530, image: "RQ556.jpg", description: "530L 4-Glass Door Inverter.", details: "25yr Compressor Warranty." },
-        { model: "Hisense RS808N4ABU", brand: "Hisense", liters: 726, image: "RS808.jpg", description: "726L Side-by-Side Inverter.", details: "Mirror Glass design." },
-        { model: "Hisense RQ568N4ABU", brand: "Hisense", liters: 520, image: "RQ568.jpg", description: "520L 4-Door Inverter.", details: "25yr Compressor Warranty." },
-        { model: "Hisense RS869N4ABV", brand: "Hisense", liters: 780, image: "RS869.jpg", description: "780L Side-by-Side Inverter.", details: "25yr Compressor Warranty." },
-
-        // --- OTHERS ---
-        { model: "Dekka RD-50", brand: "Dekka", liters: 50, image: "RD50.jpg", description: "50L Mini Bar.", details: "Very compact." },
-        { model: "Nakama 160L", brand: "Nakama", liters: 160, image: "Nakama160.jpg", description: "160L Fridge.", details: "Standard size." },
-        { model: "Narutron NCD-100R", brand: "Narutron", liters: 100, image: "NCD100R.jpg", description: "100L Refrigerator.", details: "Compact model." },
-        { model: "Khind RF165", brand: "Khind", liters: 157, image: "Khind_RF165.jpg", description: "157L Compact Refrigerator.", details: "5yr compressor warranty." },
-        { model: "Skyworth SBS-501WPGE", brand: "Skyworth", liters: 556, image: "Skyworth_White_SBS.jpg", description: "556L Inverter SBS.", details: "White Glass." },
-        { model: "Skyworth SBS-501WP", brand: "Skyworth", liters: 556, image: "Skyworth_Black_SBS.jpg", description: "556L Inverter SBS.", details: "Black Glass." }
-    ];
-
-    // ------------------- 🔴 API & Data Logic -------------------
+    // ------------------- 🔴 DATA LOGIC -------------------
+    // [UPDATED] Removed Legacy Data. Now relies 100% on API.
     
     // Google Sheets OpenSheet API
     const API_URL = "https://opensheet.elk.sh/1Qg_m3CMfxxtBxG2NCg7oxocgJR_nfFfW7vzkfQRKGD4/Sheet1"; 
     
-    // 图片基础路径 (空字符串表示直接在根目录查找，或者使用完整 HTTP 链接)
+    // 图片基础路径
     const IMAGE_BASE_PATH = ""; 
 
     // Global array for ALL products
@@ -762,22 +699,21 @@
         return foundKey ? item[foundKey] : undefined;
     }
 
-    // Helper: Normalize Brand Name (Capitalize First Letter)
+    // Helper: Normalize Brand Name
     function normalizeBrand(brand) {
         if (!brand) return 'Unknown';
         return brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase();
     }
 
-    // 🔴 3. Fetch Data Function
+    // 🔴 Fetch Data Function
     async function fetchProducts() {
         const loadingIndicator = document.getElementById('loading-indicator');
+        const noProducts = document.getElementById('no-products');
         
-        // Start with legacy products
         let fetchedProducts = [];
 
         try {
             console.log("Fetching Refrigerator data from API...");
-            // cache: 'no-store' ensures fresh data
             const response = await fetch(API_URL, { cache: 'no-store' });
             const data = await response.json();
             
@@ -785,50 +721,32 @@
 
             // Format new data
             fetchedProducts = data.map(item => {
-                // Brand
                 let brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
                 brand = normalizeBrand(brand);
-
-                // Model
                 const model = getValueByFuzzyKey(item, 'model') || 'Unknown';
-                
-                // Capacity / Liters (Look for 'liters', 'capacity', 'net capacity', 'vol')
-                // This maps to 'liters' for filter compatibility
                 const rawCap = getValueByFuzzyKey(item, 'liter') || getValueByFuzzyKey(item, 'capacity') || getValueByFuzzyKey(item, 'vol') || 0;
                 const liters = parseFloat(rawCap) || 0;
-
-                // Image
                 let image = getValueByFuzzyKey(item, 'image') || '';
-                image = image.trim(); // Remove spaces
-
-                // Description & Details
+                image = image.trim();
                 const description = getValueByFuzzyKey(item, 'description') || getValueByFuzzyKey(item, 'desc') || '';
                 const details = getValueByFuzzyKey(item, 'details') || getValueByFuzzyKey(item, 'feature') || '';
 
-                // Link
-                let link = '';
-                const linkKey = Object.keys(item).find(k => k.toLowerCase().includes('html link'));
-                if (linkKey) {
-                    link = item[linkKey];
-                } else {
-                    link = getValueByFuzzyKey(item, 'link') || '';
-                }
-
-                return { brand, model, liters, image, description, details, link };
+                return { brand, model, liters, image, description, details };
             });
 
         } catch (error) {
-            console.error("API Fetch Failed, using legacy only:", error);
+            console.error("API Fetch Failed:", error);
+            loadingIndicator.innerHTML = "Failed to load products. Please try again later.";
         }
 
-        // Merge: Legacy + Fetched
-        refrigeratorProductsAll = [...legacyProducts, ...fetchedProducts];
-
-        // Hide loading
+        refrigeratorProductsAll = fetchedProducts;
         loadingIndicator.style.display = 'none';
 
-        // Render
-        renderProducts(refrigeratorProductsAll);
+        if(refrigeratorProductsAll.length === 0) {
+            noProducts.style.display = 'block';
+        } else {
+            renderProducts(refrigeratorProductsAll);
+        }
     }
 
     // ------------------- Render Function -------------------
@@ -836,7 +754,7 @@
         const container = document.getElementById('products-container');
         const noProducts = document.getElementById('no-products');
         
-        // Clear previous sections
+        // Clear previous sections (but keep loading/error msgs)
         const sections = container.querySelectorAll('.brand-section');
         sections.forEach(section => section.remove());
 
@@ -871,14 +789,14 @@
                         imgSrc = IMAGE_BASE_PATH + imgSrc;
                     }
                     if (!imgSrc) {
-                        imgSrc = 'https://placehold.co/300x400/1e293b/FFF?text=Fridge';
+                        // Square placeholder
+                        imgSrc = 'https://placehold.co/600x600/1e293b/FFF?text=Fridge';
                     }
 
-                    // Link Logic
-                    let detailsLink = product.link;
-                    if (!detailsLink) {
-                        detailsLink = `https://wa.me/601110948581?text=I want to inquire about ${product.model}`;
-                    }
+                    // [UPDATED] Smart Assistant Redirect Link
+                    // 这里的文字是：我要询问 [型号] 的更多资料
+                    const queryText = encodeURIComponent(`我要询问 ${product.model} 的更多资料`);
+                    const detailsLink = `support.html?ask=${queryText}`;
 
                     const card = document.createElement('div');
                     card.className = 'product-card';
@@ -891,7 +809,7 @@
 
                     card.innerHTML = `
                         <div class="card-image-wrapper">
-                            <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/300x400/1e293b/FFF?text=Fridge'">
+                            <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/600x600/1e293b/FFF?text=Fridge'">
                         </div>
                         <div class="product-info">
                             <div>
@@ -902,7 +820,7 @@
                                 <p class="product-desc">${product.description || ''}</p>
                                 <div class="product-details">${product.details || ''}</div>
                             </div>
-                            <a class="btn-details" href="${detailsLink}" target="_blank">
+                            <a class="btn-details" href="${detailsLink}">
                                 More Details <i class="fas fa-angle-right"></i>
                             </a>
                         </div>
@@ -923,7 +841,6 @@
 
         const filtered = refrigeratorProductsAll.filter(product => {
             let capMatch = false;
-            // Ensure numeric comparison
             const liters = parseFloat(product.liters) || 0;
 
             if (capFilter === 'all') capMatch = true;
