@@ -234,9 +234,44 @@
         .modal-specs-list li { background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; font-size: 0.95rem; display: flex; align-items: center; }
         .modal-specs-list li i { color: var(--accent-blue); margin-right: 10px; }
 
-        .modal-actions { display: flex; gap: 15px; flex-wrap: wrap; }
-        /* [UPDATED] Single Button Style */
-        .modal-btn-assist { flex: 1; background-color: var(--accent-blue); color: white; padding: 15px; text-align: center; border-radius: 50px; font-weight: bold; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: 0.3s; border: none; }
+        .modal-actions { display: flex; gap: 15px; flex-wrap: wrap; flex-direction: column; }
+        
+        .modal-btn-contact { 
+            width: 100%; 
+            background-color: #25D366; 
+            color: white; 
+            padding: 15px; 
+            text-align: center; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 1.1rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            border: none; 
+        }
+        .modal-btn-contact:hover { background-color: #128C7E; transform: translateY(-2px); }
+
+        .modal-btn-assist { 
+            width: 100%; 
+            background-color: var(--accent-blue); 
+            color: white; 
+            padding: 15px; 
+            text-align: center; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 1.1rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            border: none; 
+        }
         .modal-btn-assist:hover { background-color: var(--hover-blue); transform: translateY(-2px); }
         
         /* Desktop Modal Layout */
@@ -389,7 +424,12 @@
                     </ul>
 
                     <div class="modal-actions">
-                        <!-- [UPDATED] Only Smart Assistant Button -->
+                        <!-- WhatsApp Button (Top) -->
+                        <button class="modal-btn-contact" onclick="contactWhatsApp()">
+                            <i class="fab fa-whatsapp"></i> Inquiry on WhatsApp
+                        </button>
+                        
+                        <!-- Smart Assistant Button (Bottom) -->
                         <button class="modal-btn-assist" onclick="inquireSmartAssist()">
                             <i class="fas fa-robot"></i> Inquiry our Smart Assistant
                         </button>
@@ -692,6 +732,14 @@
             }
         } catch (e) {
             closeModalUI();
+        }
+    }
+
+    // 5. WhatsApp Contact
+    window.contactWhatsApp = function() {
+        if (currentModalProduct) {
+            const msg = `Hi, I am interested in ${currentModalProduct.brand} ${currentModalProduct.model}. Can I know more?`;
+            window.open(`https://wa.me/60148818581?text=${encodeURIComponent(msg)}`, '_blank');
         }
     }
 
