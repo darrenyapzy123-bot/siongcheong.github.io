@@ -6,7 +6,7 @@
     <title>Dryer Collection | Siong Cheong Trading</title>
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: Playfair Display & Lato -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
@@ -18,90 +18,41 @@
             --text-main: #ffffff;     /* White Text */
             --text-sub: #94a3b8;      /* Slate Grey Text */
             --accent: #29b6f6;        /* Bright Blue Accent */
+            --hover-blue: #7dd3fc;
             --btn-bg: #0ea5e9;        /* Button Background */
             --btn-hover: #0284c7;     /* Button Hover */
             --border-color: #1e293b;
-            --tag-bg: rgba(14, 165, 233, 0.2); /* Tag Background */
-            --tag-text: #38bdf8;      /* Tag Text */
-            --tag-inv-bg: rgba(16, 185, 129, 0.2); /* Green tint for Inverter */
-            --tag-inv-text: #34d399;   /* Green text */
-            --tag-non-bg: rgba(148, 163, 184, 0.2); /* Grey tint for Non-Inverter */
-            --tag-non-text: #cbd5e1;   /* Grey text */
+            --tag-bg: rgba(14, 165, 233, 0.2); 
+            --tag-text: #38bdf8;
         }
 
         /* ------------------- Reset & Base ------------------- */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: 'Lato', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            padding-bottom: 60px;
-            overflow-x: hidden;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Lato', sans-serif; background-color: var(--bg-body); color: var(--text-main); overflow-x: hidden; }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
-        ul { list-style: none; }
+        ul { list-style: none; padding: 0; margin: 0; }
 
-        /* ------------------- Header (Siong Cheong Style) ------------------- */
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 40px;
-            height: 80px;
-            position: relative;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .header-left {
-            position: absolute;
-            left: 40px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .menu-icon { font-size: 24px; cursor: pointer; color: var(--text-main); }
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-weight: 700;
-            font-size: 24px;
-            color: var(--text-main);
-            letter-spacing: 0.5px;
-        }
+        /* ------------------- Sidebar Styles ------------------- */
+        .menu-icon { position: fixed; top: 35px; left: 25px; z-index: 10000; cursor: pointer; padding: 10px; background-color: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 5px; width: 45px; height: 45px; justify-content: center; align-items: center; transition: all 0.3s ease; }
+        .menu-icon:hover { border-color: var(--accent); background-color: rgba(15, 23, 42, 1); }
+        .bar { width: 20px; height: 2px; background-color: var(--text-main); transition: 0.4s; }
+        .menu-icon:hover .bar { background-color: var(--accent); }
         
-        /* ------------------- Sidebar ------------------- */
-        .sidebar {
-            height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0;
-            background-color: #080d16;
-            overflow-x: hidden; padding-top: 60px; transition: 0.4s;
-            border-right: 1px solid #1e293b; white-space: nowrap;
-        }
-        .sidebar a, .sidebar .submenu-toggle {
-            padding: 15px 30px; font-size: 16px; color: var(--text-sub);
-            display: block; border-bottom: 1px solid #1e293b; cursor: pointer;
-        }
-        .sidebar a:hover, .sidebar .submenu-toggle:hover {
-            color: var(--accent); background: rgba(255,255,255,0.05);
-        }
-        .sidebar .close-btn {
-            position: absolute; top: 15px; right: 25px; font-size: 30px; cursor: pointer;
-        }
-        .submenu { display: none; background: #0b1221; }
-        .submenu a { padding-left: 50px; font-size: 14px; }
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 1500; display: none;
-        }
+        .sidebar { height: 100%; width: 0; position: fixed; z-index: 10001; top: 0; left: 0; background-color: #020617; overflow-x: hidden; padding-top: 80px; transition: 0.5s; box-shadow: 5px 0 15px rgba(0,0,0,0.5); border-right: 1px solid rgba(255,255,255,0.05); white-space: nowrap; }
+        .sidebar a, .sidebar .submenu-toggle { padding: 15px 30px; text-decoration: none; font-size: 1.1em; color: var(--text-sub); display: block; transition: 0.3s; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-family: 'Playfair Display', serif; letter-spacing: 0.5px; }
+        .sidebar a:hover, .sidebar .submenu-toggle:hover { color: var(--accent); background: rgba(56, 189, 248, 0.05); padding-left: 35px; border-left: 3px solid var(--accent); }
+        .closebtn { position: absolute; top: 20px; right: 25px; font-size: 30px; color: var(--text-sub); cursor: pointer; transition: 0.3s; }
+        .closebtn:hover { color: var(--accent); transform: rotate(90deg); }
+        .submenu { display: none; background-color: #0f172a; padding-left: 0; }
+        .submenu a { padding-left: 45px; font-size: 0.95em; font-family: 'Lato', sans-serif; border-left: none; }
+        .submenu a:hover { border-left: 3px solid var(--accent); padding-left: 50px; }
 
-        /* ------------------- Layout Wrapper for Push Effect ------------------- */
+        .overlay { position: fixed; height: 100%; width: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); z-index: 9999; display: none; backdrop-filter: blur(4px); }
+
+        /* ------------------- Layout Wrapper ------------------- */
         #main-content {
             width: 100%;
-            max-width: 100vw;
-            transition: margin-left 0.5s;
+            transition: margin-left 0.5s; 
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -109,120 +60,142 @@
             background-color: var(--bg-body);
         }
 
-        /* ------------------- Hero ------------------- */
-        .hero-section { text-align: center; padding: 80px 20px 40px; }
+        /* ------------------- Header ------------------- */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            background: rgba(15, 23, 42, 0.90);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            padding: 0 60px;
+        }
+
+        .header-title {
+            color: var(--text-main);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            font-style: italic;
+        }
+
+        /* [GOAL C] Logo Sizing */
+        .header-logo-right {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 380px; /* Desktop */
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* ------------------- Hero & Filter ------------------- */
+        .hero-section {
+            padding-top: 60px; 
+            padding-bottom: 60px;
+            text-align: center;
+            background: radial-gradient(circle at center top, #1e293b 0%, #0f172a 70%);
+        }
+
         .hero-title {
             font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            color: var(--text-main);
-            margin-bottom: 15px;
+            font-size: 3rem; 
             font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 16px 0;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+
         .hero-subtitle {
-            color: var(--accent);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+            color: var(--accent); 
             font-weight: 400;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
             letter-spacing: 0.5px;
         }
 
-        /* ------------------- Filter Button ------------------- */
-        .filter-container {
-            display: flex; justify-content: center; margin: 20px 0 40px; position: relative;
-        }
-        .filter-btn {
-            background: transparent;
-            border: 1px solid #1e3a8a;
-            border-radius: 50px;
-            padding: 12px 30px;
-            color: var(--accent);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex; align-items: center; gap: 10px;
-            transition: 0.3s;
-        }
-        .filter-btn:hover { border-color: var(--accent); background: rgba(41, 182, 246, 0.1); }
-        #filter-panel {
-            display: none; position: absolute; top: 50px;
-            background: #1e293b; border: 1px solid #334155;
-            padding: 20px; border-radius: 8px; z-index: 100;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5); min-width: 250px;
-        }
-        #filter-panel.open { display: block; }
-        
-        .filter-group { margin-bottom: 15px; }
-        .filter-label { display: block; margin-bottom: 5px; color: var(--text-sub); font-size: 0.9em; }
-        .filter-select {
-            width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155;
-            color: white; border-radius: 4px; outline: none;
+        /* Filter Styles */
+        .filter-section-wrapper { max-width: 1200px; margin: 0 auto 40px auto; padding: 0 20px; }
+        .filter-toggle-button { width: 100%; max-width: 200px; padding: 12px 20px; background-color: transparent; color: var(--accent); font-size: 1rem; font-weight: 600; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 50px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; margin: 0 auto; }
+        .filter-toggle-button:hover { background-color: rgba(56, 189, 248, 0.1); border-color: var(--accent); transform: translateY(-2px); }
+        .filter-controls { max-height: 0; overflow: hidden; background: var(--bg-card); border-radius: 20px; margin-top: 20px; transition: all 0.4s ease-out; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; flex-wrap: wrap; gap: 30px; opacity: 0; transform: translateY(-10px); }
+        .filter-controls.active { max-height: 500px; padding: 30px; opacity: 1; transform: translateY(0); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .filter-group { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 10px; }
+        .filter-controls label { font-size: 0.9rem; font-weight: 600; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; }
+        .filter-controls select { width: 100%; padding: 12px 16px; background-color: #0f172a; color: #fff; border: 1px solid #334155; border-radius: 12px; font-size: 1rem; cursor: pointer; outline: none; transition: border-color 0.3s; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
+        .filter-controls select:focus { border-color: var(--accent); }
+
+        /* ------------------- Product Grid ------------------- */
+        .products-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px 20px;
         }
 
-        /* ------------------- Section Title ------------------- */
-        .brand-section {
-            margin-bottom: 60px;
-        }
-        .brand-header { text-align: center; margin-bottom: 50px; }
-        .brand-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            color: var(--text-main);
-            margin-bottom: 10px;
-            position: relative;
-            display: inline-block;
-        }
-        .brand-underline {
-            width: 60px; height: 4px; background-color: var(--accent);
-            margin: 0 auto; border-radius: 2px;
-        }
+        .brand-section { margin-bottom: 60px; }
+        .brand-header { text-align: center; margin-bottom: 40px; }
+        .section-title { text-align: center; font-family: 'Playfair Display', serif; color: var(--text-main); font-size: 2rem; margin-top: 60px; margin-bottom: 30px; position: relative; display: inline-block; left: 50%; transform: translateX(-50%); }
+        .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--accent); margin: 10px auto 0; border-radius: 2px; }
 
-        /* ------------------- Product Card (Standardized) ------------------- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        
+        /* [GOAL E] Grid Layout */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            justify-content: center;
+            gap: 24px;
         }
 
-        .card {
-            background-color: var(--bg-card);
+        /* ------------------- Product Card ------------------- */
+        .product-card {
+            background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            text-align: left;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
-            height: 100%;
         }
 
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            border-color: var(--accent);
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(56, 189, 248, 0.3);
+            z-index: 2;
         }
 
-        .card-img-container {
-            background-color: #ffffff;
+        /* [GOAL E] 1:1 Aspect Ratio for Listing Images */
+        .card-image-wrapper {
             width: 100%;
-            height: 280px;
+            aspect-ratio: 1 / 1; /* Square */
+            height: auto;
+            background-color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            box-sizing: border-box;
             position: relative;
-            border-bottom: 1px solid #2d3748;
+            overflow: hidden;
+            border-bottom: 1px solid #eee;
         }
         
         .card-img {
-            max-width: 90%;
-            max-height: 90%;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
             transition: transform 0.3s;
         }
-        .card:hover .card-img { transform: scale(1.05); }
+        .product-card:hover .card-img { transform: scale(1.05); }
 
         .card-body {
             padding: 20px;
@@ -257,16 +230,6 @@
             text-transform: capitalize;
         }
 
-        .card-tag.inverter {
-            background-color: var(--tag-inv-bg);
-            color: var(--tag-inv-text);
-        }
-
-        .card-tag.non-inverter {
-            background-color: var(--tag-non-bg);
-            color: var(--tag-non-text);
-        }
-
         .card-desc {
             color: var(--text-sub);
             font-size: 0.95rem;
@@ -281,15 +244,12 @@
             margin-bottom: 15px;
             width: 100%;
         }
-        
-        .card-details-text {
-            color: #64748b;
-            font-size: 0.85rem;
-            margin-bottom: 20px;
-        }
 
         .btn-details {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             width: 100%;
             background-color: var(--btn-bg);
             color: white;
@@ -300,11 +260,11 @@
             font-size: 1rem;
             transition: background 0.3s;
             margin-top: auto; 
+            border: none;
+            cursor: pointer;
         }
         .btn-details:hover { background-color: var(--btn-hover); }
-        .btn-details i { margin-left: 5px; font-size: 0.9em; }
 
-        /* Loading */
         .loading-container {
             text-align: center;
             padding: 40px;
@@ -313,9 +273,30 @@
         }
 
         /* ------------------- Footer ------------------- */
-        .footer-bar {
-            position: fixed; bottom: 20px; right: 20px; z-index: 100;
+        .page-footer {
+            background-color: #020617; 
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b; 
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 60px;
         }
+
+        .back-to-home {
+            background-color: #2ecc71; 
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            display: inline-block;
+        }
+        .back-to-home:hover { background-color: #27ae60; }
+
+        /* Fixed Back Button */
+        .footer-bar { position: fixed; bottom: 20px; right: 20px; z-index: 100; }
         .btn-back {
             background: rgba(30, 41, 59, 0.8); color: white;
             padding: 12px; border-radius: 50%;
@@ -325,110 +306,203 @@
         }
         .btn-back:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* Responsive */
+        /* ------------------- MODAL (Product Details Layer) ------------------- */
+        .product-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85); z-index: 20000; overflow-y: auto;
+            animation: fadeIn 0.3s; backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background-color: var(--bg-card); margin: 5% auto 50px auto; width: 90%; max-width: 1000px;
+            border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5); position: relative;
+            animation: slideUp 0.4s ease-out; display: flex; flex-direction: column; overflow: hidden;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .modal-close-btn { position: absolute; top: 20px; right: 25px; font-size: 30px; color: var(--text-sub); cursor: pointer; z-index: 10; background: rgba(0,0,0,0.3); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .modal-close-btn:hover { color: #fff; background: var(--accent); }
+
+        .modal-body { display: flex; flex-direction: column; }
+        .modal-image-section { background-color: #fff; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 1px solid #333; }
+        .modal-main-img { max-width: 100%; max-height: 400px; object-fit: contain; margin-bottom: 20px; }
+        .modal-gallery { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .gallery-thumb { width: 60px; height: 60px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; object-fit: contain; padding: 5px; transition: 0.2s; }
+        .gallery-thumb:hover, .gallery-thumb.active { border-color: var(--accent); }
+
+        .modal-info-section { padding: 40px; color: var(--text-main); }
+        .modal-brand { color: var(--accent); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .modal-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin: 0 0 20px 0; line-height: 1.2; }
+        .modal-description { font-size: 1.1rem; line-height: 1.6; color: var(--text-sub); margin-bottom: 30px; }
+
+        .modal-specs-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 10px; }
+        .modal-specs-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 40px; }
+        .modal-specs-list li { background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; font-size: 0.95rem; display: flex; align-items: center; }
+        .modal-specs-list li i { color: var(--accent); margin-right: 10px; }
+
+        .modal-actions { display: flex; gap: 15px; flex-wrap: wrap; flex-direction: column; }
+        .modal-btn-contact { width: 100%; background-color: #25D366; color: white; padding: 15px; text-align: center; border-radius: 50px; font-weight: bold; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: 0.3s; border: none; }
+        .modal-btn-contact:hover { background-color: #128C7E; transform: translateY(-2px); }
+        .modal-btn-assist { width: 100%; background-color: var(--accent); color: white; padding: 15px; text-align: center; border-radius: 50px; font-weight: bold; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: 0.3s; border: none; }
+        .modal-btn-assist:hover { background-color: #0284c7; transform: translateY(-2px); }
+
+        @media (min-width: 900px) {
+            .modal-body { flex-direction: row; }
+            .modal-image-section { width: 45%; border-bottom: none; border-right: 1px solid rgba(255,255,255,0.1); }
+            .modal-info-section { width: 55%; height: auto; max-height: 80vh; overflow-y: auto; }
+        }
+
+        /* [GOAL C] Mobile Responsive Adjustments */
         @media (max-width: 768px) {
-            header { padding: 0 20px; }
-            .header-left { left: 20px; }
+            header { padding: 0 20px; height: 90px; justify-content: space-between; }
+            .header-title { display: none; }
+            .logo { display: block; }
+            .header-logo-right { width: 120px; max-width: none; }
             .hero-title { font-size: 2.5rem; }
-            .brand-title { font-size: 2rem; }
+            .modal-content { margin: 0; width: 100%; height: 100%; border-radius: 0; max-height: none; }
+            .modal-title { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body onload="fetchProducts()">
 
+    <!-- Menu Button -->
+    <div class="menu-icon" onclick="toggleNav()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+        <a href="index.html">Home</a>
+        <!-- [GOAL D] Added Gallery & Smart Assistant -->
+        <a href="gallery.html" style="color:var(--accent); font-weight:bold;">Our Gallery</a>
+        <a href="support.html" style="color:var(--accent); font-weight:bold;"><i class="fas fa-robot"></i> Smart Assistant</a>
+        <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
+        <div class="submenu" style="display: block;">
+            <a href="refrigerator.html">Refrigerator</a>
+            <a href="chiller.html">Chiller</a>
+            <a href="freezer.html">Freezer</a>
+            <a href="ac.html">Air Conditioner</a>
+            <a href="portable_ac.html">Portable Air Cond</a>
+            <a href="tv.html">TV</a>
+            <a href="washer.html">Washer</a>
+            <a href="dryer.html" class="active" style="color:var(--accent)">Dryer</a>
+            <a href="kitchen.html">Kitchen Appliances</a>
+            <a href="hood.html">Hood</a>
+            <a href="gas.html">Gas</a>
+            <a href="oven.html">Oven</a>
+            <a href="microwave.html">Microwave</a>
+            <a href="air_fryer.html">Air Fryer</a>
+            <a href="shower.html">Shower</a>
+            <a href="air_purifier.html">Air Purifier</a>
+            <a href="speaker.html">Speaker</a>
+            <a href="small.html">Small Appliances</a>
+        </div>
+        <a href="about.html">About Us</a>
+        <a href="location.html">Our Location</a>
+        <a href="contact.html">Contact Us</a>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay" onclick="toggleNav()"></div>
+
     <!-- Main Content Wrapper -->
     <div id="main-content">
-
-        <!-- Header -->
+        
         <header>
-            <div class="header-left">
-                <div class="menu-icon" onclick="toggleNav()">
-                    <i class="fas fa-bars"></i>
-                </div>
-            </div>
-            <div class="logo">Commercial Dryers</div>
+            <div class="header-title">Dryer Series</div>
+            <img src="SCT_Logo.png" alt="SCT Logo" class="header-logo-right" onerror="this.style.display='none'">
         </header>
 
-        <!-- Sidebar -->
-        <div id="mySidebar" class="sidebar">
-            <div class="close-btn" onclick="toggleNav()">&times;</div>
-            <a href="index.html">Home</a>
-            <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
-            <div class="submenu" style="display: block;">
-                <a href="refrigerator.html">Refrigerator</a>
-                <a href="chiller.html">Chiller</a>
-                <a href="freezer.html">Freezer</a>
-                <a href="ac.html">Air Conditioner</a>
-                <a href="portable_ac.html">Portable Air Cond</a>
-                <a href="tv.html">TV</a>
-                <a href="washer.html">Washer</a>
-                <a href="dryer.html" class="active" style="color:var(--accent)">Dryer</a>
-                <a href="kitchen.html">Kitchen Appliances</a>
-                <a href="hood.html">Hood</a>
-                <a href="gas.html">Gas</a>
-                <a href="oven.html">Oven</a>
-                <a href="microwave.html">Microwave</a>
-                <a href="air_fryer.html">Air Fryer</a>
-                <a href="shower.html">Shower</a>
-                <a href="air_purifier.html">Air Purifier</a>
-                <a href="speaker.html">Speaker</a>
-                <a href="small.html">Small Appliances</a>
-            </div>
-            <a href="about.html">About Us</a>
-            <a href="contact.html">Contact</a>
-        </div>
-        <div id="overlay" class="overlay" onclick="toggleNav()"></div>
-
-        <!-- Hero Section -->
-        <section class="hero-section">
+        <div class="hero-section">
             <h1 class="hero-title">Dryer Series</h1>
-            <p class="hero-subtitle">Efficient drying solutions for every household.</p>
-        </section>
+            <p class="hero-subtitle">Efficient and reliable drying solutions.</p>
+        </div>
 
         <!-- Filter Button -->
-        <div class="filter-container">
-            <button class="filter-btn" onclick="toggleFilter()">
+        <div class="filter-section-wrapper">
+            <button id="toggle-filter" class="filter-toggle-button">
                 <i class="fas fa-filter"></i> Filter Options
             </button>
-            
-            <!-- Filter Dropdown -->
-            <div id="filter-panel">
+            <div class="filter-controls" id="filter-content">
                 <div class="filter-group">
-                    <label class="filter-label">Brand</label>
-                    <select id="brand-select" class="filter-select" onchange="filterProducts()">
+                    <label for="brand-filter">Brand</label>
+                    <select id="brand-filter" onchange="filterProducts()">
                         <option value="all">All Brands</option>
+                        <option value="Sharp">Sharp</option>
                         <option value="Midea">Midea</option>
+                        <option value="Toshiba">Toshiba</option>
                         <option value="Khind">Khind</option>
-                        <option value="Hisense">Hisense</option>
+                        <!-- Other brands will appear if in sheet -->
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label class="filter-label">Capacity</label>
-                    <select id="capacity-select" class="filter-select" onchange="filterProducts()">
+                    <label for="capacity-filter">Capacity</label>
+                    <select id="capacity-filter" onchange="filterProducts()">
                         <option value="all">All Capacities</option>
-                        <option value="6kg">6 KG</option>
-                        <option value="7kg">7 KG</option>
-                        <option value="8kg">8 KG</option>
-                        <option value="10kg">10 KG</option>
-                        <option value="combo">Combo (Washer+Dryer)</option>
+                        <option value="small">Small (&lt; 8kg)</option>
+                        <option value="medium">Medium (8kg - 10kg)</option>
+                        <option value="large">Large (&gt; 10kg)</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="container" id="products-container">
-             <!-- Loading Indicator -->
-             <div id="loading-indicator" class="loading-container">
-                <i class="fas fa-spinner fa-spin"></i> Loading new products...
+        <div class="products-wrapper" id="products-container">
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="loading-container">
+                <i class="fas fa-spinner fa-spin"></i> Loading Dryer products from database...
             </div>
-            
-             <!-- JS will inject brand sections here, merging with legacy data -->
-             <p id="no-products" style="text-align: center; color: var(--text-sub); display: none; margin-top: 40px; font-size: 1.2rem;">
+            <p id="no-products" style="text-align: center; color: var(--text-sub); display: none; margin-top: 40px; font-size: 1.2rem;">
                 No products found matching your criteria.
             </p>
         </div>
+        
+        <footer class="page-footer">
+            <a href="index.html" class="back-to-home">Back to Home</a>
+            <p style="margin-top: 20px; font-size: 0.8em; opacity: 0.7;">Copyright © 2025 Siong Cheong Trading. All rights reserved.</p>
+        </footer>
+    </div>
 
+    <!-- 🌟 MODAL (Hidden by default) 🌟 -->
+    <div id="product-modal" class="product-modal" onclick="closeProductModalOutside(event)">
+        <div class="modal-content">
+            <div class="modal-close-btn" onclick="goBackOrClose()">&times;</div>
+            <div class="modal-body">
+                <!-- Left: Image -->
+                <div class="modal-image-section">
+                    <img id="modal-img" src="" alt="Product Image" class="modal-main-img">
+                    <div id="modal-gallery" class="modal-gallery">
+                        <!-- Thumbnails injected here -->
+                    </div>
+                </div>
+                <!-- Right: Info -->
+                <div class="modal-info-section">
+                    <span id="modal-brand" class="modal-brand">Brand</span>
+                    <h1 id="modal-title" class="modal-title">Model Name</h1>
+                    
+                    <p id="modal-desc" class="modal-description">Long description goes here...</p>
+
+                    <div class="modal-specs-title">Specifications</div>
+                    <ul id="modal-specs" class="modal-specs-list">
+                        <!-- Specs injected here -->
+                    </ul>
+
+                    <div class="modal-actions">
+                        <button class="modal-btn-contact" onclick="contactWhatsApp()">
+                            <i class="fab fa-whatsapp"></i> Inquiry on WhatsApp
+                        </button>
+                        <button class="modal-btn-assist" onclick="inquireSmartAssist()">
+                            <i class="fas fa-robot"></i> Inquiry our Smart Assistant
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Fixed Back Button -->
@@ -443,56 +517,29 @@
             const ov = document.getElementById("overlay");
             const mainContent = document.getElementById("main-content");
             if(sb.style.width === "250px") {
-                sb.style.width = "0"; ov.style.display = "none";
-                mainContent.style.marginLeft = "0";
+                sb.style.width = "0"; ov.style.display = "none"; mainContent.style.marginLeft = "0";
             } else {
-                sb.style.width = "250px"; ov.style.display = "block";
-                mainContent.style.marginLeft = "250px";
+                sb.style.width = "250px"; ov.style.display = "block"; mainContent.style.marginLeft = "250px";
             }
         }
         function toggleSubmenu(el) {
             const sub = el.nextElementSibling;
             sub.style.display = sub.style.display === "block" ? "none" : "block";
         }
-
-        // Toggle Filter
-        function toggleFilter() {
-            document.getElementById("filter-panel").classList.toggle("open");
-        }
-
-        // ------------------- 🔴 Legacy Product Data (Preserved) -------------------
-        // This array contains the original hardcoded items from your previous file.
-        // We will append fetched data to this list.
-        const legacyProducts = [
-            // Midea
-            { brand: "Midea", model: "Midea MD-7388", capacity: "7kg", type: "dryer", inverter: "Non Inverter", image: "dryer_MD-7388.png", desc: "Vented Dryer with Temp Sensor, Child Lock, Anti Crease & Front Lint Filter.", detailsUrl: "dryer-details/midea-7388.html" },
-            { brand: "Midea", model: "Midea Condensing", capacity: "8kg", type: "dryer", inverter: "Non Inverter", image: "dryer_MDC80-CH01.png", desc: "Condensing Technology with Anti-Wrinkle & Temp Sensor. Electronic Control.", detailsUrl: "dryer-details/midea-condensing-8kg.html" },
-            { brand: "Midea", model: "Midea Heat Pump", capacity: "10kg", type: "dryer", inverter: "Inverter", image: "dryer_MD-K1088HP.png", desc: "Heat Pump Condensing Drying. 5 Star Energy Efficiency. 14 Programmes.", detailsUrl: "dryer-details/midea-hp-10kg.html" },
-            { brand: "Midea", model: "Midea Combo 8.5/6kg", capacity: "Washer & Dryer", type: "combo", inverter: "Inverter", image: "dryer_MF200D85B.png", desc: "Inverter Motor with Auto Clean and Steam Care. Lunar Dial control.", detailsUrl: "dryer-details/midea-combo-8.5.html" },
-            { brand: "Midea", model: "Midea Combo 10/7kg", capacity: "Washer & Dryer", type: "combo", inverter: "Inverter", image: "dryer_MF200D100WB.png", desc: "10kg Wash / 7kg Dry. HealthGuard & Steam Care. Big Capacity Inverter.", detailsUrl: "dryer-details/midea-combo-10.html" },
-
-            // Khind
-            { brand: "Khind", model: "Khind KCD60", capacity: "6kg", type: "dryer", inverter: "Non Inverter", image: "dryer_KCD60.png", desc: "5 Drying Programmes. PTC Heating Element. Includes Wall mounting kits.", detailsUrl: "dryer-details/khind-kcd60.html" },
-            { brand: "Khind", model: "Khind KCD80", capacity: "8kg", type: "dryer", inverter: "Non Inverter", image: "dryer_KCD80.png", desc: "LED display, Crease Resist, Sterilization & Super Dry modes.", detailsUrl: "dryer-details/khind-kcd80.html" },
-
-            // Hisense
-            { brand: "Hisense", model: "Hisense Combo 10/6kg", capacity: "Washer & Dryer", type: "combo", inverter: "Inverter", image: "dryer_WDQY1014EVJMT.png", desc: "Pure Jet Wash & 5 Star Energy Rating. Inverter Motor technology.", detailsUrl: "dryer-details/hisense-combo-10.html" },
-            { brand: "Hisense", model: "Hisense Combo 8/5kg", capacity: "Washer & Dryer", type: "combo", inverter: "Inverter", image: "dryer_WDQY8014EVJMT.png", desc: "Pure Steam to remove bacteria and reduce creases. Efficient drying.", detailsUrl: "dryer-details/hisense-combo-8.html" },
-            { brand: "Hisense", model: "Hisense Combo 8.5/6kg", capacity: "Washer & Dryer", type: "combo", inverter: "Inverter", image: "dryer_WD3Q8543BW.png", desc: "Features Steam and Allergy Care modes. Modern aesthetic.", detailsUrl: "dryer-details/hisense-combo-8.5.html" }
-        ];
-
-        // ------------------- 🔴 API & Data Logic -------------------
         
-        // Google Sheets OpenSheet API
-        const API_URL = "https://opensheet.elk.sh/13hDI2ZDHjNgJKIydq8bmQ4d8Dxruu1fK3e0cCAb6p08/Sheet1"; 
-        
-        // Base Path
+        // Filter Toggle
+        document.getElementById('toggle-filter').addEventListener('click', function() {
+            document.getElementById('filter-content').classList.toggle('active');
+        });
+
+        // ------------------- 🔴 DATA LOGIC -------------------
+        // [GOAL A] API Only
+        // Using SheetDB/OpenSheet API. 
+        // NOTE: Please ensure this sheet contains DRYER data or a "type" column to filter dryers if mixed.
+        const API_URL = "https://sheetdb.io/api/v1/twlcwcm7trj58"; 
         const IMAGE_BASE_PATH = ""; 
+        let dryerProductsAll = [];
 
-        // Global array for ALL products (initialized with legacy)
-        let dryerProductsAll = [...legacyProducts];
-
-        // Helper: Fuzzy matching for keys
         function getValueByFuzzyKey(item, keyword) {
             if (!item) return undefined;
             const keys = Object.keys(item);
@@ -500,129 +547,75 @@
             return foundKey ? item[foundKey] : undefined;
         }
 
-        // Helper: Normalize Brand Name (Capitalize First Letter)
         function normalizeBrand(brand) {
             if (!brand) return 'Unknown';
             return brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase();
         }
 
-        // 🔴 3. Fetch Data Function
         async function fetchProducts() {
             const loadingIndicator = document.getElementById('loading-indicator');
             let fetchedProducts = [];
 
             try {
-                console.log("Fetching Dryer data from API...");
-                // cache: 'no-store' ensures fresh data
+                console.log("Fetching Dryer data...");
                 const response = await fetch(API_URL, { cache: 'no-store' });
                 const data = await response.json();
                 
-                console.log("Dryer Data fetched:", data);
-
-                // Format new data
+                // Format data with new columns
                 fetchedProducts = data.map(item => {
-                    // Brand
                     let brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
                     brand = normalizeBrand(brand);
-
-                    // Model
                     const model = getValueByFuzzyKey(item, 'model') || 'Unknown';
                     
-                    // Capacity / Combo Logic
-                    // User Rule: If "combo", show washer and dryer. If number, show number + kg
-                    let rawCap = getValueByFuzzyKey(item, 'capacity') || getValueByFuzzyKey(item, 'size') || '';
-                    let capacity = "";
-                    let type = "dryer"; // Default
+                    const rawCap = getValueByFuzzyKey(item, 'capacity') || 0;
+                    const capacity = parseFloat(rawCap) || 0;
 
-                    // Clean the string
-                    const rawCapLower = rawCap.toLowerCase();
+                    // Optional Type for Dryers (e.g., Vented, Condenser)
+                    const type = getValueByFuzzyKey(item, 'type') || '';
 
-                    if (rawCapLower.includes('combo')) {
-                        capacity = "Washer & Dryer";
-                        type = "combo";
-                    } else if (rawCap) {
-                        // Check if it already has kg
-                        capacity = rawCapLower.includes('kg') ? rawCap : rawCap + 'kg';
-                        type = "dryer";
-                    } else {
-                        capacity = "Unknown Capacity";
-                    }
+                    // Filter Logic: If this sheet is mixed, uncomment below
+                    // if (!type.toLowerCase().includes('dryer')) return null;
 
-                    // Inverter Logic
-                    // User Rule: Show Inverter or Non Inverter tags
-                    // Search for an 'Inverter' column or fuzzy match
-                    let invVal = getValueByFuzzyKey(item, 'inverter');
-                    let inverterStatus = "Non Inverter"; // Default assumption
-
-                    if (invVal) {
-                        const v = invVal.toLowerCase();
-                        if (v === 'yes' || (v.includes('inverter') && !v.includes('non'))) {
-                            inverterStatus = "Inverter";
-                        } else if (v === 'no' || v.includes('non')) {
-                            inverterStatus = "Non Inverter";
-                        }
-                    } else {
-                        // Fallback: Check description for keywords
-                        const d = (getValueByFuzzyKey(item, 'desc') || '').toLowerCase();
-                        if (d.includes('inverter') && !d.includes('non-inverter') && !d.includes('non inverter')) {
-                            inverterStatus = "Inverter";
-                        }
-                    }
-
-                    // Image
                     let image = getValueByFuzzyKey(item, 'image') || '';
-                    image = image.trim(); 
+                    image = image.trim();
+                    const description = getValueByFuzzyKey(item, 'description') || getValueByFuzzyKey(item, 'desc') || '';
+                    
+                    // [GOAL B] New Fields
+                    const longDesc = getValueByFuzzyKey(item, 'long_description') || description; 
+                    const specs = getValueByFuzzyKey(item, 'specs') || ""; 
+                    const gallery = getValueByFuzzyKey(item, 'gallery') || "";
 
-                    // Description
-                    const desc = getValueByFuzzyKey(item, 'desc') || getValueByFuzzyKey(item, 'description') || '';
-
-                    // Link
-                    let detailsUrl = '';
-                    const linkKey = Object.keys(item).find(k => k.toLowerCase().includes('html link'));
-                    if (linkKey) {
-                        detailsUrl = item[linkKey];
-                    } else {
-                        detailsUrl = getValueByFuzzyKey(item, 'link') || '';
-                    }
-
-                    return { brand, model, capacity, type, inverter: inverterStatus, image, desc, detailsUrl };
-                });
+                    return { brand, model, capacity, type, image, description, longDesc, specs, gallery };
+                }).filter(item => item !== null); // Filter out nulls if filtering applied
 
             } catch (error) {
-                console.error("API Fetch Failed, relying on legacy only:", error);
+                console.error("API Fetch Failed:", error);
+                loadingIndicator.innerHTML = "Failed to load products. Please try again later.";
             }
 
-            // Merge: Legacy + Fetched (APPENDING to ensure legacy stays)
-            if (fetchedProducts.length > 0) {
-                 // Remove duplicates based on Model name if necessary? 
-                 // For now, we simply append as requested. 
-                 // To avoid total duplicates if the sheet has the EXACT same items, you might want filtering, 
-                 // but "don't remove previous" usually implies safety first.
-                 
-                 // Let's filter out items from fetched that have the exact same model name as legacy to avoid double showing
-                 const legacyModels = new Set(legacyProducts.map(p => p.model.toLowerCase()));
-                 const newUniqueProducts = fetchedProducts.filter(p => !legacyModels.has(p.model.toLowerCase()));
-                 
-                 dryerProductsAll = [...legacyProducts, ...newUniqueProducts];
-            } else {
-                 dryerProductsAll = legacyProducts;
-            }
-
-            // Hide loading
+            dryerProductsAll = fetchedProducts;
             loadingIndicator.style.display = 'none';
-
-            // Render
+            updateFilterDropdown(dryerProductsAll);
             renderProducts(dryerProductsAll);
+            checkUrlParams(); 
         }
 
-        // ------------------- Render Function -------------------
+        function updateFilterDropdown(products) {
+            const brandSelect = document.getElementById('brand-filter');
+            const brands = [...new Set(products.map(p => normalizeBrand(p.brand)))].sort();
+            brandSelect.innerHTML = '<option value="all">All Brands</option>';
+            brands.forEach(b => {
+                const option = document.createElement('option');
+                option.value = b;
+                option.textContent = b;
+                brandSelect.appendChild(option);
+            });
+        }
+
         function renderProducts(productsToRender = []) {
             const container = document.getElementById('products-container');
             const noProducts = document.getElementById('no-products');
-            const loadingIndicator = document.getElementById('loading-indicator');
-
-            // Clear previous sections (except loading & no-products msg)
-            // We rebuild the DOM to ensure correct ordering and filtering
+            
             const sections = container.querySelectorAll('.brand-section');
             sections.forEach(section => section.remove());
 
@@ -633,7 +626,6 @@
                 noProducts.style.display = 'none';
             }
 
-            // Get unique normalized brands
             const brands = [...new Set(productsToRender.map(p => normalizeBrand(p.brand)))];
 
             brands.forEach(brand => {
@@ -642,62 +634,42 @@
                 if (brandProducts.length > 0) {
                     const brandSection = document.createElement('div');
                     brandSection.className = 'brand-section';
-                    brandSection.setAttribute('data-brand', brand); 
                     
                     const brandHeader = document.createElement('div');
                     brandHeader.className = 'brand-header';
-                    brandHeader.innerHTML = `<h2 class="brand-title">${brand} Series</h2><div class="brand-underline"></div>`;
+                    // Consistent Title Style
+                    brandHeader.innerHTML = `<h2 class="section-title">${brand} Series</h2>`;
                     brandSection.appendChild(brandHeader);
 
                     const grid = document.createElement('div');
+                    // [IMPORTANT] Grid Class Match
                     grid.className = 'products-grid';
 
                     brandProducts.forEach(product => {
-                        // Image Fallback
                         let imgSrc = product.image || '';
-                        if (imgSrc && !imgSrc.startsWith('http') && !imgSrc.startsWith('data:')) {
-                            // If it's a local filename, prepend base path if needed, 
-                            // but usually for these static files it's just the filename
-                            imgSrc = imgSrc; 
-                        }
-                        if (!imgSrc) {
-                            imgSrc = 'https://placehold.co/400x400/1e293b/FFF?text=Dryer';
-                        }
-
-                        // Link Logic
-                        let finalLink = product.detailsUrl;
-                        if (!finalLink || finalLink === '#' || finalLink.trim() === '') {
-                            finalLink = `https://wa.me/601110948581?text=I want to inquire about ${product.model}`;
-                        }
-
-                        // Tags Logic
-                        let tagsHtml = '';
-                        // 1. Capacity / Combo Tag
-                        if (product.capacity) {
-                            tagsHtml += `<span class="card-tag">${product.capacity}</span>`;
-                        }
-                        // 2. Inverter Tag
-                        if (product.inverter) {
-                            const invClass = product.inverter === 'Inverter' ? 'inverter' : 'non-inverter';
-                            tagsHtml += `<span class="card-tag ${invClass}">${product.inverter}</span>`;
-                        }
+                        if (!imgSrc) imgSrc = 'https://placehold.co/400x400/1e293b/FFF?text=Dryer';
+                        else if (!imgSrc.startsWith('http')) imgSrc = IMAGE_BASE_PATH + imgSrc;
 
                         const card = document.createElement('div');
-                        card.className = 'card';
+                        // [IMPORTANT] Card Class Match
+                        card.className = 'product-card';
+                        
+                        let tagsHtml = '';
+                        if (product.capacity > 0) tagsHtml += `<span class="card-tag">${product.capacity} KG</span>`;
+
+                        // [GOAL B] Button -> Modal
                         card.innerHTML = `
-                            <div class="card-img-container">
+                            <div class="card-image-wrapper">
                                 <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/400x400/1e293b/FFF?text=Dryer'" class="card-img">
                             </div>
                             <div class="card-body">
                                 <h3 class="card-title">${product.model}</h3>
-                                <div class="tags-container">
-                                    ${tagsHtml}
-                                </div>
-                                <p class="card-desc">${product.desc}</p>
+                                <div class="tags-container">${tagsHtml}</div>
+                                <p class="card-desc">${product.description}</p>
                                 <div class="card-divider"></div>
-                                <a href="${finalLink}" class="btn-details" target="_blank">
-                                    More Details <i class="fas fa-chevron-right"></i>
-                                </a>
+                                <button class="btn-details" onclick="openProductModal('${product.model}')">
+                                    More Details <i class="fas fa-angle-right"></i>
+                                </button>
                             </div>
                         `;
                         grid.appendChild(card);
@@ -711,37 +683,149 @@
 
         // ------------------- Filter Logic -------------------
         function filterProducts() {
-            const brandFilter = document.getElementById('brand-select').value;
-            const capacityFilter = document.getElementById('capacity-select').value;
+            const brandFilter = document.getElementById('brand-filter').value;
+            const capFilter = document.getElementById('capacity-filter').value;
 
             const filtered = dryerProductsAll.filter(p => {
-                // 1. Brand Match
-                const pBrand = normalizeBrand(p.brand || '').trim().toLowerCase();
-                const fBrand = brandFilter.trim().toLowerCase();
-                let brandMatch = (brandFilter === 'all' || pBrand === fBrand);
+                const pBrand = normalizeBrand(p.brand);
+                let brandMatch = (brandFilter === 'all') || (pBrand === brandFilter);
                 
-                // 2. Capacity Match
                 let capMatch = false;
-                if (capacityFilter === 'all') {
-                    capMatch = true;
-                } else if (capacityFilter === 'combo') {
-                    // Check if type is combo OR capacity string contains 'washer' (e.g. Washer & Dryer)
-                    capMatch = (p.type === 'combo' || p.capacity.toLowerCase().includes('washer'));
-                } else {
-                    // e.g. filter "7kg", product "7kg" -> match
-                    capMatch = p.capacity.toLowerCase().includes(capacityFilter.toLowerCase());
-                }
+                if (capFilter === 'all') capMatch = true;
+                else if (capFilter === 'small' && p.capacity < 8) capMatch = true;
+                else if (capFilter === 'medium' && p.capacity >= 8 && p.capacity <= 10) capMatch = true;
+                else if (capFilter === 'large' && p.capacity > 10) capMatch = true;
 
                 return brandMatch && capMatch;
             });
 
             renderProducts(filtered);
         }
-        
-        // Alias for the HTML onclick
-        function runFilter() {
-            filterProducts();
-            document.getElementById("filter-panel").classList.remove("open");
+
+        // ------------------- 🌟 MODAL & ROUTING LOGIC -------------------
+        let currentModalProduct = null;
+
+        window.openProductModal = function(model, skipPush = false) {
+            const product = dryerProductsAll.find(p => p.model === model);
+            if (!product) return;
+
+            currentModalProduct = product;
+
+            // Content
+            document.getElementById('modal-title').textContent = product.model;
+            document.getElementById('modal-brand').textContent = product.brand;
+            document.getElementById('modal-desc').innerHTML = (product.longDesc || product.description).replace(/\n/g, '<br>');
+            
+            // Image
+            let mainImg = product.image || 'https://placehold.co/400x400/1e293b/FFF?text=Dryer';
+            if (mainImg && !mainImg.startsWith('http')) mainImg = IMAGE_BASE_PATH + mainImg;
+            document.getElementById('modal-img').src = mainImg;
+
+            // Gallery
+            const galleryContainer = document.getElementById('modal-gallery');
+            galleryContainer.innerHTML = '';
+            let images = [mainImg];
+            if (product.gallery) {
+                const extraImages = product.gallery.split(',').map(s => s.trim());
+                images = [...images, ...extraImages];
+            }
+            if (images.length > 1) {
+                images.forEach(img => {
+                    const thumb = document.createElement('img');
+                    thumb.src = img; thumb.className = 'gallery-thumb';
+                    thumb.onclick = function() {
+                        document.getElementById('modal-img').src = img;
+                        document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                    };
+                    galleryContainer.appendChild(thumb);
+                });
+            }
+
+            // Specs
+            const specsContainer = document.getElementById('modal-specs');
+            specsContainer.innerHTML = '';
+            if (product.specs) {
+                product.specs.split(';').forEach(spec => {
+                    if(spec.trim()) {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<i class="fas fa-check-circle"></i> ${spec.trim()}`;
+                        specsContainer.appendChild(li);
+                    }
+                });
+            } else {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-info-circle"></i> ${product.capacity}KG Dryer`;
+                specsContainer.appendChild(li);
+            }
+
+            // Show Modal & Update URL
+            document.getElementById('product-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            if (!skipPush) {
+                try {
+                    const newUrl = window.location.pathname + '?product=' + encodeURIComponent(model);
+                    window.history.pushState({ model: model }, '', newUrl);
+                } catch (e) { console.warn("PushState failed:", e); }
+            }
+        }
+
+        window.closeModalUI = function() {
+            document.getElementById('product-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            currentModalProduct = null;
+        }
+
+        window.goBackOrClose = function() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('product')) { window.history.back(); } 
+                else { closeModalUI(); }
+            } catch (e) { closeModalUI(); }
+        }
+
+        window.onpopstate = function(event) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productModel = urlParams.get('product');
+
+            if (productModel) {
+                openProductModal(productModel, true);
+            } else {
+                closeModalUI();
+            }
+        };
+
+        window.closeProductModalOutside = function(event) {
+            if (event.target.id === 'product-modal') goBackOrClose();
+        }
+
+        window.contactWhatsApp = function() {
+            if (currentModalProduct) {
+                const msg = `Hi, I am interested in ${currentModalProduct.brand} ${currentModalProduct.model}. Can I know more?`;
+                window.open(`https://wa.me/60148818581?text=${encodeURIComponent(msg)}`, '_blank');
+            }
+        }
+
+        window.inquireSmartAssist = function() {
+            if (currentModalProduct) {
+                const query = `我要询问 ${currentModalProduct.model} 的更多资料`;
+                window.location.href = `support.html?ask=${encodeURIComponent(query)}`;
+            }
+        }
+
+        function checkUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productModel = urlParams.get('product');
+            if (productModel) {
+                const product = dryerProductsAll.find(p => p.model === productModel);
+                if (product) {
+                    openProductModal(productModel, true);
+                } else {
+                    // If data isn't loaded yet, wait a bit
+                    // In real app, call this after fetchProducts completes (already done)
+                }
+            }
         }
     </script>
 </body>
