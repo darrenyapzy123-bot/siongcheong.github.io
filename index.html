@@ -429,13 +429,42 @@
             font-size: 0.9em;
         }
 
-        /* ------------------- Responsive ------------------- */
+        /* ------------------- Responsive Fix for Mobile Logo Overlap ------------------- */
         @media (max-width: 992px) {
             .nav-center { display: none; }
         }
         
         @media (max-width: 768px) {
-            header { padding: 0 20px; height: 100px; } /* Slightly smaller header on mobile */
+            header { 
+                padding: 0 15px; 
+                height: 90px; /* Reduced header height for mobile */
+                justify-content: space-between;
+            }
+            
+            /* Adjust Left Side (Menu + Brand) to take available space */
+            .header-left {
+                gap: 10px;
+                flex: 1;
+                min-width: 0; /* Important for text overflow */
+            }
+
+            /* Adjust Brand Name to not crowd the logo */
+            .brand-name {
+                font-size: 16px; /* Smaller font on mobile */
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis; /* Add ... if text is too long */
+                max-width: 140px; /* Limit width */
+            }
+
+            /* Force Logo to be smaller on Mobile */
+            .header-right img {
+                width: 120px; /* Much smaller fixed width */
+                height: auto;
+                max-width: 40vw;
+            }
+
+            /* Adjust Hero Title */
             .hero h1 { font-size: 2.5rem; }
             .categories-container { grid-template-columns: 1fr; max-width: 400px; }
             
