@@ -230,9 +230,8 @@
         }
 
         /* ------------------- Product Grid & Brand Sections ------------------- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-        /* [FIX 1] Products Wrapper Max Width */
+        /* Keep Max Width to center content block on large screens */
         .products-wrapper { 
             max-width: 1200px; 
             margin: 0 auto; 
@@ -240,28 +239,36 @@
         }
 
         .brand-section { margin-bottom: 60px; }
-        .brand-header { text-align: center; margin-bottom: 40px; }
+        
+        /* Robust Header Centering (Flexbox) */
+        .brand-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 40px; 
+        }
 
-        /* [FIX 3] Correct CSS Variables */
+        /* Robust Title Centering (Removed absolute positioning) */
         .section-title { 
-            text-align: center; 
-            font-family: 'Playfair Display', serif; /* Removed var(--font-serif) */
-            color: var(--text-main); /* Removed var(--text-primary) */
+            font-family: 'Playfair Display', serif;
+            color: var(--text-main);
             font-size: 2rem; 
-            margin-top: 60px; 
-            margin-bottom: 30px; 
+            margin: 60px auto 30px; /* Auto margin helps with flow */
             position: relative; 
             display: inline-block; 
-            left: 50%; 
-            transform: translateX(-50%); 
+            left: auto; 
+            transform: none; 
         }
         .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--accent); margin: 10px auto 0; border-radius: 2px; }
 
-        /* [FIX 2] Grid Base Styles */
+        /* [CRITICAL CSS FIX 1] Fixed Width Columns - No stretching */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Base rule */
             gap: 24px;
+            /* 强制每列 280px，不使用 fr，确保从左向右排列，不会被单列撑满 */
+            grid-template-columns: repeat(auto-fill, 280px);
+            justify-content: start; /* 整体 Grid 靠左对齐 */
         }
 
         /* ------------------- Product Card ------------------- */
@@ -274,6 +281,9 @@
             flex-direction: column;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
+            width: 100%;
+            /* [CRITICAL CSS FIX 2] 允许 Grid Item 缩小，防止长内容撑爆导致单列 */
+            min-width: 0;
         }
 
         .product-card:hover {
@@ -282,7 +292,6 @@
             border-color: var(--accent);
         }
 
-        /* [GOAL E & FIX] 1:1 Aspect Ratio + Max Height Constraint */
         .card-image-wrapper {
             width: 100%;
             aspect-ratio: 1 / 1; /* Square */
@@ -312,6 +321,14 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            /* [CRITICAL CSS FIX 3A] 确保子元素溢出处理 */
+            min-width: 0;
+        }
+
+        /* [CRITICAL CSS FIX 3B] 强制长文字/型号换行 */
+        .card-title, .card-desc {
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
         .card-title {
