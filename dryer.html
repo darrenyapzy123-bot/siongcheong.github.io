@@ -81,7 +81,6 @@
             font-style: italic;
         }
 
-        /* [GOAL C] Logo Sizing */
         .header-logo-right {
             position: absolute;
             right: 20px;
@@ -136,22 +135,42 @@
         .filter-controls select:focus { border-color: var(--accent); }
 
         /* ------------------- Product Grid ------------------- */
+        /* [UPDATED] Full width container, no centering */
         .products-wrapper {
-            max-width: 1200px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: none;
+            margin: 0;
             padding: 0 20px 60px 20px;
         }
 
         .brand-section { margin-bottom: 60px; }
+        /* [GOAL] Robust Centering for Header */
         .brand-header { text-align: center; margin-bottom: 40px; }
-        .section-title { text-align: center; font-family: 'Playfair Display', serif; color: var(--text-main); font-size: 2rem; margin-top: 60px; margin-bottom: 30px; position: relative; display: inline-block; left: 50%; transform: translateX(-50%); }
+        
+        /* [GOAL] Robust Centering for Title (No left:50% drift) */
+        .section-title { 
+            display: inline-block;
+            margin: 60px auto 30px;
+            text-align: center;
+            font-family: 'Playfair Display', serif; 
+            color: var(--text-main); 
+            font-size: 2rem; 
+            position: static;     /* No relative */
+            left: auto;           /* Removed */
+            transform: none;      /* Removed */
+        }
+        
         .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--accent); margin: 10px auto 0; border-radius: 2px; }
 
-        /* [GOAL E] Grid Layout */
+        /* [UPDATED] Robust Left-Aligned Grid using auto-fill */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 24px;
+            /* Auto-fill ensures items fill the row starting from left */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            justify-content: start;
+            justify-items: stretch; /* Forces card to fill the grid cell width */
+            align-items: stretch;
         }
 
         /* ------------------- Product Card ------------------- */
@@ -164,6 +183,7 @@
             flex-direction: column;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
+            width: 100%; /* Ensure width fills the grid track */
         }
 
         .product-card:hover {
@@ -378,7 +398,6 @@
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
         <a href="index.html">Home</a>
-        <!-- [GOAL D] Added Gallery & Smart Assistant -->
         <a href="gallery.html" style="color:var(--accent); font-weight:bold;">Our Gallery</a>
         <a href="support.html" style="color:var(--accent); font-weight:bold;"><i class="fas fa-robot"></i> Smart Assistant</a>
         <div class="submenu-toggle" onclick="toggleSubmenu(this)">Products</div>
@@ -437,7 +456,6 @@
                         <option value="Midea">Midea</option>
                         <option value="Toshiba">Toshiba</option>
                         <option value="Khind">Khind</option>
-                        <!-- Other brands will appear if in sheet -->
                     </select>
                 </div>
                 <div class="filter-group">
@@ -534,8 +552,6 @@
 
         // ------------------- 🔴 DATA LOGIC -------------------
         // [GOAL A] API Only
-        // Using SheetDB/OpenSheet API. 
-        // NOTE: Please ensure this sheet contains DRYER data or a "type" column to filter dryers if mixed.
         const API_URL = "https://sheetdb.io/api/v1/twlcwcm7trj58"; 
         const IMAGE_BASE_PATH = ""; 
         let dryerProductsAll = [];
@@ -558,39 +574,48 @@
 
             try {
                 console.log("Fetching Dryer data...");
-                const response = await fetch(API_URL, { cache: 'no-store' });
+                // [FIX 1] Added timestamp to force fresh fetch (bypass cache)
+                const response = await fetch(API_URL + "?t=" + new Date().getTime(), { cache: 'no-store' });
                 const data = await response.json();
                 
                 // Format data with new columns
                 fetchedProducts = data.map(item => {
                     let brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
                     brand = normalizeBrand(brand);
-                    const model = getValueByFuzzyKey(item, 'model') || 'Unknown';
+                    
+                    // [FIX 2] Smart mapping for Model: Look for 'model', 'name', 'title' or 'product'
+                    const model = getValueByFuzzyKey(item, 'model') || getValueByFuzzyKey(item, 'name') || getValueByFuzzyKey(item, 'title') || getValueByFuzzyKey(item, 'product') || 'Unknown';
                     
                     const rawCap = getValueByFuzzyKey(item, 'capacity') || 0;
                     const capacity = parseFloat(rawCap) || 0;
 
-                    // Optional Type for Dryers (e.g., Vented, Condenser)
-                    const type = getValueByFuzzyKey(item, 'type') || '';
+                    // Improved Type Filter - Checks both "type" and "category" columns
+                    const type = getValueByFuzzyKey(item, 'type') || getValueByFuzzyKey(item, 'category') || '';
+                    const typeLower = type.toLowerCase();
 
-                    // Filter Logic: If this sheet is mixed, uncomment below
-                    // if (!type.toLowerCase().includes('dryer')) return null;
+                    // [FIX 3] RELAXED Filter Logic: 
+                    // Instead of requiring "Dryer" to be present, we only EXCLUDE explicit other appliances.
+                    // This ensures "Condenser", "Vented", "Heat Pump", or empty types are SHOWN.
+                    if (typeLower.includes('washer') && !typeLower.includes('dryer')) return null; // Washer only -> Skip (But keep Washer Dryer)
+                    if (typeLower.includes('fridge') || typeLower.includes('refrigerator')) return null;
+                    if (typeLower.includes('tv') || typeLower.includes('television')) return null;
+                    if (typeLower.includes('air cond') || typeLower.includes('ac') || typeLower.includes('cooler')) return null;
 
-                    let image = getValueByFuzzyKey(item, 'image') || '';
+                    // [FIX 2] Smart mapping for Image: Look for 'image', 'img', 'photo'
+                    let image = getValueByFuzzyKey(item, 'image') || getValueByFuzzyKey(item, 'img') || getValueByFuzzyKey(item, 'photo') || '';
                     image = image.trim();
                     const description = getValueByFuzzyKey(item, 'description') || getValueByFuzzyKey(item, 'desc') || '';
                     
-                    // [GOAL B] New Fields
                     const longDesc = getValueByFuzzyKey(item, 'long_description') || description; 
                     const specs = getValueByFuzzyKey(item, 'specs') || ""; 
                     const gallery = getValueByFuzzyKey(item, 'gallery') || "";
 
                     return { brand, model, capacity, type, image, description, longDesc, specs, gallery };
-                }).filter(item => item !== null); // Filter out nulls if filtering applied
+                }).filter(item => item !== null); // Remove null items (non-dryers)
 
             } catch (error) {
                 console.error("API Fetch Failed:", error);
-                loadingIndicator.innerHTML = "Failed to load products. Please try again later.";
+                loadingIndicator.innerHTML = "Failed to load products. Please check your internet connection.";
             }
 
             dryerProductsAll = fetchedProducts;
@@ -637,12 +662,10 @@
                     
                     const brandHeader = document.createElement('div');
                     brandHeader.className = 'brand-header';
-                    // Consistent Title Style
                     brandHeader.innerHTML = `<h2 class="section-title">${brand} Series</h2>`;
                     brandSection.appendChild(brandHeader);
 
                     const grid = document.createElement('div');
-                    // [IMPORTANT] Grid Class Match
                     grid.className = 'products-grid';
 
                     brandProducts.forEach(product => {
@@ -651,13 +674,11 @@
                         else if (!imgSrc.startsWith('http')) imgSrc = IMAGE_BASE_PATH + imgSrc;
 
                         const card = document.createElement('div');
-                        // [IMPORTANT] Card Class Match
                         card.className = 'product-card';
                         
                         let tagsHtml = '';
                         if (product.capacity > 0) tagsHtml += `<span class="card-tag">${product.capacity} KG</span>`;
 
-                        // [GOAL B] Button -> Modal
                         card.innerHTML = `
                             <div class="card-image-wrapper">
                                 <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/400x400/1e293b/FFF?text=Dryer'" class="card-img">
@@ -822,8 +843,7 @@
                 if (product) {
                     openProductModal(productModel, true);
                 } else {
-                    // If data isn't loaded yet, wait a bit
-                    // In real app, call this after fetchProducts completes (already done)
+                    // Loaded later
                 }
             }
         }
