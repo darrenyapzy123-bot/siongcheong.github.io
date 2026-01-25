@@ -73,7 +73,7 @@
 
         .overlay { position: fixed; height: 100%; width: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); z-index: 9999; display: none; backdrop-filter: blur(4px); }
 
-        /* ------------------- Header (Updated) ------------------- */
+        /* ------------------- Header ------------------- */
         header {
             display: flex;
             align-items: center;
@@ -94,7 +94,7 @@
             font-style: italic;
         }
 
-        /* [GOAL C] Logo Sizing */
+        /* Logo Sizing */
         .header-logo-right {
             position: absolute;
             right: 20px;
@@ -232,6 +232,7 @@
 
         /* ------------------- Product Grid & Brand Sections ------------------- */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
         .brand-section { margin-bottom: 60px; }
         .brand-header { text-align: center; margin-bottom: 40px; }
         .brand-title { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--text-main); position: relative; display: inline-block; }
@@ -399,7 +400,7 @@
         }
         .btn-back:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* ------------------- [GOAL B] PRODUCT MODAL ------------------- */
+        /* ------------------- MODAL (Product Details Layer) ------------------- */
         .product-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.85); z-index: 20000; overflow-y: auto;
@@ -746,11 +747,11 @@
                     
                     const brandHeader = document.createElement('div');
                     brandHeader.className = 'brand-header';
-                    brandHeader.innerHTML = `<h2 class="section-title">${brand} Series</h2>`;
+                    brandHeader.innerHTML = `<h2 class="brand-title">${brand} Series</h2><div class="brand-underline"></div>`;
                     brandSection.appendChild(brandHeader);
 
                     const grid = document.createElement('div');
-                    grid.className = 'product-grid';
+                    grid.className = 'products-grid';
 
                     brandProducts.forEach(product => {
                         let imgSrc = product.image || '';
@@ -758,25 +759,24 @@
                         else if (!imgSrc.startsWith('http')) imgSrc = IMAGE_BASE_PATH + imgSrc;
 
                         const card = document.createElement('div');
-                        card.className = 'product-card';
+                        card.className = 'card';
                         
                         let tagsHtml = '';
-                        if (product.size) tagsHtml += `<span class="tag tag-capacity">${product.size}"</span>`;
-                        if (product.resolution) tagsHtml += `<span class="tag tag-capacity">${product.resolution}</span>`;
+                        if (product.size) tagsHtml += `<span class="card-tag">${product.size}"</span>`;
+                        if (product.resolution) tagsHtml += `<span class="card-tag">${product.resolution}</span>`;
 
-                        // [GOAL B] Button -> Modal
+                        // [GOAL B] Button -> Modal (Updated Text: More Details)
                         card.innerHTML = `
                             <div class="card-image-wrapper">
                                 <img src="${imgSrc}" alt="${product.model}" onerror="this.src='https://placehold.co/400x400/1e293b/FFF?text=TV'" class="card-img">
                             </div>
-                            <div class="product-info">
-                                <div>
-                                    <h3>${product.model}</h3>
-                                    <div class="product-tags">${tagsHtml}</div>
-                                    <p class="product-desc">${product.desc}</p>
-                                </div>
+                            <div class="card-body">
+                                <h3 class="card-title">${product.model}</h3>
+                                <div class="tags-container">${tagsHtml}</div>
+                                <p class="card-desc">${product.desc}</p>
+                                <div class="card-divider"></div>
                                 <button class="btn-details" onclick="openProductModal('${product.model}')">
-                                    View Details <i class="fas fa-angle-right"></i>
+                                    More Details <i class="fas fa-angle-right"></i>
                                 </button>
                             </div>
                         `;
