@@ -93,7 +93,7 @@
             font-style: italic;
         }
 
-        /* [GOAL C] Logo Sizing */
+        /* Logo Sizing */
         .header-logo-right {
             position: absolute;
             right: 20px;
@@ -232,21 +232,37 @@
         /* ------------------- Product Grid & Brand Sections ------------------- */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
+        /* [FIX 1] Products Wrapper Max Width */
+        .products-wrapper { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px 60px 20px; 
+        }
+
         .brand-section { margin-bottom: 60px; }
         .brand-header { text-align: center; margin-bottom: 40px; }
-        .brand-title { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--text-main); position: relative; display: inline-block; }
-        .brand-underline { width: 60px; height: 3px; background-color: var(--accent); margin: 10px auto 0; border-radius: 2px; }
 
+        /* [FIX 3] Correct CSS Variables */
+        .section-title { 
+            text-align: center; 
+            font-family: 'Playfair Display', serif; /* Removed var(--font-serif) */
+            color: var(--text-main); /* Removed var(--text-primary) */
+            font-size: 2rem; 
+            margin-top: 60px; 
+            margin-bottom: 30px; 
+            position: relative; 
+            display: inline-block; 
+            left: 50%; 
+            transform: translateX(-50%); 
+        }
+        .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--accent); margin: 10px auto 0; border-radius: 2px; }
+
+        /* [FIX 2] Grid Base Styles */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Base rule */
             gap: 24px;
         }
-        /* Breakpoints */
-        @media (min-width: 1280px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
-        @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (min-width: 640px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 639px) { .products-grid { grid-template-columns: 1fr; } }
 
         /* ------------------- Product Card ------------------- */
         .product-card {
@@ -266,10 +282,11 @@
             border-color: var(--accent);
         }
 
-        /* [GOAL E] 1:1 Aspect Ratio for Listing Images */
+        /* [GOAL E & FIX] 1:1 Aspect Ratio + Max Height Constraint */
         .card-image-wrapper {
             width: 100%;
             aspect-ratio: 1 / 1; /* Square */
+            max-height: 300px; /* Limit height to prevent huge images */
             height: auto;
             background-color: #ffffff;
             display: flex;
@@ -399,7 +416,7 @@
         }
         .btn-back:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* ------------------- [GOAL B] PRODUCT MODAL ------------------- */
+        /* ------------------- MODAL (Product Details Layer) ------------------- */
         .product-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.85); z-index: 20000; overflow-y: auto;
@@ -750,6 +767,7 @@
                     brandSection.appendChild(brandHeader);
 
                     const grid = document.createElement('div');
+                    // [FIX] Correct class name used in CSS
                     grid.className = 'products-grid';
 
                     brandProducts.forEach(product => {
@@ -758,6 +776,7 @@
                         else if (!imgSrc.startsWith('http')) imgSrc = IMAGE_BASE_PATH + imgSrc;
 
                         const card = document.createElement('div');
+                        // [FIX] Correct class name used in CSS
                         card.className = 'product-card';
                         
                         let tagsHtml = '';
@@ -808,15 +827,17 @@
         }
 
         // ------------------- 🌟 MODAL & ROUTING LOGIC -------------------
+        // [FIX] Modal State Flag
         let currentModalProduct = null;
 
-        window.openProductModal = function(model) {
+        // [FIX] New Function Signature with skipPush default false
+        window.openProductModal = function(model, skipPush = false) {
             const product = tvProductsAll.find(p => p.model === model);
             if (!product) return;
 
             currentModalProduct = product;
 
-            // Content
+            // Populate Content
             document.getElementById('modal-title').textContent = product.model;
             document.getElementById('modal-brand').textContent = product.brand;
             document.getElementById('modal-desc').innerHTML = (product.longDesc || product.desc).replace(/\n/g, '<br>');
@@ -864,14 +885,17 @@
                 specsContainer.appendChild(li);
             }
 
-            // Show Modal & Update URL
+            // Show Modal
             document.getElementById('product-modal').style.display = 'block';
             document.body.style.overflow = 'hidden';
             
-            try {
-                const newUrl = window.location.pathname + '?product=' + encodeURIComponent(model);
-                window.history.pushState({ model: model }, '', newUrl);
-            } catch (e) { console.warn("PushState failed:", e); }
+            // [FIX] Conditionally Push State
+            if (!skipPush) {
+                try {
+                    const newUrl = window.location.pathname + '?product=' + encodeURIComponent(model);
+                    window.history.pushState({ model: model }, '', newUrl);
+                } catch (e) { console.warn("PushState failed:", e); }
+            }
         }
 
         window.closeModalUI = function() {
@@ -888,17 +912,14 @@
             } catch (e) { closeModalUI(); }
         }
 
+        // [FIX] Update onpopstate to call openProductModal with skipPush=true
         window.onpopstate = function(event) {
             const urlParams = new URLSearchParams(window.location.search);
             const productModel = urlParams.get('product');
+
             if (productModel) {
-                const product = tvProductsAll.find(p => p.model === productModel);
-                if (product) {
-                    currentModalProduct = product;
-                    document.getElementById('modal-title').textContent = product.model;
-                    document.getElementById('product-modal').style.display = 'block';
-                    document.body.style.overflow = 'hidden';
-                }
+                // Call full modal open logic but skip pushing state again
+                openProductModal(productModel, true);
             } else {
                 closeModalUI();
             }
@@ -922,40 +943,14 @@
             }
         }
 
+        // [FIX] Update checkUrlParams to call openProductModal with skipPush=true
         function checkUrlParams() {
             const urlParams = new URLSearchParams(window.location.search);
             const productModel = urlParams.get('product');
             if (productModel) {
-                const product = tvProductsAll.find(p => p.model === productModel);
-                if (product) {
-                    // Populate data
-                    currentModalProduct = product;
-                    document.getElementById('modal-title').textContent = product.model;
-                    document.getElementById('modal-brand').textContent = product.brand;
-                    document.getElementById('modal-desc').innerHTML = (product.longDesc || '').replace(/\n/g, '<br>');
-                    
-                    let mainImg = product.image || 'https://placehold.co/400x400/1e293b/FFF?text=TV';
-                    if (mainImg && !mainImg.startsWith('http')) mainImg = IMAGE_BASE_PATH + mainImg;
-                    document.getElementById('modal-img').src = mainImg;
-
-                    const specsContainer = document.getElementById('modal-specs');
-                    specsContainer.innerHTML = '';
-                    if (product.specs) {
-                        product.specs.split(';').forEach(spec => {
-                            if(spec.trim()){
-                                const li = document.createElement('li');
-                                li.innerHTML = `<i class="fas fa-check-circle"></i> ${spec.trim()}`;
-                                specsContainer.appendChild(li);
-                            }
-                        });
-                    } else {
-                        const li = document.createElement('li');
-                        li.innerHTML = `<i class="fas fa-info-circle"></i> ${product.size}" ${product.resolution}`;
-                        specsContainer.appendChild(li);
-                    }
-
-                    document.getElementById('product-modal').style.display = 'block';
-                    document.body.style.overflow = 'hidden';
+                // Wait for data to be ready then open
+                if (tvProductsAll.length > 0) {
+                     openProductModal(productModel, true);
                 }
             }
         }
