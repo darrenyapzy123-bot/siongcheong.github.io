@@ -236,6 +236,8 @@
             max-width: 1200px; 
             margin: 0 auto; 
             padding: 0 20px 60px 20px; 
+            /* [UPDATED] Add full width to prevent shrinking */
+            width: 100%;
         }
 
         .brand-section { margin-bottom: 60px; }
@@ -262,13 +264,30 @@
         }
         .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--accent); margin: 10px auto 0; border-radius: 2px; }
 
-        /* [CRITICAL CSS FIX 1] Fixed Width Columns - No stretching */
+        /* [CRITICAL CSS FIX] Responsive Grid Layout */
         .products-grid {
             display: grid;
             gap: 24px;
-            /* 强制每列 280px，不使用 fr，确保从左向右排列，不会被单列撑满 */
-            grid-template-columns: repeat(auto-fill, 280px);
-            justify-content: start; /* 整体 Grid 靠左对齐 */
+            width: 100%;
+            justify-items: stretch;   /* 卡片撑满格子 */
+            align-items: stretch;
+        }
+
+        /* Desktop: 4 columns */
+        @media (min-width: 1280px){
+            .products-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        /* Laptop: 3 columns */
+        @media (min-width: 1024px) and (max-width: 1279px){
+            .products-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        /* Tablet: 2 columns */
+        @media (min-width: 640px) and (max-width: 1023px){
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        /* Mobile: 1 column */
+        @media (max-width: 639px){
+            .products-grid { grid-template-columns: 1fr; }
         }
 
         /* ------------------- Product Card ------------------- */
@@ -282,7 +301,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             width: 100%;
-            /* [CRITICAL CSS FIX 2] 允许 Grid Item 缩小，防止长内容撑爆导致单列 */
+            /* [CRITICAL CSS FIX] 允许 Grid Item 缩小 */
             min-width: 0;
         }
 
@@ -321,11 +340,11 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            /* [CRITICAL CSS FIX 3A] 确保子元素溢出处理 */
+            /* [CRITICAL CSS FIX] 确保子元素溢出处理 */
             min-width: 0;
         }
 
-        /* [CRITICAL CSS FIX 3B] 强制长文字/型号换行 */
+        /* [CRITICAL CSS FIX] 强制长文字/型号换行 */
         .card-title, .card-desc {
             overflow-wrap: anywhere;
             word-break: break-word;
