@@ -261,21 +261,27 @@
             border-radius: 2px;
         }
 
-        /* [CSS Fix for Washer Layout] */
-        .products-grid {
+        /* ✅ SAME AS REFRIGERATOR: stable grid columns */
+        .product-grid {
             display: grid;
             gap: 24px;
-            /* 固定每张卡片宽度，自动填充行 */
-            grid-template-columns: repeat(auto-fill, 280px);
-            /* 强制从左边开始排列 */
-            justify-content: start;
+            width: 100%;
         }
-
-        /* Mobile Optimization: Force 1 column on small screens */
-        @media (max-width: 640px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
+        /* Desktop: 4 columns */
+        @media (min-width: 1280px) {
+            .product-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        /* Laptop: 3 columns */
+        @media (min-width: 1024px) and (max-width: 1279px) {
+            .product-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        /* Tablet: 2 columns */
+        @media (min-width: 640px) and (max-width: 1023px) {
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        /* Mobile: 1 column */
+        @media (max-width: 639px) {
+            .product-grid { grid-template-columns: 1fr; }
         }
 
         /* ------------------- Product Card ------------------- */
@@ -288,6 +294,10 @@
             flex-direction: column;
             transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
+            
+            /* [CRITICAL FIX] Prevent single card expansion */
+            width: 100%;
+            min-width: 0;
         }
 
         .product-card:hover {
@@ -771,7 +781,7 @@
 
                     const grid = document.createElement('div');
                     // [FIXED] Changed class from 'product-grid' to 'products-grid' to match CSS
-                    grid.className = 'products-grid';
+                    grid.className = 'product-grid';
 
                     brandProducts.forEach(product => {
                         let imgSrc = product.image || '';
