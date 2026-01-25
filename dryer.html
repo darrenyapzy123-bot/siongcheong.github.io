@@ -551,10 +551,44 @@
         });
 
         // ------------------- 🔴 DATA LOGIC -------------------
-        // [GOAL A] API Only
-        const API_URL = "https://sheetdb.io/api/v1/twlcwcm7trj58"; 
+        // [GOAL A] API Updated to OpenSheet
+        const API_URL = "https://opensheet.elk.sh/13hDI2ZDHjNgJKIydq8bmQ4d8Dxruu1fK3e0cCAb6p08/Sheet1"; 
         const IMAGE_BASE_PATH = ""; 
         let dryerProductsAll = [];
+
+        // [FALLBACK DATA] In case API fails (e.g. 400 Error due to Permissions)
+        const FALLBACK_DRYERS = [
+            {
+                brand: "Toshiba",
+                model: "TD-H80SEO",
+                capacity: 7,
+                image: "https://placehold.co/400x400/0ea5e9/FFF?text=Toshiba+7KG",
+                description: "Toshiba 7KG Tumble Dryer with Anti-Crease function.",
+                longDesc: "This is a demo product shown because the live Google Sheet API returned an error.\n\nFeature 1: SenseDry\nFeature 2: Anti-Crease\nFeature 3: LED Display",
+                specs: "7KG Capacity; SenseDry Tech; LED Display",
+                gallery: ""
+            },
+            {
+                brand: "Sharp",
+                model: "KD-N90SA-G",
+                capacity: 9,
+                image: "https://placehold.co/400x400/2ecc71/FFF?text=Sharp+9KG",
+                description: "Sharp 9KG Condenser Dryer for efficient drying.",
+                longDesc: "Demo data.\nSharp KD-N90SA-G offers powerful drying performance with energy efficiency.",
+                specs: "9KG Capacity; Condenser Type; Child Lock",
+                gallery: ""
+            },
+             {
+                brand: "Midea",
+                model: "MD-C8800",
+                capacity: 8,
+                image: "https://placehold.co/400x400/e74c3c/FFF?text=Midea+8KG",
+                description: "Midea 8KG Dryer with multiple drying programs.",
+                longDesc: "Demo data.\nMidea dryer tailored for modern families.",
+                specs: "8KG Capacity; 16 Programs; Delay Start",
+                gallery: ""
+            }
+        ];
 
         function getValueByFuzzyKey(item, keyword) {
             if (!item) return undefined;
@@ -574,55 +608,87 @@
 
             try {
                 console.log("Fetching Dryer data...");
-                // [FIX 1] Added timestamp to force fresh fetch (bypass cache)
-                const response = await fetch(API_URL + "?t=" + new Date().getTime(), { cache: 'no-store' });
+                // [FIX 1] REMOVED "?t=" timestamp to avoid potential 400 Bad Request on some proxies
+                const response = await fetch(API_URL, { cache: 'no-store' });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status} (Check Sheet Permissions)`);
+                }
+                
                 const data = await response.json();
                 
-                // Format data with new columns
+                // [FIX 2] Handle non-array response
+                if (!Array.isArray(data)) {
+                    console.error("API returned non-array data:", data);
+                    if (data.error) {
+                        throw new Error(`API Error: ${data.error}`);
+                    }
+                    throw new Error("Invalid data format received from API.");
+                }
+                
+                // Format data
                 fetchedProducts = data.map(item => {
                     let brand = getValueByFuzzyKey(item, 'brand') || 'Unknown';
                     brand = normalizeBrand(brand);
                     
-                    // [FIX 2] Smart mapping for Model: Look for 'model', 'name', 'title' or 'product'
                     const model = getValueByFuzzyKey(item, 'model') || getValueByFuzzyKey(item, 'name') || getValueByFuzzyKey(item, 'title') || getValueByFuzzyKey(item, 'product') || 'Unknown';
-                    
                     const rawCap = getValueByFuzzyKey(item, 'capacity') || 0;
                     const capacity = parseFloat(rawCap) || 0;
-
-                    // Improved Type Filter - Checks both "type" and "category" columns
+                    
                     const type = getValueByFuzzyKey(item, 'type') || getValueByFuzzyKey(item, 'category') || '';
                     const typeLower = type.toLowerCase();
 
-                    // [FIX 3] RELAXED Filter Logic: 
-                    // Instead of requiring "Dryer" to be present, we only EXCLUDE explicit other appliances.
-                    // This ensures "Condenser", "Vented", "Heat Pump", or empty types are SHOWN.
-                    if (typeLower.includes('washer') && !typeLower.includes('dryer')) return null; // Washer only -> Skip (But keep Washer Dryer)
+                    // Filter Logic
+                    if (typeLower.includes('washer') && !typeLower.includes('dryer')) return null;
                     if (typeLower.includes('fridge') || typeLower.includes('refrigerator')) return null;
                     if (typeLower.includes('tv') || typeLower.includes('television')) return null;
                     if (typeLower.includes('air cond') || typeLower.includes('ac') || typeLower.includes('cooler')) return null;
 
-                    // [FIX 2] Smart mapping for Image: Look for 'image', 'img', 'photo'
                     let image = getValueByFuzzyKey(item, 'image') || getValueByFuzzyKey(item, 'img') || getValueByFuzzyKey(item, 'photo') || '';
                     image = image.trim();
                     const description = getValueByFuzzyKey(item, 'description') || getValueByFuzzyKey(item, 'desc') || '';
-                    
                     const longDesc = getValueByFuzzyKey(item, 'long_description') || description; 
                     const specs = getValueByFuzzyKey(item, 'specs') || ""; 
                     const gallery = getValueByFuzzyKey(item, 'gallery') || "";
 
                     return { brand, model, capacity, type, image, description, longDesc, specs, gallery };
-                }).filter(item => item !== null); // Remove null items (non-dryers)
+                }).filter(item => item !== null);
 
             } catch (error) {
-                console.error("API Fetch Failed:", error);
-                loadingIndicator.innerHTML = "Failed to load products. Please check your internet connection.";
+                console.warn("API Fetch Failed, loading fallback data:", error);
+                
+                // [FIX 3] LOAD FALLBACK DATA
+                fetchedProducts = FALLBACK_DRYERS;
+
+                // Update Loading Indicator to show warning instead of hiding immediately
+                loadingIndicator.innerHTML = `
+                    <div style="color: #f39c12; margin-bottom: 20px;">
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        <b>Unable to load live data (${error.message}).</b><br>
+                        Displaying demo products below.<br>
+                        <small style="opacity:0.8">Tip: Ensure your Google Sheet is "Shared > Anyone with link > Viewer".</small>
+                    </div>
+                `;
+                // Don't hide loading indicator div, just let it sit as a banner above products
+                // renderProducts will append below it if we are careful, 
+                // BUT current logic hides it. Let's force it to stay visible if error.
             }
 
             dryerProductsAll = fetchedProducts;
-            loadingIndicator.style.display = 'none';
-            updateFilterDropdown(dryerProductsAll);
-            renderProducts(dryerProductsAll);
-            checkUrlParams(); 
+            
+            // Only hide loader if NO error (if error, we kept the warning message inside it)
+            // Actually, simplest is to hide loader if success, or keep it if error.
+            if (fetchedProducts === FALLBACK_DRYERS) {
+                // Keep the warning visible
+            } else {
+                loadingIndicator.style.display = 'none';
+            }
+
+            if (fetchedProducts.length > 0) {
+                 updateFilterDropdown(dryerProductsAll);
+                 renderProducts(dryerProductsAll);
+                 checkUrlParams(); 
+            }
         }
 
         function updateFilterDropdown(products) {
@@ -641,6 +707,7 @@
             const container = document.getElementById('products-container');
             const noProducts = document.getElementById('no-products');
             
+            // Clean up old sections
             const sections = container.querySelectorAll('.brand-section');
             sections.forEach(section => section.remove());
 
