@@ -261,10 +261,21 @@
             border-radius: 2px;
         }
 
+        /* [CSS Fix for Washer Layout] */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 24px;
+            /* 固定每张卡片宽度，自动填充行 */
+            grid-template-columns: repeat(auto-fill, 280px);
+            /* 强制从左边开始排列 */
+            justify-content: start;
+        }
+
+        /* Mobile Optimization: Force 1 column on small screens */
+        @media (max-width: 640px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* ------------------- Product Card ------------------- */
@@ -759,7 +770,8 @@
                     brandSection.appendChild(brandHeader);
 
                     const grid = document.createElement('div');
-                    grid.className = 'product-grid';
+                    // [FIXED] Changed class from 'product-grid' to 'products-grid' to match CSS
+                    grid.className = 'products-grid';
 
                     brandProducts.forEach(product => {
                         let imgSrc = product.image || '';
