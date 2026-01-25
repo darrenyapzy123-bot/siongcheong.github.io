@@ -42,18 +42,6 @@
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; padding: 0; margin: 0; }
 
-        /* ------------------- Layout Wrapper for Push Effect ------------------- */
-        #main-content {
-            width: 100%;
-            max-width: 100vw;
-            transition: margin-left 0.5s;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            position: relative;
-            background-color: var(--bg-body);
-        }
-
         /* ------------------- Sidebar Styles ------------------- */
         .menu-icon { position: fixed; top: 35px; left: 25px; z-index: 10000; cursor: pointer; padding: 10px; background-color: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 5px; width: 45px; height: 45px; justify-content: center; align-items: center; transition: all 0.3s ease; }
         .menu-icon:hover { border-color: var(--accent); background-color: rgba(15, 23, 42, 1); }
@@ -72,6 +60,17 @@
         .submenu a:hover { border-left: 3px solid var(--accent); padding-left: 50px; }
 
         .overlay { position: fixed; height: 100%; width: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.7); z-index: 9999; display: none; backdrop-filter: blur(4px); }
+
+        /* ------------------- Layout Wrapper ------------------- */
+        #main-content {
+            width: 100%;
+            transition: margin-left 0.5s; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            background-color: var(--bg-body);
+        }
 
         /* ------------------- Header ------------------- */
         header {
@@ -94,13 +93,13 @@
             font-style: italic;
         }
 
-        /* Logo Sizing */
+        /* [GOAL C] Logo Sizing */
         .header-logo-right {
             position: absolute;
             right: 20px;
             top: 50%;
             transform: translateY(-50%);
-            width: 380px;
+            width: 380px; /* Desktop Size */
             height: auto;
             object-fit: contain;
         }
@@ -400,7 +399,7 @@
         }
         .btn-back:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* ------------------- MODAL (Product Details Layer) ------------------- */
+        /* ------------------- [GOAL B] PRODUCT MODAL ------------------- */
         .product-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.85); z-index: 20000; overflow-y: auto;
@@ -747,7 +746,7 @@
                     
                     const brandHeader = document.createElement('div');
                     brandHeader.className = 'brand-header';
-                    brandHeader.innerHTML = `<h2 class="brand-title">${brand} Series</h2><div class="brand-underline"></div>`;
+                    brandHeader.innerHTML = `<h2 class="section-title">${brand} Series</h2>`;
                     brandSection.appendChild(brandHeader);
 
                     const grid = document.createElement('div');
@@ -759,7 +758,7 @@
                         else if (!imgSrc.startsWith('http')) imgSrc = IMAGE_BASE_PATH + imgSrc;
 
                         const card = document.createElement('div');
-                        card.className = 'card';
+                        card.className = 'product-card';
                         
                         let tagsHtml = '';
                         if (product.size) tagsHtml += `<span class="card-tag">${product.size}"</span>`;
