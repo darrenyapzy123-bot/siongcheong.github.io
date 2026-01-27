@@ -427,7 +427,6 @@
             <a href="tv.html">TV</a>
             <a href="washer.html">Washer</a>
             <a href="dryer.html">Dryer</a>
-            <a href="kitchen.html">Kitchen Appliances</a>
             <a href="hood.html">Hood</a>
             <a href="gas.html">Gas</a>
             <a href="oven.html">Oven</a>
@@ -755,22 +754,40 @@
             // Image
             let mainImg = product.image || 'https://placehold.co/400x400/1e293b/FFF?text=Air+Fryer';
             if (mainImg && !mainImg.startsWith('http')) mainImg = IMAGE_BASE_PATH + mainImg;
-            document.getElementById('modal-img').src = mainImg;
+            
+            const modalMainImg = document.getElementById('modal-img');
+            modalMainImg.src = mainImg;
 
-            // Gallery
+            // Gallery Logic with Duplicate Check
             const galleryContainer = document.getElementById('modal-gallery');
             galleryContainer.innerHTML = '';
-            let images = [mainImg];
+
+            // Use Set to prevent duplicates
+            let uniqueImages = new Set();
+            // Always add main image first
+            if(mainImg && !mainImg.includes('placehold.co')) uniqueImages.add(mainImg);
+
             if (product.gallery) {
-                const extraImages = product.gallery.split(',').map(s => s.trim()).filter(s => s);
-                images = [...images, ...extraImages];
+                // Split by comma, semicolon, pipe or newline
+                const extraImages = product.gallery.split(/[,;|\n]/).map(s => s.trim()).filter(s => s);
+                extraImages.forEach(img => {
+                    if (!img.startsWith('http')) img = IMAGE_BASE_PATH + img;
+                    uniqueImages.add(img);
+                });
             }
+            
+            const images = Array.from(uniqueImages);
+
+            // Only show thumbnails if more than 1 unique image
             if (images.length > 1) {
-                images.forEach(img => {
+                images.forEach((img, index) => {
                     const thumb = document.createElement('img');
-                    thumb.src = img; thumb.className = 'gallery-thumb';
+                    thumb.src = img; 
+                    thumb.className = 'gallery-thumb';
+                    if (index === 0) thumb.classList.add('active'); // First one active
+
                     thumb.onclick = function() {
-                        document.getElementById('modal-img').src = img;
+                        modalMainImg.src = img;
                         document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
                         this.classList.add('active');
                     };
